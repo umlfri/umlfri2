@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ConnectionType id="association" xmlns="http://umlfri.org/v2/addon.xsd">
     <Icon path="icons/association.png"/>
-    
+
     <Structure>
-        <Attribute id="name" type="str" />
+        <Attribute id="name" type="str"/>
         <Attribute id="direction" type="enum" default="toDestination">
             <Value value="unspecified"/>
             <Value value="toDestination"/>
             <Value value="toSource"/>
             <Value value="bidirectional"/>
         </Attribute>
-        <Attribute id="stereotype" type="str" />
+        <Attribute id="stereotype" type="str"/>
         <Attribute id="source" type="object">
             <Attribute id="cardinality" type="str">
                 <Value value=""/>
@@ -49,12 +49,12 @@
             </Attribute>
             <Attribute id="role" type="str"/>
         </Attribute>
-        <Attribute id="note" type="text" />
+        <Attribute id="note" type="text"/>
     </Structure>
-    
+
     <Appearance>
         <Line style="solid" color="#cfg.Styles.Connection.LineColor"/>
-        
+
         <Switch value="#self.direction">
             <Case condition="toDestination">
                 <Arrow index="-1" style="simple_arrow" color="#cfg.Styles.Connection.ArrowColor"/>
@@ -67,7 +67,7 @@
                 <Arrow index="0" style="simple_arrow" color="#cfg.Styles.Connection.ArrowColor"/>
             </Case>
         </Switch>
-        
+
         <Label position="center">
             <VBox>
                 <If condition="#self.stereotype">
@@ -81,39 +81,42 @@
                         </Rectangle>
                     </Align>
                 </If>
-                
+
                 <If condition="#self.name">
                     <Align align="center">
                         <Rectangle fill="#cfg.Styles.Connection.TextFill">
-                            <TextBox text="#self.name" font="#cfg.Styles.Connection.NameTextFont" color="#cfg.Styles.Connection.NameTextColor"/>
+                            <TextBox text="#self.name" font="#cfg.Styles.Connection.NameTextFont"
+                                     color="#cfg.Styles.Connection.NameTextColor"/>
                         </Rectangle>
                     </Align>
                 </If>
             </VBox>
         </Label>
-        
+
         <Label position="source">
             <If condition="#self.source.cardinality">
                 <Rectangle fill="#cfg.Styles.Connection.TextFill">
-                    <TextBox text="#self.source.cardinality" font="#cfg.Styles.Connection.NameTextFont" color="#cfg.Styles.Connection.NameTextColor"/>
+                    <TextBox text="#self.source.cardinality" font="#cfg.Styles.Connection.NameTextFont"
+                             color="#cfg.Styles.Connection.NameTextColor"/>
                 </Rectangle>
             </If>
         </Label>
-        
+
         <Label position="destination">
             <If condition="#self.destination.cardinality">
                 <Rectangle fill="#cfg.Styles.Connection.TextFill">
-                    <TextBox text="#self.destination.cardinality" font="#cfg.Styles.Connection.NameTextFont" color="#cfg.Styles.Connection.NameTextColor"/>
+                    <TextBox text="#self.destination.cardinality" font="#cfg.Styles.Connection.NameTextFont"
+                             color="#cfg.Styles.Connection.NameTextColor"/>
                 </Rectangle>
             </If>
         </Label>
-        
+
         <Label position="source+1">
             <If condition="#self.source.role">
                 <Rectangle fill="#cfg.Styles.Connection.TextFill">
                     <TextBox font="#cfg.Styles.Connection.NameTextFont" color="#cfg.Styles.Connection.NameTextColor">
                         <If condition="#self.source.visibility != 'unspecified'">
-                            <Text text="#self.source.visibility" />
+                            <Text text="#self.source.visibility"/>
                         </If>
                         <Text text="#self.source.role"/>
                     </TextBox>
@@ -121,13 +124,12 @@
             </If>
         </Label>
 
-
         <Label position="destination+1">
             <If condition="#self.destination.role">
                 <Rectangle fill="#cfg.Styles.Connection.TextFill">
                     <TextBox font="#cfg.Styles.Connection.NameTextFont" color="#cfg.Styles.Connection.NameTextColor">
                         <If condition="#self.destination.visibility != 'unspecified'">
-                            <Text text="#self.destination.visibility" />
+                            <Text text="#self.destination.visibility"/>
                         </If>
                         <Text text="#self.destination.role"/>
                     </TextBox>
