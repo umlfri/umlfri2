@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Paths xmlns="http://umlfri.kst.fri.uniza.sk/xmlschema/metamodel.xsd">
+    <!-- Arrows -->
+    <Path id="simple_arrow" path="M -0.5,-1 L 0,0 L 0.5,-1" />
+    <Path id="triangle_arrow" path="M -0.5,-1 L 0,0 L 0.5,-1 z" />
+    <Path id="diamond_arrow" path="M -0.5,-1 L 0,0 L 0.5,-1 L 0,-2 z" />
+    <Path id="crosscircle_arrow" path="M -0.5,0 L 0.5,0
+                                       M 0,0.5 L 0,-0.5
+                                       M 1,0.5 C 1,0.776 0.776,1 0.5,1 C 0.224,1 0,0.776 0,0.5 C 0,0.224 0.224,0 0.5,0 C 0.776,0 1,0.224 1,0.5 z" />
+    <!-- Corners -->
+    <Path id="rounded_corner" path="M 0,1 C 0,0.446 0.446,0 1,0" />
+    <Path id="note_corner" path="M 0,1 L 1,1 L 1,0 L 0,1 z
+                                 M 0,1 L 1,0" />
+    <!-- Sides -->
+    <Path id="rounded_side" path="M 0,0 C -0.554,0 -1,-0.223 -1,-0.5 C -1,-0.777 -0.554,-1 0,-1" />
+</Paths>

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ObjectType id="class" xmlns="http://umlfri.org/v2/addon.xsd">
+    <Icon path="icons/class.png"/>
+
+    <Structure>
+        <Attribute id="name" type="str"/>
+        <Attribute id="stereotype" type="str"/>
+        <Attribute id="scope" type="enum">
+            <Value value="-"/>
+            <Value value="*"/>
+            <Value value="+"/>
+        </Attribute>
+        <Attribute id="abstract" type="bool"/>
+        <Attribute id="attributes" type="object[]">
+            <Attribute id="name" type="str"/>
+            <Attribute id="stereotype" type="str"/>
+            <Attribute id="scope" type="enum">
+                <Value value="-"/>
+                <Value value="*"/>
+                <Value value="+"/>
+            </Attribute>
+            <Attribute id="type" type="str"/>
+            <Attribute id="static" type="bool"/>
+            <Attribute id="default" type="str"/>
+            <Attribute id="note" type="text"/>
+        </Attribute>
+        <Attribute id="operations" type="object[]">
+            <Attribute id="name" type="str"/>
+            <Attribute id="rtype" type="str"/>
+            <Attribute id="parameters" type="object[]">
+                <Attribute id="name" type="str"/>
+                <Attribute id="type" type="str"/>
+                <Attribute id="scope" type="enum">
+                    <Value value="in"/>
+                    <Value value="out"/>
+                    <Value value="in out"/>
+                </Attribute>
+                <Attribute id="const" type="bool"/>
+                <Attribute id="default" type="str"/>
+                <Attribute id="note" type="text"/>
+            </Attribute>
+            <Attribute id="stereotype" type="str"/>
+            <Attribute id="scope" type="enum" default="+">
+                <Value value="-"/>
+                <Value value="*"/>
+                <Value value="+"/>
+            </Attribute>
+            <Attribute id="static" type="bool"/>
+            <Attribute id="virtual" type="bool"/>
+            <Attribute id="abstract" type="bool"/>
+            <Attribute id="override" type="bool"/>
+            <Attribute id="note" type="text"/>
+        </Attribute>
+        <Attribute id="note" type="text"/>
+    </Structure>
+
+    <Appearance>
+        <Shadow padding="3" color="#cfg.Styles.Element.ShadowColor">
+            <Rectangle fill="#cfg.Styles.Element.FillColor" border="#cfg.Styles.Element.LineColor">
+                <VBox>
+                    <Padding padding="5">
+                        <VBox>
+                            <If condition="#self.stereotype">
+                                <Align align="center">
+                                    <TextBox font="#cfg.Styles.Element.TextFont" color="#cfg.Styles.Element.TextColor">
+                                        <Text text="&#171;"/>
+                                        <Text text="#self.stereotype"/>
+                                        <Text text="&#187;" font="#cfg.Styles.Element.TextFont"
+                                              color="#cfg.Styles.Element.TextColor"/>
+                                    </TextBox>
+                                </Align>
+                            </If>
+                            <Align align="center">
+                                <TextBox text="#self.name"
+                                         font="#cfg.Styles.Element.NameTextFont.ChangeStyle('italic', self.abstract)"
+                                         color="#cfg.Styles.Element.NameTextColor"/>
+                            </Align>
+                        </VBox>
+                    </Padding>
+                    <Line type="horizontal" color="#cfg.Styles.Element.LineColor"/>
+                    <Padding padding="5">
+                        <Table>
+                            <ForEach src="#self.attributes">
+                                <Row>
+                                    <TextBox font="#cfg.Styles.Element.TextFont" color="#cfg.Styles.Element.TextColor">
+                                        <Text text="#scope"/>
+                                        <Text text=" "/>
+                                    </TextBox>
+                                    <TextBox color="#cfg.Styles.Element.TextColor"
+                                             font="#cfg.Styles.Element.TextFont.ChangeStyle('underline', static)">
+                                        <If condition="#stereotype">
+                                            <Text text="&#171;"/>
+                                            <Text text="#stereotype"/>
+                                            <Text text="&#187;  "/>
+                                        </If>
+                                        <Text text="#name"/>
+                                        <If condition="#type">
+                                            <Text text=": "/>
+                                            <Text text="#type"/>
+                                        </If>
+                                        <If condition="#default">
+                                            <Text text=" = "/>
+                                            <Text text="#default"/>
+                                        </If>
+                                    </TextBox>
+                                </Row>
+                            </ForEach>
+                        </Table>
+                    </Padding>
+                    <If condition="#self.operations">
+                        <VBox>
+                            <Line color="#cfg.Styles.Element.LineColor"/>
+                            <Padding padding="5">
+                                <Table>
+                                    <ForEach src="#self.operations">
+                                        <If condition="#name">
+                                            <Row>
+                                                <TextBox font="#cfg.Styles.Element.TextFont"
+                                                         color="#cfg.Styles.Element.TextColor">
+                                                    <Text text="#scope"/>
+                                                    <Text text=" "/>
+                                                </TextBox>
+
+                                                <TextBox
+                                                        font="#cfg.Styles.Element.TextFont.ChangeStyle('underline', static).ChangeStyle('italic', abstract)"
+                                                        color="#cfg.Styles.Element.TextColor">
+                                                    <If condition="#stereotype">
+                                                        <VBox>
+                                                            <Text text="&#171;"/>
+                                                            <Text text="#stereotype"/>
+                                                            <Text text="&#187;  "/>
+                                                        </VBox>
+                                                    </If>
+
+                                                    <Text text="#name"/>
+
+                                                    <Text text="("/>
+
+                                                    <ForEach src="#parameters">
+                                                        <If condition="#_line > 0">
+                                                            <Text text=", "/>
+                                                        </If>
+                                                        <If condition="#const">
+                                                            <Text text="const "/>
+                                                        </If>
+                                                        <If condition="#scope != 'in'">
+                                                            <Text text="["/>
+                                                            <Text text="#scope"/>
+                                                            <Text text="] "/>
+                                                        </If>
+                                                        <If condition="#name">
+                                                            <Text text="#name"/>
+                                                        </If>
+                                                        <If condition="#type">
+                                                            <Text text=":"/>
+                                                            <If condition="#name">
+                                                                <Text text=" "/>
+                                                            </If>
+                                                            <Text text="#type"/>
+                                                        </If>
+                                                        <If condition="#default">
+                                                            <Text text=" = "/>
+                                                            <Text text="#default"/>
+                                                        </If>
+                                                    </ForEach>
+
+                                                    <Text text=")"/>
+                                                    <If condition="#rtype">
+                                                        <Text text=": "/>
+                                                        <Text text="#rtype"/>
+                                                    </If>
+                                                </TextBox>
+                                            </Row>
+                                        </If>
+                                    </ForEach>
+                                </Table>
+                            </Padding>
+                        </VBox>
+                    </If>
+                </VBox>
+            </Rectangle>
+        </Shadow>
+    </Appearance>
+</ObjectType>

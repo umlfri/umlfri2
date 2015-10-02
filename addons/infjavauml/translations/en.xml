@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Translation lang="en" xmlns="http://umlfri.org/v2/addon.xsd">
+    <Text id="class" text="Class"/>
+    <Text id="classDiagram" text="Class diagram"/>
+    <Text id="classAssociation" text="Association"/>
+    <Text id="**/name" text="Name"/>
+    <Text id="**/note" text="Note"/>
+</Translation>

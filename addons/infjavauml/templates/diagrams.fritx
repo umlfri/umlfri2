@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<umlproject xmlns="http://umlfri.kst.fri.uniza.sk/xmlschema/umlproject.xsd" saveversion="1.0.1">
+  <metamodel>
+    <uri>urn:umlfri.org:metamodel:uml</uri>
+    <version>0.1</version>
+  </metamodel>
+  <objects>
+    <object type="Package" id="0">
+      <dict>
+        <text name="note"></text>
+        <text name="scope">Private</text>
+        <text name="abstract">False</text>
+        <text name="name">Class Diagram</text>
+        <text name="stereotype"></text>
+      </dict>
+    </object>
+    <object type="Package" id="1">
+      <dict>
+        <text name="note"></text>
+        <text name="scope">Private</text>
+        <text name="abstract">False</text>
+        <text name="name">Project</text>
+        <text name="stereotype"></text>
+      </dict>
+    </object>
+    <object type="Package" id="2">
+      <dict>
+        <text name="note"></text>
+        <text name="scope">Private</text>
+        <text name="abstract">False</text>
+        <text name="name">Use Case Diagram</text>
+        <text name="stereotype"></text>
+      </dict>
+    </object>
+    <object type="Package" id="3">
+      <dict>
+        <text name="note"></text>
+        <text name="scope">Private</text>
+        <text name="abstract">False</text>
+        <text name="name">State Diagram</text>
+        <text name="stereotype"></text>
+      </dict>
+    </object>
+    <object type="Package" id="4">
+      <dict>
+        <text name="note"></text>
+        <text name="scope">Private</text>
+        <text name="abstract">False</text>
+        <text name="name">Activity Diagram</text>
+        <text name="stereotype"></text>
+      </dict>
+    </object>
+  </objects>
+  <connections/>
+  <projecttree>
+    <node id="1">
+      <childs>
+        <node id="0">
+          <diagrams>
+            <diagram type="Class diagram" name="Class diagram"/>
+          </diagrams>
+        </node>
+        <node id="2">
+          <diagrams>
+            <diagram type="Use Case diagram" name="Use Case diagram"/>
+          </diagrams>
+        </node>
+        <node id="4">
+          <diagrams>
+            <diagram type="Activity diagram" name="Activity diagram"/>
+          </diagrams>
+        </node>
+        <node id="3">
+          <diagrams>
+            <diagram type="State diagram" name="State diagram"/>
+          </diagrams>
+        </node>
+      </childs>
+      <diagrams/>
+    </node>
+  </projecttree>
+  <counters>
+    <count id="Package" value="0"/>
+    <count id="EndState" value="0"/>
+    <count id="Object" value="0"/>
+    <count id="VerticalSynchronization" value="0"/>
+    <count id="Actor" value="0"/>
+    <count id="Note" value="0"/>
+    <count id="StartState" value="0"/>
+    <count id="State" value="0"/>
+    <count id="UseCase" value="0"/>
+    <count id="HorizontalSynchronization" value="0"/>
+    <count id="Activity" value="0"/>
+    <count id="Class" value="0"/>
+    <count id="State diagram" value="0"/>
+    <count id="Class diagram" value="0"/>
+    <count id="Use Case diagram" value="0"/>
+    <count id="Activity diagram" value="0"/>
+  </counters>
+</umlproject>

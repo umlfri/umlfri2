@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DiagramType id="classDiagram" xmlns="http://umlfri.org/v2/addon.xsd">
+    <Icon path="icons/class_diagram.png"/>
+
+    <Structure>
+        <Attribute id="name" name="Name" type="str"/>
+        <Attribute id="note" name="Note" type="str"/>
+    </Structure>
+
+    <DisplayName>
+        <Text text="#self.name"/>
+    </DisplayName>
+
+    <Objects>
+        <Object id="class"/>
+    </Objects>
+
+    <Connections>
+        <Connection id="classAssociation"/>
+    </Connections>
+</DiagramType>
