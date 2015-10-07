@@ -54,40 +54,43 @@
         <Attribute id="note" type="text"/>
     </Structure>
 
+    <DisplayName>
+        <Text text="#self.name"/>
+    </DisplayName>
+
     <Appearance>
-        <Shadow padding="3" color="#cfg.Styles.Element.ShadowColor">
-            <Rectangle fill="#cfg.Styles.Element.FillColor" border="#cfg.Styles.Element.LineColor">
+        <Shadow padding="3" color="#cfg.element.shadow">
+            <Rectangle fill="#cfg.element.fill" border="#cfg.element.line">
                 <VBox>
                     <Padding padding="5">
                         <VBox>
                             <If condition="#self.stereotype">
                                 <Align align="center">
-                                    <TextBox font="#cfg.Styles.Element.TextFont" color="#cfg.Styles.Element.TextColor">
+                                    <TextBox font="#cfg.element.textfont" color="#cfg.element.text">
                                         <Text text="&#171;"/>
                                         <Text text="#self.stereotype"/>
-                                        <Text text="&#187;" font="#cfg.Styles.Element.TextFont"
-                                              color="#cfg.Styles.Element.TextColor"/>
+                                        <Text text="&#187;"/>
                                     </TextBox>
                                 </Align>
                             </If>
                             <Align align="center">
                                 <TextBox text="#self.name"
-                                         font="#cfg.Styles.Element.NameTextFont.ChangeStyle('italic', self.abstract)"
-                                         color="#cfg.Styles.Element.NameTextColor"/>
+                                         font="#cfg.element.headingfont.change('italic', self.abstract)"
+                                         color="#cfg.element.heading"/>
                             </Align>
                         </VBox>
                     </Padding>
-                    <Line type="horizontal" color="#cfg.Styles.Element.LineColor"/>
+                    <Line type="horizontal" color="#cfg.element.line"/>
                     <Padding padding="5">
                         <Table>
                             <ForEach src="#self.attributes">
                                 <Row>
-                                    <TextBox font="#cfg.Styles.Element.TextFont" color="#cfg.Styles.Element.TextColor">
+                                    <TextBox font="#cfg.element.textfont" color="#cfg.element.text">
                                         <Text text="#scope"/>
                                         <Text text=" "/>
                                     </TextBox>
-                                    <TextBox color="#cfg.Styles.Element.TextColor"
-                                             font="#cfg.Styles.Element.TextFont.ChangeStyle('underline', static)">
+                                    <TextBox color="#cfg.element.text"
+                                             font="#cfg.element.text.change('underline', static)">
                                         <If condition="#stereotype">
                                             <Text text="&#171;"/>
                                             <Text text="#stereotype"/>
@@ -109,21 +112,21 @@
                     </Padding>
                     <If condition="#self.operations">
                         <VBox>
-                            <Line color="#cfg.Styles.Element.LineColor"/>
+                            <Line color="#cfg.element.line"/>
                             <Padding padding="5">
                                 <Table>
                                     <ForEach src="#self.operations">
                                         <If condition="#name">
                                             <Row>
-                                                <TextBox font="#cfg.Styles.Element.TextFont"
-                                                         color="#cfg.Styles.Element.TextColor">
+                                                <TextBox font="#cfg.element.textfont"
+                                                         color="#cfg.element.text">
                                                     <Text text="#scope"/>
                                                     <Text text=" "/>
                                                 </TextBox>
 
                                                 <TextBox
-                                                        font="#cfg.Styles.Element.TextFont.ChangeStyle('underline', static).ChangeStyle('italic', abstract)"
-                                                        color="#cfg.Styles.Element.TextColor">
+                                                        font="#cfg.element.textfont.change('underline', static).change('italic', abstract)"
+                                                        color="#cfg.element.text">
                                                     <If condition="#stereotype">
                                                         <VBox>
                                                             <Text text="&#171;"/>

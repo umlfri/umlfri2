@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://umlfri.org/v2/project.xsd" saveversion="2.0">
+    <Info>
+        <Name name="Empty UML diagram"/>
+        <Metamodel uri="urn:umlfri.org:metamodel:infjavauml"/>
+    </Info>
+</Project>

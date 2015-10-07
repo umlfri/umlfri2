@@ -18,4 +18,8 @@
     <Connections>
         <Connection id="classAssociation"/>
     </Connections>
+
+    <Appearance>
+        <Background color="#cfg.background"/>
+    </Appearance>
 </DiagramType>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Paths xmlns="http://umlfri.kst.fri.uniza.sk/xmlschema/metamodel.xsd">
+<Paths xmlns="http://umlfri.org/v2/addon.xsd">
     <!-- Arrows -->
     <Path id="simple_arrow" path="M -0.5,-1 L 0,0 L 0.5,-1" />
     <Path id="triangle_arrow" path="M -0.5,-1 L 0,0 L 0.5,-1 z" />
