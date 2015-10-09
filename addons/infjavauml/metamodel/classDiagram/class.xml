@@ -5,21 +5,16 @@
     <Structure>
         <Attribute id="name" type="str"/>
         <Attribute id="stereotype" type="str"/>
-        <Attribute id="scope" type="enum">
-            <Value value="-"/>
-            <Value value="*"/>
-            <Value value="+"/>
-        </Attribute>
         <Attribute id="abstract" type="bool"/>
         <Attribute id="attributes" type="object[]">
             <Attribute id="name" type="str"/>
+            <Attribute id="type" type="str"/>
             <Attribute id="stereotype" type="str"/>
             <Attribute id="scope" type="enum">
                 <Value value="-"/>
                 <Value value="*"/>
                 <Value value="+"/>
             </Attribute>
-            <Attribute id="type" type="str"/>
             <Attribute id="static" type="bool"/>
             <Attribute id="default" type="str"/>
             <Attribute id="note" type="text"/>
@@ -30,12 +25,6 @@
             <Attribute id="parameters" type="object[]">
                 <Attribute id="name" type="str"/>
                 <Attribute id="type" type="str"/>
-                <Attribute id="scope" type="enum">
-                    <Value value="in"/>
-                    <Value value="out"/>
-                    <Value value="in out"/>
-                </Attribute>
-                <Attribute id="const" type="bool"/>
                 <Attribute id="default" type="str"/>
                 <Attribute id="note" type="text"/>
             </Attribute>
@@ -46,9 +35,7 @@
                 <Value value="+"/>
             </Attribute>
             <Attribute id="static" type="bool"/>
-            <Attribute id="virtual" type="bool"/>
             <Attribute id="abstract" type="bool"/>
-            <Attribute id="override" type="bool"/>
             <Attribute id="note" type="text"/>
         </Attribute>
         <Attribute id="note" type="text"/>
@@ -65,7 +52,7 @@
                     <Padding padding="5">
                         <VBox>
                             <If condition="#self.stereotype">
-                                <Align align="center">
+                                <Align horizontal="center">
                                     <TextBox font="#cfg.element.textfont" color="#cfg.element.text">
                                         <Text text="&#171;"/>
                                         <Text text="#self.stereotype"/>
@@ -73,9 +60,9 @@
                                     </TextBox>
                                 </Align>
                             </If>
-                            <Align align="center">
+                            <Align horizontal="center">
                                 <TextBox text="#self.name"
-                                         font="#cfg.element.headingfont.change('italic', self.abstract)"
+                                         font="#cfg.element.headingfont.change(FontStyle::italic, self.abstract)"
                                          color="#cfg.element.heading"/>
                             </Align>
                         </VBox>
@@ -90,7 +77,7 @@
                                         <Text text=" "/>
                                     </TextBox>
                                     <TextBox color="#cfg.element.text"
-                                             font="#cfg.element.text.change('underline', static)">
+                                             font="#cfg.element.text.change(FontStyle::underline, static)">
                                         <If condition="#stereotype">
                                             <Text text="&#171;"/>
                                             <Text text="#stereotype"/>
@@ -139,17 +126,9 @@
 
                                                     <Text text="("/>
 
-                                                    <ForEach src="#parameters">
-                                                        <If condition="#_line > 0">
+                                                    <ForEach src="#parameters" index="no">
+                                                        <If condition="#no">
                                                             <Text text=", "/>
-                                                        </If>
-                                                        <If condition="#const">
-                                                            <Text text="const "/>
-                                                        </If>
-                                                        <If condition="#scope != 'in'">
-                                                            <Text text="["/>
-                                                            <Text text="#scope"/>
-                                                            <Text text="] "/>
                                                         </If>
                                                         <If condition="#name">
                                                             <Text text="#name"/>

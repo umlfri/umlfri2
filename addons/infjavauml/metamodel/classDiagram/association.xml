@@ -71,7 +71,7 @@
         <Label position="center">
             <VBox>
                 <If condition="#self.stereotype">
-                    <Align align="center">
+                    <Align horizontal="center">
                         <Rectangle fill="#cfg.background">
                             <TextBox font="#cfg.connection.textfont" color="#cfg.connection.text">
                                 <Text text="&#171;"/>
@@ -83,7 +83,7 @@
                 </If>
 
                 <If condition="#self.name">
-                    <Align align="center">
+                    <Align horizontal="center">
                         <Rectangle fill="#cfg.background">
                             <TextBox text="#self.name" font="#cfg.connection.headingfont"
                                      color="#cfg.connection.heading"/>

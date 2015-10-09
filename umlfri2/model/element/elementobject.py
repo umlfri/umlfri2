@@ -1,0 +1,2 @@
+class ElementObject:
+    pass
