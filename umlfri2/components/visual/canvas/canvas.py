@@ -8,20 +8,18 @@ class LineStyle:
     solid = 1
     dot = 2
     dashdot = 3
-    
+
 
 class Canvas(metaclass=abc.ABCMeta):
     @abc.abstractmethod
-    def draw_arc(self, pos, size, angles=(0, 360), fg=None, bg=None, line_width=None, line_style=None):
+    def draw_ellipse(self, pos, size, fg=None, bg=None, line_width=None, line_style=None):
         """
-        Draws ellipse arc to canvas.
+        Draws ellipse to canvas.
         
-        :param pos: Position of ellipse center
+        :param pos: Position of the ellipse top left corner
         :type pos: (int, int)
-        :param size: Sizes of ellipse axes
+        :param size: Size of the ellipse
         :type size: (int, int)
-        :param angles: start and span angle of the arc
-        :type angles: (int, int)
         :param fg: Foreground color
         :type fg: Color
         :param bg: Background color
@@ -35,14 +33,6 @@ class Canvas(metaclass=abc.ABCMeta):
     
     @abc.abstractmethod
     def draw_line(self, start, end, fg, line_width=None, line_style=None):
-        pass
-    
-    @abc.abstractmethod
-    def draw_polyline(self, points, fg, line_width=None, line_style=None):
-        pass
-    
-    @abc.abstractmethod
-    def draw_polygon(self, points, fg=None, bg=None, line_width=None, line_style=None):
         pass
     
     @abc.abstractmethod
@@ -62,7 +52,7 @@ class Canvas(metaclass=abc.ABCMeta):
         pass
     
     @abc.abstractmethod
-    def clear(self):
+    def clear(self, color=None):
         pass
     
     @abc.abstractmethod
