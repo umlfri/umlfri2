@@ -1,9 +1,42 @@
 from ..expressions import ConstantExpression
 from .hbox import HBox
 from umlfri2.types.color import Color
-from .visualcomponent import VisualComponent
+from .visualcomponent import VisualComponent, VisualObject
 from .vbox import VBox
 
+
+class LineObject(VisualObject):
+    def __init__(self, type, color):
+        self.__type = type
+        self.__color = color
+        self.__point1 = None
+        self.__point2 = None
+    
+    def assign_bounds(self, bounds):
+        self.__point1 = bounds[0], bounds[1]
+        
+        if self.__type == 'horizontal':
+            self.__point2 = bounds[0] + bounds[2], bounds[1]
+        else:
+            self.__point2 = bounds[0], bounds[1] + bounds[3]
+    
+    def get_minimal_size(self):
+        if self.__type == 'horizontal':
+            return 0, 1
+        else:
+            return 1, 0
+    
+    def draw(self, canvas, shadow, shadow_shift):
+        if shadow:
+            x1, y1 = self.__point1
+            x2, y2 = self.__point2
+            canvas.draw_line(
+                (x1 + shadow_shift, y1 + shadow_shift),
+                (x2 + shadow_shift, y2 + shadow_shift),
+                shadow
+            )
+        else:
+            canvas.draw_line(self.__point1, self.__point2, self.__color)
 
 class Line(VisualComponent):
     def __init__(self, type: id='auto', color: Color=None):
@@ -26,18 +59,5 @@ class Line(VisualComponent):
         type = self.__get_type()
         return type == 'horizontal', type == 'vertical'
     
-    def get_size(self, context, ruler):
-        if self.__get_type() == 'horizontal':
-            return 0, 1
-        else:
-            return 1, 0
-    
-    def draw(self, context, canvas, bounds, shadow=None):
-        (x, y, w, h), (w_inner, h_inner) = self._compute_bounds(context, canvas.get_ruler(), bounds)
-        
-        color = shadow or self.__color(context)
-        
-        if self.__get_type() == 'horizontal':
-            canvas.draw_line((x, y), (x + w, y), color)
-        else:
-            canvas.draw_line((x, y), (x, y + h), color)
+    def _create_object(self, context, ruler):
+        return LineObject(self.__get_type(), self.__color(context))

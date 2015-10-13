@@ -1,38 +1,30 @@
-from .visualcomponent import VisualComponent
+from .visualcomponent import VisualComponent, VisualObject
 
 
-class VBox(VisualComponent):
-    def get_size(self, context, ruler):
-        w = 0
-        h = 0
+class VBoxObject(VisualObject):
+    def __init__(self, children):
+        self.__children = children
         
-        for local, child in self._get_children(context):
-            w_child, h_child = child.get_size(local, ruler)
-            if w_child > w:
-                w = w_child
-            h += h_child
-        
-        return w, h
+        self.__children_sizes = [child.get_minimal_size() for child in children]
     
-    def draw(self, context, canvas, bounds, shadow = None):
+    def assign_bounds(self, bounds):
         x, y, w, h = bounds
         
-        children = list(self._get_children(context))
+        if self.__children:
+            for size, child in zip(self.__children_sizes, self.__children):
+                child.assign_bounds((x, y, w, size[1]))
+                y += size[1]
+    
+    def get_minimal_size(self):
+        w_all, h_all = zip(*self.__children_sizes)
+        return max(w_all), sum(h_all)
+    
+    def draw(self, canvas, shadow, shadow_shift):
+        for child in self.__children:
+            child.draw(canvas, shadow, shadow_shift)
+
+class VBox(VisualComponent):
+    def _create_object(self, context, ruler):
+        children = [child._create_object(local, ruler) for local, child in self._get_children(context)]
         
-        h_inner = 0
-        w_inner = 0
-        h_all = []
-        
-        for local, child in children:
-            w_child, h_child = child.get_size(local, canvas.get_ruler())
-            if w_child > w_inner:
-                w_inner = w_child
-            h_inner += h_child
-            h_all.append(h_child)
-        
-        if w is None:
-            w = w_inner
-        
-        for h_child, (local, child) in zip(h_all, children):
-            child.draw(local, canvas, (x, y, w, h_child), shadow)
-            y += h_child
+        return VBoxObject(children)

@@ -1,5 +1,27 @@
 from ..expressions import ConstantExpression
-from .visualcomponent import VisualComponent
+from .visualcomponent import VisualComponent, VisualObject
+
+
+class PaddingObject(VisualObject):
+    def __init__(self, child, left, right, top, bottom):
+        self.__child = child
+        self.__left = left
+        self.__right = right
+        self.__top = top
+        self.__bottom = bottom
+        self.__child_size = self.__child.get_minimal_size()
+    
+    def assign_bounds(self, bounds):
+        x, y, w, h = bounds
+        self.__child.assign_bounds((x + self.__left, y + self.__top,
+            w - self.__left - self.__right, h - self.__top - self.__bottom))
+    
+    def get_minimal_size(self):
+        w, h = self.__child_size
+        return w + self.__left + self.__right, h + self.__top + self.__bottom
+    
+    def draw(self, canvas, shadow, shadow_shift):
+        self.__child.draw(canvas, shadow, shadow_shift)
 
 
 class Padding(VisualComponent):
@@ -7,34 +29,22 @@ class Padding(VisualComponent):
         super().__init__(children)
         
         if padding is not None:
-            self.left = padding
-            self.right = padding
-            self.top = padding
-            self.bottom = padding
+            self.__left = padding
+            self.__right = padding
+            self.__top = padding
+            self.__bottom = padding
         else:
-            self.left = left or ConstantExpression(0)
-            self.right = right or ConstantExpression(0)
-            self.top = top or ConstantExpression(0)
-            self.bottom = bottom or ConstantExpression(0)
-
-    def get_size(self, context, ruler):
-        for local, child in self._get_children(context):
-            w, h = child.get_size(local, ruler)
-            
-            return (
-                w + self.left(context) + self.right(context),
-                h + self.top(context) + self.bottom(context)
-            )
+            self.__left = left or ConstantExpression(0)
+            self.__right = right or ConstantExpression(0)
+            self.__top = top or ConstantExpression(0)
+            self.__bottom = bottom or ConstantExpression(0)
     
-    def draw(self, context, canvas, bounds, shadow=None):
-        (x, y, w, h), (w_inner, h_inner) = self._compute_bounds(context, canvas.get_ruler(), bounds)
-        
-        left = self.left(context)
-        right = self.right(context)
-        top = self.top(context)
-        bottom = self.bottom(context)
-        
+    def _create_object(self, context, ruler):
         for local, child in self._get_children(context):
-            child.draw(local, canvas, (x + left, y + top, w - left - right, h - top - bottom), shadow)
-            
-            return
+            return PaddingObject(
+                child._create_object(local, ruler),
+                self.__left(local),
+                self.__right(local),
+                self.__top(local),
+                self.__bottom(local)
+            )

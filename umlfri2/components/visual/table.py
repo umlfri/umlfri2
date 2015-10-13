@@ -1,5 +1,40 @@
 from ..base.helpercomponent import HelperComponent
-from .visualcomponent import VisualComponent
+from .visualcomponent import VisualComponent, VisualObject
+
+
+class TableObject(VisualObject):
+    def __init__(self, table):
+        self.__rows = [0] * len(table)
+        self.__columns = [0] * max(len(row) for row in table)
+        
+        for idrow, row in enumerate(table):
+            for idcolumn, child in enumerate(row):
+                w, h = child.get_minimal_size()
+                if w > self.__columns[idcolumn]:
+                    self.__columns[idcolumn] = w
+                if h > self.__rows[idrow]:
+                    self.__rows[idrow] = h
+        
+        self.__table = table
+    
+    def assign_bounds(self, bounds):
+        x, y, w, h = bounds
+        
+        y_cur = y
+        for height, row in zip(self.__rows, self.__table):
+            x_cur = x
+            for width, child in zip(self.__columns, row):
+                child.assign_bounds((x_cur, y_cur, width, height))
+                x_cur += width
+            y_cur += height
+    
+    def get_minimal_size(self):
+        return sum(self.__columns), sum(self.__rows)
+    
+    def draw(self, canvas, shadow, shadow_shift):
+        for row in self.__table:
+            for child in row:
+                child.draw(canvas, shadow, shadow_shift)
 
 
 class TableRow(HelperComponent):
@@ -11,7 +46,7 @@ class TableColumn(HelperComponent):
 
 
 class Table(VisualComponent):
-    def __get_table(self, context):
+    def _create_object(self, context, ruler):
         iscolumn = False # is this table with columns?
         ret = []
         
@@ -19,41 +54,14 @@ class Table(VisualComponent):
             if isinstance(child, TableColumn):
                 iscolumn = True
             
-            ret.append(list(child.get_children(local)))
+            row = []
+            
+            for locallocal, localchild in child.get_children(local):
+                row.append(localchild._create_object(locallocal, ruler))
+            
+            ret.append(row)
         
         if iscolumn:
-            return zip(*ret) # transpose to get table with rows instead
+            return TableObject(list(zip(*ret))) # transpose to get table with rows instead
         else:
-            return ret
-    
-    def __compute_sizes(self, table, ruler):
-        rows = [0] * len(table)
-        columns = [0] * max(len(row) for row in table)
-        
-        for idrow, row in enumerate(table):
-            for idcolumn, (local, child) in enumerate(row):
-                w, h = child.get_size(local, ruler)
-                if w > columns[idcolumn]:
-                    columns[idcolumn] = w
-                if h > rows[idrow]:
-                    rows[idrow] = h
-        
-        return columns, rows
-    
-    def get_size(self, context, ruler):
-        columns, rows = self.__compute_sizes(self.__get_table(context), ruler)
-        return sum(columns), sum(rows)
-    
-    def draw(self, context, canvas, bounds, shadow=None):
-        x, y, w, h = bounds
-        
-        table = self.__get_table(context)
-        columns, rows = self.__compute_sizes(table, canvas.get_ruler())
-        
-        y_cur = y
-        for height, row in zip(rows, table):
-            x_cur = x
-            for width, (local, child) in zip(columns, row):
-                child.draw(local, canvas, (x_cur, y_cur, width, height), shadow)
-                x_cur += width
-            y_cur += height
+            return TableObject(ret)

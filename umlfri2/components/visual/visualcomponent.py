@@ -1,6 +1,17 @@
 from ..base.component import Component
 
 
+class VisualObject:
+    def assign_bounds(self, bounds):
+        raise NotImplementedError
+    
+    def get_minimal_size(self):
+        raise NotImplementedError
+    
+    def draw(self, canvas, shadow, shadow_shift):
+        raise NotImplementedError
+
+
 class VisualComponent(Component):
     def is_control(self):
         return False
@@ -19,21 +30,23 @@ class VisualComponent(Component):
         
         return ret_x, ret_y
     
-    def get_size(self, context, ruler):
+    def get_minimal_size(self, context, ruler):
+        obj = self._create_object(context, ruler)
+        return obj.get_minimal_size()
+    
+    def _create_object(self, context, ruler):
         raise NotImplementedError
     
-    def _compute_bounds(self, context, ruler, original_bounds):
-        x, y, w, h = original_bounds
+    def draw(self, context, canvas, bounds):
+        obj = self._create_object(context, canvas.get_ruler())
         
-        w_inner, h_inner = self.get_size(context, ruler)
+        x, y, w, h = bounds
         
+        size = obj.get_minimal_size()
         if w is None:
-            w = w_inner
-        
+            w = size[0]
         if h is None:
-            h = h_inner
+            h = size[1]
         
-        return (x, y, w, h), (w_inner, h_inner)
-    
-    def draw(self, context, canvas, bounds, shadow=None):
-        raise NotImplemented
+        obj.assign_bounds((x, y, w, h))
+        obj.draw(canvas, None, None)

@@ -1,6 +1,26 @@
 from umlfri2.components.expressions import ConstantExpression
 from umlfri2.types.color import Color
-from .visualcomponent import VisualComponent
+from .visualcomponent import VisualComponent, VisualObject
+
+
+class ShadowObject(VisualObject):
+    def __init__(self, child, color, padding):
+        self.__child = child
+        self.__color = color
+        self.__padding = padding
+        self.__child_size = child.get_minimal_size()
+    
+    def assign_bounds(self, bounds):
+        x, y, w, h = bounds
+        self.__child.assign_bounds((x, y, w - self.__padding, h - self.__padding))
+    
+    def get_minimal_size(self):
+        w, h = self.__child_size
+        return w + self.__padding, h + self.__padding
+    
+    def draw(self, canvas, shadow, shadow_shift):
+        self.__child.draw(canvas, self.__color, self.__padding)
+        self.__child.draw(canvas, None, None)
 
 
 class Shadow(VisualComponent):
@@ -9,21 +29,10 @@ class Shadow(VisualComponent):
         self.__color = color or ConstantExpression(Color.get_color("lightgray"))
         self.__padding = padding or ConstantExpression(5)
     
-    def get_size(self, context, ruler):
+    def _create_object(self, context, ruler):
         for local, child in self._get_children(context):
-            w, h = child.get_size(local, ruler)
-            padding = self.__padding(context)
-            return w + padding, h + padding
-    
-    def draw(self, context, canvas, bounds, shadow=None):
-        (x, y, w, h), (w_inner, h_inner) = self._compute_bounds(context, canvas.get_ruler(), bounds)
-        
-        color = shadow or self.__color(context)
-        padding = self.__padding(context)
-        
-        for local, child in self._get_children(context):
-            child.draw(local, canvas, (x + padding, y + padding, w, h), color)
-            
-            child.draw(local, canvas, (x, y, w, h), None)
-            
-            return
+            return ShadowObject(
+                child._create_object(local, ruler),
+                self.__color(local),
+                self.__padding(local)
+            )

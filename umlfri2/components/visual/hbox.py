@@ -1,38 +1,30 @@
-from .visualcomponent import VisualComponent
+from .visualcomponent import VisualComponent, VisualObject
 
 
-class HBox(VisualComponent):
-    def get_size(self, context, ruler):
-        w = 0
-        h = 0
+class HBoxObject(VisualObject):
+    def __init__(self, children):
+        self.__children = children
         
-        for local, child in self._get_children(context):
-            w_child, h_child = child.get_size(local, ruler)
-            w += w_child
-            if h_child > h:
-                h = h_child
-        
-        return w, h
+        self.__children_sizes = [child.get_minimal_size() for child in children]
     
-    def draw(self, context, canvas, bounds, shadow=None):
+    def assign_bounds(self, bounds):
         x, y, w, h = bounds
         
-        children = list(self._get_children(context))
+        if self.__children:
+            for size, child in zip(self.__children_sizes, self.__children):
+                child.assign_bounds((x, y, size[0], h))
+                x += size[0]
+    
+    def get_minimal_size(self):
+        w_all, h_all = zip(self.__children_sizes)
+        return sum(w_all), max(h_all)
+    
+    def draw(self, canvas, shadow, shadow_shift):
+        for child in self.__children:
+            child.draw(canvas, shadow, shadow_shift)
+
+class HBox(VisualComponent):
+    def _create_object(self, context, ruler):
+        children = [child._create_object(local, ruler) for local, child in self._get_children(context)]
         
-        h_inner = 0
-        w_inner = 0
-        w_all = []
-        
-        for local, child in children:
-            w_child, h_child = child.get_size(local, canvas.get_ruler())
-            w_inner += w_child
-            if h_child > h_inner:
-                h_inner = h_child
-            w_all.append(w_child)
-        
-        if h is None:
-            h = h_inner
-        
-        for w_child, (local, child) in zip(w_all, children):
-            child.draw(local, canvas, (x, y, w_child, h), shadow)
-            x += w_child
+        return HBoxObject(children)

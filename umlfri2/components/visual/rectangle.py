@@ -1,5 +1,36 @@
 from umlfri2.types.color import Color
-from .visualcomponent import VisualComponent
+from .visualcomponent import VisualComponent, VisualObject
+
+
+class RectangleObject(VisualObject):
+    def __init__(self, child, fill, border):
+        self.__child = child
+        self.__fill = fill
+        self.__border = border
+        
+        self.__child_size = child.get_minimal_size()
+    
+    def assign_bounds(self, bounds):
+        self.__position = bounds[0], bounds[1]
+        self.__size = bounds[2], bounds[3]
+        
+        self.__child.assign_bounds(bounds)
+    
+    def get_minimal_size(self):
+        return self.__child_size
+    
+    def draw(self, canvas, shadow, shadow_shift):
+        if shadow:
+            x, y = self.__position
+            canvas.draw_rectangle(
+                (x + shadow_shift, y + shadow_shift),
+                self.__size,
+                None,
+                shadow
+            )
+        else:
+            canvas.draw_rectangle(self.__position, self.__size, self.__border, self.__fill)
+            self.__child.draw(canvas, None, None)
 
 
 class Rectangle(VisualComponent):
@@ -8,24 +39,10 @@ class Rectangle(VisualComponent):
         self.__fill = fill
         self.__border = border
     
-    def get_size(self, context, ruler):
+    def _create_object(self, context, ruler):
         for local, child in self._get_children(context):
-            return child.get_size(local, ruler)
-    
-    def draw(self, context, canvas, bounds, shadow=None):
-        new_bounds, inner_size = self._compute_bounds(context, canvas.get_ruler(), bounds)
-        
-        if shadow:
-            fill = shadow
-            border = None
-        else:
-            fill = self.__fill(context)
-            border = self.__border(context)
-        
-        canvas.draw_rectangle(new_bounds[:2], new_bounds[2:], border, fill)
-        
-        if not shadow:
-            for local, child in self._get_children(context):
-                child.draw(local, canvas, new_bounds, None)
-                
-                return
+            return RectangleObject(
+                child._create_object(local, ruler),
+                self.__fill(local),
+                self.__border(local)
+            )
