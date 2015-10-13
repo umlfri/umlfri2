@@ -8,8 +8,6 @@ from umlfri2.components.visual import *
 from umlfri2.qtgui.canvas.canvaswidget import CanvasWidget
 from umlfri2.types.color import Color
 
-__author__ = 'janik'
-
 app = QApplication(sys.argv)
 
 widget = CanvasWidget()
