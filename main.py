@@ -59,11 +59,18 @@ widget.show_object(visual, {
     "name": "Hello world",
     "items": [
         {"name": "a", "visibility": "+"},
+    ]
+}, (0, 0), (200, 200))
+
+widget.show_object(visual, {
+    "name": "Hello world",
+    "items": [
+        {"name": "a", "visibility": "+"},
         {"name": "b", "visibility": "-"},
         {"name": "c", "visibility": "#"},
         {"name": "d", "visibility": ""},
     ]
-})
+}, (100, 100))
 
 widget.show()
 

@@ -10,14 +10,14 @@ class CanvasWidget(QWidget):
         self.__objects = []
     
     # TODO: object should contain type witch should contain component
-    def show_object(self, component, obj):
-        self.__objects.append((component, obj))
+    def show_object(self, component, obj, position=(0, 0), size=(None, None)):
+        self.__objects.append((component, obj, position + size))
     
     def paintEvent(self, event):
         painter = QPainter()
         painter.begin(self)
         canvas = QTPainterCanvas(painter)
-        for component, obj in self.__objects:
+        for component, obj, bounds in self.__objects:
             ctx = Context(obj)
-            component.draw(ctx, canvas, (0, 0, None, None))
+            component.draw(ctx, canvas, bounds)
         painter.end()
