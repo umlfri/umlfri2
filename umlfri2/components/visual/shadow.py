@@ -7,7 +7,13 @@ class Shadow(VisualComponent):
     def __init__(self, children, color: Color=None, padding: int=None):
         super().__init__(children)
         self.__color = color or ConstantExpression(Color.get_color("lightgray"))
-        self.__padding = padding or ConstantExpression(3)
+        self.__padding = padding or ConstantExpression(5)
+    
+    def get_size(self, context, ruler):
+        for local, child in self._get_children(context):
+            w, h = child.get_size(local, ruler)
+            padding = self.__padding(context)
+            return w + padding, h + padding
     
     def draw(self, context, canvas, bounds, shadow=None):
         (x, y, w, h), (w_inner, h_inner) = self._compute_bounds(context, canvas.get_ruler(), bounds)

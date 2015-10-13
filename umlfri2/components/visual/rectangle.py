@@ -24,7 +24,8 @@ class Rectangle(VisualComponent):
         
         canvas.draw_rectangle(new_bounds[:2], new_bounds[2:], border, fill)
         
-        for local, child in self._get_children(context):
-            child.draw(local, canvas, new_bounds, None)
-            
-            return
+        if not shadow:
+            for local, child in self._get_children(context):
+                child.draw(local, canvas, new_bounds, None)
+                
+                return

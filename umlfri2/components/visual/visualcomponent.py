@@ -2,6 +2,9 @@ from ..base.component import Component
 
 
 class VisualComponent(Component):
+    def is_control(self):
+        return False
+    
     def is_resizable(self, context):
         ret_x = False
         ret_y = False
@@ -17,7 +20,7 @@ class VisualComponent(Component):
         return ret_x, ret_y
     
     def get_size(self, context, ruler):
-        raise NotImplemented
+        raise NotImplementedError
     
     def _compute_bounds(self, context, ruler, original_bounds):
         x, y, w, h = original_bounds
@@ -30,7 +33,7 @@ class VisualComponent(Component):
         if h is None:
             h = h_inner
         
-        return (w_inner, h_inner), (x, y, w, h)
+        return (x, y, w, h), (w_inner, h_inner)
     
     def draw(self, context, canvas, bounds, shadow=None):
         raise NotImplemented

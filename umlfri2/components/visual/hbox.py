@@ -28,7 +28,7 @@ class HBox(VisualComponent):
             w_inner += w_child
             if h_child > h_inner:
                 h_inner = h_child
-            w_all.append(w_inner)
+            w_all.append(w_child)
         
         if h is None:
             h = h_inner

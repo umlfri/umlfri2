@@ -1,15 +1,16 @@
-from umlfri2.components.qtgui.canvas.qtruler import QTRuler
-from umlfri2.components.visual.canvas import Canvas, LineStyle
-from PySide.QtGui import QPainter, QPen, QBrush, QColor, QFont
+from PySide.QtGui import QPainter, QPen, QBrush, QColor, QFont, QFontMetrics
 from PySide.QtCore import Qt, QPoint
+
+from umlfri2.qtgui.canvas.qtruler import QTRuler
+from umlfri2.components.visual.canvas import Canvas, LineStyle
 from umlfri2.types.font import FontStyle
 
 
 class QTPainterCanvas(Canvas):
     __line_styles = {
-        LineStyle.solid: Qt.PenStyle.solid,
-        LineStyle.dot: Qt.PenStyle.dot,
-        LineStyle.dashdot: Qt.PenStyle.dashdot
+        LineStyle.solid: Qt.PenStyle.SolidLine,
+        LineStyle.dot: Qt.PenStyle.DotLine,
+        LineStyle.dashdot: Qt.PenStyle.DashDotLine
     }
     
     def __init__(self, painter):
@@ -23,7 +24,7 @@ class QTPainterCanvas(Canvas):
         self.__ruler = QTRuler()
 
     def __convert_color(self, color):
-        return QColor.fromRgba(color.rgba)
+        return QColor.fromRgba(color.argb)
 
     def __set_pen(self, color=None, width=None, style=None):
         if color:
@@ -31,7 +32,7 @@ class QTPainterCanvas(Canvas):
             if style:
                 qstyle = self.__line_styles[style]
             else:
-                qstyle = Qt.PenStyle.solid
+                qstyle = Qt.PenStyle.SolidLine
             self.__painter.setPen(QPen(self.__create_brush(color), width or 1, qstyle))
         else:
             self.__painter.setPen(Qt.PenStyle.NoPen)
@@ -69,11 +70,13 @@ class QTPainterCanvas(Canvas):
         qfont.setItalic(FontStyle.italic in font.style)
         qfont.setStrikeOut(FontStyle.strike in font.style)
         qfont.setUnderline(FontStyle.underline in font.style)
+        metrics = QFontMetrics(qfont)
         
         self.__painter.setFont(qfont)
         self.__set_pen(fg)
-        self.__painter.drawText(QPoint(pos[0], pos[1]), text)
-        
+        x = pos[0]
+        y = pos[1] + metrics.ascent()
+        self.__painter.drawText(QPoint(x, y), text)
     
     def draw_icon(self, pos, filename):
         pass

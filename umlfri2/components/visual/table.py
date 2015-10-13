@@ -54,6 +54,6 @@ class Table(VisualComponent):
         for height, row in zip(rows, table):
             x_cur = x
             for width, (local, child) in zip(columns, row):
-                child.draw(context, canvas, (x_cur, y_cur, width, height), shadow)
+                child.draw(local, canvas, (x_cur, y_cur, width, height), shadow)
                 x_cur += width
             y_cur += height

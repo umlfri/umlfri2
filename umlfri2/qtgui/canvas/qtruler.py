@@ -1,5 +1,6 @@
 from PySide.QtGui import QFont, QFontMetrics
 from umlfri2.components.visual.canvas import Ruler
+from umlfri2.types.font import FontStyle
 
 
 class QTRuler(Ruler):

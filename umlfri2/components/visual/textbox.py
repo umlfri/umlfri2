@@ -20,12 +20,14 @@ class TextBox(VisualComponent):
     
     def get_size(self, context, ruler):
         text = self.__text.get_text(context)
-        return ruler.measure_text(self.__font(context), text)
+        font = self.__font(context)
+        return ruler.measure_text(font, text)
     
     def draw(self, context, canvas, bounds, shadow=None):
         x, y, w, h = bounds
         
         color = shadow or self.__color(context)
         text = self.__text.get_text(context)
+        font = self.__font(context)
         
-        canvas.draw_text((x, y), text, self.__font, color)
+        canvas.draw_text((x, y), text, font, color)

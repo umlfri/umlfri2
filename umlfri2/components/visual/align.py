@@ -32,6 +32,6 @@ class Align(VisualComponent):
                 y += h - h_inner
                 h = h_inner
             
-            child.paint(local, canvas, (x, y, w, h), shadow)
+            child.draw(local, canvas, (x, y, w, h), shadow)
             
             return
