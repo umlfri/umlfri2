@@ -2,6 +2,14 @@ from . import definition as d
 
 from ..tree import *
 
+def target(data):
+    if len(data) > 1:
+        return data[1]
+    else:
+        return data[0]
+
+d.TARGET.addParseAction(target)
+
 d.VARIABLE.addParseAction(lambda data: UflVariable(data[0]))
 
 def method_or_attribute_or_enum(data):
