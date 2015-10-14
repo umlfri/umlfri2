@@ -19,14 +19,14 @@ class TextBoxObject(VisualObject):
     def get_minimal_size(self):
         return self.__size
     
-    def draw(self, canvas, shadow, shadow_shift):
+    def draw(self, canvas, shadow):
         if shadow:
             x, y = self.__position
             canvas.draw_text(
-                (x + shadow_shift, y + shadow_shift),
+                (x + shadow.shift, y + shadow.shift),
                 self.__text,
                 self.__font,
-                shadow
+                shadow.color
             )
         else:
             canvas.draw_text(self.__position, self.__text, self.__font, self.__color)

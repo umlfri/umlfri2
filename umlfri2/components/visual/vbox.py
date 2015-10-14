@@ -19,9 +19,9 @@ class VBoxObject(VisualObject):
         w_all, h_all = zip(*self.__children_sizes)
         return max(w_all), sum(h_all)
     
-    def draw(self, canvas, shadow, shadow_shift):
+    def draw(self, canvas, shadow):
         for child in self.__children:
-            child.draw(canvas, shadow, shadow_shift)
+            child.draw(canvas, shadow)
 
 class VBox(VisualComponent):
     def _create_object(self, context, ruler):

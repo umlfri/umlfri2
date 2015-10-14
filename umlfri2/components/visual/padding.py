@@ -20,8 +20,8 @@ class PaddingObject(VisualObject):
         w, h = self.__child_size
         return w + self.__left + self.__right, h + self.__top + self.__bottom
     
-    def draw(self, canvas, shadow, shadow_shift):
-        self.__child.draw(canvas, shadow, shadow_shift)
+    def draw(self, canvas, shadow):
+        self.__child.draw(canvas, shadow)
 
 
 class Padding(VisualComponent):

@@ -1,6 +1,10 @@
+from collections import namedtuple
 from umlfri2.components.expressions import ConstantExpression
 from umlfri2.types.color import Color
 from .visualcomponent import VisualComponent, VisualObject
+
+
+ShadowInfo = namedtuple('ShadowInfo', ('color', 'shift'))
 
 
 class ShadowObject(VisualObject):
@@ -18,9 +22,9 @@ class ShadowObject(VisualObject):
         w, h = self.__child_size
         return w + self.__padding, h + self.__padding
     
-    def draw(self, canvas, shadow, shadow_shift):
-        self.__child.draw(canvas, self.__color, self.__padding)
-        self.__child.draw(canvas, None, None)
+    def draw(self, canvas, shadow):
+        self.__child.draw(canvas, ShadowInfo(self.__color, self.__padding))
+        self.__child.draw(canvas, None)
 
 
 class Shadow(VisualComponent):

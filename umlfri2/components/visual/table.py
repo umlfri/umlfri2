@@ -31,10 +31,10 @@ class TableObject(VisualObject):
     def get_minimal_size(self):
         return sum(self.__columns), sum(self.__rows)
     
-    def draw(self, canvas, shadow, shadow_shift):
+    def draw(self, canvas, shadow):
         for row in self.__table:
             for child in row:
-                child.draw(canvas, shadow, shadow_shift)
+                child.draw(canvas, shadow)
 
 
 class TableRow(HelperComponent):

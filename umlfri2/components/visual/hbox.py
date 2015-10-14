@@ -19,9 +19,9 @@ class HBoxObject(VisualObject):
         w_all, h_all = zip(self.__children_sizes)
         return sum(w_all), max(h_all)
     
-    def draw(self, canvas, shadow, shadow_shift):
+    def draw(self, canvas, shadow):
         for child in self.__children:
-            child.draw(canvas, shadow, shadow_shift)
+            child.draw(canvas, shadow)
 
 class HBox(VisualComponent):
     def _create_object(self, context, ruler):

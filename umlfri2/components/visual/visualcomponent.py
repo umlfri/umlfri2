@@ -8,7 +8,7 @@ class VisualObject:
     def get_minimal_size(self):
         raise NotImplementedError
     
-    def draw(self, canvas, shadow, shadow_shift):
+    def draw(self, canvas, shadow):
         raise NotImplementedError
 
 
@@ -49,4 +49,4 @@ class VisualComponent(Component):
             h = size[1]
         
         obj.assign_bounds((x, y, w, h))
-        obj.draw(canvas, None, None)
+        obj.draw(canvas, None)

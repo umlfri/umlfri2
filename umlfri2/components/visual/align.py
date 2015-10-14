@@ -36,8 +36,8 @@ class AlignObject(VisualObject):
     def get_minimal_size(self):
         return self.__child_size
     
-    def draw(self, canvas, shadow, shadow_shift):
-        self.__child.draw(canvas, shadow, shadow_shift)
+    def draw(self, canvas, shadow):
+        self.__child.draw(canvas, shadow)
 
 
 class Align(VisualComponent):

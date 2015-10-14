@@ -19,18 +19,18 @@ class RectangleObject(VisualObject):
     def get_minimal_size(self):
         return self.__child_size
     
-    def draw(self, canvas, shadow, shadow_shift):
+    def draw(self, canvas, shadow):
         if shadow:
             x, y = self.__position
             canvas.draw_rectangle(
-                (x + shadow_shift, y + shadow_shift),
+                (x + shadow.shift, y + shadow.shift),
                 self.__size,
                 None,
-                shadow
+                shadow.color
             )
         else:
             canvas.draw_rectangle(self.__position, self.__size, self.__border, self.__fill)
-            self.__child.draw(canvas, None, None)
+            self.__child.draw(canvas, None)
 
 
 class Rectangle(VisualComponent):

@@ -25,15 +25,15 @@ class LineObject(VisualObject):
             return 0, 1
         else:
             return 1, 0
-    
-    def draw(self, canvas, shadow, shadow_shift):
+            
+    def draw(self, canvas, shadow):
         if shadow:
             x1, y1 = self.__point1
             x2, y2 = self.__point2
             canvas.draw_line(
-                (x1 + shadow_shift, y1 + shadow_shift),
-                (x2 + shadow_shift, y2 + shadow_shift),
-                shadow
+                (x1 + shadow.shift, y1 + shadow.shift),
+                (x2 + shadow.shift, y2 + shadow.shift),
+                shadow.color
             )
         else:
             canvas.draw_line(self.__point1, self.__point2, self.__color)
