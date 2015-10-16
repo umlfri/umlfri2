@@ -2,5 +2,5 @@
 from . import treecreator
 from .definition import WHOLE_EXPRESSION
 
-def parseString(expression):
+def parse_ufl(expression):
     return WHOLE_EXPRESSION.parseString(expression)[0]

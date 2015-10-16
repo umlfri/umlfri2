@@ -1,1 +1,1 @@
-from .parser import parseString
+from .parser import parse_ufl

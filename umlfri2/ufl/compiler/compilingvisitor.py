@@ -1,5 +1,5 @@
 from ..types import UflTypedEnumType, UflObjectType
-from .visitor import UflVisitor
+from ..tree.visitor import UflVisitor
 
 
 class UflCompilingVisitor(UflVisitor):
