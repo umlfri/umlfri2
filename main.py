@@ -8,6 +8,7 @@ from umlfri2.components.visual import *
 from umlfri2.components.visual.align import HorizontalAlignment
 from umlfri2.qtgui.canvas.canvaswidget import CanvasWidget
 from umlfri2.types.color import Color
+from umlfri2.ufl.types import *
 
 app = QApplication(sys.argv)
 
@@ -55,6 +56,16 @@ Shadow((
         border=ConstantExpression(Color.get_color("black"))
     ),
 ))
+
+typedef = UflObjectType({
+    'name': UflStringType(),
+    'items': UflListType(
+        UflObjectType({
+            'name': UflStringType(),
+            'visibility': UflEnumType(('+', '-', '#'))
+        })
+    )
+})
 
 widget.show_object(visual, {
     "name": "Hello world",

@@ -1,5 +1,5 @@
 from . import definition as d
-
+from pyparsing import ParseException
 from ..tree import *
 
 def target(data):
@@ -16,7 +16,10 @@ def method_or_attribute_or_enum(data):
     node = data[0]
     
     if len(data) > 1 and data[1] == '::':
-        return UflEnum(data[0], data[2])
+        if isinstance(data[0], UflVariable):
+            return UflEnum(data[0].name, data[2])
+        else:
+            raise ParseException('You can use :: operator only to access enum members')
     else:
         i = 1
         while i < len(data):
