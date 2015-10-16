@@ -1,8 +1,7 @@
 from .type import UflType
 
-
-class UflBoolType(UflType):
-    def __init__(self, default=False):
+class UflIntegerType(UflType):
+    def __init__(self, default=None):
         self.__default = default
     
     @property

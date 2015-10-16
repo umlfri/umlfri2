@@ -2,6 +2,7 @@ from ..expressions import ConstantExpression
 from ..text import TextContainer, Text
 from umlfri2.types.color import Color
 from umlfri2.types.font import Font
+from umlfri2.ufl.types import UflStringType, UflColorType, UflFontType
 from .visualcomponent import VisualComponent, VisualObject
 
 
@@ -33,7 +34,13 @@ class TextBoxObject(VisualObject):
 
 
 class TextBox(VisualComponent):
-    def __init__(self, children, text: str=None, color: Color=None, font: Font=None):
+    ATTRIBUTES = {
+        'text': UflStringType,
+        'color': UflColorType,
+        'font': UflFontType,
+    }
+    
+    def __init__(self, children, text=None, color=None, font=None):
         super().__init__(())
         self.__color = color or ConstantExpression(Color.get_color("black"))
         self.__font = font or ConstantExpression(Font("Arial", 10))

@@ -1,8 +1,13 @@
 from .controlcomponent import ControlComponent
+from umlfri2.ufl.types import UflBoolType
 
 
 class Condition(ControlComponent):
-    def __init__(self, children, condition: bool):
+    ATTRIBUTES = {
+        'condition': UflBoolType,
+    }
+    
+    def __init__(self, children, condition):
         super().__init__(children)
         self.__condition = condition
     

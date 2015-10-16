@@ -1,8 +1,15 @@
 from .controlcomponent import ControlComponent
+from umlfri2.ufl.types import UflListType
 
 
 class ForEach(ControlComponent):
-    def __init__(self, children, src: iter, index: id=None, item: id=None):
+    ATTRIBUTES = {
+        'src': UflListType,
+        'index': str,
+        'item': str,
+    }
+    
+    def __init__(self, children, src, index=None, item=None):
         super().__init__(children)
         self.__src = src
         self.__index = index

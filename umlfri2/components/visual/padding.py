@@ -1,4 +1,5 @@
 from ..expressions import ConstantExpression
+from umlfri2.ufl.types import UflIntegerType
 from .visualcomponent import VisualComponent, VisualObject
 
 
@@ -25,7 +26,15 @@ class PaddingObject(VisualObject):
 
 
 class Padding(VisualComponent):
-    def __init__(self, children, padding: int=None, left: int=None, right: int=None, top: int=None, bottom: int=None):
+    ATTRIBUTES = {
+        'padding': UflIntegerType,
+        'left': UflIntegerType,
+        'right': UflIntegerType,
+        'top': UflIntegerType,
+        'bottom': UflIntegerType,
+    }
+    
+    def __init__(self, children, padding=None, left=None, right=None, top=None, bottom=None):
         super().__init__(children)
         
         if padding is not None:

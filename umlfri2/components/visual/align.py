@@ -1,17 +1,6 @@
 from ..expressions import NoneExpression
+from umlfri2.ufl.types import UflEnumType
 from .visualcomponent import VisualComponent, VisualObject
-
-
-class VerticalAlignment:
-    top = 1
-    center = 2
-    bottom = 3
-
-
-class HorizontalAlignment:
-    left = 1
-    center = 2
-    right = 3
 
 
 class AlignObject(VisualObject):
@@ -54,7 +43,12 @@ class AlignObject(VisualObject):
 
 
 class Align(VisualComponent):
-    def __init__(self, children, horizontal: HorizontalAlignment=None, vertical: VerticalAlignment=None):
+    ATTRIBUTES = {
+        'horizontal': UflEnumType(('left', 'center', 'right')),
+        'vertical': UflEnumType(('top', 'center', 'right')),
+    }
+    
+    def __init__(self, children, horizontal=None, vertical=None):
         super().__init__(children)
         self.__horizontal = horizontal or NoneExpression
         self.__vertical = vertical or NoneExpression

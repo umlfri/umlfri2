@@ -1,4 +1,7 @@
 class Component:
+    ATTRIBUTES = {}
+    HAS_CHILDREN = True
+    
     def __init__(self, children):
         self.__children = children
         self.__parent = None

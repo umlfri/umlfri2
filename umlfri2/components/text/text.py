@@ -1,8 +1,15 @@
 from .textcomponent import TextComponent
+from umlfri2.ufl.types import UflStringType
 
 
 class Text(TextComponent):
-    def __init__(self, text: str):
+    ATTRIBUTES = {
+        'text': UflStringType,
+    }
+    
+    HAS_CHILDREN = False
+    
+    def __init__(self, text):
         super().__init__(())
         self.__text = text
     

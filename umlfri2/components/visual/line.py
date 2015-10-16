@@ -1,6 +1,7 @@
 from ..expressions import ConstantExpression
 from .hbox import HBox
 from umlfri2.types.color import Color
+from umlfri2.ufl.types import UflEnumType, UflColorType
 from .visualcomponent import VisualComponent, VisualObject
 from .vbox import VBox
 
@@ -39,13 +40,21 @@ class LineObject(VisualObject):
             canvas.draw_line(self.__point1, self.__point2, self.__color)
 
 class Line(VisualComponent):
-    def __init__(self, type: id='auto', color: Color=None):
+    ATTRIBUTES = {
+        'type': UflEnumType(('auto', 'horizontal', 'vertical')),
+        'color': UflColorType,
+    }
+    HAS_CHILDREN = False
+    
+    def __init__(self, type=None, color=None):
         super().__init__(())
-        self.__type = type
+        self.__type = type or ConstantExpression('auto')
         self.__color = color or ConstantExpression(Color.get_color("black"))
     
-    def __get_type(self):
-        if self.__type == 'auto':
+    def __get_type(self, context):
+        type = self.__type(context)
+        
+        if type == 'auto':
             parent = self._get_parent()
             while parent is not None:
                 if isinstance(parent, VBox):
@@ -53,11 +62,11 @@ class Line(VisualComponent):
                 elif isinstance(parent, HBox):
                     return 'vertical'
             return 'horizontal'
-        return self.__type
+        return type
     
     def is_resizable(self, context):
-        type = self.__get_type()
+        type = self.__get_type(context)
         return type == 'horizontal', type == 'vertical'
     
     def _create_object(self, context, ruler):
-        return LineObject(self.__get_type(), self.__color(context))
+        return LineObject(self.__get_type(context), self.__color(context))

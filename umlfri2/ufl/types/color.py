@@ -1,4 +1,4 @@
-from .umlfri2.ufl.structure.type import UflType
+from .type import UflType
 
 
 class UflColorType(UflType):

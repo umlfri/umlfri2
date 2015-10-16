@@ -1,4 +1,5 @@
 from umlfri2.types.color import Color
+from umlfri2.ufl.types import UflColorType
 from .visualcomponent import VisualComponent, VisualObject
 
 
@@ -34,7 +35,12 @@ class RectangleObject(VisualObject):
 
 
 class Rectangle(VisualComponent):
-    def __init__(self, children, fill: Color=None, border: Color=None):
+    ATTRIBUTES = {
+        'fill': UflColorType,
+        'border': UflColorType,
+    }
+    
+    def __init__(self, children, fill=None, border=None):
         super().__init__(children)
         self.__fill = fill
         self.__border = border
