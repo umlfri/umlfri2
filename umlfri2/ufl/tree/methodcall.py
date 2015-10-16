@@ -1,7 +1,7 @@
-from .expression import UflExpression
+from .node import UflNode
 
 
-class UflMethodCall(UflExpression):
+class UflMethodCall(UflNode):
     def __init__(self, target, selector, parameters):
         self.__target = target
         self.__selector = selector

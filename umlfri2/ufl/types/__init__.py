@@ -4,6 +4,7 @@ from .enum import UflEnumType
 from .font import UflFontType
 from .integer import UflIntegerType
 from .list import UflListType
+from .nullable import UflNullableType
 from .object import UflObjectType
 from .string import UflStringType
 from .type import UflType

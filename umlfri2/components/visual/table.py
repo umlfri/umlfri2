@@ -38,11 +38,13 @@ class TableObject(VisualObject):
 
 
 class TableRow(HelperComponent):
-    pass
+    def compile(self, variables):
+        self._compile_children(variables)
 
 
 class TableColumn(HelperComponent):
-    pass
+    def compile(self, variables):
+        self._compile_children(variables)
 
 
 class Table(VisualComponent):
@@ -65,3 +67,6 @@ class Table(VisualComponent):
             return TableObject(list(zip(*ret))) # transpose to get table with rows instead
         else:
             return TableObject(ret)
+    
+    def compile(self, variables):
+        self._compile_children(variables)

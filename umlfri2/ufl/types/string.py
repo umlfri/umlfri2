@@ -21,3 +21,6 @@ class UflStringType(UflType):
     @property
     def multiline(self):
         return self.__multiline
+    
+    def __str__(self):
+        return 'String'

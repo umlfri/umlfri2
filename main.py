@@ -14,6 +14,16 @@ app = QApplication(sys.argv)
 
 widget = CanvasWidget()
 
+typedef = UflObjectType({
+    'name': UflStringType(),
+    'items': UflListType(
+        UflObjectType({
+            'name': UflStringType(),
+            'visibility': UflEnumType(('+', '-', '#'))
+        })
+    )
+})
+
 visual = \
 Shadow((
     Rectangle(
@@ -23,9 +33,9 @@ Shadow((
                     (
                         Align(
                             (
-                                TextBox((), text = PythonExpression(lambda self: self["name"])),
+                                TextBox((), text = PythonExpression(lambda self: self["name"], UflStringType())),
                             ),
-                            horizontal=ConstantExpression(HorizontalAlignment.center)
+                            horizontal=ConstantExpression(HorizontalAlignment.center, UflTypedEnumType(HorizontalAlignment))
                         ),
                     ),
                     padding=ConstantExpression(5)
@@ -37,17 +47,17 @@ Shadow((
                             TableRow(
                                 (
                                     TextBox((
-                                        Text(text = PythonExpression(lambda self, visibility, name: visibility)),
+                                        Text(text = PythonExpression(lambda self, visibility, name: visibility, UflStringType())),
                                         Text(text = ConstantExpression(" ")),
                                     )),
                                     TextBox((
-                                        Text(text = PythonExpression(lambda self, visibility, name: name)),
+                                        Text(text = PythonExpression(lambda self, visibility, name: name, UflStringType())),
                                         Text(text = ConstantExpression("()")),
                                     )),
                                 )
                             ),
                         ),
-                        src=PythonExpression(lambda self: self["items"])
+                        src=PythonExpression(lambda self: self["items"], typedef.get_attribute_type("items"))
                     ),
                 )),
             )),
@@ -57,15 +67,7 @@ Shadow((
     ),
 ))
 
-typedef = UflObjectType({
-    'name': UflStringType(),
-    'items': UflListType(
-        UflObjectType({
-            'name': UflStringType(),
-            'visibility': UflEnumType(('+', '-', '#'))
-        })
-    )
-})
+visual.compile({'self': typedef})
 
 widget.show_object(visual, {
     "name": "Hello world",

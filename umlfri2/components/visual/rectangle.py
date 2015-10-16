@@ -52,3 +52,12 @@ class Rectangle(VisualComponent):
                 self.__fill(local),
                 self.__border(local)
             )
+    
+    def compile(self, variables):
+        self._compile_expressions(
+            variables,
+            fill=self.__fill,
+            border=self.__border,
+        )
+        
+        self._compile_children(variables)

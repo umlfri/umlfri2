@@ -12,6 +12,9 @@ class UflFontType(UflType):
     @property
     def default(self):
         return self.__default
+    
+    def __str__(self):
+        return "Font"
 
 UflFontType.ALLOWED_DIRECT_ATTRIBUTES = {
     'size': ('size', UflIntegerType),

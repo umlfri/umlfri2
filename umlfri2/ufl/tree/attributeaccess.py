@@ -1,7 +1,7 @@
-from .expression import UflExpression
+from .node import UflNode
 
 
-class UflAttributeAccess(UflExpression):
+class UflAttributeAccess(UflNode):
     def __init__(self, obj, attribute):
         self.__object = obj
         self.__attribute = attribute

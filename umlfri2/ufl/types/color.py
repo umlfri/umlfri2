@@ -9,6 +9,9 @@ class UflColorType(UflType):
     @property
     def default(self):
         return self.__default
+    
+    def __str__(self):
+        return 'Color'
 
 UflType.ALLOWED_DIRECT_ATTRIBUTES = {
     'r': ('r', UflIntegerType),

@@ -57,3 +57,14 @@ class Padding(VisualComponent):
                 self.__top(local),
                 self.__bottom(local)
             )
+    
+    def compile(self, variables):
+        self._compile_expressions(
+            variables,
+            left=self.__left,
+            right=self.__right,
+            top=self.__top,
+            bottom=self.__bottom,
+        )
+        
+        self._compile_children(variables)

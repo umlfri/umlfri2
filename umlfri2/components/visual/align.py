@@ -1,5 +1,5 @@
 from ..expressions import NoneExpression
-from umlfri2.ufl.types import UflTypedEnumType
+from umlfri2.ufl.types import UflTypedEnumType, UflNullableType
 from .visualcomponent import VisualComponent, VisualObject
 
 
@@ -56,8 +56,8 @@ class AlignObject(VisualObject):
 
 class Align(VisualComponent):
     ATTRIBUTES = {
-        'horizontal': UflTypedEnumType(HorizontalAlignment),
-        'vertical': UflTypedEnumType(VerticalAlignment),
+        'horizontal': UflNullableType(UflTypedEnumType(HorizontalAlignment)),
+        'vertical': UflNullableType(UflTypedEnumType(VerticalAlignment)),
     }
     
     def __init__(self, children, horizontal=None, vertical=None):
@@ -72,3 +72,12 @@ class Align(VisualComponent):
                 self.__horizontal(context),
                 self.__vertical(context)
             )
+    
+    def compile(self, variables):
+        self._compile_expressions(
+            variables,
+            vertical=self.__vertical,
+            horizontal=self.__horizontal,
+        )
+        
+        self._compile_children(variables)

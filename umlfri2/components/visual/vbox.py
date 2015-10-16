@@ -28,3 +28,6 @@ class VBox(VisualComponent):
         children = [child._create_object(local, ruler) for local, child in self._get_children(context)]
         
         return VBoxObject(children)
+    
+    def compile(self, variables):
+        self._compile_children(variables)

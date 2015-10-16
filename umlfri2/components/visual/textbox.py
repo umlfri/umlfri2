@@ -59,3 +59,12 @@ class TextBox(VisualComponent):
         size = ruler.measure_text(font, text)
         
         return TextBoxObject(size, text, color, font)
+    
+    def compile(self, variables):
+        self._compile_expressions(
+            variables,
+            color=self.__color,
+            font=self.__font,
+        )
+        
+        self.__text.compile(variables)

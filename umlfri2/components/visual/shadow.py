@@ -46,3 +46,12 @@ class Shadow(VisualComponent):
                 self.__color(local),
                 self.__padding(local)
             )
+    
+    def compile(self, variables):
+        self._compile_expressions(
+            variables,
+            color=self.__color,
+            padding=self.__padding,
+        )
+        
+        self._compile_children(variables)

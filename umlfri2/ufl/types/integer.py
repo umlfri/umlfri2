@@ -7,3 +7,6 @@ class UflIntegerType(UflType):
     @property
     def default(self):
         return self.__default
+    
+    def __str__(self):
+        return "Integer"

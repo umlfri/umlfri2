@@ -1,4 +1,4 @@
-class UflExpression:
+class UflNode:
     def _get_params(self):
         return ()
     
@@ -10,7 +10,7 @@ class UflExpression:
             if not first:
                 ret += ","
             first = False
-            if isinstance(param, UflExpression):
+            if isinstance(param, UflNode):
                 ret += param.to_string()
             else:
                 ret += repr(param)

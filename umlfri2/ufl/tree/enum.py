@@ -1,7 +1,7 @@
-from .expression import UflExpression
+from .node import UflNode
 
 
-class UflEnum(UflExpression):
+class UflEnum(UflNode):
     def __init__(self, enum, item):
         self.__enum = enum
         self.__item = item

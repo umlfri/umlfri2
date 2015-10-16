@@ -5,3 +5,9 @@ UflMethodDescription = namedtuple('UflMethodDescription', ('selector', 'paramete
 class UflType:
     ALLOWED_DIRECT_ATTRIBUTES = {}
     ALLOWED_DIRECT_METHODS = {}
+    
+    def __str__(self):
+        return 'Type'
+    
+    def __repr__(self):
+        return '<UflType {0}>'.format(self)

@@ -1,6 +1,6 @@
-from .expression import UflExpression
+from .node import UflNode
 
-class UflVariable(UflExpression):
+class UflVariable(UflNode):
     def __init__(self, name):
         self.__name = name
     

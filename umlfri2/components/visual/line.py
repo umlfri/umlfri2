@@ -54,7 +54,7 @@ class Line(VisualComponent):
     
     def __init__(self, orientation=None, color=None):
         super().__init__(())
-        self.__orientation = orientation or ConstantExpression(LineOrientation.auto)
+        self.__orientation = orientation or ConstantExpression(LineOrientation.auto, UflTypedEnumType(LineOrientation))
         self.__color = color or ConstantExpression(Color.get_color("black"))
     
     def __get_orientation(self, context):
@@ -76,3 +76,10 @@ class Line(VisualComponent):
     
     def _create_object(self, context, ruler):
         return LineObject(self.__get_orientation(context), self.__color(context))
+    
+    def compile(self, variables):
+        self._compile_expressions(
+            variables,
+            orientation=self.__orientation,
+            color=self.__color,
+        )

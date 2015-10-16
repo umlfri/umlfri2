@@ -27,3 +27,6 @@ class UflTypedEnumType(UflType):
     @property
     def type(self):
         return self.__type
+    
+    def __str__(self):
+        return 'TypedEnum[{0}]'.format(self.name)
