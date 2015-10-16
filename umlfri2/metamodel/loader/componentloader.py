@@ -3,7 +3,6 @@ from umlfri2.components.common import COMMON_COMPONENTS
 from umlfri2.components.expressions import UflExpression, ConstantExpression
 from umlfri2.components.text import TEXT_COMPONENTS
 from umlfri2.components.visual import VISUAL_COMPONENTS
-from umlfri2.ufl.types import UflTypedEnumType, UflEnumType, UflNullableType
 
 
 class ComponentLoader:
@@ -30,7 +29,9 @@ class ComponentLoader:
                 params = {}
                 for attrname, attrvalue in child.attrib.items():
                     type = component.ATTRIBUTES[attrname]
-                    if attrvalue.startswith("#"):
+                    if attrvalue.startswith("##"):
+                        value = ConstantExpression(type.parse(attrvalue[1:]), type)
+                    elif attrvalue.startswith("#"):
                         value = UflExpression(attrvalue[1:])
                     elif type is str:
                         value = attrvalue

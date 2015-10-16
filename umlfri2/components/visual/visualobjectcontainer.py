@@ -9,13 +9,14 @@ class VisualObjectContainer:
             self.__size = self.__object.get_minimal_size()
         else:
             self.__size = new_size
+        self.__object.assign_bounds(self.__position + self.__size)
     
     def move(self, new_position):
         self.__position = new_position
+        self.__object.assign_bounds(self.__position + self.__size)
     
     def get_minimal_size(self):
         return self.__object.get_minimal_size()
     
     def draw(self, canvas):
-        self.__object.assign_bounds(self.__position + self.__size)
         self.__object.draw(canvas, None)

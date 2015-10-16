@@ -1,5 +1,5 @@
 from ..base.component import Component
-from umlfri2.components.visual.visualobjectcontainer import VisualObjectContainer
+from .visualobjectcontainer import VisualObjectContainer
 
 
 class VisualObject:

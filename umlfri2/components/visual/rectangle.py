@@ -1,4 +1,3 @@
-from umlfri2.types.color import Color
 from umlfri2.ufl.types import UflColorType
 from .visualcomponent import VisualComponent, VisualObject
 
