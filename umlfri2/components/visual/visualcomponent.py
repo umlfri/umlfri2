@@ -1,4 +1,5 @@
 from ..base.component import Component
+from umlfri2.components.visual.visualobjectcontainer import VisualObjectContainer
 
 
 class VisualObject:
@@ -30,23 +31,8 @@ class VisualComponent(Component):
         
         return ret_x, ret_y
     
-    def get_minimal_size(self, context, ruler):
-        obj = self._create_object(context, ruler)
-        return obj.get_minimal_size()
-    
     def _create_object(self, context, ruler):
         raise NotImplementedError
     
-    def draw(self, context, canvas, bounds):
-        obj = self._create_object(context, canvas.get_ruler())
-        
-        x, y, w, h = bounds
-        
-        size = obj.get_minimal_size()
-        if w is None:
-            w = size[0]
-        if h is None:
-            h = size[1]
-        
-        obj.assign_bounds((x, y, w, h))
-        obj.draw(canvas, None)
+    def create_visual_object(self, context, ruler):
+        return VisualObjectContainer(self._create_object(context, ruler))

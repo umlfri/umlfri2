@@ -1,6 +1,3 @@
-from umlfri2.components.base.context import Context
-
-
 class ElementType:
     def __init__(self, id, ufl_type, display_name, appearance):
         self.__id = id
@@ -28,12 +25,5 @@ class ElementType:
         self.__appearance.compile({'self': self.__ufl_type})
         self.__display_name.compile({'self': self.__ufl_type})
     
-    def draw(self, data, canvas, pos, size=None):
-        ctx = Context(data)
-        
-        if size is None:
-            bounds = pos + (None, None)
-        else:
-            bounds = pos + size
-        
-        self.appearance.draw(ctx, canvas, bounds)
+    def create_visual_object(self, context, ruler):
+        return self.__appearance.create_visual_object(context, ruler)
