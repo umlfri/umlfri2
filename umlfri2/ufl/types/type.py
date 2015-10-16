@@ -1,2 +1,3 @@
 class UflType:
-    pass
+    ALLOWED_DIRECT_ATTRIBUTES = {}
+    ALLOWED_DIRECT_METHODS = {}

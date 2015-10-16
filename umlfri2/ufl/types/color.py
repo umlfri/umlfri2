@@ -1,4 +1,5 @@
 from .type import UflType
+from .integer import UflIntegerType
 
 
 class UflColorType(UflType):
@@ -8,3 +9,14 @@ class UflColorType(UflType):
     @property
     def default(self):
         return self.__default
+
+UflType.ALLOWED_DIRECT_ATTRIBUTES = {
+    'r': ('r', UflIntegerType),
+    'g': ('g', UflIntegerType),
+    'b': ('b', UflIntegerType),
+    'a': ('alpha', UflIntegerType),
+}
+
+UflColorType.ALLOWED_DIRECT_METHODS = {
+    'invert': ('invert', (), UflColorType),
+}

@@ -5,6 +5,7 @@ from umlfri2.components.expressions import ConstantExpression
 from umlfri2.components.expressions.python import PythonExpression
 from umlfri2.components.text import *
 from umlfri2.components.visual import *
+from umlfri2.components.visual.align import HorizontalAlignment
 from umlfri2.qtgui.canvas.canvaswidget import CanvasWidget
 from umlfri2.types.color import Color
 
@@ -23,7 +24,7 @@ Shadow((
                             (
                                 TextBox((), text = PythonExpression(lambda self: self["name"])),
                             ),
-                            horizontal=ConstantExpression("center")
+                            horizontal=ConstantExpression(HorizontalAlignment.center)
                         ),
                     ),
                     padding=ConstantExpression(5)

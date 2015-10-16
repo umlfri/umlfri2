@@ -7,3 +7,4 @@ from .list import UflListType
 from .object import UflObjectType
 from .string import UflStringType
 from .type import UflType
+from .typedenum import UflTypedEnumType

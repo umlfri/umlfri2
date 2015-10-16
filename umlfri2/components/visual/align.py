@@ -1,6 +1,18 @@
 from ..expressions import NoneExpression
-from umlfri2.ufl.types import UflEnumType
+from umlfri2.ufl.types import UflTypedEnumType
 from .visualcomponent import VisualComponent, VisualObject
+
+
+class VerticalAlignment:
+    top = 1
+    center = 2
+    bottom = 3
+
+
+class HorizontalAlignment:
+    left = 1
+    center = 2
+    right = 3
 
 
 class AlignObject(VisualObject):
@@ -15,21 +27,21 @@ class AlignObject(VisualObject):
         
         w_inner, h_inner = self.__child_size
         
-        if self.__horizontal == 'center':
+        if self.__horizontal == HorizontalAlignment.center:
             x += (w - w_inner) // 2
             w = w_inner
-        elif self.__horizontal == 'left':
+        elif self.__horizontal == HorizontalAlignment.left:
             w = w_inner
-        elif self.__horizontal == 'right':
+        elif self.__horizontal == HorizontalAlignment.right:
             x += w - w_inner
             w = w_inner
         
-        if self.__vertical == 'center':
+        if self.__vertical == VerticalAlignment.center:
             y += (h - h_inner) // 2
             h = h_inner
-        elif self.__vertical == 'top':
+        elif self.__vertical == VerticalAlignment.top:
             h = h_inner
-        elif self.__vertical == 'bottom':
+        elif self.__vertical == VerticalAlignment.bottom:
             y += h - h_inner
             h = h_inner
         
@@ -44,8 +56,8 @@ class AlignObject(VisualObject):
 
 class Align(VisualComponent):
     ATTRIBUTES = {
-        'horizontal': UflEnumType(('left', 'center', 'right')),
-        'vertical': UflEnumType(('top', 'center', 'right')),
+        'horizontal': UflTypedEnumType(HorizontalAlignment),
+        'vertical': UflTypedEnumType(VerticalAlignment),
     }
     
     def __init__(self, children, horizontal=None, vertical=None):
