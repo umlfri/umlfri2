@@ -9,5 +9,8 @@ class UflObjectType(UflType):
     def attributes(self):
         return self.__attributes.copy()
     
-    def get_attribute(self, name):
+    def get_attribute_type(self, name):
         return self.__attributes[name]
+    
+    def contains_attribute(self, name):
+        return name in self.__attributes

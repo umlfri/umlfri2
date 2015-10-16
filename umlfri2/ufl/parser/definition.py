@@ -9,7 +9,9 @@ TARGET = VARIABLE ^ ('(' + EXPRESSION + ')')
 METHODORATTRORENUM = TARGET + (
     pp.OneOrMore(
         '.' + pp.Word(pp.alphanums)
-        + pp.Optional('(' + pp.Optional(EXPRESSION) + pp.OneOrMore("," + pp.Optional(EXPRESSION)) + ')')
+        + pp.Optional('(' + pp.Optional(
+            pp.Optional(EXPRESSION) + pp.ZeroOrMore("," + pp.Optional(EXPRESSION))
+        ) + ')')
     ) |
     pp.Optional('::' + pp.Word(pp.alphanums))
 )

@@ -1,4 +1,4 @@
-from .type import UflType
+from .type import UflType, UflMethodDescription
 from .integer import UflIntegerType
 from .string import UflStringType
 from .typedenum import UflTypedEnumType
@@ -20,5 +20,9 @@ UflFontType.ALLOWED_DIRECT_ATTRIBUTES = {
 }
 
 UflFontType.ALLOWED_DIRECT_METHODS = {
-    'change': ('change', (UflStringType, UflTypedEnumType(FontStyle)), UflFontType)
+    'change': UflMethodDescription(
+        'change',
+        (UflStringType, UflTypedEnumType(FontStyle)),
+        UflFontType
+    )
 }

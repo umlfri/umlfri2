@@ -1,4 +1,4 @@
-from .type import UflType
+from .type import UflType, UflMethodDescription
 from .integer import UflIntegerType
 
 
@@ -18,5 +18,5 @@ UflType.ALLOWED_DIRECT_ATTRIBUTES = {
 }
 
 UflColorType.ALLOWED_DIRECT_METHODS = {
-    'invert': ('invert', (), UflColorType),
+    'invert': UflMethodDescription('invert', (), UflColorType),
 }
