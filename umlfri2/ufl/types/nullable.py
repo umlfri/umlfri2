@@ -9,5 +9,8 @@ class UflNullableType(UflType):
     def inner_type(self):
         return self.__inner_type
     
+    def build_default(self):
+        return None
+    
     def __str__(self):
         return "Nullable[{0}]".format(self.__inner_type)

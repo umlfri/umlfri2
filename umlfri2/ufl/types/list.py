@@ -9,5 +9,8 @@ class UflListType(UflType):
     def item_type(self):
         return self.__item_type
     
+    def build_default(self):
+        return []
+    
     def __str__(self):
         return "List<{0}>".format(self.__item_type)

@@ -9,5 +9,8 @@ class UflBoolType(UflType):
     def default(self):
         return self.__default
     
+    def build_default(self):
+        return self.__default
+    
     def __str__(self):
         return 'Bool'

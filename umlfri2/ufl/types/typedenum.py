@@ -3,11 +3,10 @@ from .type import UflType
 
 class UflTypedEnumType(UflType):
     def __init__(self, type, default=None):
-        # it is python enum class
         self.__possibilities = tuple(i for i in dir(type) if not i.startswith('_'))
         self.__type = type
         
-        if default:
+        if default and default in self.__possibilities:
             self.__default = default
         else:
             self.__default = self.__possibilities[0]
@@ -27,6 +26,9 @@ class UflTypedEnumType(UflType):
     @property
     def type(self):
         return self.__type
+    
+    def build_default(self):
+        return getattr(self.__type, self.__default)
     
     def __str__(self):
         return 'TypedEnum[{0}]'.format(self.name)

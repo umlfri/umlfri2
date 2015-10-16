@@ -15,5 +15,8 @@ class UflObjectType(UflType):
     def contains_attribute(self, name):
         return name in self.__attributes
     
+    def build_default(self):
+        return {name: type.build_default() for name, type in self.__attributes.items()}
+    
     def __str__(self):
         return "Object[{0}]".format(", ".join("{0}: {1}".format(name, type) for name, type in self.__attributes.items()))

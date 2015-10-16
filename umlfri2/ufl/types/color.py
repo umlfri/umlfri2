@@ -1,5 +1,6 @@
 from .type import UflType, UflMethodDescription
 from .integer import UflIntegerType
+from umlfri2.types.color import Colors
 
 
 class UflColorType(UflType):
@@ -9,6 +10,9 @@ class UflColorType(UflType):
     @property
     def default(self):
         return self.__default
+    
+    def build_default(self):
+        return self.__default or Colors.black
     
     def __str__(self):
         return 'Color'
