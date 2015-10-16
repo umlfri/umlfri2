@@ -4,7 +4,7 @@ from umlfri2.ufl.types import UflStringType
 
 class Text(TextComponent):
     ATTRIBUTES = {
-        'text': UflStringType,
+        'text': UflStringType(),
     }
     
     HAS_CHILDREN = False

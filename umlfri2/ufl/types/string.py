@@ -25,5 +25,9 @@ class UflStringType(UflType):
     def build_default(self):
         return ''
     
+    @staticmethod
+    def parse(value):
+        return value
+    
     def __str__(self):
         return 'String'

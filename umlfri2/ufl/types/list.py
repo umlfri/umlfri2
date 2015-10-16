@@ -12,5 +12,11 @@ class UflListType(UflType):
     def build_default(self):
         return []
     
+    def isSameAs(self, other):
+        if not super().isSameAs(other):
+            return False
+        
+        return self.__item_type.isSameAs(other.__item_type)
+    
     def __str__(self):
         return "List<{0}>".format(self.__item_type)

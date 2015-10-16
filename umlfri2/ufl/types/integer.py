@@ -11,5 +11,9 @@ class UflIntegerType(UflType):
     def build_default(self):
         return self.__default
     
+    @staticmethod
+    def parse(value):
+        return int(value)
+    
     def __str__(self):
         return "Integer"

@@ -30,5 +30,14 @@ class UflTypedEnumType(UflType):
     def build_default(self):
         return getattr(self.__type, self.__default)
     
+    def parse(self, value):
+        return getattr(self.__type, value)
+    
+    def isSameAs(self, other):
+        if not super().isSameAs(other):
+            return False
+        
+        return self.__type == other.__type
+    
     def __str__(self):
         return 'TypedEnum[{0}]'.format(self.name)

@@ -9,7 +9,7 @@ class PythonExpression(Expression):
         self.__expr = expr
         self.__return_type = return_type
     
-    def compile(self, variables):
+    def compile(self, variables, expected_type):
         pass
     
     def get_type(self):

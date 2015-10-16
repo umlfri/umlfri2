@@ -36,8 +36,8 @@ class RectangleObject(VisualObject):
 
 class Rectangle(VisualComponent):
     ATTRIBUTES = {
-        'fill': UflColorType,
-        'border': UflColorType,
+        'fill': UflColorType(),
+        'border': UflColorType(),
     }
     
     def __init__(self, children, fill=None, border=None):

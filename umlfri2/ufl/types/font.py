@@ -3,6 +3,7 @@ from .integer import UflIntegerType
 from .string import UflStringType
 from .typedenum import UflTypedEnumType
 from umlfri2.types.font import FontStyle, Font
+from umlfri2.ufl.types import UflBoolType
 
 
 class UflFontType(UflType):
@@ -16,19 +17,23 @@ class UflFontType(UflType):
     def build_default(self):
         return self.__default or Font('Arial', 10)
     
+    @staticmethod
+    def parse(value):
+        return Font.get_font(value)
+    
     def __str__(self):
         return "Font"
 
 UflFontType.ALLOWED_DIRECT_ATTRIBUTES = {
-    'size': ('size', UflIntegerType),
+    'size': ('size', UflIntegerType()),
     'style': ('style', UflTypedEnumType(FontStyle)),
-    'family': ('family', UflStringType),
+    'family': ('family', UflStringType()),
 }
 
 UflFontType.ALLOWED_DIRECT_METHODS = {
     'change': UflMethodDescription(
         'change',
-        (UflStringType, UflTypedEnumType(FontStyle)),
-        UflFontType
+        (UflTypedEnumType(FontStyle), UflBoolType()),
+        UflFontType()
     )
 }

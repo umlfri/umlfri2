@@ -18,8 +18,8 @@ class UflExpression(Exception):
         self.__compiled = None
         self.__type = None
     
-    def compile(self, variables):
-        self.__type, self.__compiled = compile_ufl(self.__expression, variables, self.__enums)
+    def compile(self, variables, expected_type):
+        self.__type, self.__compiled = compile_ufl(self.__expression, expected_type, variables, self.__enums)
     
     def get_type(self):
         return self.__type

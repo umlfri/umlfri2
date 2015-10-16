@@ -12,5 +12,9 @@ class UflBoolType(UflType):
     def build_default(self):
         return self.__default
     
+    @staticmethod
+    def parse(value):
+        return value == 'True'
+    
     def __str__(self):
         return 'Bool'

@@ -12,7 +12,7 @@ class CanvasWidget(QWidget):
     
     # TODO: object should contain type witch should contain component
     def show_object(self, type, obj, position=(0, 0), size=None):
-        obj = type.create_visual_object(Context(obj), self.__ruler)
+        obj = type.create_visual_object(Context(obj, config = type.metamodel.config), self.__ruler)
         obj.move(position)
         obj.resize(size)
         self.__objects.append(obj)

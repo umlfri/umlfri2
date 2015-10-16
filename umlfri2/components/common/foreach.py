@@ -1,10 +1,10 @@
 from .controlcomponent import ControlComponent
-from umlfri2.ufl.types import UflListType, UflObjectType, UflIntegerType
+from umlfri2.ufl.types import UflListType, UflObjectType, UflAnyType, UflIntegerType
 
 
 class ForEach(ControlComponent):
     ATTRIBUTES = {
-        'src': UflListType,
+        'src': UflListType(UflAnyType()),
         'index': str,
         'item': str,
     }

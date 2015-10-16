@@ -20,7 +20,7 @@ class ConstantExpression(Expression):
         else:
             self.__type = value_type
     
-    def compile(self, variables):
+    def compile(self, variables, expected_type):
         pass
     
     def get_type(self):

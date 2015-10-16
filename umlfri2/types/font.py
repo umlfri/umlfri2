@@ -27,7 +27,7 @@ class Font:
         
         if value:
             new_style.add(style)
-        else:
+        elif style in new_style:
             new_style.remove(style)
         return Font(self.__family, self.__size, new_style)
     
@@ -38,7 +38,7 @@ class Font:
             return "{0} {1}".format(self.__family, self.__size)
     
     @staticmethod
-    def get_font(self, description):
+    def get_font(description):
         tmp = description.split()
         size = int(tmp.pop(-1))
         

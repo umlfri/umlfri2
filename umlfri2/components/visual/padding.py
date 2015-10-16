@@ -27,11 +27,11 @@ class PaddingObject(VisualObject):
 
 class Padding(VisualComponent):
     ATTRIBUTES = {
-        'padding': UflIntegerType,
-        'left': UflIntegerType,
-        'right': UflIntegerType,
-        'top': UflIntegerType,
-        'bottom': UflIntegerType,
+        'padding': UflIntegerType(),
+        'left': UflIntegerType(),
+        'right': UflIntegerType(),
+        'top': UflIntegerType(),
+        'bottom': UflIntegerType(),
     }
     
     def __init__(self, children, padding=None, left=None, right=None, top=None, bottom=None):

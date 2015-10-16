@@ -9,6 +9,21 @@ class UflType:
     def build_default(self):
         raise NotImplementedError
     
+    def isSameAs(self, other):
+        
+        if isinstance(other, self.__class__):
+            return True
+        
+        from .any import UflAnyType
+        if isinstance(other, UflAnyType):
+            return True
+        
+        from .nullable import UflNullableType
+        if isinstance(other, UflNullableType) and other.inner_type.isSameAs(self):
+            return True
+        
+        return False
+    
     def __str__(self):
         return 'Type'
     

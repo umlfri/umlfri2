@@ -46,7 +46,7 @@
     </DisplayName>
 
     <Appearance>
-        <Shadow padding="3" color="#cfg.element.shadow">
+        <Shadow padding="5" color="#cfg.element.shadow">
             <Rectangle fill="#cfg.element.fill" border="#cfg.element.line">
                 <VBox>
                     <Padding padding="5">
@@ -67,7 +67,7 @@
                             </Align>
                         </VBox>
                     </Padding>
-                    <Line type="horizontal" color="#cfg.element.line"/>
+                    <Line color="#cfg.element.line"/>
                     <Padding padding="5">
                         <Table>
                             <ForEach src="#self.attributes">
@@ -77,7 +77,7 @@
                                         <Text text=" "/>
                                     </TextBox>
                                     <TextBox color="#cfg.element.text"
-                                             font="#cfg.element.text.change(FontStyle::underline, static)">
+                                             font="#cfg.element.textfont.change(FontStyle::underline, static)">
                                         <If condition="#stereotype">
                                             <Text text="&#171;"/>
                                             <Text text="#stereotype"/>
@@ -112,14 +112,12 @@
                                                 </TextBox>
 
                                                 <TextBox
-                                                        font="#cfg.element.textfont.change('underline', static).change('italic', abstract)"
+                                                        font="#cfg.element.textfont.change(FontStyle::underline, static).change(FontStyle::underline, abstract)"
                                                         color="#cfg.element.text">
                                                     <If condition="#stereotype">
-                                                        <VBox>
-                                                            <Text text="&#171;"/>
-                                                            <Text text="#stereotype"/>
-                                                            <Text text="&#187;  "/>
-                                                        </VBox>
+                                                        <Text text="&#171;"/>
+                                                        <Text text="#stereotype"/>
+                                                        <Text text="&#187;  "/>
                                                     </If>
 
                                                     <Text text="#name"/>

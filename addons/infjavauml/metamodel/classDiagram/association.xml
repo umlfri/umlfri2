@@ -57,14 +57,14 @@
 
         <Switch value="#self.direction">
             <Case condition="toDestination">
-                <Arrow index="-1" style="simple_arrow" color="#cfg.connection.arrow"/>
+                <Arrow position="100%" style="simple_arrow" color="#cfg.connection.arrow"/>
             </Case>
             <Case condition="toSource">
-                <Arrow index="0" style="simple_arrow" color="#cfg.connection.arrow"/>
+                <Arrow position="0%" style="simple_arrow" color="#cfg.connection.arrow"/>
             </Case>
             <Case condition="bidirectional">
-                <Arrow index="-1" style="simple_arrow" color="#cfg.connection.arrow"/>
-                <Arrow index="0" style="simple_arrow" color="#cfg.connection.arrow"/>
+                <Arrow position="100%" style="simple_arrow" color="#cfg.connection.arrow"/>
+                <Arrow position="0%" style="simple_arrow" color="#cfg.connection.arrow"/>
             </Case>
         </Switch>
 

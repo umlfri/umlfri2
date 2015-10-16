@@ -48,7 +48,7 @@ class LineObject(VisualObject):
 class Line(VisualComponent):
     ATTRIBUTES = {
         'orientation': UflTypedEnumType(LineOrientation),
-        'color': UflColorType,
+        'color': UflColorType(),
     }
     HAS_CHILDREN = False
     

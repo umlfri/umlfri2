@@ -8,7 +8,7 @@ class UflCompilingVisitor(UflVisitor):
     """
     def __init__(self, params, enums):
         self.__params = params
-        self.__enums = enums
+        self.__enums = {name: UflTypedEnumType(enum) for name, enum in enums.items()}
     
     def visit_attribute_access(self, node):
         objtype, objcode = node.object.accept(self)
@@ -49,8 +49,12 @@ class UflCompilingVisitor(UflVisitor):
             raise Exception("Unknown method {0}".format(node.selector))
         
         methoddesc = targettype.ALLOWED_DIRECT_METHODS[node.selector]
-        if tuple(paramtypes) != methoddesc.parameters:
-            raise Exception("Incorrect param types")
+        if len(paramtypes) != len(methoddesc.parameters):
+            raise Exception("Incorrect param count")
+        
+        for actual, expected in zip(paramtypes, methoddesc.parameters):
+            if not actual.isSameAs(expected):
+                raise Exception("Incorrect param types")
         
         return methoddesc.return_type, "{0}.{1}({2})".format(
             targetcode,

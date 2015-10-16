@@ -35,10 +35,11 @@ class TextBoxObject(VisualObject):
 
 class TextBox(VisualComponent):
     ATTRIBUTES = {
-        'text': UflStringType,
-        'color': UflColorType,
-        'font': UflFontType,
+        'text': UflStringType(),
+        'color': UflColorType(),
+        'font': UflFontType(),
     }
+    CHILDREN_TYPE = 'text'
     
     def __init__(self, children, text=None, color=None, font=None):
         super().__init__(())

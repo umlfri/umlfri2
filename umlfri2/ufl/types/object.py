@@ -18,5 +18,18 @@ class UflObjectType(UflType):
     def build_default(self):
         return {name: type.build_default() for name, type in self.__attributes.items()}
     
+    def isSameAs(self, other):
+        if not super().isSameAs(other):
+            return False
+        
+        if self.__attributes.keys() != other.__attributes.keys():
+            return False
+        
+        for name, type in self.__attributes:
+            if not other.__attributes[name].isSameAs(type):
+                return False
+        
+        return True
+    
     def __str__(self):
         return "Object[{0}]".format(", ".join("{0}: {1}".format(name, type) for name, type in self.__attributes.items()))

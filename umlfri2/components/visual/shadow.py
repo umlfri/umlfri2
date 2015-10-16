@@ -30,8 +30,8 @@ class ShadowObject(VisualObject):
 
 class Shadow(VisualComponent):
     ATTRIBUTES = {
-        'color': UflColorType,
-        'padding': UflIntegerType,
+        'color': UflColorType(),
+        'padding': UflIntegerType(),
     }
     
     def __init__(self, children, color=None, padding=None):

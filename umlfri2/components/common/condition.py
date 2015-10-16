@@ -4,7 +4,7 @@ from umlfri2.ufl.types import UflBoolType
 
 class Condition(ControlComponent):
     ATTRIBUTES = {
-        'condition': UflBoolType,
+        'condition': UflBoolType(),
     }
     
     def __init__(self, children, condition):

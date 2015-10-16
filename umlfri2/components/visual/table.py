@@ -4,8 +4,12 @@ from .visualcomponent import VisualComponent, VisualObject
 
 class TableObject(VisualObject):
     def __init__(self, table):
-        self.__rows = [0] * len(table)
-        self.__columns = [0] * max(len(row) for row in table)
+        if table:
+            self.__rows = [0] * len(table)
+            self.__columns = [0] * max(len(row) for row in table)
+        else:
+            self.__rows = []
+            self.__columns = []
         
         for idrow, row in enumerate(table):
             for idcolumn, child in enumerate(row):

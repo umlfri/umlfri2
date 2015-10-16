@@ -1,16 +1,18 @@
+from weakref import ref
 from umlfri2.ufl.types import UflTypedEnumType, UflNullableType, UflStringType, UflEnumType
 
 
 class Component:
     ATTRIBUTES = {}
     HAS_CHILDREN = True
+    CHILDREN_TYPE = None
     
     def __init__(self, children):
         self.__children = children
         self.__parent = None
         
         for child in children:
-            child.__parent = self
+            child.__parent = ref(self)
     
     def is_control(self):
         raise NotImplementedError
@@ -20,29 +22,13 @@ class Component:
     
     def _compile_expressions(self, variables, **expressions):
         for name, expression in expressions.items():
-            expression.compile(variables)
+            expected_type = self.ATTRIBUTES[name]
             
-            expected_metatype = self.ATTRIBUTES[name]
+            expression.compile(variables, expected_type)
+            
             actual_type = expression.get_type()
-            
-            wrong_type = False
-            
-            if isinstance(expected_metatype, UflNullableType):
-                if actual_type is None:
-                    continue
-                expected_metatype = expected_metatype.inner_type
-            
-            
-            if expected_metatype == UflStringType and isinstance(actual_type, UflEnumType):
-                continue
-            
-            if isinstance(expected_metatype, UflTypedEnumType):
-                if not isinstance(actual_type, UflTypedEnumType):
-                    raise Exception("Invalid type for attribute {0} ({1}, but {2} expected)".format(name, actual_type, expected_metatype))
-                elif expected_metatype.type is not actual_type.type:
-                    raise Exception("Invalid type for attribute {0} ({1}, but {2} expected)".format(name, actual_type, expected_metatype))
-            elif not isinstance(actual_type, expected_metatype):
-                raise Exception("Invalid type for attribute {0} ({1}, but {2} expected)".format(name, actual_type, expected_metatype.__name__))
+            if not expected_type.isSameAs(actual_type):
+                raise Exception("Invalid type for attribute {0} ({1}, but {2} expected)".format(name, actual_type, expected_type))
     
     def _compile_children(self, variables):
         for child in self.__children:
@@ -56,4 +42,4 @@ class Component:
                 yield context, child
     
     def _get_parent(self):
-        return self.__parent
+        return self.__parent()
