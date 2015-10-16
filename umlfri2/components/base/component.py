@@ -1,4 +1,4 @@
-from umlfri2.ufl.types import UflTypedEnumType, UflNullableType
+from umlfri2.ufl.types import UflTypedEnumType, UflNullableType, UflStringType, UflEnumType
 
 
 class Component:
@@ -31,6 +31,10 @@ class Component:
                 if actual_type is None:
                     continue
                 expected_metatype = expected_metatype.inner_type
+            
+            
+            if expected_metatype == UflStringType and isinstance(actual_type, UflEnumType):
+                continue
             
             if isinstance(expected_metatype, UflTypedEnumType):
                 if not isinstance(actual_type, UflTypedEnumType):

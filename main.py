@@ -1,8 +1,7 @@
 import sys
 from PySide.QtGui import QApplication
 from umlfri2.components.common import *
-from umlfri2.components.expressions import ConstantExpression
-from umlfri2.components.expressions.python import PythonExpression
+from umlfri2.components.expressions import ConstantExpression, UflExpression
 from umlfri2.components.text import *
 from umlfri2.components.visual import *
 from umlfri2.components.visual.align import HorizontalAlignment
@@ -33,7 +32,7 @@ Shadow((
                     (
                         Align(
                             (
-                                TextBox((), text = PythonExpression(lambda self: self["name"], UflStringType())),
+                                TextBox((), text = UflExpression('self.name')),
                             ),
                             horizontal=ConstantExpression(HorizontalAlignment.center, UflTypedEnumType(HorizontalAlignment))
                         ),
@@ -47,17 +46,17 @@ Shadow((
                             TableRow(
                                 (
                                     TextBox((
-                                        Text(text = PythonExpression(lambda self, visibility, name: visibility, UflStringType())),
+                                        Text(text = UflExpression('visibility')),
                                         Text(text = ConstantExpression(" ")),
                                     )),
                                     TextBox((
-                                        Text(text = PythonExpression(lambda self, visibility, name: name, UflStringType())),
+                                        Text(text = UflExpression('name')),
                                         Text(text = ConstantExpression("()")),
                                     )),
                                 )
                             ),
                         ),
-                        src=PythonExpression(lambda self: self["items"], typedef.get_attribute_type("items"))
+                        src=UflExpression('self.items')
                     ),
                 )),
             )),

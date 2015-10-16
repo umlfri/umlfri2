@@ -1,9 +1,10 @@
+from .expression import Expression
 from umlfri2.types.color import Color
 from umlfri2.types.font import Font
 from umlfri2.ufl.types import UflIntegerType, UflStringType, UflColorType, UflFontType
 
 
-class ConstantExpression:
+class ConstantExpression(Expression):
     __types = {
         int: UflIntegerType(),
         str: UflStringType(),

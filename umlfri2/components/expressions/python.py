@@ -1,4 +1,6 @@
-class PythonExpression:
+from .expression import Expression
+
+class PythonExpression(Expression):
     """
     Expression type supposed to be used for debugging purposes only.
     """
