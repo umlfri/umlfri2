@@ -7,7 +7,7 @@ from umlfri2.components.visual import *
 from umlfri2.components.visual.align import HorizontalAlignment
 from umlfri2.metamodel import ElementType
 from umlfri2.qtgui.canvas.canvaswidget import CanvasWidget
-from umlfri2.types.color import Color
+from umlfri2.types.color import Colors
 from umlfri2.ufl.types import *
 
 app = QApplication(sys.argv)
@@ -63,8 +63,8 @@ test_type = ElementType(
                     )),
                 )),
             ),
-            fill=ConstantExpression(Color.get_color("yellow")),
-            border=ConstantExpression(Color.get_color("black"))
+            fill=ConstantExpression(Colors.yellow),
+            border=ConstantExpression(Colors.black)
         ),
     ))
 )
