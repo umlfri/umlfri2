@@ -10,3 +10,6 @@ class UflVariable(UflExpression):
     
     def _get_params(self):
         return self.__name,
+
+    def accept(self, visitor):
+        return visitor.visit_variable(self)

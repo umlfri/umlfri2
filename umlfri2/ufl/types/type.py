@@ -1,0 +1,2 @@
+class UflType:
+    pass

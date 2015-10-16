@@ -18,3 +18,6 @@ class UflExpression:
         ret += ")"
         
         return ret
+    
+    def accept(self, visitor):
+        raise NotImplementedError

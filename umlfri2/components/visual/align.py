@@ -1,4 +1,17 @@
+from ..expressions import NoneExpression
 from .visualcomponent import VisualComponent, VisualObject
+
+
+class VerticalAlignment:
+    top = 1
+    center = 2
+    bottom = 3
+
+
+class HorizontalAlignment:
+    left = 1
+    center = 2
+    right = 3
 
 
 class AlignObject(VisualObject):
@@ -41,15 +54,15 @@ class AlignObject(VisualObject):
 
 
 class Align(VisualComponent):
-    def __init__(self, children, horizontal: id=None, vertical: id=None):
+    def __init__(self, children, horizontal: HorizontalAlignment=None, vertical: VerticalAlignment=None):
         super().__init__(children)
-        self.__horizontal = horizontal
-        self.__vertical = vertical
+        self.__horizontal = horizontal or NoneExpression
+        self.__vertical = vertical or NoneExpression
     
     def _create_object(self, context, ruler):
         for local, child in self._get_children(context):
             return AlignObject(
                 child._create_object(local, ruler),
-                self.__horizontal,
-                self.__vertical
+                self.__horizontal(context),
+                self.__vertical(context)
             )

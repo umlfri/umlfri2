@@ -21,3 +21,6 @@ class UflMethodCall(UflExpression):
     
     def _get_params(self):
         return (self.__target, self.__selector) + tuple(self.__parameters)
+
+    def accept(self, visitor):
+        return visitor.visit_method_call(self)

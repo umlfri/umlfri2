@@ -16,3 +16,6 @@ class UflAttributeAccess(UflExpression):
     
     def _get_params(self):
         return self.__object, self.__attribute
+
+    def accept(self, visitor):
+        return visitor.visit_attribute_access(self)

@@ -16,3 +16,6 @@ class UflEnum(UflExpression):
     
     def _get_params(self):
         return self.__enum, self.__item
+
+    def accept(self, visitor):
+        return visitor.visit_enum(self)

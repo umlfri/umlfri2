@@ -23,7 +23,7 @@ Shadow((
                             (
                                 TextBox((), text = PythonExpression(lambda self: self["name"])),
                             ),
-                            horizontal="center"
+                            horizontal=ConstantExpression("center")
                         ),
                     ),
                     padding=ConstantExpression(5)
