@@ -17,8 +17,7 @@ class UflFontType(UflType):
     def build_default(self):
         return self.__default or Font('Arial', 10)
     
-    @staticmethod
-    def parse(value):
+    def parse(self, value):
         return Font.get_font(value)
     
     def __str__(self):

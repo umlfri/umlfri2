@@ -14,8 +14,7 @@ class UflColorType(UflType):
     def build_default(self):
         return self.__default or Colors.black
     
-    @staticmethod
-    def parse(value):
+    def parse(self, value):
         return Color.get_color(value)
     
     def __str__(self):

@@ -30,7 +30,7 @@ class UflStructureLoader:
                 ufltype = self.__simpleTypes[type]
                 default = child.attrib.get("default")
                 if default:
-                    attr = ufltype(ufltype.parse(default))
+                    attr = ufltype(ufltype().parse(default))
                 else:
                     attr = ufltype()
             elif type == "enum":
