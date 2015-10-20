@@ -25,11 +25,18 @@ class UflEnumType(UflType):
             raise ValueError("Invalid value")
         return value
     
-    def isSameAs(self, other):
-        if not super().isSameAs(other):
+    def is_same_as(self, other):
+        if not super().is_same_as(other):
             return False
         
         return self.__possibilities == other.possibilities
+    
+    @property
+    def is_immutable(self):
+        return True
+    
+    def is_valid_value(self, value):
+        return value in self.__possibilities
     
     def __str__(self):
         return 'Enum[{0}]'.format(", ".join(self.__possibilities))

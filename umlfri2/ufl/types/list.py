@@ -1,4 +1,5 @@
 from .type import UflType
+from ..objects import UflList
 
 
 class UflListType(UflType):
@@ -10,13 +11,17 @@ class UflListType(UflType):
         return self.__item_type
     
     def build_default(self):
-        return []
+        return UflList(self)
     
-    def isSameAs(self, other):
-        if not super().isSameAs(other):
+    def is_same_as(self, other):
+        if not super().is_same_as(other):
             return False
         
-        return self.__item_type.isSameAs(other.__item_type)
+        return self.__item_type.is_same_as(other.__item_type)
+    
+    @property
+    def is_immutable(self):
+        return False
     
     def __str__(self):
         return "List<{0}>".format(self.__item_type)

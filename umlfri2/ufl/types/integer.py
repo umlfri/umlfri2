@@ -14,5 +14,12 @@ class UflIntegerType(UflType):
     def parse(self, value):
         return int(value)
     
+    @property
+    def is_immutable(self):
+        return True
+    
+    def is_valid_value(self, value):
+        return isinstance(value, int)
+    
     def __str__(self):
         return "Integer"

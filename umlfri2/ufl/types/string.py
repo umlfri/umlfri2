@@ -28,5 +28,12 @@ class UflStringType(UflType):
     def parse(self, value):
         return value
     
+    @property
+    def is_immutable(self):
+        return True
+    
+    def is_valid_value(self, value):
+        return isinstance(value, str)
+    
     def __str__(self):
         return 'String'

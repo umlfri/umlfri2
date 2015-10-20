@@ -15,17 +15,17 @@ class UflNullableType(UflType):
     def parse(self, value):
         return self.__inner_type.parse(value)
     
-    def isSameAs(self, other):
+    def is_same_as(self, other):
         if other is None:
             return True
         
-        if not super().isSameAs(other):
+        if not super().is_same_as(other):
             return False
         
-        if self.__inner_type.isSameAs(other.__inner_type):
+        if self.__inner_type.is_same_as(other.__inner_type):
             return True
         
-        if self.__inner_type.isSameAs(other):
+        if self.__inner_type.is_same_as(other):
             return True
         
         return False

@@ -20,6 +20,13 @@ class UflFontType(UflType):
     def parse(self, value):
         return Font.get_font(value)
     
+    @property
+    def is_immutable(self):
+        return True
+    
+    def is_valid_value(self, value):
+        return isinstance(value, Font)
+    
     def __str__(self):
         return "Font"
 

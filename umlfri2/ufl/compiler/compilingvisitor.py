@@ -18,7 +18,7 @@ class UflCompilingVisitor(UflVisitor):
             return attrtype, '{0}.{1}'.format(objcode, attrname)
         
         if isinstance(objtype, UflObjectType) and objtype.contains_attribute(node.attribute):
-            return objtype.get_attribute_type(node.attribute), '{0}[{1!r}]'.format(objcode, node.attribute)
+            return objtype.get_attribute_type(node.attribute), '{0}.get_value({1!r})'.format(objcode, node.attribute)
         
         raise Exception("Unknown attribute {0}".format(node.attribute))
 
@@ -53,7 +53,7 @@ class UflCompilingVisitor(UflVisitor):
             raise Exception("Incorrect param count")
         
         for actual, expected in zip(paramtypes, methoddesc.parameters):
-            if not actual.isSameAs(expected):
+            if not actual.is_same_as(expected):
                 raise Exception("Incorrect param types")
         
         return methoddesc.return_type, "{0}.{1}({2})".format(

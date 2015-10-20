@@ -9,7 +9,7 @@ class UflType:
     def build_default(self):
         raise NotImplementedError
     
-    def isSameAs(self, other):
+    def is_same_as(self, other):
         
         if isinstance(other, self.__class__):
             return True
@@ -19,10 +19,17 @@ class UflType:
             return True
         
         from .nullable import UflNullableType
-        if isinstance(other, UflNullableType) and other.inner_type.isSameAs(self):
+        if isinstance(other, UflNullableType) and other.inner_type.is_same_as(self):
             return True
         
         return False
+    
+    @property
+    def is_immutable(self):
+        raise NotImplementedError
+    
+    def is_valid_value(self, value):
+        raise NotImplementedError
     
     def __str__(self):
         return 'Type'

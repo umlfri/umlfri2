@@ -15,7 +15,7 @@ class Context:
         ret.__locals = self.__locals.copy()
         if name is None:
             # dont call constructor
-            ret.__locals.update(item)
+            ret.__locals.update(item.get_values())
         else:
             ret[name] = item
         return ret

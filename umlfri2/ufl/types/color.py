@@ -17,6 +17,13 @@ class UflColorType(UflType):
     def parse(self, value):
         return Color.get_color(value)
     
+    @property
+    def is_immutable(self):
+        return True
+    
+    def is_valid_value(self, value):
+        return isinstance(value, Color)
+    
     def __str__(self):
         return 'Color'
 

@@ -33,11 +33,18 @@ class UflTypedEnumType(UflType):
     def parse(self, value):
         return getattr(self.__type, value)
     
-    def isSameAs(self, other):
-        if not super().isSameAs(other):
+    def is_same_as(self, other):
+        if not super().is_same_as(other):
             return False
         
         return self.__type == other.__type
+    
+    @property
+    def is_immutable(self):
+        return True
+    
+    def is_valid_value(self, value):
+        return isinstance(value, int) # TODO: Python 3.4: self.__type
     
     def __str__(self):
         return 'TypedEnum[{0}]'.format(self.name)
