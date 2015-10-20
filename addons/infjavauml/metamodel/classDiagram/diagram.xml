@@ -11,12 +11,12 @@
         <Text text="#self.name"/>
     </DisplayName>
 
-    <Objects>
-        <Object id="class"/>
-    </Objects>
+    <Elements>
+        <Element id="class"/>
+    </Elements>
 
     <Connections>
-        <Connection id="classAssociation"/>
+        <Connection id="association"/>
     </Connections>
 
     <Appearance>

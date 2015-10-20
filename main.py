@@ -1,7 +1,7 @@
 import sys
 from PySide.QtGui import QApplication
 import lxml.etree
-from umlfri2.metamodel.loader import ElementTypeLoader, AddonInfoLoader
+from umlfri2.metamodel.loader import ElementTypeLoader, AddonInfoLoader, DiagramTypeLoader
 from umlfri2.model.element import ElementObject, ElementVisual
 from umlfri2.qtgui.canvas.canvaswidget import CanvasWidget
 
@@ -14,6 +14,9 @@ addon = AddonInfoLoader(lxml.etree.parse(open('addons/infjavauml/addon.xml')).ge
 
 type = ElementTypeLoader(addon, lxml.etree.parse(open('addons/infjavauml/metamodel/classDiagram/class.xml')).getroot()).load()
 type.compile()
+
+diagramtype = DiagramTypeLoader(addon, lxml.etree.parse(open('addons/infjavauml/metamodel/classDiagram/diagram.xml')).getroot()).load()
+diagramtype.compile()
 
 obj1 = ElementObject(type)
 obj2 = ElementObject(type)

@@ -1,2 +1,3 @@
 from .elementtypeloader import ElementTypeLoader
 from .addoninfoloader import AddonInfoLoader
+from .diagramtypeloader import DiagramTypeLoader
