@@ -3,8 +3,8 @@
     <Icon path="icons/class_diagram.png"/>
 
     <Structure>
-        <Attribute id="name" name="Name" type="str"/>
-        <Attribute id="note" name="Note" type="str"/>
+        <Attribute id="name" type="str"/>
+        <Attribute id="note" type="text"/>
     </Structure>
 
     <DisplayName>

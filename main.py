@@ -27,6 +27,9 @@ obj1.data.get_value("attributes").get_item(1).set_value("type", "int")
 obj1.data.set_value("name", "Class1")
 obj2.data.set_value("name", "Class2")
 
+print(obj1.get_display_name())
+print(obj2.get_display_name())
+
 vis1 = ElementVisual(obj1)
 vis2 = ElementVisual(obj2)
 vis1.move(ruler, (30, 30))
