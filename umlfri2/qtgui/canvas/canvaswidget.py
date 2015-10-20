@@ -10,17 +10,16 @@ class CanvasWidget(QWidget):
         self.__objects = []
         self.__ruler = QTRuler()
     
-    # TODO: object should contain type witch should contain component
-    def show_object(self, type, obj, position=(0, 0), size=None):
-        obj = type.create_visual_object(Context(obj, config = type.metamodel.config), self.__ruler)
-        obj.move(position)
-        obj.resize(size)
-        self.__objects.append(obj)
+    def show_object(self, visual):
+        self.__objects.append(visual)
     
     def paintEvent(self, event):
         painter = QPainter()
         painter.begin(self)
         canvas = QTPainterCanvas(painter)
-        for obj in self.__objects:
-            obj.draw(canvas)
+        for visual in self.__objects:
+            visual.draw(canvas)
         painter.end()
+    
+    def get_ruler(self):
+        return self.__ruler

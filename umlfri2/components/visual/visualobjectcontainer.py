@@ -3,7 +3,15 @@ class VisualObjectContainer:
         self.__object = object
         self.__position = (0, 0)
         self.__size = self.__object.get_minimal_size()
-        
+    
+    @property
+    def size(self):
+        return self.__size
+    
+    @property
+    def position(self):
+        return self.__position
+    
     def resize(self, new_size):
         if new_size is None:
             self.__size = self.__object.get_minimal_size()

@@ -4,6 +4,13 @@ class Context:
         if config is not None:
             self.__locals['cfg'] = config
     
+    def set_config(self, config):
+        if config is None:
+            if 'cfg' in self.__locals:
+                del self.__locals['cfg']
+        else:
+            self.__locals['cfg'] = config
+    
     def get_variable(self, name):
         return self.__locals[name]
     

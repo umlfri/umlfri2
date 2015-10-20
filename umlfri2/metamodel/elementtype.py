@@ -32,8 +32,11 @@ class ElementType:
         return self.__appearance
     
     def compile(self):
-        self.__appearance.compile({'self': self.__ufl_type, 'cfg': self.__metamodel.config_structure})
-        self.__display_name.compile({'self': self.__ufl_type, 'cfg': self.__metamodel.config_structure})
+        variables = {'self': self.__ufl_type, 'cfg': self.__metamodel.config_structure}
+        
+        self.__appearance.compile(variables)
+        self.__display_name.compile(variables)
     
     def create_visual_object(self, context, ruler):
+        context.set_config(self.__metamodel.config)
         return self.__appearance.create_visual_object(context, ruler)
