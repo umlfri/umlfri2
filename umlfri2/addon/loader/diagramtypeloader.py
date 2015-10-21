@@ -8,9 +8,10 @@ from umlfri2.types.color import Color
 
 
 class DiagramTypeLoader:
-    def __init__(self, metamodel, xmlroot):
-        self.__metamodel = metamodel
+    def __init__(self, xmlroot, elements, connections):
         self.__xmlroot = xmlroot
+        self.__elements = elements
+        self.__connections = connections
     
     def load(self):
         id = self.__xmlroot.attrib["id"]
@@ -47,5 +48,9 @@ class DiagramTypeLoader:
             else:
                 raise Exception
         
-        # TODO: link associated elements and connections to diagram type
-        return DiagramType(self.__metamodel, id, icon, ufl_type, display_name, (), (), background)
+        
+        elements = tuple(self.__elements[id] for id in elements)
+        #connections = tuple(self.__connections[id] for id in connections)
+        connections = () # TODO
+        
+        return DiagramType(id, icon, ufl_type, display_name, elements, connections, background)

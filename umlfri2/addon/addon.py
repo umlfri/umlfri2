@@ -8,9 +8,11 @@ class AddOn:
         self.__license = license
         self.__icon = icon
         self.__description = description
-        self.__config = config
+        self.__config_structure = config
+        self.__config = config.build_default()
         self.__translations = translations
         self.__metamodel = metamodel
+        self.__metamodel._set_addon(self)
     
     @property
     def identifier(self):
@@ -45,6 +47,10 @@ class AddOn:
         return self.__description
     
     @property
+    def config_structure(self):
+        return self.__config_structure
+    
+    @property
     def config(self):
         return self.__config
     
@@ -55,3 +61,6 @@ class AddOn:
     @property
     def metamodel(self):
         return self.__metamodel
+    
+    def compile(self):
+        self.__metamodel.compile()

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<DiagramType id="classDiagram" xmlns="http://umlfri.org/v2/addon.xsd">
+<DiagramType id="class_diagram" xmlns="http://umlfri.org/v2/addon.xsd">
     <Icon path="icons/class_diagram.png"/>
 
     <Structure>

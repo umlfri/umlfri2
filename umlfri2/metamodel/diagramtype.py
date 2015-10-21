@@ -1,10 +1,11 @@
 from umlfri2.types.color import Color
+from weakref import ref
 
 
 class DiagramType:
-    def __init__(self, metamodel, id, icon, ufl_type, display_name,
+    def __init__(self, id, icon, ufl_type, display_name,
                  element_types, connection_types, background_color):
-        self.__metamodel = metamodel
+        self.__metamodel = None
         self.__id = id
         self.__icon = icon
         self.__ufl_type = ufl_type
@@ -13,9 +14,12 @@ class DiagramType:
         self.__connection_types = tuple(connection_types)
         self.__background_color = background_color
     
+    def _set_metamodel(self, metamodel):
+        self.__metamodel = ref(metamodel)
+    
     @property
     def metamodel(self):
-        return self.__metamodel
+        return self.__metamodel()
     
     @property
     def id(self):
@@ -38,15 +42,15 @@ class DiagramType:
         return self.__connection_types
     
     def get_background_color(self, context):
-        context.set_config(self.__metamodel.config)
+        context.set_config(self.__metamodel().addon.config)
         return self.__background_color(**context.as_dict())
     
     def compile(self):
-        variables = {'self': self.__ufl_type, 'cfg': self.__metamodel.config_structure}
+        variables = {'self': self.__ufl_type, 'cfg': self.__metamodel().addon.config_structure}
         
         self.__display_name.compile(variables)
         self.__background_color.compile(variables, Color)
     
     def get_display_name(self, context):
-        context.set_config(self.__metamodel.config)
+        context.set_config(self.__metamodel().addon.config)
         return self.__display_name.get_text(context)

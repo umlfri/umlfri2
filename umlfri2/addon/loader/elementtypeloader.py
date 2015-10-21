@@ -6,8 +6,7 @@ from umlfri2.metamodel import ElementType
 
 
 class ElementTypeLoader:
-    def __init__(self, metamodel, xmlroot):
-        self.__metamodel = metamodel
+    def __init__(self, xmlroot):
         self.__xmlroot = xmlroot
     
     def load(self):
@@ -29,4 +28,4 @@ class ElementTypeLoader:
             else:
                 raise Exception
         
-        return ElementType(self.__metamodel, id, icon, ufl_type, display_name, appearance)
+        return ElementType(id, icon, ufl_type, display_name, appearance)
