@@ -2,7 +2,7 @@ from .componentloader import ComponentLoader
 from .constants import NAMESPACE
 from .structureloader import UflStructureLoader
 from umlfri2.components.text import TextContainer
-from umlfri2.metamodel import ElementType
+from umlfri2.addon.metamodel import ElementType
 
 
 class ElementTypeLoader:

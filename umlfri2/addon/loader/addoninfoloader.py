@@ -1,6 +1,6 @@
-from umlfri2.metamodel.loader.constants import NAMESPACE
-from umlfri2.metamodel.loader.structureloader import UflStructureLoader
-from umlfri2.metamodel.metamodel import Metamodel
+from .constants import NAMESPACE
+from .structureloader import UflStructureLoader
+from umlfri2.addon.metamodel import Metamodel
 
 
 class AddonInfoLoader:

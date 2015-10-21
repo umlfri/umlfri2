@@ -1,7 +1,7 @@
 import sys
 from PySide.QtGui import QApplication
 import lxml.etree
-from umlfri2.metamodel.loader import ElementTypeLoader, AddonInfoLoader, DiagramTypeLoader
+from umlfri2.addon.loader import ElementTypeLoader, AddonInfoLoader, DiagramTypeLoader
 from umlfri2.model.element import ElementObject, ElementVisual
 from umlfri2.qtgui.canvas.canvaswidget import CanvasWidget
 
