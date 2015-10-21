@@ -3,7 +3,7 @@ from .constants import NAMESPACE
 from .structureloader import UflStructureLoader
 from umlfri2.components.expressions import ConstantExpression, UflExpression
 from umlfri2.components.text import TextContainer
-from umlfri2.addon.metamodel import DiagramType
+from umlfri2.metamodel import DiagramType
 from umlfri2.types.color import Color
 
 

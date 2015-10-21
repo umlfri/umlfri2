@@ -1,7 +1,7 @@
 import sys
 from PySide.QtGui import QApplication
 import lxml.etree
-from umlfri2.addon.loader import ElementTypeLoader, AddonInfoLoader, DiagramTypeLoader
+from umlfri2.addon.loader import ElementTypeLoader, AddOnLoader, DiagramTypeLoader
 from umlfri2.model.element import ElementObject, ElementVisual
 from umlfri2.qtgui.canvas.canvaswidget import CanvasWidget
 
@@ -10,12 +10,12 @@ app = QApplication(sys.argv)
 widget = CanvasWidget()
 ruler = widget.get_ruler()
 
-addon = AddonInfoLoader(lxml.etree.parse(open('addons/infjavauml/addon.xml')).getroot()).load()
+addon = AddOnLoader('addons/infjavauml').load()
 
-type = ElementTypeLoader(addon, lxml.etree.parse(open('addons/infjavauml/metamodel/classDiagram/class.xml')).getroot()).load()
+type = ElementTypeLoader(addon.metamodel, lxml.etree.parse(open('addons/infjavauml/metamodel/classDiagram/class.xml')).getroot()).load()
 type.compile()
 
-diagramtype = DiagramTypeLoader(addon, lxml.etree.parse(open('addons/infjavauml/metamodel/classDiagram/diagram.xml')).getroot()).load()
+diagramtype = DiagramTypeLoader(addon.metamodel, lxml.etree.parse(open('addons/infjavauml/metamodel/classDiagram/diagram.xml')).getroot()).load()
 diagramtype.compile()
 
 obj1 = ElementObject(type)

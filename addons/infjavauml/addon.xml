@@ -1,26 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<AddOn xmlns="http://umlfri.org/v2/addon.xsd">
-    <Identity uri="urn:umlfri.org:metamodel:infjavauml"/>
-
-    <FriendlyName name="UML for FRI students" version="0.1"/>
-
-    <Author>
-        <Name name="Ján Janech"/>
+<AddOn uri="urn:umlfri.org:metamodel:infjavauml" xmlns="http://umlfri.org/v2/addon.xsd">
+    <AddOnInfo>
+        <Name name="UML for FRI students"/>
+        <Version version="0.1"/>
+        <Author name="Ján Janech"/>
         <Homepage url="http://umlfri.org"/>
-
         <CommonLicense name="GPL-3"/>
-    </Author>
-
-    <Icon path="icons/uml_icon.png"/>
-
-    <Description>
-        Unified Modeling Language (UML) is a standardized general-purpose
-        modeling language in the field of software engineering.
-
-        UML includes a set of graphical notation techniques to create
-        abstract models of specific systems.
-    </Description>
+        <Icon path="icons/uml_icon.png"/>
+        
+        <Description>
+            Unified Modeling Language (UML) is a standardized general-purpose
+            modeling language in the field of software engineering.
     
+            UML includes a set of graphical notation techniques to create
+            abstract models of specific systems.
+        </Description>
+    </AddOnInfo>
+
     <Config>
         <Attribute id="element" type="object">
             <Attribute id="line" type="color" default="black" />
