@@ -28,6 +28,8 @@ class Diagram:
             return visual
     
     def draw(self, canvas):
+        context = Context(self.__data)
+        canvas.clear(self.__type.get_background_color(context))
         for element in self.__elements:
             element.draw(canvas)
     

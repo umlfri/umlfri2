@@ -86,6 +86,7 @@ class QTPainterCanvas(Canvas):
             self.__painter.setBackground(QColor(255, 255, 255))
         else:
             self.__painter.setBackground(self.__convert_color(color))
+        self.__painter.eraseRect(self.__painter.viewport())
     
     def get_ruler(self):
         return self.__ruler

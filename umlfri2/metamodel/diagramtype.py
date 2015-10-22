@@ -43,7 +43,7 @@ class DiagramType:
     
     def get_background_color(self, context):
         context.set_config(self.__metamodel().addon.config)
-        return self.__background_color(**context.as_dict())
+        return self.__background_color(context)
     
     def compile(self):
         variables = {'self': self.__ufl_type, 'cfg': self.__metamodel().addon.config_structure}
