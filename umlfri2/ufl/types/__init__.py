@@ -7,6 +7,7 @@ from .integer import UflIntegerType
 from .list import UflListType
 from .nullable import UflNullableType
 from .object import UflObjectType
+from .proportion import UflProportionType
 from .string import UflStringType
 from .type import UflType
 from .typedenum import UflTypedEnumType

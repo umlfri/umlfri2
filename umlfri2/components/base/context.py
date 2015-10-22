@@ -18,11 +18,11 @@ class Context:
         return self.__locals.copy()
     
     def extend(self, item, name = None):
+        # dont call constructor
         ret = object.__new__(Context)
         ret.__locals = self.__locals.copy()
         if name is None:
-            # dont call constructor
             ret.__locals.update(item.get_values())
         else:
-            ret[name] = item
+            ret.__locals[name] = item
         return ret

@@ -68,7 +68,7 @@
             </Case>
         </Switch>
 
-        <Label position="center">
+        <Label position="50%" id="name">
             <VBox>
                 <If condition="#self.stereotype">
                     <Align horizontal="center">
@@ -93,7 +93,7 @@
             </VBox>
         </Label>
 
-        <Label position="source">
+        <Label position="0%" id="src_card">
             <If condition="#self.source.cardinality">
                 <Rectangle fill="#cfg.background">
                     <TextBox text="#self.source.cardinality" font="#cfg.connection.textfont"
@@ -102,7 +102,7 @@
             </If>
         </Label>
 
-        <Label position="destination">
+        <Label position="100%" id="dest_card">
             <If condition="#self.destination.cardinality">
                 <Rectangle fill="#cfg.background">
                     <TextBox text="#self.destination.cardinality" font="#cfg.connection.textfont"
@@ -111,7 +111,7 @@
             </If>
         </Label>
 
-        <Label position="source+1">
+        <Label position="10%" id="src_role">
             <If condition="#self.source.role">
                 <Rectangle fill="#cfg.background">
                     <TextBox font="#cfg.connection.textfont" color="#cfg.connection.text">
@@ -124,7 +124,7 @@
             </If>
         </Label>
 
-        <Label position="destination+1">
+        <Label position="90%" id="dest_role">
             <If condition="#self.destination.role">
                 <Rectangle fill="#cfg.background">
                     <TextBox font="#cfg.connection.textfont" color="#cfg.connection.text">

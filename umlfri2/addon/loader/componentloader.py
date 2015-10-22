@@ -1,5 +1,6 @@
 from .constants import NAMESPACE
 from umlfri2.components.common import COMMON_COMPONENTS
+from umlfri2.components.connectionline import CONNECTION_LINE_COMPONENTS
 from umlfri2.components.expressions import UflExpression, ConstantExpression
 from umlfri2.components.text import TEXT_COMPONENTS
 from umlfri2.components.visual import VISUAL_COMPONENTS
@@ -9,8 +10,10 @@ class ComponentLoader:
     __components = {}
     __components['visual'] = COMMON_COMPONENTS.copy()
     __components['text'] = COMMON_COMPONENTS.copy()
+    __components['connection'] = CONNECTION_LINE_COMPONENTS.copy()
     __components['visual'].update(VISUAL_COMPONENTS)
     __components['text'].update(TEXT_COMPONENTS)
+    __components['connection'].update(TEXT_COMPONENTS)
     
     def __init__(self, xmlroot, type):
         self.__xmlroot = xmlroot
