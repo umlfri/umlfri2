@@ -1,7 +1,7 @@
 import sys
 from PySide.QtGui import QApplication
 from umlfri2.addon.loader import AddOnLoader
-from umlfri2.model.element import ElementObject, ElementVisual
+from umlfri2.model import Diagram, ElementObject
 from umlfri2.qtgui.canvas.canvaswidget import CanvasWidget
 
 app = QApplication(sys.argv)
@@ -14,6 +14,8 @@ addon = AddOnLoader('addons/infjavauml').load()
 element_type = addon.metamodel.get_element_type('class')
 
 diagram_type = addon.metamodel.get_diagram_type('class_diagram')
+
+diagram = Diagram(diagram_type)
 
 obj1 = ElementObject(element_type)
 obj2 = ElementObject(element_type)
@@ -30,14 +32,12 @@ obj2.data.set_value("name", "Class2")
 print(obj1.get_display_name())
 print(obj2.get_display_name())
 
-vis1 = ElementVisual(obj1)
-vis2 = ElementVisual(obj2)
+vis1 = diagram.show(obj1)
 vis1.move(ruler, (30, 30))
 vis1.resize(ruler, (200, 200))
-vis2.move(ruler, (10, 10))
+diagram.show(obj2).move(ruler, (10, 10))
 
-widget.show_object(vis1)
-widget.show_object(vis2)
+widget.show_diagram(diagram)
 
 widget.show()
 
