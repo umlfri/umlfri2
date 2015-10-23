@@ -1,9 +1,10 @@
 from ..expressions import ConstantExpression
-from .hbox import HBox
-from umlfri2.types.color import Color
+from .hbox import HBoxComponent
+from umlfri2.types.color import Color, Colors
+from umlfri2.types.geometry import Size, Point
 from umlfri2.ufl.types import UflTypedEnumType, UflColorType
 from .visualcomponent import VisualComponent, VisualObject
-from .vbox import VBox
+from .vbox import VBoxComponent
 
 
 class LineOrientation:
@@ -20,32 +21,30 @@ class LineObject(VisualObject):
         self.__point2 = None
     
     def assign_bounds(self, bounds):
-        self.__point1 = bounds[0], bounds[1]
+        self.__point1 = bounds.top_left
         
         if self.__orientation == LineOrientation.horizontal:
-            self.__point2 = bounds[0] + bounds[2], bounds[1]
+            self.__point2 = bounds.top_right
         else:
-            self.__point2 = bounds[0], bounds[1] + bounds[3]
+            self.__point2 = bounds.bottom_left
     
     def get_minimal_size(self):
         if self.__orientation == LineOrientation.vertical:
-            return 0, 1
+            return Size(0, 1)
         else:
-            return 1, 0
+            return Size(1, 0)
             
     def draw(self, canvas, shadow):
         if shadow:
-            x1, y1 = self.__point1
-            x2, y2 = self.__point2
             canvas.draw_line(
-                (x1 + shadow.shift, y1 + shadow.shift),
-                (x2 + shadow.shift, y2 + shadow.shift),
+                self.__point1 + shadow.shift,
+                self.__point2 + shadow.shift,
                 shadow.color
             )
         else:
             canvas.draw_line(self.__point1, self.__point2, self.__color)
 
-class Line(VisualComponent):
+class LineComponent(VisualComponent):
     ATTRIBUTES = {
         'orientation': UflTypedEnumType(LineOrientation),
         'color': UflColorType(),
@@ -55,7 +54,7 @@ class Line(VisualComponent):
     def __init__(self, orientation=None, color=None):
         super().__init__(())
         self.__orientation = orientation or ConstantExpression(LineOrientation.auto, UflTypedEnumType(LineOrientation))
-        self.__color = color or ConstantExpression(Color.black)
+        self.__color = color or ConstantExpression(Colors.black)
     
     def __get_orientation(self, context):
         orientation = self.__orientation(context)
@@ -63,9 +62,9 @@ class Line(VisualComponent):
         if orientation == LineOrientation.auto:
             parent = self._get_parent()
             while parent is not None:
-                if isinstance(parent, VBox):
+                if isinstance(parent, VBoxComponent):
                     return LineOrientation.horizontal
-                elif isinstance(parent, HBox):
+                elif isinstance(parent, HBoxComponent):
                     return LineOrientation.vertical
             return LineOrientation.horizontal
         return orientation

@@ -1,3 +1,4 @@
+from umlfri2.types.geometry import Size, Point, Rectangle
 from .visualcomponent import VisualComponent, VisualObject
 
 
@@ -8,22 +9,24 @@ class HBoxObject(VisualObject):
         self.__children_sizes = [child.get_minimal_size() for child in children]
     
     def assign_bounds(self, bounds):
-        x, y, w, h = bounds
+        x = bounds.x1
+        y = bounds.y1
+        h = bounds.height
         
         if self.__children:
             for size, child in zip(self.__children_sizes, self.__children):
-                child.assign_bounds((x, y, size[0], h))
-                x += size[0]
+                child.assign_bounds(Rectangle(x, y, size.width, h))
+                x += size.height
     
     def get_minimal_size(self):
-        w_all, h_all = zip(self.__children_sizes)
-        return sum(w_all), max(h_all)
+        return Size(sum(s.width for s in self.__children_sizes),
+                    max(s.height for s in self.__children_sizes))
     
     def draw(self, canvas, shadow):
         for child in self.__children:
             child.draw(canvas, shadow)
 
-class HBox(VisualComponent):
+class HBoxComponent(VisualComponent):
     def _create_object(self, context, ruler):
         children = [child._create_object(local, ruler) for local, child in self._get_children(context)]
         

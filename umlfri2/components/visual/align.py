@@ -1,4 +1,5 @@
 from ..expressions import NoneExpression
+from umlfri2.types.geometry import Size, Point, Rectangle
 from umlfri2.ufl.types import UflTypedEnumType, UflNullableType
 from .visualcomponent import VisualComponent, VisualObject
 
@@ -23,9 +24,13 @@ class AlignObject(VisualObject):
         self.__child_size = child.get_minimal_size()
     
     def assign_bounds(self, bounds):
-        x, y, w, h = bounds
+        x = bounds.x1
+        y = bounds.y1
+        w = bounds.width
+        h = bounds.height
         
-        w_inner, h_inner = self.__child_size
+        w_inner = self.__child_size.width
+        h_inner = self.__child_size.height
         
         if self.__horizontal == HorizontalAlignment.center:
             x += (w - w_inner) // 2
@@ -45,7 +50,7 @@ class AlignObject(VisualObject):
             y += h - h_inner
             h = h_inner
         
-        self.__child.assign_bounds((x, y, w, h))
+        self.__child.assign_bounds(Rectangle(x, y, w, h))
     
     def get_minimal_size(self):
         return self.__child_size
@@ -54,7 +59,7 @@ class AlignObject(VisualObject):
         self.__child.draw(canvas, shadow)
 
 
-class Align(VisualComponent):
+class AlignComponent(VisualComponent):
     ATTRIBUTES = {
         'horizontal': UflNullableType(UflTypedEnumType(HorizontalAlignment)),
         'vertical': UflNullableType(UflTypedEnumType(VerticalAlignment)),

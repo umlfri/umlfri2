@@ -47,22 +47,22 @@ class QTPainterCanvas(Canvas):
     def __set_brush(self, color=None):
         self.__painter.setBrush(self.__create_brush(color))
         
-    def draw_ellipse(self, pos, size, angles=(0, 360), fg=None, bg=None, line_width=None, line_style=None):
+    def draw_ellipse(self, rectangle, fg=None, bg=None, line_width=None, line_style=None):
         self.__set_brush(bg)
         self.__set_pen(fg, line_width, line_style)
-        self.__painter.drawEllipse(pos[0], pos[1], size[0], size[1])
+        self.__painter.drawEllipse(rectangle.x1, rectangle.y1, rectangle.width, rectangle.height)
     
     def draw_line(self, start, end, fg, line_width=None, line_style=None):
         self.__set_pen(fg, line_width, line_style)
-        self.__painter.drawLine(start[0], start[1], end[0], end[1])
+        self.__painter.drawLine(start.x, start.y, end.x, end.y)
     
     def draw_path(self, path, fg=None, bg=None, line_width=None, line_style=None):
         pass
     
-    def draw_rectangle(self, pos, size, fg=None, bg=None, line_width=None, line_style=None):
+    def draw_rectangle(self, rectangle, fg=None, bg=None, line_width=None, line_style=None):
         self.__set_brush(bg)
         self.__set_pen(fg, line_width, line_style)
-        self.__painter.drawRect(pos[0], pos[1], size[0], size[1])
+        self.__painter.drawRect(rectangle.x1, rectangle.y1, rectangle.width, rectangle.height)
     
     def draw_text(self, pos, text, font, fg):
         qfont = QFont(font.family, font.size)
@@ -74,8 +74,8 @@ class QTPainterCanvas(Canvas):
         
         self.__painter.setFont(qfont)
         self.__set_pen(fg)
-        x = pos[0]
-        y = pos[1] + metrics.ascent()
+        x = pos.x
+        y = pos.y + metrics.ascent()
         self.__painter.drawText(QPoint(x, y), text)
     
     def draw_icon(self, pos, filename):

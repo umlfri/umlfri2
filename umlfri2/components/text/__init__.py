@@ -1,6 +1,6 @@
-from .text import Text
-from .textcontainer import TextContainer
+from .textdata import TextDataComponent
+from .textcontainer import TextContainerComponent
 
 TEXT_COMPONENTS = {
-    'Text': Text,
+    'Text': TextDataComponent,
 }

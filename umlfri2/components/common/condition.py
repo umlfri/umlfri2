@@ -2,7 +2,7 @@ from .controlcomponent import ControlComponent
 from umlfri2.ufl.types import UflBoolType
 
 
-class Condition(ControlComponent):
+class ConditionComponent(ControlComponent):
     ATTRIBUTES = {
         'condition': UflBoolType(),
     }

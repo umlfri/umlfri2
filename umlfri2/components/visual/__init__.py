@@ -1,23 +1,23 @@
-from .align import Align
-from .hbox import HBox
-from .line import Line
-from .padding import Padding
-from .rectangle import Rectangle
-from .shadow import Shadow
-from .table import Table, TableRow, TableColumn
-from .textbox import TextBox
-from .vbox import VBox
+from .align import AlignComponent
+from .hbox import HBoxComponent
+from .line import LineComponent
+from .padding import PaddingComponent
+from .rectangle import RectangleComponent
+from .shadow import ShadowComponent
+from .table import TableComponent, TableRow, TableColumn
+from .textbox import TextBoxComponent
+from .vbox import VBoxComponent
 
 VISUAL_COMPONENTS = {
-    'Align': Align,
-    'HBox': HBox,
-    'Line': Line,
-    'Padding': Padding,
-    'Rectangle': Rectangle,
-    'Shadow': Shadow,
-    'Table': Table,
+    'Align': AlignComponent,
+    'HBox': HBoxComponent,
+    'Line': LineComponent,
+    'Padding': PaddingComponent,
+    'Rectangle': RectangleComponent,
+    'Shadow': ShadowComponent,
+    'Table': TableComponent,
     'Row': TableRow,
     'Column': TableColumn,
-    'TextBox': TextBox,
-    'VBox': VBox,
+    'TextBox': TextBoxComponent,
+    'VBox': VBoxComponent,
 }

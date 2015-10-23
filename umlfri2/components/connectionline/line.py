@@ -36,7 +36,7 @@ class LineObject(ConnectionLineObject):
             old = point
 
 
-class Line(ConnectionLineComponent):
+class LineComponent(ConnectionLineComponent):
     ATTRIBUTES = {
         'start': UflProportionType(),
         'end': UflProportionType(),
@@ -62,4 +62,4 @@ class Line(ConnectionLineComponent):
         )
     
     def _create_object(self, context):
-        return Line(self.__start(context), self.__end(context), self.__style(context), self.__color(context))
+        return LineComponent(self.__start(context), self.__end(context), self.__style(context), self.__color(context))

@@ -3,6 +3,7 @@ from PySide.QtGui import QApplication
 from umlfri2.addon.loader import AddOnLoader
 from umlfri2.model import Diagram, ElementObject
 from umlfri2.qtgui.canvas.canvaswidget import CanvasWidget
+from umlfri2.types.geometry import Point, Size
 
 app = QApplication(sys.argv)
 
@@ -33,9 +34,9 @@ print(obj1.get_display_name())
 print(obj2.get_display_name())
 
 vis1 = diagram.show(obj1)
-vis1.move(ruler, (30, 30))
-vis1.resize(ruler, (200, 200))
-diagram.show(obj2).move(ruler, (10, 10))
+vis1.move(ruler, Point(30, 30))
+vis1.resize(ruler, Size(200, 200))
+diagram.show(obj2).move(ruler, Point(10, 10))
 
 widget.show_diagram(diagram)
 

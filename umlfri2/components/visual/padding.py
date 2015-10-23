@@ -1,4 +1,5 @@
 from ..expressions import ConstantExpression
+from umlfri2.types.geometry import Rectangle, Size
 from umlfri2.ufl.types import UflIntegerType
 from .visualcomponent import VisualComponent, VisualObject
 
@@ -13,19 +14,24 @@ class PaddingObject(VisualObject):
         self.__child_size = self.__child.get_minimal_size()
     
     def assign_bounds(self, bounds):
-        x, y, w, h = bounds
-        self.__child.assign_bounds((x + self.__left, y + self.__top,
-            w - self.__left - self.__right, h - self.__top - self.__bottom))
+        self.__child.assign_bounds(
+            Rectangle(
+                bounds.x1 + self.__left,
+                bounds.y1 + self.__top,
+                bounds.width - self.__left - self.__right,
+                bounds.height - self.__top - self.__bottom
+            )
+        )
     
     def get_minimal_size(self):
-        w, h = self.__child_size
-        return w + self.__left + self.__right, h + self.__top + self.__bottom
+        return Size(self.__child_size.width + self.__left + self.__right,
+                    self.__child_size.height + self.__top + self.__bottom)
     
     def draw(self, canvas, shadow):
         self.__child.draw(canvas, shadow)
 
 
-class Padding(VisualComponent):
+class PaddingComponent(VisualComponent):
     ATTRIBUTES = {
         'padding': UflIntegerType(),
         'left': UflIntegerType(),

@@ -1,7 +1,7 @@
 from .componentloader import ComponentLoader
 from .constants import NAMESPACE
 from .structureloader import UflStructureLoader
-from umlfri2.components.text import TextContainer
+from umlfri2.components.text import TextContainerComponent
 from umlfri2.metamodel import ElementType
 
 
@@ -22,7 +22,7 @@ class ElementTypeLoader:
             elif child.tag == "{{{0}}}Structure".format(NAMESPACE):
                 ufl_type = UflStructureLoader(child).load()
             elif child.tag == "{{{0}}}DisplayName".format(NAMESPACE):
-                display_name = TextContainer(ComponentLoader(child, 'text').load())
+                display_name = TextContainerComponent(ComponentLoader(child, 'text').load())
             elif child.tag == "{{{0}}}Appearance".format(NAMESPACE):
                 appearance = ComponentLoader(child, 'visual').load()[0]
             else:

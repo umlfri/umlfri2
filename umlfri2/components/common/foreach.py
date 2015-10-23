@@ -2,7 +2,7 @@ from .controlcomponent import ControlComponent
 from umlfri2.ufl.types import UflListType, UflObjectType, UflAnyType, UflIntegerType
 
 
-class ForEach(ControlComponent):
+class ForEachComponent(ControlComponent):
     ATTRIBUTES = {
         'src': UflListType(UflAnyType()),
         'index': str,

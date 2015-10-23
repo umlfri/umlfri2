@@ -1,7 +1,8 @@
 from ..expressions import ConstantExpression
-from ..text import TextContainer, Text
+from ..text import TextContainerComponent, TextDataComponent
 from umlfri2.types.color import Color
 from umlfri2.types.font import Font
+from umlfri2.types.geometry import Point
 from umlfri2.ufl.types import UflStringType, UflColorType, UflFontType
 from .visualcomponent import VisualComponent, VisualObject
 
@@ -15,16 +16,15 @@ class TextBoxObject(VisualObject):
         self.__position = None
     
     def assign_bounds(self, bounds):
-        self.__position = bounds[0], bounds[1]
+        self.__position = bounds.top_left
     
     def get_minimal_size(self):
         return self.__size
     
     def draw(self, canvas, shadow):
         if shadow:
-            x, y = self.__position
             canvas.draw_text(
-                (x + shadow.shift, y + shadow.shift),
+                self.__position + shadow.shift,
                 self.__text,
                 self.__font,
                 shadow.color
@@ -33,7 +33,7 @@ class TextBoxObject(VisualObject):
             canvas.draw_text(self.__position, self.__text, self.__font, self.__color)
 
 
-class TextBox(VisualComponent):
+class TextBoxComponent(VisualComponent):
     ATTRIBUTES = {
         'text': UflStringType(),
         'color': UflColorType(),
@@ -46,9 +46,9 @@ class TextBox(VisualComponent):
         self.__color = color or ConstantExpression(Color.get_color("black"))
         self.__font = font or ConstantExpression(Font("Arial", 10))
         if text is None:
-            self.__text = TextContainer(children)
+            self.__text = TextContainerComponent(children)
         else:
-            self.__text = Text(text)
+            self.__text = TextDataComponent(text)
     
     def is_resizable(self, context):
         return False, False

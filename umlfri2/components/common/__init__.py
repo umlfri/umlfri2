@@ -1,7 +1,7 @@
-from .condition import Condition
-from .foreach import ForEach
+from .condition import ConditionComponent
+from .foreach import ForEachComponent
 
 COMMON_COMPONENTS = {
-    'If': Condition,
-    'ForEach': ForEach,
+    'If': ConditionComponent,
+    'ForEach': ForEachComponent,
 }

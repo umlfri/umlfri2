@@ -2,7 +2,7 @@ from .textcomponent import TextComponent
 from umlfri2.ufl.types import UflStringType
 
 
-class Text(TextComponent):
+class TextDataComponent(TextComponent):
     ATTRIBUTES = {
         'text': UflStringType(),
     }

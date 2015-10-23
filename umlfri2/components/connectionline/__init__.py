@@ -1,7 +1,7 @@
-from .arrow import Arrow
-from .line import Line
+from .arrow import ArrowComponent
+from .line import LineComponent
 
 CONNECTION_LINE_COMPONENTS = {
-    'Arrow': Arrow,
-    'Line': Line,
+    'Arrow': ArrowComponent,
+    'Line': LineComponent,
 }

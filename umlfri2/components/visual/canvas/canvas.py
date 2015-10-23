@@ -12,7 +12,7 @@ class LineStyle:
 
 class Canvas(metaclass=abc.ABCMeta):
     @abc.abstractmethod
-    def draw_ellipse(self, pos, size, fg=None, bg=None, line_width=None, line_style=None):
+    def draw_ellipse(self, rectangle, fg=None, bg=None, line_width=None, line_style=None):
         """
         Draws ellipse to canvas.
         
@@ -40,7 +40,7 @@ class Canvas(metaclass=abc.ABCMeta):
         pass
     
     @abc.abstractmethod
-    def draw_rectangle(self, pos, size, fg=None, bg=None, line_width=None, line_style=None):
+    def draw_rectangle(self, rectangle, fg=None, bg=None, line_width=None, line_style=None):
         pass
     
     @abc.abstractmethod

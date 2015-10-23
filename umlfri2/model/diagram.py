@@ -35,10 +35,7 @@ class Diagram:
     
     def get_element_at(self, pos):
         for element in reversed(self.__elements):
-            x, y = element.position
-            w, h = element.size
-            
-            if x <= pos[0] <= x + w and y <= pos[1] <= y + h:
+            if element.bounds.constains(pos):
                 return element
         
         return None

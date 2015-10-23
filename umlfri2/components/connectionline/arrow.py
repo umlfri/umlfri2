@@ -15,7 +15,7 @@ class ArrowObject(ConnectionLineObject):
         pass
 
 
-class Arrow(ConnectionLineComponent):
+class ArrowComponent(ConnectionLineComponent):
     ATTRIBUTES = {
         'position': UflProportionType(),
         'style': UflStringType(),
@@ -40,4 +40,4 @@ class Arrow(ConnectionLineComponent):
         )
     
     def _create_object(self, context):
-        return Arrow(self.__position(context), self.__style(context), self.__color(context))
+        return ArrowComponent(self.__position(context), self.__style(context), self.__color(context))

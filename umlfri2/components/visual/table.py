@@ -1,4 +1,5 @@
 from ..base.helpercomponent import HelperComponent
+from umlfri2.types.geometry import Size, Rectangle
 from .visualcomponent import VisualComponent, VisualObject
 
 
@@ -13,27 +14,28 @@ class TableObject(VisualObject):
         
         for idrow, row in enumerate(table):
             for idcolumn, child in enumerate(row):
-                w, h = child.get_minimal_size()
-                if w > self.__columns[idcolumn]:
-                    self.__columns[idcolumn] = w
-                if h > self.__rows[idrow]:
-                    self.__rows[idrow] = h
+                size = child.get_minimal_size()
+                if size.width > self.__columns[idcolumn]:
+                    self.__columns[idcolumn] = size.width
+                if size.height > self.__rows[idrow]:
+                    self.__rows[idrow] = size.height
         
         self.__table = table
     
     def assign_bounds(self, bounds):
-        x, y, w, h = bounds
+        x = bounds.x1
+        y = bounds.y1
         
         y_cur = y
         for height, row in zip(self.__rows, self.__table):
             x_cur = x
             for width, child in zip(self.__columns, row):
-                child.assign_bounds((x_cur, y_cur, width, height))
+                child.assign_bounds(Rectangle(x_cur, y_cur, width, height))
                 x_cur += width
             y_cur += height
     
     def get_minimal_size(self):
-        return sum(self.__columns), sum(self.__rows)
+        return Size(sum(self.__columns), sum(self.__rows))
     
     def draw(self, canvas, shadow):
         for row in self.__table:
@@ -51,7 +53,7 @@ class TableColumn(HelperComponent):
         self._compile_children(variables)
 
 
-class Table(VisualComponent):
+class TableComponent(VisualComponent):
     def _create_object(self, context, ruler):
         iscolumn = False # is this table with columns?
         ret = []

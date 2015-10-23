@@ -1,6 +1,7 @@
 from collections import namedtuple
 from umlfri2.components.expressions import ConstantExpression
 from umlfri2.types.color import Color
+from umlfri2.types.geometry import Size, Rectangle, Vector
 from umlfri2.ufl.types import UflColorType, UflIntegerType
 from .visualcomponent import VisualComponent, VisualObject
 
@@ -16,19 +17,21 @@ class ShadowObject(VisualObject):
         self.__child_size = child.get_minimal_size()
     
     def assign_bounds(self, bounds):
-        x, y, w, h = bounds
-        self.__child.assign_bounds((x, y, w - self.__padding, h - self.__padding))
+        self.__child.assign_bounds(Rectangle(bounds.x1, bounds.y1,
+                                    bounds.width - self.__padding,
+                                    bounds.height - self.__padding))
     
     def get_minimal_size(self):
-        w, h = self.__child_size
-        return w + self.__padding, h + self.__padding
+        return Size(self.__child_size.width + self.__padding,
+                    self.__child_size.height + self.__padding)
     
     def draw(self, canvas, shadow):
-        self.__child.draw(canvas, ShadowInfo(self.__color, self.__padding))
+        self.__child.draw(canvas, ShadowInfo(self.__color,
+                                             Vector(self.__padding, self.__padding)))
         self.__child.draw(canvas, None)
 
 
-class Shadow(VisualComponent):
+class ShadowComponent(VisualComponent):
     ATTRIBUTES = {
         'color': UflColorType(),
         'padding': UflIntegerType(),

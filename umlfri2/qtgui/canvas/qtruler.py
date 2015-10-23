@@ -1,6 +1,7 @@
 from PySide.QtGui import QFont, QFontMetrics
 from umlfri2.components.visual.canvas import Ruler
 from umlfri2.types.font import FontStyle
+from umlfri2.types.geometry import Size
 
 
 class QTRuler(Ruler):
@@ -13,7 +14,7 @@ class QTRuler(Ruler):
         
         metrics = QFontMetrics(qfont)
         size = metrics.size(0, text)
-        return size.width(), size.height()
+        return Size(size.width(), size.height())
     
     def measure_image(self, image):
         pass
