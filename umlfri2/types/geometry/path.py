@@ -5,6 +5,15 @@ class PathCommand:
     @property
     def final_point(self):
         return self.__final_point
+    
+    def __str__(self):
+        raise NotImplementedError
+    
+    def __repr__(self):
+        raise NotImplementedError
+    
+    def transform(self, matrix):
+        raise NotImplementedError
 
 
 class PathLineTo(PathCommand):
@@ -13,6 +22,9 @@ class PathLineTo(PathCommand):
     
     def __repr__(self):
         return "<PathLineTo {0}>".format(self.final_point)
+    
+    def transform(self, matrix):
+        return PathLineTo(self.final_point.transform(matrix))
 
 
 class PathBezierTo(PathCommand):
@@ -36,6 +48,11 @@ class PathBezierTo(PathCommand):
     def __repr__(self):
         return "<PathBezierTo {0} {1} {2}>".format(self.__control_point1,
                                                    self.__control_point2, self.final_point)
+    
+    def transform(self, matrix):
+        return PathBezierTo(self.__control_point1.transform(matrix),
+                            self.__control_point2.transform(matrix),
+                            self.final_point.transform(matrix))
 
 
 class PathSegment:
@@ -68,6 +85,10 @@ class PathSegment:
         return "<PathSegment {0} [{1}] {2}>".format(self.__starting_point,
                                                     " ".join(str(i) for i in self.__commands),
                                                     self.__closed)
+    
+    def transform(self, matrix):
+        new_commands = [command.transform(matrix) for command in self.__commands]
+        return PathSegment(self.__starting_point.transform(matrix), new_commands, self.__closed)
 
 
 class Path:
@@ -83,3 +104,7 @@ class Path:
     
     def __repr__(self):
         return "<Path [{0}]>".format(" ".join(str(i) for i in self.__segments))
+    
+    def transform(self, matrix):
+        new_segments = [segment.transform(matrix) for segment in self.__segments]
+        return Path(new_segments)
