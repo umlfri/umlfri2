@@ -7,14 +7,6 @@ class PathCommand:
         return self.__final_point
 
 
-class PathMove(PathCommand):
-    def __str__(self):
-        return "M {0}".format(self.final_point)
-    
-    def __repr__(self):
-        return "<PathMove {0}>".format(self.final_point)
-
-
 class PathLineTo(PathCommand):
     def __str__(self):
         return "L {0}".format(self.final_point)
