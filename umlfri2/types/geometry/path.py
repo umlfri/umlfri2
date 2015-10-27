@@ -129,15 +129,14 @@ class PathBuilder:
         return Path(self.__segments)
 
     def __recalculate(self, *points):
-        ret = None
+        last = self.__last
         
         for point in points:
             ret = point
             if isinstance(point, Vector):
-                ret = self.__last + ret
+                ret = last + ret
+            self.__last = ret
             yield ret
-        
-        self.__last = ret
     
     def move_to(self, point):
         if self.__origin and self.__commands:
@@ -176,8 +175,8 @@ class PathBuilder:
         cmds = s.replace(',', ' ').split()
         cur = None
         
-        pop_point = lambda: Point(int(cmds.pop(0)), int(cmds.pop(0)))
-        pop_vector = lambda: Vector(int(cmds.pop(0)), int(cmds.pop(0)))
+        pop_point = lambda: Point(float(cmds.pop(0)), float(cmds.pop(0)))
+        pop_vector = lambda: Vector(float(cmds.pop(0)), float(cmds.pop(0)))
         
         while cmds:
             if cmds[0].isalpha():

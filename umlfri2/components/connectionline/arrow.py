@@ -23,11 +23,10 @@ class ArrowComponent(ConnectionLineComponent):
     }
     HAS_CHILDREN = False
     
-    def __init__(self, position, style, size=None, color=None, fill=None):
+    def __init__(self, position, style, color=None, fill=None):
         super().__init__(())
         self.__position = position
         self.__style = style
-        self.__size = size or ConstantExpression(10)
         self.__color = color or ConstantExpression(Colors.black)
         self.__fill = fill or NoneExpression
     

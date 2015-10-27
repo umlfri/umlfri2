@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Paths xmlns="http://umlfri.org/v2/addon.xsd">
-    <!-- Arrows -->
-    <Path id="simple_arrow" path="M -0.5,-1 L 0,0 L 0.5,-1" />
-    <Path id="triangle_arrow" path="M -0.5,-1 L 0,0 L 0.5,-1 z" />
-    <Path id="diamond_arrow" path="M -0.5,-1 L 0,0 L 0.5,-1 L 0,-2 z" />
-    <Path id="crosscircle_arrow" path="M -0.5,0 L 0.5,0
-                                       M 0,0.5 L 0,-0.5
-                                       M 1,0.5 C 1,0.776 0.776,1 0.5,1 C 0.224,1 0,0.776 0,0.5 C 0,0.224 0.224,0 0.5,0 C 0.776,0 1,0.224 1,0.5 z" />
-    <!-- Corners -->
-    <Path id="rounded_corner" path="M 0,1 C 0,0.446 0.446,0 1,0" />
-    <Path id="note_corner" path="M 0,1 L 1,1 L 1,0 L 0,1 z
-                                 M 0,1 L 1,0" />
-    <!-- Sides -->
-    <Path id="rounded_side" path="M 0,0 C -0.554,0 -1,-0.223 -1,-0.5 C -1,-0.777 -0.554,-1 0,-1" />
+    <Arrows>
+        <Path id="simple" path="M -5,-10 L 0,0 L 5,-10" center="0,0" rotation="270°" />
+        <Path id="triangle" path="M -5,-10 L 0,0 L 5,-10 z" center="0,0" rotation="270°" />
+        <Path id="diamond" path="M -5,-10 L 0,0 L 5,-10 L 0,-20 z" center="0,0" rotation="270°" />
+    </Arrows>
+    <Corners>
+        <Path id="rounded" path="M 0,10 C 0,4.46 4.46,0 10,0" start="0,10" end="10,0" corner="top left" />
+        <Path id="note" path="M 0,10 L 10,10 L 10,0 L 0,10 z M 0,10 L 10,0" start="0,10" end="10,0" corner="top left" />
+    </Corners>
+    <Sides>
+        <Path id="rounded" path="M 0,0 C -5.54,0 -10,-2.23 -10,-5 C -10,-7.77 -5.54,-10 0,-10" start="0,0" end="0,-10" side="left" />
+    </Sides>
 </Paths>
