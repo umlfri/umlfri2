@@ -33,3 +33,9 @@ class Point:
             matrix.m11*self.__x + matrix.m12*self.__y + matrix.offset_x,
             matrix.m21*self.__x + matrix.m22*self.__y + matrix.offset_y
         )
+    
+    def __str__(self):
+        return "{0},{1}".format(self.__x, self.__y)
+    
+    def __repr__(self):
+        return "<Point {0}>".format(self)

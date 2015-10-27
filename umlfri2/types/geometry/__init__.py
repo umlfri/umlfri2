@@ -1,4 +1,4 @@
-from .path import Path, PathSegment, PathLineTo, PathBezierTo
+from .path import Path, PathSegment, PathLineTo, PathCubicTo, PathBuilder
 from .point import Point
 from .rectangle import Rectangle
 from .size import Size

@@ -1,3 +1,7 @@
+from .vector import Vector
+from .point import Point
+
+
 class PathCommand:
     def __init__(self, final_point):
         self.__final_point = final_point
@@ -27,7 +31,7 @@ class PathLineTo(PathCommand):
         return PathLineTo(self.final_point.transform(matrix))
 
 
-class PathBezierTo(PathCommand):
+class PathCubicTo(PathCommand):
     def __init__(self, control_point1, control_point2, final_point):
         super().__init__(final_point)
         self.__control_point1 = control_point1
@@ -46,13 +50,13 @@ class PathBezierTo(PathCommand):
                                       self.__control_point2, self.final_point)
     
     def __repr__(self):
-        return "<PathBezierTo {0} {1} {2}>".format(self.__control_point1,
-                                                   self.__control_point2, self.final_point)
+        return "<PathCubicTo {0} {1} {2}>".format(self.__control_point1,
+                                                  self.__control_point2, self.final_point)
     
     def transform(self, matrix):
-        return PathBezierTo(self.__control_point1.transform(matrix),
-                            self.__control_point2.transform(matrix),
-                            self.final_point.transform(matrix))
+        return PathCubicTo(self.__control_point1.transform(matrix),
+                           self.__control_point2.transform(matrix),
+                           self.final_point.transform(matrix))
 
 
 class PathSegment:
@@ -108,3 +112,94 @@ class Path:
     def transform(self, matrix):
         new_segments = [segment.transform(matrix) for segment in self.__segments]
         return Path(new_segments)
+
+
+class PathBuilder:
+    def __init__(self):
+        self.__commands = []
+        self.__origin = None
+        self.__segments = []
+        self.__last = Point(0, 0)
+    
+    def build(self):
+        if self.__origin and self.__commands:
+            self.__segments.append(PathSegment(self.__origin, self.__commands))
+            self.__commands = []
+        
+        return Path(self.__segments)
+
+    def __recalculate(self, *points):
+        ret = None
+        
+        for point in points:
+            ret = point
+            if isinstance(point, Vector):
+                ret = self.__last + ret
+            yield ret
+        
+        self.__last = ret
+    
+    def move_to(self, point):
+        if self.__origin and self.__commands:
+            self.__segments.append(PathSegment(self.__origin, self.__commands))
+            self.__commands = []
+        
+        point, = self.__recalculate(point)
+        
+        self.__origin = point
+        
+        return self
+            
+    def line_to(self, point):
+        point, = self.__recalculate(point)
+        self.__commands.append(PathLineTo(point))
+        
+        return self
+    
+    def cubic_to(self, control1, control2, point):
+        control1, control2, point = self.__recalculate(control1, control2, point)
+        
+        self.__commands.append(PathCubicTo(control1, control2, point))
+        
+        return self
+    
+    def close(self):
+        if self.__origin and self.__commands:
+            self.__segments.append(PathSegment(self.__origin, self.__commands, True))
+            self.__commands = []
+        
+        self.__last = self.__origin
+        
+        return self
+    
+    def from_string(self, s):
+        cmds = s.replace(',', ' ').split()
+        cur = None
+        
+        pop_point = lambda: Point(int(cmds.pop(0)), int(cmds.pop(0)))
+        pop_vector = lambda: Vector(int(cmds.pop(0)), int(cmds.pop(0)))
+        
+        while cmds:
+            if cmds[0].isalpha():
+                cur = cmds.pop(0)
+            
+            if cur == 'M':
+                cur = 'L'
+                self.move_to(pop_point())
+            elif cur == 'm':
+                cur = 'l'
+                self.move_to(pop_vector())
+            elif cur == 'L':
+                self.line_to(pop_point())
+            elif cur == 'l':
+                self.line_to(pop_vector())
+            elif cur == 'C':
+                self.cubic_to(pop_point(), pop_point(), pop_point())
+            elif cur == 'c':
+                self.cubic_to(pop_vector(), pop_vector(), pop_vector())
+            elif cur in 'zZ':
+                self.close()
+            else:
+                raise Exception
+        
+        return self
