@@ -16,8 +16,11 @@ VISUAL_COMPONENTS = {
     'Rectangle': RectangleComponent,
     'Shadow': ShadowComponent,
     'Table': TableComponent,
-    'Row': TableRow,
-    'Column': TableColumn,
     'TextBox': TextBoxComponent,
     'VBox': VBoxComponent,
+}
+
+TABLE_COMPONENTS = {
+    'Row': TableRow,
+    'Column': TableColumn,
 }

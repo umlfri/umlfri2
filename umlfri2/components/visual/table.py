@@ -44,16 +44,22 @@ class TableObject(VisualObject):
 
 
 class TableRow(HelperComponent):
+    CHILDREN_TYPE = 'visual'
+    
     def compile(self, variables):
         self._compile_children(variables)
 
 
 class TableColumn(HelperComponent):
+    CHILDREN_TYPE = 'visual'
+    
     def compile(self, variables):
         self._compile_children(variables)
 
 
 class TableComponent(VisualComponent):
+    CHILDREN_TYPE = 'table'
+    
     def _create_object(self, context, ruler):
         iscolumn = False # is this table with columns?
         ret = []
