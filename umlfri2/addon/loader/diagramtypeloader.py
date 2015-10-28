@@ -5,6 +5,7 @@ from umlfri2.components.expressions import ConstantExpression, UflExpression
 from umlfri2.components.text import TextContainerComponent
 from umlfri2.metamodel import DiagramType
 from umlfri2.types.color import Color
+from umlfri2.ufl.types import UflColorType
 
 
 class DiagramTypeLoader:
@@ -40,11 +41,11 @@ class DiagramTypeLoader:
                     if childchild.tag == "{{{0}}}Background".format(NAMESPACE):
                         attrvalue = childchild.attrib["color"]
                         if attrvalue.startswith("##"):
-                            background = ConstantExpression(Color.get_color(attrvalue[1:]), Color)
+                            background = ConstantExpression(Color.get_color(attrvalue[1:]), UflColorType())
                         elif attrvalue.startswith("#"):
                             background = UflExpression(attrvalue[1:])
                         else:
-                            background = ConstantExpression(Color.get_color(attrvalue[1:]), Color)
+                            background = ConstantExpression(Color.get_color(attrvalue[1:]), UflColorType())
             else:
                 raise Exception
         

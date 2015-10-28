@@ -4,6 +4,10 @@ from umlfri2.ufl.types import UflAnyType
 
 
 class CaseComponent(HelperComponent):
+    ATTRIBUTES = {
+        'value': UflAnyType(),
+    }
+    
     CHILDREN_TYPE = 'return' # return back to type from the switch parent
     
     def __init__(self, children, value):
@@ -12,6 +16,10 @@ class CaseComponent(HelperComponent):
     
     def get_value(self, context):
         return self.__value(context)
+    
+    def retype(self, type):
+        if hasattr(self.__value, 'change_type'):
+            self.__value = self.__value.change_type(type)
     
     def compile(self, variables):
         self._compile_expressions(
@@ -43,7 +51,9 @@ class SwitchComponent(ControlComponent):
             value=self.__value,
         )
         
-        self._compile_children(variables)
+        for case in self.__cases:
+            case.retype(self.__value.get_type())
+            case.compile(variables)
     
     def filter_children(self, context):
         for case in self.__cases:

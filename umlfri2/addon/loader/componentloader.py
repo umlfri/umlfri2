@@ -26,7 +26,7 @@ class ComponentLoader:
         self.__type = type
     
     def load(self):
-        return list(self.__load_children(self.__xmlroot, self.__type, (self.__type, )))
+        return list(self.__load_children(self.__xmlroot, self.__type, ()))
     
     def __load_children(self, node, component_type, previous_types):
         for child in node:
@@ -54,7 +54,7 @@ class ComponentLoader:
                         new_previous_types = previous_types[:-1]
                     elif component.CHILDREN_TYPE is not None:
                         new_component_type = component.CHILDREN_TYPE
-                        new_previous_types = previous_types + (new_component_type, )
+                        new_previous_types = previous_types + (component_type, )
                     else:
                         new_component_type = component_type
                         new_previous_types = previous_types
