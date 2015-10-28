@@ -1,9 +1,10 @@
-from PySide.QtGui import QPainter, QPen, QBrush, QColor, QFont, QFontMetrics
+from PySide.QtGui import QPainter, QPen, QBrush, QColor, QFont, QFontMetrics, QPainterPath
 from PySide.QtCore import Qt, QPoint
 
 from umlfri2.qtgui.canvas.qtruler import QTRuler
 from umlfri2.components.visual.canvas import Canvas, LineStyle
 from umlfri2.types.font import FontStyle
+from umlfri2.types.geometry import PathLineTo, PathCubicTo
 
 
 class QTPainterCanvas(Canvas):
@@ -57,7 +58,16 @@ class QTPainterCanvas(Canvas):
         self.__painter.drawLine(start.x, start.y, end.x, end.y)
     
     def draw_path(self, path, fg=None, bg=None, line_width=None, line_style=None):
-        pass
+        qpath = QPainterPath()
+        for segment in path.segments:
+            qpath.moveTo(segment.starting_point)
+            for command in segment.commands:
+                if isinstance(command, PathLineTo):
+                    qpath.lineTo(command.final_point)
+                elif isinstance(command, PathCubicTo):
+                    qpath.cubicTo(command.control_point1, command.control_point2, command.final_point)
+            if segment.closed:
+                qpath.closeSubpath()
     
     def draw_rectangle(self, rectangle, fg=None, bg=None, line_width=None, line_style=None):
         self.__set_brush(bg)

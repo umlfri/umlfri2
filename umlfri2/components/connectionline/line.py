@@ -2,6 +2,7 @@ from .connectionlinecomponent import ConnectionLineComponent, ConnectionLineObje
 from ..expressions import ConstantExpression
 from umlfri2.components.visual.canvas import LineStyle
 from umlfri2.types.color import Colors
+from umlfri2.types.geometry import PathBuilder
 from umlfri2.ufl.types import UflColorType, UflProportionType, UflTypedEnumType
 
 
@@ -11,29 +12,20 @@ class LineObject(ConnectionLineObject):
         self.__end = end
         self.__style = style
         self.__color = color
-        self.__points = []
+        self.__path = None
         
     def assign_points(self, points):
         p1 = self._compute_position(points, self.__start)
         p2 = self._compute_position(points, self.__end)
         
-        self.__points = []
-        self.__points.append(p1.position)
+        path = PathBuilder()
+        path.move_to(p1.position)
         for point in points[p1.id + 1:p2.id + 1]:
-            self.__points.append(point)
-        self.__points.append(p2.position)
+            path.line_to(point)
+        path.line_to(p2.position)
     
     def draw(self, canvas):
-        old = None
-        first = True
-        
-        for point in self.__points:
-            if first:
-                first = False
-            else:
-                canvas.draw_line(old, point, self.__color, 1, self.__style)
-            
-            old = point
+        canvas.draw_path(self.__path, self.__color, line_style=self.__style)
 
 
 class LineComponent(ConnectionLineComponent):
