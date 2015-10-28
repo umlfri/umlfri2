@@ -60,13 +60,10 @@ class Rectangle:
         return self.__y + self.__height
     
     def contains(self, point):
-        if point.x < self.__point.x or point.y < self.__point.y:
+        if point.x < self.__x or point.y < self.__y:
             return False
         
-        x2 = self.__point.x + self.__size.width
-        y2 = self.__point.y + self.__size.height
-        
-        if point.x > x2 or point.y > y2:
+        if point.x > self.x2 or point.y > self.y2:
             return False
         
         return True

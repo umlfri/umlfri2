@@ -1,7 +1,7 @@
 from PySide.QtGui import QWidget, QPainter
-from umlfri2.components.base.context import Context
 from umlfri2.qtgui.canvas.qtpaintercanvas import QTPainterCanvas
 from umlfri2.qtgui.canvas.qtruler import QTRuler
+from umlfri2.types.geometry import Point
 
 
 class CanvasWidget(QWidget):
@@ -28,7 +28,7 @@ class CanvasWidget(QWidget):
         # TODO: for testing purposes only
         if self.__diagram:
             pos = event.pos()
-            element = self.__diagram.get_element_at((pos.x(), pos.y()))
+            element = self.__diagram.get_element_at(Point(pos.x(), pos.y()))
             if element is None:
                 print('None at position {0}, {1}'.format(pos.x(), pos.y()))
             else:

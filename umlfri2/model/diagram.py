@@ -35,7 +35,7 @@ class Diagram:
     
     def get_element_at(self, pos):
         for element in reversed(self.__elements):
-            if element.bounds.constains(pos):
+            if element.bounds.contains(pos):
                 return element
         
         return None
