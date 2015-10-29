@@ -56,13 +56,13 @@
         <Line style="solid" color="#cfg.connection.line"/>
 
         <Switch value="#self.direction">
-            <Case condition="toDestination">
+            <Case value="toDestination">
                 <Arrow position="100%" style="simple" color="#cfg.connection.arrow"/>
             </Case>
-            <Case condition="toSource">
+            <Case value="toSource">
                 <Arrow position="0%" style="simple" color="#cfg.connection.arrow"/>
             </Case>
-            <Case condition="bidirectional">
+            <Case value="bidirectional">
                 <Arrow position="100%" style="simple" color="#cfg.connection.arrow"/>
                 <Arrow position="0%" style="simple" color="#cfg.connection.arrow"/>
             </Case>

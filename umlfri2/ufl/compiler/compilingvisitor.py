@@ -1,4 +1,4 @@
-from ..types import UflTypedEnumType, UflObjectType
+from ..types import UflTypedEnumType, UflObjectType, UflBoolType, UflStringType, UflIntegerType
 from ..tree.visitor import UflVisitor
 
 
@@ -64,3 +64,19 @@ class UflCompilingVisitor(UflVisitor):
 
     def visit_variable(self, node):
         return self.__params[node.name], node.name
+
+    def visit_binary(self, node):
+        ltype, lvalue = node.operand1.accept(self)
+        rtype, rvalue = node.operand2.accept(self)
+        
+        if ltype.is_same_as(rtype):
+            raise Exception("Incompatible types {0} and {1}".format(ltype, rtype))
+        
+        if node.operator in ('<', '>', '<=', '>=', '!=', '=='):
+             return UflBoolType(), lvalue + node.operator + rvalue
+    
+    def visit_literal(self, node):
+        if isinstance(node.value, str):
+            return UflStringType(), repr(node.value)
+        else:
+            return UflIntegerType(), repr(node.value)

@@ -17,3 +17,11 @@ class UflVisitor(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def visit_variable(self, node):
         pass
+    
+    @abc.abstractmethod
+    def visit_literal(self, node):
+        pass
+    
+    @abc.abstractmethod
+    def visit_binary(self, node):
+        pass

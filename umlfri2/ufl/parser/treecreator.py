@@ -2,6 +2,7 @@ from . import definition as d
 from pyparsing import ParseException
 from ..tree import *
 
+
 def target(data):
     if len(data) > 1:
         return data[1]
@@ -11,6 +12,24 @@ def target(data):
 d.TARGET.addParseAction(target)
 
 d.VARIABLE.addParseAction(lambda data: UflVariable(data[0]))
+
+def number(data):
+    if '.' in data[0]:
+        return UflLiteral(float(data[0]))
+    else:
+        return UflLiteral(int(data[0]))
+
+d.NUMBER.addParseAction(number)
+
+d.STRING.addParseAction(lambda data: UflLiteral(data[0].strip("''")))
+
+def relational(data):
+    if len(data) > 2:
+        return UflBinary(data[0], data[1], data[2])
+    else:
+        return data[0]
+
+d.RELATIONAL.addParseAction(relational)
 
 def method_or_attribute_or_enum(data):
     node = data[0]
