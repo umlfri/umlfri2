@@ -60,14 +60,21 @@ class QTPainterCanvas(Canvas):
     def draw_path(self, path, fg=None, bg=None, line_width=None, line_style=None):
         qpath = QPainterPath()
         for segment in path.segments:
-            qpath.moveTo(segment.starting_point)
+            qpath.moveTo(segment.starting_point.x, segment.starting_point.y)
             for command in segment.commands:
                 if isinstance(command, PathLineTo):
-                    qpath.lineTo(command.final_point)
+                    qpath.lineTo(command.final_point.x, command.final_point.y)
                 elif isinstance(command, PathCubicTo):
-                    qpath.cubicTo(command.control_point1, command.control_point2, command.final_point)
+                    qpath.cubicTo(
+                        command.control_point1.x, command.control_point1.y,
+                        command.control_point2.x, command.control_point2.y,
+                        command.final_point.x, command.final_point.y)
             if segment.closed:
                 qpath.closeSubpath()
+        
+        self.__set_brush(bg)
+        self.__set_pen(fg, line_width, line_style)
+        self.__painter.drawPath(qpath)
     
     def draw_rectangle(self, rectangle, fg=None, bg=None, line_width=None, line_style=None):
         self.__set_brush(bg)

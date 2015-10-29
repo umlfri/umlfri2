@@ -1,6 +1,7 @@
 from .componentloader import ComponentLoader
 from .constants import NAMESPACE
 from .structureloader import UflStructureLoader
+from umlfri2.components.connectionline import ConnectionLineContainerComponent
 from umlfri2.metamodel import ConnectionType
 from umlfri2.metamodel.connectiontypelabel import ConnectionTypeLabel
 from umlfri2.ufl.types import UflProportionType
@@ -36,7 +37,7 @@ class ConnectionTypeLoader:
                     
                     del appearance_children[-1]
                 
-                appearance = ComponentLoader(appearance_children, 'connection').load()[0]
+                appearance = ConnectionLineContainerComponent(ComponentLoader(appearance_children, 'connection').load())
             else:
                 raise Exception
         

@@ -16,6 +16,7 @@ class CanvasWidget(QWidget):
     def paintEvent(self, event):
         painter = QPainter()
         painter.begin(self)
+        painter.setRenderHint(QPainter.Antialiasing)
         canvas = QTPainterCanvas(painter)
         if self.__diagram:
             self.__diagram.draw(canvas)
@@ -28,7 +29,7 @@ class CanvasWidget(QWidget):
         # TODO: for testing purposes only
         if self.__diagram:
             pos = event.pos()
-            element = self.__diagram.get_element_at(Point(pos.x(), pos.y()))
+            element = self.__diagram.get_element_at(self.__ruler, Point(pos.x(), pos.y()))
             if element is None:
                 print('None at position {0}, {1}'.format(pos.x(), pos.y()))
             else:

@@ -21,3 +21,11 @@ class Vector:
     @property
     def length(self):
         return math.sqrt(self.__x**2 + self.__y**2)
+    
+    def __mul__(self, other):
+        if isinstance(other, (int, float)):
+            return Vector(self.__x * other, self.__y * other)
+    
+    def __truediv__(self, other):
+        if isinstance(other, (int, float)):
+            return Vector(self.__x / other, self.__y / other)

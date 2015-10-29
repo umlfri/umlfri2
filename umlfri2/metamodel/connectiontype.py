@@ -8,7 +8,7 @@ class ConnectionType:
         self.__icon = icon
         self.__ufl_type = ufl_type
         self.__appearance = appearance
-        self.__labels = labels
+        self.__labels = tuple(labels)
     
     def _set_metamodel(self, metamodel):
         self.__metamodel = ref(metamodel)
@@ -31,6 +31,10 @@ class ConnectionType:
     @property
     def ufl_type(self):
         return self.__ufl_type
+    
+    @property
+    def labels(self):
+        return self.__labels
     
     def compile(self):
         variables = {'self': self.__ufl_type, 'cfg': self.__metamodel().addon.config_structure}

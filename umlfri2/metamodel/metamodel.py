@@ -32,6 +32,9 @@ class Metamodel:
     def get_diagram_type(self, name):
         return self.__diagrams[name]
     
+    def get_connection_type(self, name):
+        return self.__connections[name]
+    
     def compile(self):
         for diagram in self.__diagrams.values():
             diagram.compile()

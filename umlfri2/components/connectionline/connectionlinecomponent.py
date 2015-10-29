@@ -14,43 +14,38 @@ class ConnectionLineObject:
         raise NotImplementedError
     
     def _compute_position(self, points, position):
-        old_x, old_y = None, None
+        old = None
         whole_length = 0
         lengths = []
         first = True
         
-        for x, y in points:
+        for point in points:
             if first:
                 first = False
             else:
-                current_length = math.sqrt((old_x - x)**2 + (old_y - y)**2)
+                current_length = (point - old).length
                 lengths.append(current_length)
                 whole_length += current_length
             
-            old_x = x
-            old_y = y
+            old = point
         
         remaining = position * whole_length
         
         for i, length in enumerate(lengths):
             if remaining < length:
                 t = remaining / length
+
+                vector = (points[i + 1] - points[i])
                 
-                x1, y1 = points[i]
-                x2, y2 = points[i + 1]
-                
-                orientation = math.atan2(y2 - y1, x2 - x1)
-                point = int(round(x2*t + x1*(1-t))), int(round(y2*t + y1*(1-t)))
+                orientation = vector.angle
+                point = points[i] + vector * t
                 
                 return PointPosition(id=i, t=t, position=point, orientation=orientation)
             else:
                 remaining -= length
         
-        x1, y1 = points[-2]
-        x2, y2 = points[-1]
-        
-        orientation = math.atan2(y2 - y1, x2 - x1)
-        point = x2, y2
+        orientation = (points[-1] - points[-2]).angle
+        point = points[-1]
         
         return PointPosition(id=len(points)-2, t=1, position=point, orientation=orientation)
 

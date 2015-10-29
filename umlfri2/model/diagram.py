@@ -1,5 +1,6 @@
 from umlfri2.components.base.context import Context
-from umlfri2.model.element import ElementObject, ElementVisual
+from .connection import ConnectionObject, ConnectionVisual
+from .element import ElementObject, ElementVisual
 
 
 class Diagram:
@@ -26,16 +27,33 @@ class Diagram:
             visual = ElementVisual(object)
             self.__elements.append(visual)
             return visual
+        elif isinstance(object, ConnectionObject):
+            element1 = None
+            element2 = None
+            for element in self.__elements:
+                if element.object is object.source:
+                    element1 = element
+                elif element.object is object.destination:
+                    element2 = element
+            
+            if element1 is not None and element2 is not None:
+                visual = ConnectionVisual(object, element1, element2)
+                self.__connections.append(visual)
+                return visual
     
     def draw(self, canvas):
         context = Context(self.__data)
         canvas.clear(self.__type.get_background_color(context))
+        
         for element in self.__elements:
             element.draw(canvas)
+        
+        for connection in self.__connections:
+            connection.draw(canvas)
     
-    def get_element_at(self, pos):
+    def get_element_at(self, ruler, pos):
         for element in reversed(self.__elements):
-            if element.bounds.contains(pos):
+            if element.get_bounds(ruler).contains(pos):
                 return element
         
         return None

@@ -32,6 +32,10 @@ class Rectangle:
         return Point(self.__x + self.__width, self.__y + self.__height)
     
     @property
+    def center(self):
+        return Point(self.__x + self.__width // 2, self.__y + self.__height // 2)
+    
+    @property
     def size(self):
         return Size(self.__width, self.__height)
     

@@ -23,6 +23,8 @@ class LineObject(ConnectionLineObject):
         for point in points[p1.id + 1:p2.id + 1]:
             path.line_to(point)
         path.line_to(p2.position)
+        
+        self.__path = path.build()
     
     def draw(self, canvas):
         canvas.draw_path(self.__path, self.__color, line_style=self.__style)

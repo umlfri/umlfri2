@@ -16,4 +16,9 @@ class ConnectionLineContainerObject(ConnectionLineObject):
 
 class ConnectionLineContainerComponent(ConnectionLineComponent):
     def _create_object(self, context):
-        return ConnectionLineContainerObject(self._get_children(context))
+        children = [child._create_object(local) for local, child in self._get_children(context)]
+        
+        return ConnectionLineContainerObject(children)
+    
+    def compile(self, variables):
+        self._compile_children(variables)

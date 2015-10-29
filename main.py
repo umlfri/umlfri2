@@ -13,13 +13,15 @@ ruler = widget.get_ruler()
 addon = AddOnLoader('addons/infjavauml').load()
 
 element_type = addon.metamodel.get_element_type('class')
-
 diagram_type = addon.metamodel.get_diagram_type('class_diagram')
+connection_type = addon.metamodel.get_connection_type('association')
 
 diagram = Diagram(diagram_type)
 
 obj1 = ElementObject(element_type)
 obj2 = ElementObject(element_type)
+
+assoc = obj1.connect_with(connection_type, obj2)
 
 obj1.data.get_value("attributes").append()
 obj1.data.get_value("attributes").append()
@@ -36,7 +38,9 @@ print(obj2.get_display_name())
 vis1 = diagram.show(obj1)
 vis1.move(ruler, Point(30, 30))
 vis1.resize(ruler, Size(200, 200))
-diagram.show(obj2).move(ruler, Point(10, 10))
+diagram.show(obj2).move(ruler, Point(250, 100))
+
+visassoc = diagram.show(assoc)
 
 widget.show_diagram(diagram)
 
