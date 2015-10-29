@@ -17,13 +17,10 @@ class ShadowObject(VisualObject):
         self.__child_size = child.get_minimal_size()
     
     def assign_bounds(self, bounds):
-        self.__child.assign_bounds(Rectangle(bounds.x1, bounds.y1,
-                                    bounds.width - self.__padding,
-                                    bounds.height - self.__padding))
+        self.__child.assign_bounds(bounds)
     
     def get_minimal_size(self):
-        return Size(self.__child_size.width + self.__padding,
-                    self.__child_size.height + self.__padding)
+        return self.__child_size
     
     def draw(self, canvas, shadow):
         self.__child.draw(canvas, ShadowInfo(self.__color,
