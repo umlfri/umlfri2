@@ -39,4 +39,4 @@ class ArrowComponent(ConnectionLineComponent):
         )
     
     def _create_object(self, context):
-        return ArrowComponent(self.__position(context), self.__style(context), self.__color(context))
+        return ArrowObject(self.__position(context), self.__style(context), self.__color(context))

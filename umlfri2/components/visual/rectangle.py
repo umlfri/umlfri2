@@ -1,3 +1,4 @@
+from umlfri2.components.expressions import NoneExpression, ConstantExpression
 from umlfri2.ufl.types import UflColorType
 from .visualcomponent import VisualComponent, VisualObject
 from umlfri2.types.geometry import Rectangle, Point, Vector
@@ -43,8 +44,8 @@ class RectangleComponent(VisualComponent):
     
     def __init__(self, children, fill=None, border=None):
         super().__init__(children)
-        self.__fill = fill
-        self.__border = border
+        self.__fill = fill or ConstantExpression(None, UflColorType())
+        self.__border = border or ConstantExpression(None, UflColorType())
     
     def _create_object(self, context, ruler):
         for local, child in self._get_children(context):

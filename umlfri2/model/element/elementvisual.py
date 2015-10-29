@@ -57,7 +57,7 @@ class ElementVisual:
 
     def __ensure_visual_object_exists(self, ruler):
         if self.__cached_visual is None:
-            self.__cached_visual = self.__object.create_visual_object(ruler)
+            self.__cached_visual = self.__object.create_appearance_object(ruler)
             self.__cached_visual.move(self.__position)
             if self.__size is None:
                 self.__size = self.__cached_visual.get_minimal_size()

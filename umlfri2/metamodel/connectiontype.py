@@ -1,17 +1,20 @@
 from weakref import ref
 
 
-class ElementType:
-    def __init__(self, id, icon, ufl_type, display_name, appearance):
+class ConnectionType:
+    def __init__(self, id, icon, ufl_type, appearance, labels):
         self.__metamodel = None
         self.__id = id
         self.__icon = icon
         self.__ufl_type = ufl_type
-        self.__display_name = display_name
         self.__appearance = appearance
+        self.__labels = labels
     
     def _set_metamodel(self, metamodel):
         self.__metamodel = ref(metamodel)
+        
+        for label in self.__labels:
+            label._set_connection_type(self)
     
     @property
     def metamodel(self):
@@ -33,12 +36,9 @@ class ElementType:
         variables = {'self': self.__ufl_type, 'cfg': self.__metamodel().addon.config_structure}
         
         self.__appearance.compile(variables)
-        self.__display_name.compile(variables)
+        for label in self.__labels:
+            label.compile(variables)
     
     def create_appearance_object(self, context, ruler):
         context.set_config(self.__metamodel().addon.config)
-        return self.__appearance.create_visual_object(context, ruler)
-    
-    def get_display_name(self, context):
-        context.set_config(self.__metamodel().addon.config)
-        return self.__display_name.get_text(context)
+        return self.__appearance.create_connection_object(context)

@@ -51,7 +51,6 @@ class DiagramTypeLoader:
         
         
         elements = tuple(self.__elements[id] for id in elements)
-        #connections = tuple(self.__connections[id] for id in connections)
-        connections = () # TODO
+        connections = tuple(self.__connections[id] for id in connections)
         
         return DiagramType(id, icon, ufl_type, display_name, elements, connections, background)

@@ -7,6 +7,7 @@ from ..addon import AddOn
 from .constants import NAMESPACE
 from .elementtypeloader import ElementTypeLoader
 from .diagramtypeloader import DiagramTypeLoader
+from .connectiontypeloader import ConnectionTypeLoader
 from umlfri2.metamodel import Metamodel
 
 
@@ -45,7 +46,9 @@ class AddOnLoader:
                     diagramXMLs.append(xml)
         
         connections = {}
-        #for connection in connectionXMLs TODO
+        for connection in connectionXMLs:
+            loaded = ConnectionTypeLoader(connection).load()
+            connections[loaded.id] = loaded
         
         elements = {}
         for element in elementXMLs:

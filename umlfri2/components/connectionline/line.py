@@ -54,4 +54,4 @@ class LineComponent(ConnectionLineComponent):
         )
     
     def _create_object(self, context):
-        return LineComponent(self.__start(context), self.__end(context), self.__style(context), self.__color(context))
+        return LineObject(self.__start(context), self.__end(context), self.__style(context), self.__color(context))
