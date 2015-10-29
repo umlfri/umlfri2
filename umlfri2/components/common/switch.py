@@ -3,7 +3,7 @@ from ..base.helpercomponent import HelperComponent
 from umlfri2.ufl.types import UflAnyType
 
 
-class CaseComponent(HelperComponent):
+class SwitchCaseComponent(HelperComponent):
     ATTRIBUTES = {
         'value': UflAnyType(),
     }
@@ -30,6 +30,13 @@ class CaseComponent(HelperComponent):
         self._compile_children(variables)
 
 
+class SwitchDefaultComponent(HelperComponent):
+    CHILDREN_TYPE = 'return' # return back to type from the switch parent
+    
+    def compile(self, variables):
+        self._compile_children(variables)
+
+
 class SwitchComponent(ControlComponent):
     ATTRIBUTES = {
         'value': UflAnyType(),
@@ -41,9 +48,6 @@ class SwitchComponent(ControlComponent):
         super().__init__(())
         self.__value = value
         self.__cases = children
-        
-        if any(not isinstance(case, CaseComponent) for case in self.__cases):
-            raise Exception("Switch can contain only case elements")
     
     def compile(self, variables):
         self._compile_expressions(
@@ -52,10 +56,15 @@ class SwitchComponent(ControlComponent):
         )
         
         for case in self.__cases:
-            case.retype(self.__value.get_type())
+            if isinstance(case, SwitchCaseComponent):
+                case.retype(self.__value.get_type())
             case.compile(variables)
     
     def filter_children(self, context):
         for case in self.__cases:
+            if isinstance(case, SwitchDefaultComponent):
+                yield from case.get_children(context)
+                break
             if self.__value(context) == case.get_value(context):
                 yield from case.get_children(context)
+                break

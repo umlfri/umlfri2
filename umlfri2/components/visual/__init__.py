@@ -1,4 +1,5 @@
 from .align import AlignComponent
+from .empty import EmptyComponent
 from .hbox import HBoxComponent
 from .line import LineComponent
 from .padding import PaddingComponent
@@ -10,6 +11,7 @@ from .vbox import VBoxComponent
 
 VISUAL_COMPONENTS = {
     'Align': AlignComponent,
+    'Empty': EmptyComponent,
     'HBox': HBoxComponent,
     'Line': LineComponent,
     'Padding': PaddingComponent,
