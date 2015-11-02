@@ -57,6 +57,9 @@ class ElementVisual:
         
         self.__cached_appearance.move(new_position)
         self.__position = new_position
+    
+    def is_at_position(self, ruler, position):
+        return self.get_bounds(ruler).contains(position)
 
     def __ensure_appearance_object_exists(self, ruler):
         if self.__cached_appearance is None:

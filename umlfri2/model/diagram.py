@@ -51,9 +51,13 @@ class Diagram:
         for connection in self.__connections:
             connection.draw(canvas)
     
-    def get_element_at(self, ruler, pos):
+    def get_object_at(self, ruler, position):
+        for connection in reversed(self.__connections):
+            if connection.is_at_position(ruler, position):
+                return connection
+        
         for element in reversed(self.__elements):
-            if element.get_bounds(ruler).contains(pos):
+            if element.is_at_position(ruler, position):
                 return element
         
         return None

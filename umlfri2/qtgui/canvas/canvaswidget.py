@@ -1,4 +1,6 @@
 from PySide.QtGui import QWidget, QPainter
+from umlfri2.model.connection import ConnectionVisual
+from umlfri2.model.element import ElementVisual
 from umlfri2.qtgui.canvas.qtpaintercanvas import QTPainterCanvas
 from umlfri2.qtgui.canvas.qtruler import QTRuler
 from umlfri2.types.geometry import Point
@@ -29,8 +31,17 @@ class CanvasWidget(QWidget):
         # TODO: for testing purposes only
         if self.__diagram:
             pos = event.pos()
-            element = self.__diagram.get_element_at(self.__ruler, Point(pos.x(), pos.y()))
-            if element is None:
-                print('None at position {0}, {1}'.format(pos.x(), pos.y()))
+            object = self.__diagram.get_object_at(self.__ruler, Point(pos.x(), pos.y()))
+            if isinstance(object, ElementVisual):
+                print('{0} at position {1}, {2}'.format(
+                    object.object.get_display_name(),
+                    pos.x(), pos.y())
+                )
+            elif isinstance(object, ConnectionVisual):
+                print('{0}=>{1} at position {2}, {3}'.format(
+                    object.object.source.get_display_name(),
+                    object.object.destination.get_display_name(),
+                    pos.x(), pos.y())
+                )
             else:
-                print('{0} at position {1}, {2}'.format(element.object.get_display_name(), pos.x(), pos.y()))
+                print('None at position {0}, {1}'.format(pos.x(), pos.y()))
