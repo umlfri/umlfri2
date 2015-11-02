@@ -1,5 +1,6 @@
 from .point import Point
 from .size import Size
+from .line import Line
 
 
 class Rectangle:
@@ -71,3 +72,16 @@ class Rectangle:
             return False
         
         return True
+    
+    def intersect(self, other):
+        for line in Line(self.top_left, self.top_right),\
+                    Line(self.top_right, self.bottom_right),\
+                    Line(self.bottom_right, self.bottom_left),\
+                    Line(self.bottom_left, self.top_left):
+            yield from line.intersect(other)
+    
+    def __str__(self):
+        return "[{0}, {1}], [{2}, {3}]".format(self.__x, self.__y, self.__x + self.__width, self.__y + self.__height)
+    
+    def __repr__(self):
+        return "<Rectangle {0}>".format(self)
