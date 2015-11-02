@@ -6,7 +6,8 @@ from umlfri2.types.geometry import Size
 
 class QTRuler(Ruler):
     def measure_text(self, font, text):
-        qfont = QFont(font.family, font.size)
+        qfont = QFont(font.family)
+        qfont.setPixelSize(font.size)
         qfont.setBold(FontStyle.bold in font.style)
         qfont.setItalic(FontStyle.italic in font.style)
         qfont.setStrikeOut(FontStyle.strike in font.style)

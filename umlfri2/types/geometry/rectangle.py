@@ -3,7 +3,7 @@ from .size import Size
 
 
 class Rectangle:
-    def __init__(self, p1, p2, p3 = None, p4 = None):
+    def __init__(self, p1, p2, p3=None, p4=None):
         if p3 is None and p4 is None:
             self.__x = p1.x
             self.__y = p1.y

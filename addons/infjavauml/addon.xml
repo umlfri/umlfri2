@@ -26,8 +26,8 @@
             <Attribute id="shadow" type="color" default="#B0000000" />
             <Attribute id="heading" type="color" default="black" />
             <Attribute id="text" type="color" default="black" />
-            <Attribute id="headingfont" type="font" default="Arial 10" />
-            <Attribute id="textfont" type="font" default="Arial 10" />
+            <Attribute id="headingfont" type="font" default="Arial 15" />
+            <Attribute id="textfont" type="font" default="Arial 15" />
         </Attribute>
         <Attribute id="connection" type="object">
             <Attribute id="line" type="color" default="black"/>
@@ -35,8 +35,8 @@
             <Attribute id="fill" type="color" default="white"/>
             <Attribute id="heading" type="color" default="black"/>
             <Attribute id="text" type="color" default="black"/>
-            <Attribute id="headingfont" type="font" default="Arial 10" />
-            <Attribute id="textfont" type="font" default="Arial 10" />
+            <Attribute id="headingfont" type="font" default="Arial 15" />
+            <Attribute id="textfont" type="font" default="Arial 15" />
         </Attribute>
         <Attribute id="background" type="color" default="white" />
     </Config>

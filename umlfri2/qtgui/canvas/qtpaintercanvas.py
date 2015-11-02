@@ -82,7 +82,8 @@ class QTPainterCanvas(Canvas):
         self.__painter.drawRect(rectangle.x1, rectangle.y1, rectangle.width, rectangle.height)
     
     def draw_text(self, pos, text, font, fg):
-        qfont = QFont(font.family, font.size)
+        qfont = QFont(font.family)
+        qfont.setPixelSize(font.size)
         qfont.setBold(FontStyle.bold in font.style)
         qfont.setItalic(FontStyle.italic in font.style)
         qfont.setStrikeOut(FontStyle.strike in font.style)
