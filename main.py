@@ -38,11 +38,13 @@ print(obj2.get_display_name())
 vis1 = diagram.show(obj1)
 vis1.move(ruler, Point(30, 30))
 vis1.resize(ruler, Size(200, 200))
-diagram.show(obj2).move(ruler, Point(300, 100))
+vis2 = diagram.show(obj2)
+vis2.move(ruler, Point(300, 100))
+vis2.resize(ruler, Size(100, 100))
 
 visassoc = diagram.show(assoc)
 visassoc.add_point(Point(250, 200))
-visassoc.add_point(Point(300, 300))
+visassoc.add_point(Point(500, 300))
 
 widget.show_diagram(diagram)
 

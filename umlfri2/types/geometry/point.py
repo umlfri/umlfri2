@@ -42,6 +42,12 @@ class Point:
     
     def __repr__(self):
         return "<Point {0}>".format(self)
+    
+    def __hash__(self):
+        return hash(self.__x) + hash(self.__y) << 4
+    
+    def __eq__(self, other):
+        return self.__x == other.__x and self.__y == other.__y
 
     @staticmethod
     def parse(param):

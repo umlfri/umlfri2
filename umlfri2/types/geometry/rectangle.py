@@ -74,11 +74,14 @@ class Rectangle:
         return True
     
     def intersect(self, other):
+        intersections = set()
         for line in Line(self.top_left, self.top_right),\
                     Line(self.top_right, self.bottom_right),\
                     Line(self.bottom_right, self.bottom_left),\
                     Line(self.bottom_left, self.top_left):
-            yield from line.intersect(other)
+            intersections.update(line.intersect(other))
+        
+        yield from intersections
     
     def __str__(self):
         return "[{0}, {1}], [{2}, {3}]".format(self.__x, self.__y, self.__x + self.__width, self.__y + self.__height)
