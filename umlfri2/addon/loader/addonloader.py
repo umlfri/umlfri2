@@ -8,6 +8,7 @@ from .constants import NAMESPACE
 from .elementtypeloader import ElementTypeLoader
 from .diagramtypeloader import DiagramTypeLoader
 from .connectiontypeloader import ConnectionTypeLoader
+from .definitionsloader import DefinitionsLoader
 from umlfri2.metamodel import Metamodel
 
 
@@ -34,6 +35,7 @@ class AddOnLoader:
         elementXMLs = []
         connectionXMLs = []
         diagramXMLs = []
+        definitionXMLs = None # TODO: multiple definition files
         for dirpath, dirs, files in os.walk(path):
             for file in files:
                 file = os.path.join(dirpath, file)
@@ -44,10 +46,17 @@ class AddOnLoader:
                     connectionXMLs.append(xml)
                 elif xml.tag == "{{{0}}}DiagramType".format(NAMESPACE):
                     diagramXMLs.append(xml)
+                elif xml.tag == "{{{0}}}Definitions".format(NAMESPACE):
+                    definitionXMLs = xml
+        
+        if definitionXMLs is not None:
+            definitions = DefinitionsLoader(definitionXMLs).load()
+        else:
+            definitions = None
         
         connections = {}
         for connection in connectionXMLs:
-            loaded = ConnectionTypeLoader(connection).load()
+            loaded = ConnectionTypeLoader(connection, definitions).load()
             connections[loaded.id] = loaded
         
         elements = {}

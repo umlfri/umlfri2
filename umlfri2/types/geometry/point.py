@@ -14,6 +14,9 @@ class Point:
     def y(self):
         return self.__y
     
+    def as_vector(self):
+        return Vector(self.__x, self.__y)
+    
     def __sub__(self, other):
         if isinstance(other, Point):
             return Vector(self.__x - other.__x, self.__y - other.__y)
@@ -39,3 +42,8 @@ class Point:
     
     def __repr__(self):
         return "<Point {0}>".format(self)
+
+    @staticmethod
+    def parse(param):
+        x, y = param.split(",")
+        return Point(float(x), float(y))

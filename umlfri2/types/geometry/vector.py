@@ -16,11 +16,14 @@ class Vector:
     
     @property
     def angle(self):
-        return math.atan2(self.__x, self.__y)
+        return math.atan2(self.__y, self.__x)
     
     @property
     def length(self):
         return math.sqrt(self.__x**2 + self.__y**2)
+    
+    def __neg__(self):
+        return Vector(-self.__x, -self.__y)
     
     def __mul__(self, other):
         if isinstance(other, (int, float)):

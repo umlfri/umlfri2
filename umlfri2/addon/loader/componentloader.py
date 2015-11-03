@@ -4,6 +4,7 @@ from umlfri2.components.connectionline import CONNECTION_LINE_COMPONENTS
 from umlfri2.components.expressions import UflExpression, ConstantExpression
 from umlfri2.components.text import TEXT_COMPONENTS
 from umlfri2.components.visual import VISUAL_COMPONENTS, TABLE_COMPONENTS
+from umlfri2.ufl.types import UflDefinedEnumType
 
 
 class ComponentLoader:
@@ -21,9 +22,10 @@ class ComponentLoader:
     __components['connection'].update(CONNECTION_LINE_COMPONENTS)
     __components['table'].update(TABLE_COMPONENTS)
     
-    def __init__(self, xmlroot, type):
+    def __init__(self, xmlroot, type, definitions={}):
         self.__xmlroot = xmlroot
         self.__type = type
+        self.__definitions = definitions
     
     def load(self):
         return list(self.__load_children(self.__xmlroot, self.__type, ()))
@@ -38,6 +40,10 @@ class ComponentLoader:
                 params = {}
                 for attrname, attrvalue in child.attrib.items():
                     type = component.ATTRIBUTES[attrname]
+                    
+                    if isinstance(type, UflDefinedEnumType) and type.name in self.__definitions:
+                        type = UflDefinedEnumType(type.type, self.__definitions[type.name])
+                    
                     if attrvalue.startswith("##"):
                         value = ConstantExpression(type.parse(attrvalue[1:]), type)
                     elif attrvalue.startswith("#"):

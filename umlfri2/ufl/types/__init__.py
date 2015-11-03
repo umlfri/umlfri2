@@ -1,6 +1,7 @@
 from .any import UflAnyType
 from .bool import UflBoolType
 from .color import UflColorType
+from .definedenum import UflDefinedEnumType
 from .enum import UflEnumType
 from .font import UflFontType
 from .integer import UflIntegerType

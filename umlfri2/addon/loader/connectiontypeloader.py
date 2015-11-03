@@ -8,8 +8,9 @@ from umlfri2.ufl.types import UflProportionType
 
 
 class ConnectionTypeLoader:
-    def __init__(self, xmlroot):
+    def __init__(self, xmlroot, definitions):
         self.__xmlroot = xmlroot
+        self.__definitions = definitions
     
     def load(self):
         id = self.__xmlroot.attrib["id"]
@@ -37,7 +38,7 @@ class ConnectionTypeLoader:
                     
                     del appearance_children[-1]
                 
-                appearance = ConnectionLineContainerComponent(ComponentLoader(appearance_children, 'connection').load())
+                appearance = ConnectionLineContainerComponent(ComponentLoader(appearance_children, 'connection', self.__definitions).load())
             else:
                 raise Exception
         

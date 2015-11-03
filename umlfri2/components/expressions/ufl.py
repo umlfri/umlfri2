@@ -5,7 +5,7 @@ from ..visual.line import LineOrientation
 from umlfri2.types.font import FontStyle
 
 
-class UflExpression(Exception):
+class UflExpression(Expression):
     __enums = {
         'FontStyle': FontStyle,
         'HorizontalAlignment': HorizontalAlignment,
