@@ -8,12 +8,12 @@ class ConnectionType:
         self.__icon = icon
         self.__ufl_type = ufl_type
         self.__appearance = appearance
-        self.__labels = tuple(labels)
+        self.__labels = {label.id: label for label in labels}
     
     def _set_metamodel(self, metamodel):
         self.__metamodel = ref(metamodel)
         
-        for label in self.__labels:
+        for label in self.__labels.values():
             label._set_connection_type(self)
     
     @property
@@ -34,14 +34,17 @@ class ConnectionType:
     
     @property
     def labels(self):
-        return self.__labels
+        return self.__labels.values()
+    
+    def get_label(self, id):
+        return self.__labels[id]
     
     def compile(self):
         variables = {'self': self.__ufl_type, 'cfg': self.__metamodel().addon.config_structure}
         
         self.__appearance.compile(variables)
-        for label in self.__labels:
-            label.compile(variables)
+        for label in self.__labels.values():
+            label.compile()
     
     def create_appearance_object(self, context, ruler):
         context.set_config(self.__metamodel().addon.config)

@@ -24,7 +24,7 @@ class RectangleObject(VisualObject):
     def draw(self, canvas, shadow):
         if shadow:
             canvas.draw_rectangle(
-                Rectangle(
+                Rectangle.from_point_size(
                     self.__rectangle.top_left + shadow.shift,
                     self.__rectangle.size,
                 ),

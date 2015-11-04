@@ -29,7 +29,6 @@ class ConnectionObject:
         context = Context(self.__data)
         return self.__type.create_appearance_object(context, ruler)
     
-    def create_label_objects(self, ruler):
+    def create_label_object(self, id, ruler):
         context = Context(self.__data)
-        for label in self.__type.labels:
-            yield label.id, label.create_visual_object(context, ruler)
+        return self.__type.get_label(id).create_appearance_object(context, ruler)

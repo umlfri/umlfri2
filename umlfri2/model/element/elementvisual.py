@@ -25,7 +25,7 @@ class ElementVisual:
     def get_bounds(self, ruler):
         self.__ensure_appearance_object_exists(ruler)
         
-        return Rectangle(self.__position, self.__size)
+        return Rectangle.from_point_size(self.__position, self.__size)
     
     def draw(self, canvas):
         self.__ensure_appearance_object_exists(canvas.get_ruler())

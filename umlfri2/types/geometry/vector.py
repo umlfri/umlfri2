@@ -6,6 +6,10 @@ class Vector:
         self.__x = x
         self.__y = y
     
+    @staticmethod
+    def from_angle_length(angle, length):
+        return Vector(math.cos(angle) * length, math.sin(angle) * length)
+    
     @property
     def x(self):
         return self.__x

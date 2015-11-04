@@ -22,6 +22,7 @@ obj1 = ElementObject(element_type)
 obj2 = ElementObject(element_type)
 
 assoc = obj1.connect_with(connection_type, obj2)
+assoc.data.set_value("name", "assoc")
 
 obj1.data.get_value("attributes").append()
 obj1.data.get_value("attributes").append()
@@ -43,8 +44,7 @@ vis2.move(ruler, Point(300, 100))
 vis2.resize(ruler, Size(100, 100))
 
 visassoc = diagram.show(assoc)
-visassoc.add_point(Point(250, 200))
-visassoc.add_point(Point(500, 300))
+visassoc.add_point(ruler, Point(500, 300))
 
 widget.show_diagram(diagram)
 

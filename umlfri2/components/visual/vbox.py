@@ -19,8 +19,11 @@ class VBoxObject(VisualObject):
                 y += size.height
     
     def get_minimal_size(self):
-        return Size(max(s.width for s in self.__children_sizes),
-                    sum(s.height for s in self.__children_sizes))
+        if self.__children_sizes:
+            return Size(max(s.width for s in self.__children_sizes),
+                        sum(s.height for s in self.__children_sizes))
+        else:
+            return Size(0, 0)
     
     def draw(self, canvas, shadow):
         for child in self.__children:

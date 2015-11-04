@@ -23,9 +23,14 @@ class ConnectionTypeLabel:
     def id(self):
         return self.__id
     
-    def compile(self, variables):
+    def compile(self):
+        variables = {
+            'self': self.__connection_type().ufl_type,
+            'cfg': self.__connection_type().metamodel.addon.config_structure
+        }
+        
         self.__appearance.compile(variables)
     
     def create_appearance_object(self, context, ruler):
-        context.set_config(self.__connection_type.metamodel.addon.config)
+        context.set_config(self.__connection_type().metamodel.addon.config)
         return self.__appearance.create_visual_object(context, ruler)

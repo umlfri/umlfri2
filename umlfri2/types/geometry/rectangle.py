@@ -4,17 +4,19 @@ from .line import Line
 
 
 class Rectangle:
-    def __init__(self, p1, p2, p3=None, p4=None):
-        if p3 is None and p4 is None:
-            self.__x = p1.x
-            self.__y = p1.y
-            self.__width = p2.width
-            self.__height = p2.height
-        else:
-            self.__x = p1
-            self.__y = p2
-            self.__width = p3
-            self.__height = p4
+    def __init__(self, x, y, width, height):
+        self.__x = x
+        self.__y = y
+        self.__width = width
+        self.__height = height
+    
+    @staticmethod
+    def from_point_size(point, size):
+        return Rectangle(point.x, point.y, size.width, size.height)
+    
+    @staticmethod
+    def from_point_point(p1, p2):
+        return Rectangle(p1.x, p1.y, p2.x - p1.x, p2.y - p1.y)
     
     @property
     def top_left(self):
@@ -75,10 +77,10 @@ class Rectangle:
     
     def intersect(self, other):
         intersections = set()
-        for line in Line(self.top_left, self.top_right),\
-                    Line(self.top_right, self.bottom_right),\
-                    Line(self.bottom_right, self.bottom_left),\
-                    Line(self.bottom_left, self.top_left):
+        for line in Line.from_point_point(self.top_left, self.top_right),\
+                    Line.from_point_point(self.top_right, self.bottom_right),\
+                    Line.from_point_point(self.bottom_right, self.bottom_left),\
+                    Line.from_point_point(self.bottom_left, self.top_left):
             intersections.update(line.intersect(other))
         
         yield from intersections

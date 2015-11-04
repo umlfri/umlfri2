@@ -2,6 +2,7 @@ from .componentloader import ComponentLoader
 from .constants import NAMESPACE
 from .structureloader import UflStructureLoader
 from umlfri2.components.connectionline import ConnectionLineContainerComponent
+from umlfri2.components.visual import SimpleComponent
 from umlfri2.metamodel import ConnectionType
 from umlfri2.metamodel.connectiontypelabel import ConnectionTypeLabel
 from umlfri2.ufl.types import UflProportionType
@@ -32,7 +33,8 @@ class ConnectionTypeLoader:
                     
                     label_position = UflProportionType().parse(label.attrib["position"])
                     label_id = label.attrib["id"]
-                    label_appearance = ComponentLoader(label, 'visual').load()[0]
+                    label_appearance = ComponentLoader(label, 'visual').load()
+                    label_appearance = SimpleComponent(label_appearance)
                     
                     labels.append(ConnectionTypeLabel(label_position, label_id, label_appearance))
                     

@@ -5,6 +5,7 @@ from .line import LineComponent
 from .padding import PaddingComponent
 from .rectangle import RectangleComponent
 from .shadow import ShadowComponent
+from .simple import SimpleComponent
 from .table import TableComponent, TableRow, TableColumn
 from .textbox import TextBoxComponent
 from .vbox import VBoxComponent

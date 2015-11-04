@@ -3,17 +3,15 @@ from .point import Point
 
 
 class Line:
-    def __init__(self, p1, p2, p3=None, p4=None):
-        if p3 is None and p4 is None:
-            self.__x1 = p1.x
-            self.__y1 = p1.y
-            self.__x2 = p2.x
-            self.__y2 = p2.y
-        else:
-            self.__x1 = p1
-            self.__y1 = p2
-            self.__x2 = p3
-            self.__y2 = p4
+    def __init__(self, x1, y1, x2, y2):
+        self.__x1 = x1
+        self.__y1 = y1
+        self.__x2 = x2
+        self.__y2 = y2
+    
+    @staticmethod
+    def from_point_point(p1, p2):
+        return Line(p1.x, p1.y, p2.x, p2.y)
     
     @property
     def first(self):
