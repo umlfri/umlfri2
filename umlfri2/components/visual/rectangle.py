@@ -51,8 +51,8 @@ class RectangleComponent(VisualComponent):
         for local, child in self._get_children(context):
             return RectangleObject(
                 child._create_object(local, ruler),
-                self.__fill(local),
-                self.__border(local)
+                self.__fill(context),
+                self.__border(context)
             )
     
     def compile(self, variables):

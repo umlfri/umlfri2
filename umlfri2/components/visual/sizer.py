@@ -1,0 +1,111 @@
+from ..expressions import NoneExpression
+from umlfri2.types.geometry import Size
+from umlfri2.ufl.types import UflIntegerType, UflNullableType
+from .visualcomponent import VisualComponent, VisualObject
+
+
+class SizerObject(VisualObject):
+    def __init__(self, child, minwidth, maxwidth, minheight, maxheight, width, height):
+        self.__child = child
+        self.__minwidth = minwidth
+        self.__maxwidth = maxwidth
+        self.__minheight = minheight
+        self.__maxheight = maxheight
+        self.__width = width
+        self.__height = height
+        
+        if child is None:
+            self.__child_size = Size(0, 0)
+        else:
+            self.__child_size = child.get_minimal_size()
+    
+    def assign_bounds(self, bounds):
+        pass
+    
+    def get_minimal_size(self):
+        w = self.__child_size.width
+        h = self.__child_size.height
+        
+        if self.__width is not None:
+            w = self.__width
+        else:
+            if self.__minwidth is not None and w < self.__minwidth:
+                w = self.__minwidth
+            if self.__maxwidth is not None and w > self.__maxwidth:
+                w = self.__maxwidth
+        
+        if self.__height is not None:
+            h = self.__height
+        else:
+            if self.__minheight is not None and h < self.__minheight:
+                h = self.__minheight
+            if self.__maxheight is not None and w > self.__maxheight:
+                h = self.__maxheight
+        
+        return Size(w, h)
+            
+    def draw(self, canvas, shadow):
+        if self.__child is not None:
+            self.__child.draw(canvas, shadow)
+
+class SizerComponent(VisualComponent):
+    ATTRIBUTES = {
+        'minwidth': UflNullableType(UflIntegerType()),
+        'maxwidth': UflNullableType(UflIntegerType()),
+        'minheight': UflNullableType(UflIntegerType()),
+        'maxheight': UflNullableType(UflIntegerType()),
+        'width': UflNullableType(UflIntegerType()),
+        'height': UflNullableType(UflIntegerType()),
+    }
+    
+    def __init__(self, children, minwidth=None, maxwidth=None, minheight=None, maxheight=None, width=None, height=None):
+        super().__init__(children)
+        if (minwidth is not None or maxwidth is not None) and width is not None:
+            raise Exception("You cannot specify min/max width together with absolute width")
+        if (minheight is not None or maxheight is not None) and height is not None:
+            raise Exception("You cannot specify min/max height together with absolute height")
+        
+        self.__minwidth = minwidth or NoneExpression
+        self.__maxwidth = maxwidth or NoneExpression
+        
+        self.__minheight = minheight or NoneExpression
+        self.__maxheight = maxheight or NoneExpression
+        
+        self.__width = width or NoneExpression
+        self.__height = height or NoneExpression
+    
+    def is_resizable(self, context):
+        rx, ry = super().is_resizable(context)
+        
+        return (
+            self.__width(context) is None and rx,
+            self.__height(context) is None and ry
+        )
+    
+    def _create_object(self, context, ruler):
+        child_object = None
+        for local, child in self._get_children(context):
+            child_object = child._create_object(local, ruler),
+        
+        return SizerObject(
+            child_object,
+            self.__minwidth(context),
+            self.__maxwidth(context),
+            self.__minheight(context),
+            self.__maxheight(context),
+            self.__width(context),
+            self.__height(context)
+        )
+    
+    def compile(self, variables):
+        self._compile_expressions(
+            variables,
+            minwidth=self.__minwidth,
+            maxwidth=self.__maxwidth,
+            minheight=self.__minheight,
+            maxheight=self.__maxheight,
+            width=self.__width,
+            height=self.__height,
+        )
+        
+        self._compile_children(variables)

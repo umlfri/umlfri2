@@ -58,10 +58,10 @@ class PaddingComponent(VisualComponent):
         for local, child in self._get_children(context):
             return PaddingObject(
                 child._create_object(local, ruler),
-                self.__left(local),
-                self.__right(local),
-                self.__top(local),
-                self.__bottom(local)
+                self.__left(context),
+                self.__right(context),
+                self.__top(context),
+                self.__bottom(context)
             )
     
     def compile(self, variables):

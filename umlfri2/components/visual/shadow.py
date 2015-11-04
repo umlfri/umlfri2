@@ -43,8 +43,8 @@ class ShadowComponent(VisualComponent):
         for local, child in self._get_children(context):
             return ShadowObject(
                 child._create_object(local, ruler),
-                self.__color(local),
-                self.__padding(local)
+                self.__color(context),
+                self.__padding(context)
             )
     
     def compile(self, variables):
