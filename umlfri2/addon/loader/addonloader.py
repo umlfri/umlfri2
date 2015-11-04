@@ -39,7 +39,7 @@ class AddOnLoader:
         for dirpath, dirs, files in os.walk(path):
             for file in files:
                 file = os.path.join(dirpath, file)
-                xml = lxml.etree.parse(open(file)).getroot()
+                xml = lxml.etree.parse(open(file, 'rb')).getroot()
                 if xml.tag == "{{{0}}}ElementType".format(NAMESPACE):
                     elementXMLs.append(xml)
                 elif xml.tag == "{{{0}}}ConnectionType".format(NAMESPACE):
