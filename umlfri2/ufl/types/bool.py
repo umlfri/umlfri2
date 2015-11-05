@@ -13,7 +13,7 @@ class UflBoolType(UflType):
         return self.__default
     
     def parse(self, value):
-        return value == 'True'
+        return value.lower() == 'true'
     
     @property
     def is_immutable(self):

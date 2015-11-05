@@ -49,7 +49,7 @@ vis2.resize(ruler, Size(100, 100))
 
 vispkg1 = diagram.show(pkg1)
 vispkg1.move(ruler, Point(500, 50))
-#vispkg1.resize(ruler, Size(200, 200))
+vispkg1.resize(ruler, Size(200, 200))
 
 visassoc = diagram.show(assoc)
 visassoc.add_point(ruler, Point(500, 300))

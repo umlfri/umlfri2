@@ -51,9 +51,6 @@ class ConnectionLineObject:
 
 
 class ConnectionLineComponent(Component):
-    def is_control(self):
-        return False
-    
     def _create_object(self, context):
         raise NotImplementedError
     

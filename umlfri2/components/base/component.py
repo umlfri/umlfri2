@@ -4,8 +4,10 @@ from umlfri2.ufl.types import UflTypedEnumType, UflNullableType, UflStringType, 
 
 class Component:
     ATTRIBUTES = {}
+    CHILDREN_ATTRIBUTES = {}
     HAS_CHILDREN = True
     CHILDREN_TYPE = None
+    IS_CONTROL = False
     
     def __init__(self, children):
         self.__children = children
@@ -13,9 +15,6 @@ class Component:
         
         for child in children:
             child.__parent = ref(self)
-    
-    def is_control(self):
-        raise NotImplementedError
     
     def compile(self, variables):
         pass
@@ -36,7 +35,7 @@ class Component:
     
     def _get_children(self, context):
         for child in self.__children:
-            if child.is_control():
+            if child.IS_CONTROL:
                 yield from child.filter_children(context)
             else:
                 yield context, child

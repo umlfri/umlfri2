@@ -1,39 +1,20 @@
-from umlfri2.types.geometry import Size, Rectangle
-from .visualcomponent import VisualComponent, VisualObject
+from umlfri2.types.geometry import Size, Rectangle, Point
+from .box import BoxComponent, BoxObject
 
 
-class VBoxObject(VisualObject):
-    def __init__(self, children):
-        self.__children = children
-        
-        self.__children_sizes = [child.get_minimal_size() for child in children]
+class VBoxObject(BoxObject):
+    def _new_size(self, size, whole_size, delta):
+        return Size(whole_size.width, size.height + delta)
     
-    def assign_bounds(self, bounds):
-        x = bounds.x1
-        y = bounds.y1
-        w = bounds.width
-        
-        if self.__children:
-            for size, child in zip(self.__children_sizes, self.__children):
-                child.assign_bounds(Rectangle(x, y, w, size.height))
-                y += size.height
+    def _new_position(self, position, size):
+        return Point(position.x, position.y + size.height)
     
-    def get_minimal_size(self):
-        if self.__children_sizes:
-            return Size(max(s.width for s in self.__children_sizes),
-                        sum(s.height for s in self.__children_sizes))
-        else:
-            return Size(0, 0)
+    def _compute_size(self, all_widths, all_heights):
+        return Size(max(all_widths), sum(all_heights))
     
-    def draw(self, canvas, shadow):
-        for child in self.__children:
-            child.draw(canvas, shadow)
+    def _get_size_component(self, size):
+        return size.height
 
-class VBoxComponent(VisualComponent):
-    def _create_object(self, context, ruler):
-        children = [child._create_object(local, ruler) for local, child in self._get_children(context)]
-        
-        return VBoxObject(children)
-    
-    def compile(self, variables):
-        self._compile_children(variables)
+class VBoxComponent(BoxComponent):
+    def __init__(self, children, expand):
+        super().__init__(VBoxObject, children, expand)

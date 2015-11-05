@@ -15,27 +15,29 @@
     <Appearance>
         <Shadow padding="5" color="#cfg.element.shadow">
             <VBox>
-                <Padding right="20">
-                    <Rectangle fill="#cfg.element.fill" border="#cfg.element.line">
-                        <Padding padding="5">
-                            <VBox>
-                                <If condition="#self.stereotype">
+                <HBox>
+                    <Padding right="20">
+                        <Rectangle fill="#cfg.element.fill" border="#cfg.element.line">
+                            <Padding padding="5">
+                                <VBox>
+                                    <If condition="#self.stereotype">
+                                        <Align horizontal="center">
+                                            <TextBox font="#cfg.element.textfont" color="#cfg.element.text">
+                                                <Text text="&#171;"/>
+                                                <Text text="#self.stereotype"/>
+                                                <Text text="&#187;"/>
+                                            </TextBox>
+                                        </Align>
+                                    </If>
                                     <Align horizontal="center">
-                                        <TextBox font="#cfg.element.textfont" color="#cfg.element.text">
-                                            <Text text="&#171;"/>
-                                            <Text text="#self.stereotype"/>
-                                            <Text text="&#187;"/>
-                                        </TextBox>
+                                        <TextBox text="#self.name" font="#cfg.element.textfont" color="#cfg.element.text"/>
                                     </Align>
-                                </If>
-                                <Align horizontal="center">
-                                    <TextBox text="#self.name" font="#cfg.element.textfont" color="#cfg.element.text"/>
-                                </Align>
-                            </VBox>
-                        </Padding>
-                    </Rectangle>
-                </Padding>
-                <Rectangle fill="#cfg.element.fill" border="#cfg.element.line">
+                                </VBox>
+                            </Padding>
+                        </Rectangle>
+                    </Padding>
+                </HBox>
+                <Rectangle fill="#cfg.element.fill" border="#cfg.element.line" vbox-expand="true">
                     <Sizer minwidth="60" minheight="60" />
                 </Rectangle>
             </VBox>

@@ -14,9 +14,6 @@ class VisualObject:
 
 
 class VisualComponent(Component):
-    def is_control(self):
-        return False
-    
     def is_resizable(self, context):
         ret_x = False
         ret_y = False
