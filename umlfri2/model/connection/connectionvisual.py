@@ -53,6 +53,10 @@ class ConnectionVisual:
                     return True
             old_point = point
         
+        for label in self.__labels:
+            if label.is_at_position(ruler, position):
+                return True
+        
         return False
     
     def get_point(self, ruler, id):

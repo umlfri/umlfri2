@@ -1,6 +1,6 @@
 from weakref import ref
 import math
-from umlfri2.types.geometry import Point, Vector
+from umlfri2.types.geometry import Point, Vector, Rectangle
 
 
 class ConnectionLabel:
@@ -39,6 +39,14 @@ class ConnectionLabel:
                 self.__line_index += 1
                 self.__line_position = new_position - 1
             self.__cached_appearance = None
+    
+    def get_bounds(self, ruler):
+        self.__ensure_appearance_object_exists(ruler)
+        
+        return Rectangle.from_point_size(self.__cached_appearance.position, self.__cached_appearance.size)
+    
+    def is_at_position(self, ruler, position):
+        return self.get_bounds(ruler).contains(position)
     
     def draw(self, canvas):
         self.__ensure_appearance_object_exists(canvas.get_ruler())
