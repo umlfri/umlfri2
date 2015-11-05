@@ -45,7 +45,7 @@ class DiagramTypeLoader:
                         elif attrvalue.startswith("#"):
                             background = UflExpression(attrvalue[1:])
                         else:
-                            background = ConstantExpression(Color.get_color(attrvalue[1:]), UflColorType())
+                            background = ConstantExpression(Color.get_color(attrvalue), UflColorType())
             else:
                 raise Exception
         
