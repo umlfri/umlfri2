@@ -1,10 +1,12 @@
+from weakref import ref
 from umlfri2.components.base.context import Context
 from .connection import ConnectionObject, ConnectionVisual
 from .element import ElementObject, ElementVisual
 
 
 class Diagram:
-    def __init__(self, type):
+    def __init__(self, parent, type):
+        self.__parent = ref(parent)
         self.__type = type
         self.__data = type.ufl_type.build_default()
         self.__elements = []

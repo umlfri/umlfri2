@@ -1,7 +1,7 @@
 import sys
 from PySide.QtGui import QApplication
 from umlfri2.addon.loader import AddOnLoader
-from umlfri2.model import Diagram, ElementObject
+from umlfri2.model import Diagram, ElementObject, Project
 from umlfri2.qtgui.canvas.canvaswidget import CanvasWidget
 from umlfri2.types.geometry import Point, Size
 
@@ -12,17 +12,19 @@ ruler = widget.get_ruler()
 
 addon = AddOnLoader('addons/infjavauml').load()
 
-element_type = addon.metamodel.get_element_type('class')
-package_type = addon.metamodel.get_element_type('package')
-diagram_type = addon.metamodel.get_diagram_type('class_diagram')
-connection_type = addon.metamodel.get_connection_type('association')
+project = Project(addon.metamodel)
 
-diagram = Diagram(diagram_type)
+element_type = project.metamodel.get_element_type('class')
+package_type = project.metamodel.get_element_type('package')
+diagram_type = project.metamodel.get_diagram_type('class_diagram')
+connection_type = project.metamodel.get_connection_type('association')
 
-obj1 = ElementObject(element_type)
-obj2 = ElementObject(element_type)
+pkg1 = project.create_child_element(package_type)
 
-pkg1 = ElementObject(package_type)
+diagram = pkg1.create_child_diagram(diagram_type)
+
+obj1 = pkg1.create_child_element(element_type)
+obj2 = pkg1.create_child_element(element_type)
 
 assoc = obj1.connect_with(connection_type, obj2)
 assoc.data.set_value("name", "assoc")
@@ -36,9 +38,6 @@ obj1.data.get_value("attributes").get_item(1).set_value("type", "int")
 obj1.data.set_value("name", "Class1")
 obj2.data.set_value("name", "Class2")
 pkg1.data.set_value("name", "Package1")
-
-print(obj1.get_display_name())
-print(obj2.get_display_name())
 
 vis1 = diagram.show(obj1)
 vis1.move(ruler, Point(30, 30))
@@ -57,5 +56,15 @@ visassoc.add_point(ruler, Point(500, 300))
 widget.show_diagram(diagram)
 
 widget.show()
+
+def show_tree(node, indent = 0):
+    print('    '*indent + node.get_display_name())
+    if not isinstance(node, Project):
+        for diagram in node.diagrams:
+            print('    '*(indent + 1) + '*' + diagram.get_display_name())
+    for child in node.children:
+        show_tree(child, indent + 1)
+
+show_tree(project)
 
 sys.exit(app.exec_())
