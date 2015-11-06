@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://umlfri.org/v2/addon.xsd"
+           targetNamespace="http://umlfri.org/v2/addon.xsd" elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+    <xs:simpleType name="point">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="-?[0-9]+(.[0-9]+)?,-?[0-9]+(.[0-9]+)?"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="rotation">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="-?[0-9]+(.[0-9]+)?"/>
+            <xs:pattern value="-?[0-9]+°"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

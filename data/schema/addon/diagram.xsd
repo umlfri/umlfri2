@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://umlfri.org/v2/addon.xsd"
+           targetNamespace="http://umlfri.org/v2/addon.xsd" elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+    <xs:include schemaLocation="base_types.xsd"/>
+    <xs:include schemaLocation="ufl_types.xsd"/>
+    <xs:include schemaLocation="components.xsd"/>
+    <xs:element name="DiagramType">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Icon">
+                    <xs:complexType>
+                        <xs:attribute name="path" type="xs:string"/>
+                    </xs:complexType>
+                </xs:element>
+
+                <xs:element name="Structure" type="ufl_object"/>
+                
+                <xs:element name="DisplayName" type="text_component"/>
+                
+                <xs:element name="Elements">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Element">
+                                <xs:complexType>
+                                    <xs:attribute name="id" type="xs:string"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                
+                <xs:element name="Connections">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Connection">
+                                <xs:complexType>
+                                    <xs:attribute name="id" type="xs:string"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                
+                <xs:element name="Appearance">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Background">
+                                <xs:complexType>
+                                    <xs:attribute name="color" type="xs:string"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+
+            <xs:attribute name="id" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://umlfri.org/v2/addon.xsd"
+           targetNamespace="http://umlfri.org/v2/addon.xsd" elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+    <xs:include schemaLocation="ufl_types.xsd"/>
+    <xs:include schemaLocation="components.xsd"/>
+    <xs:element name="ConnectionType">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Icon">
+                    <xs:complexType>
+                        <xs:attribute name="path" type="xs:string"/>
+                    </xs:complexType>
+                </xs:element>
+
+                <xs:element name="Structure" type="ufl_object"/>
+                
+                <xs:element name="Appearance">
+                    <xs:complexType>
+                        <xs:complexContent>
+                            <xs:extension base="connection_component">
+                                <xs:sequence>
+                                    <xs:element name="Label" minOccurs="0" maxOccurs="unbounded">
+                                        <xs:complexType>
+                                            <xs:complexContent>
+                                                <xs:extension base="visual_component">
+                                                    <xs:attribute name="id" type="xs:string"/>
+                                                    <xs:attribute name="position" type="xs:string"/>
+                                                </xs:extension>
+                                            </xs:complexContent>
+                                        </xs:complexType>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:extension>
+                        </xs:complexContent>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+
+            <xs:attribute name="id" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

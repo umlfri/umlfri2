@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://umlfri.org/v2/addon.xsd"
+           targetNamespace="http://umlfri.org/v2/addon.xsd" elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+    <xs:include schemaLocation="ufl_types.xsd"/>
+    <xs:element name="AddOn">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="AddOnInfo">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Name">
+                                <xs:complexType>
+                                    <xs:attribute name="name" type="xs:string"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="Version">
+                                <xs:complexType>
+                                    <xs:attribute name="version" type="xs:string"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="Author">
+                                <xs:complexType>
+                                    <xs:attribute name="name" type="xs:string"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="Homepage">
+                                <xs:complexType>
+                                    <xs:attribute name="url" type="xs:string"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="CommonLicense">
+                                <xs:complexType>
+                                    <xs:attribute name="name" type="xs:string"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="Icon">
+                                <xs:complexType>
+                                    <xs:attribute name="path" type="xs:string"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="Description" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                
+                <xs:element name="Config" type="ufl_object"/>
+                
+                <xs:element name="Translations">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Translation">
+                                <xs:complexType>
+                                    <xs:attribute name="lang" type="xs:string"/>
+                                    <xs:attribute name="path" type="xs:string"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                
+                <xs:element name="Metamodel">
+                    <xs:complexType>
+                        <xs:attribute name="path" type="xs:string"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+
+            <xs:attribute name="uri" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

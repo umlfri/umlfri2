@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://umlfri.org/v2/addon.xsd"
+           targetNamespace="http://umlfri.org/v2/addon.xsd" elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+    <xs:include schemaLocation="base_types.xsd"/>
+    <xs:element name="Definitions">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="ArrowDefinition" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:attribute name="id" type="xs:string"/>
+                        <xs:attribute name="path" type="xs:string"/>
+                        <xs:attribute name="center" type="point"/>
+                        <xs:attribute name="rotation" type="rotation"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="CornerDefinition" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:attribute name="id" type="xs:string"/>
+                        <xs:attribute name="path" type="xs:string"/>
+                        <xs:attribute name="start" type="point"/>
+                        <xs:attribute name="end" type="point"/>
+                        <xs:attribute name="corner">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:enumeration value="top left"/>
+                                    <xs:enumeration value="bottom left"/>
+                                    <xs:enumeration value="top right"/>
+                                    <xs:enumeration value="bottom right"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="SideDefinition" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:attribute name="id" type="xs:string"/>
+                        <xs:attribute name="path" type="xs:string"/>
+                        <xs:attribute name="start" type="point"/>
+                        <xs:attribute name="end" type="point"/>
+                        <xs:attribute name="side">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:enumeration value="left"/>
+                                    <xs:enumeration value="right"/>
+                                    <xs:enumeration value="top"/>
+                                    <xs:enumeration value="bottom"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

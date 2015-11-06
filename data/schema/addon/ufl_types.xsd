@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://umlfri.org/v2/addon.xsd"
+           targetNamespace="http://umlfri.org/v2/addon.xsd" elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+    <xs:complexType name="ufl_object">
+        <xs:sequence>
+            <xs:element name="Attribute" minOccurs="0" maxOccurs="unbounded" type="ufl_type"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ufl_type">
+        <xs:choice>
+            <xs:element name="Attribute" minOccurs="0" maxOccurs="unbounded" type="ufl_type"/>
+            <xs:element name="Value" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="value" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+        <xs:attribute name="id" type="xs:string" use="required"/>
+        <xs:attribute name="type" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="str"/>
+                    <xs:enumeration value="str[]"/>
+                    <xs:enumeration value="bool"/>
+                    <xs:enumeration value="bool[]"/>
+                    <xs:enumeration value="object"/>
+                    <xs:enumeration value="object[]"/>
+                    <xs:enumeration value="enum"/>
+                    <xs:enumeration value="enum[]"/>
+                    <xs:enumeration value="text"/>
+                    <xs:enumeration value="text[]"/>
+                    <xs:enumeration value="color"/>
+                    <xs:enumeration value="color[]"/>
+                    <xs:enumeration value="font"/>
+                    <xs:enumeration value="font[]"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="default" type="xs:string"/>
+    </xs:complexType>
+</xs:schema>
