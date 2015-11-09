@@ -2,6 +2,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://umlfri.org/v2/addon.xsd"
            targetNamespace="http://umlfri.org/v2/addon.xsd" elementFormDefault="qualified"
            attributeFormDefault="unqualified">
+    <xs:include schemaLocation="components.xsd"/>
     <xs:complexType name="ufl_object">
         <xs:sequence>
             <xs:element name="Attribute" minOccurs="0" maxOccurs="unbounded" type="ufl_type"/>
@@ -15,6 +16,7 @@
                     <xs:attribute name="value" type="xs:string"/>
                 </xs:complexType>
             </xs:element>
+            <xs:element name="Template" minOccurs="0" maxOccurs="1" type="text_component"/>
         </xs:choice>
         <xs:attribute name="id" type="xs:string" use="required"/>
         <xs:attribute name="type" use="required">

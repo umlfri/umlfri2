@@ -9,7 +9,7 @@ class UflNullableType(UflType):
     def inner_type(self):
         return self.__inner_type
     
-    def build_default(self):
+    def build_default(self, generator):
         return None
     
     def parse(self, value):

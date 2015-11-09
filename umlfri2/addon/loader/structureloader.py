@@ -1,3 +1,6 @@
+from .constants import NAMESPACE
+from .componentloader import ComponentLoader
+from umlfri2.components.text import TextContainerComponent
 from umlfri2.ufl.types import *
 
 
@@ -34,13 +37,13 @@ class UflStructureLoader:
                 else:
                     attr = ufltype()
             elif type == "enum":
-                attr = UflEnumType(self.__load_possibilities(child), child.attrib.get("default"))
+                attr = UflEnumType(self.__load_possibilities(child) or (), child.attrib.get("default"))
             elif type == "object":
                 attr = UflObjectType(self.__load_object(child))
             elif type == "str":
-                attr = UflStringType(self.__load_possibilities(child), child.attrib.get("default"))
+                attr = UflStringType(self.__load_possibilities(child) or None, child.attrib.get("default"), self.__load_template(child))
             elif type == "text":
-                attr = UflStringType(None, child.attrib.get("default"), True)
+                attr = UflStringType(None, child.attrib.get("default"), multiline=True)
             else:
                 raise Exception
             
@@ -53,6 +56,16 @@ class UflStructureLoader:
     def __load_possibilities(self, node):
         ret = []
         for child in node:
-            ret.append(child.attrib["value"])
+            if child.tag == "{{{0}}}Value".format(NAMESPACE):
+                ret.append(child.attrib["value"])
         
         return ret
+
+    def __load_template(self, node):
+        for child in node:
+            if child.tag == "{{{0}}}Template".format(NAMESPACE):
+                template = TextContainerComponent(ComponentLoader(child, 'text').load())
+                template.compile({'parent': UflStringType(), 'no': UflIntegerType()})
+                return template
+        
+        return None

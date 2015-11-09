@@ -27,7 +27,7 @@ class UflTypedEnumType(UflType):
     def type(self):
         return self.__type
     
-    def build_default(self):
+    def build_default(self, generator):
         return getattr(self.__type, self.__default)
     
     def parse(self, value):

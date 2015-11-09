@@ -9,7 +9,7 @@ class AddOn:
         self.__icon = icon
         self.__description = description
         self.__config_structure = config
-        self.__config = config.build_default()
+        self.__config = config.build_default(None)
         self.__translations = translations
         self.__metamodel = metamodel
         self.__metamodel._set_addon(self)

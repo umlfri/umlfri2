@@ -14,7 +14,7 @@ class UflProportionType(UflType):
     def default(self):
         return self.__default
     
-    def build_default(self):
+    def build_default(self, generator):
         return self.__default or Colors.black
     
     def parse(self, value):

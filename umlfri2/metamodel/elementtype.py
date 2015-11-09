@@ -36,9 +36,9 @@ class ElementType:
         self.__display_name.compile(variables)
     
     def create_appearance_object(self, context, ruler):
-        context.set_config(self.__metamodel().addon.config)
+        context = context.extend(self.__metamodel().addon.config, 'cfg')
         return self.__appearance.create_visual_object(context, ruler)
     
     def get_display_name(self, context):
-        context.set_config(self.__metamodel().addon.config)
+        context = context.extend(self.__metamodel().addon.config, 'cfg')
         return self.__display_name.get_text(context)

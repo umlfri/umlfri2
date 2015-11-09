@@ -16,8 +16,14 @@ class UflObjectType(UflType):
     def contains_attribute(self, name):
         return name in self.__attributes
     
-    def build_default(self):
-        attr = {name: type.build_default() for name, type in self.__attributes.items()}
+    def build_default(self, generator):
+        attr = {}
+        for name, type in self.__attributes.items():
+            local_generator = None
+            if generator:
+                local_generator = generator.for_name(name)
+            
+            attr[name] = type.build_default(local_generator)
         
         return UflObject(self, attr)
     

@@ -3,7 +3,11 @@
     <Icon path="icons/class_diagram.png"/>
 
     <Structure>
-        <Attribute id="name" type="str"/>
+        <Attribute id="name" type="str">
+            <Template>
+                <Text text="#parent"/>
+            </Template>
+        </Attribute>
         <Attribute id="note" type="text"/>
     </Structure>
 

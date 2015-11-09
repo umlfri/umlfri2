@@ -17,7 +17,7 @@ class UflEnumType(UflType):
     def possibilities(self):
         return self.__possibilities
     
-    def build_default(self):
+    def build_default(self, generator):
         return self.__default
     
     def parse(self, value):

@@ -5,7 +5,7 @@ from umlfri2.components.base.context import Context
 class ConnectionObject:
     def __init__(self, type, source, destination):
         self.__type = type
-        self.__data = type.ufl_type.build_default()
+        self.__data = type.ufl_type.build_default(None)
         self.__source = ref(source)
         self.__destination = ref(destination)
     
@@ -26,9 +26,9 @@ class ConnectionObject:
         return self.__destination()
     
     def create_appearance_object(self, ruler):
-        context = Context(self.__data)
+        context = Context().extend(self.__data, 'self')
         return self.__type.create_appearance_object(context, ruler)
     
     def create_label_object(self, id, ruler):
-        context = Context(self.__data)
+        context = Context().extend(self.__data, 'self')
         return self.__type.get_label(id).create_appearance_object(context, ruler)

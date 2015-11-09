@@ -10,7 +10,7 @@ class UflListType(UflType):
     def item_type(self):
         return self.__item_type
     
-    def build_default(self):
+    def build_default(self, generator):
         return UflList(self)
     
     def is_same_as(self, other):

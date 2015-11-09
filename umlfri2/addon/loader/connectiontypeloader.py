@@ -35,7 +35,7 @@ class ConnectionTypeLoader:
                     
                     label_position = UflProportionType().parse(label.attrib["position"])
                     label_id = label.attrib["id"]
-                    label_appearance = ComponentLoader(label, 'visual').load()
+                    label_appearance = ComponentLoader(label, 'visual', self.__definitions).load()
                     label_appearance = SimpleComponent(label_appearance)
                     
                     labels.append(ConnectionTypeLabel(label_position, label_id, label_appearance))

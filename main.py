@@ -26,18 +26,16 @@ diagram = pkg1.create_child_diagram(diagram_type)
 obj1 = pkg1.create_child_element(element_type)
 obj2 = pkg1.create_child_element(element_type)
 
+pkg1.create_child_element(package_type)
+
 assoc = obj1.connect_with(connection_type, obj2)
 assoc.data.set_value("name", "assoc")
 
 obj1.data.get_value("attributes").append()
 obj1.data.get_value("attributes").append()
-obj1.data.get_value("attributes").get_item(0).set_value("name", "attr")
-obj1.data.get_value("attributes").get_item(1).set_value("name", "attr2")
 obj1.data.get_value("attributes").get_item(1).set_value("type", "int")
-
-obj1.data.set_value("name", "Class1")
-obj2.data.set_value("name", "Class2")
-pkg1.data.set_value("name", "Package1")
+obj1.data.get_value("operations").append()
+obj1.data.get_value("operations").append()
 
 vis1 = diagram.show(obj1)
 vis1.move(ruler, Point(30, 30))

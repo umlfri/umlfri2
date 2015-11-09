@@ -42,7 +42,7 @@ class DiagramType:
         return self.__connection_types
     
     def get_background_color(self, context):
-        context.set_config(self.__metamodel().addon.config)
+        context = context.extend(self.__metamodel().addon.config, 'cfg')
         return self.__background_color(context)
     
     def compile(self):
@@ -52,5 +52,5 @@ class DiagramType:
         self.__background_color.compile(variables, Color)
     
     def get_display_name(self, context):
-        context.set_config(self.__metamodel().addon.config)
+        context = context.extend(self.__metamodel().addon.config, 'cfg')
         return self.__display_name.get_text(context)

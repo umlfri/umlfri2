@@ -1,3 +1,30 @@
+from umlfri2.ufl.types.uniquevaluegenerator import UniqueValueGenerator
+
+
+class ListItemValueGenerator(UniqueValueGenerator):
+    def __init__(self, list):
+        self.__list = list
+        self.__name = None
+    
+    def get_parent_name(self):
+        return None
+    
+    def for_name(self, name):
+        ret = ListItemValueGenerator(self.__list)
+        ret.__name = name
+        return ret
+    
+    def has_value(self, value):
+        if self.__name is None:
+            return None
+        
+        for item in self.__list:
+            if item.get_value(self.__name) == value:
+                return True
+        
+        return False
+
+
 class UflList:
     def __init__(self, type):
         self.__values = []
@@ -24,7 +51,7 @@ class UflList:
         return len(self.__values)
     
     def append(self):
-        value = self.__type.item_type.build_default()
+        value = self.__type.item_type.build_default(ListItemValueGenerator(self))
         self.__values.append(value)
         return value
     

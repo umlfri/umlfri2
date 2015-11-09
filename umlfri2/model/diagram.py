@@ -2,13 +2,39 @@ from weakref import ref
 from umlfri2.components.base.context import Context
 from .connection import ConnectionObject, ConnectionVisual
 from .element import ElementObject, ElementVisual
+from umlfri2.ufl.types.uniquevaluegenerator import UniqueValueGenerator
+
+
+class DiagramValueGenerator(UniqueValueGenerator):
+    def __init__(self, parent, type):
+        self.__parent = parent
+        self.__type = type
+        self.__name = None
+    
+    def get_parent_name(self):
+        return self.__parent.get_display_name()
+    
+    def for_name(self, name):
+        ret = DiagramValueGenerator(self.__parent, self.__type)
+        ret.__name = name
+        return ret
+    
+    def has_value(self, value):
+        if self.__name is None:
+            return None
+        
+        for diagram in self.__parent.diagrams:
+            if diagram.type == self.__type and diagram.data.get_value(self.__name) == value:
+                return True
+        
+        return False
 
 
 class Diagram:
     def __init__(self, parent, type):
         self.__parent = ref(parent)
         self.__type = type
-        self.__data = type.ufl_type.build_default()
+        self.__data = type.ufl_type.build_default(DiagramValueGenerator(parent, type))
         self.__elements = []
         self.__connections = []
     
@@ -21,7 +47,7 @@ class Diagram:
         return self.__data
     
     def get_display_name(self):
-        context = Context(self.__data)
+        context = Context().extend(self.__data, 'self')
         return self.__type.get_display_name(context)
     
     def show(self, object):
@@ -44,7 +70,7 @@ class Diagram:
                 return visual
     
     def draw(self, canvas):
-        context = Context(self.__data)
+        context = Context().extend(self.__data, 'self')
         canvas.clear(self.__type.get_background_color(context))
         
         for element in self.__elements:

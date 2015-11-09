@@ -3,11 +3,21 @@
     <Icon path="icons/class.png"/>
 
     <Structure>
-        <Attribute id="name" type="str"/>
+        <Attribute id="name" type="str">
+            <Template>
+                <Text text="Class"/>
+                <Text text="#no"/>
+            </Template>
+        </Attribute>
         <Attribute id="stereotype" type="str"/>
         <Attribute id="abstract" type="bool"/>
         <Attribute id="attributes" type="object[]">
-            <Attribute id="name" type="str"/>
+            <Attribute id="name" type="str">
+                <Template>
+                    <Text text="attr"/>
+                    <Text text="#no"/>
+                </Template>
+            </Attribute>
             <Attribute id="type" type="str"/>
             <Attribute id="stereotype" type="str"/>
             <Attribute id="scope" type="enum">
@@ -20,7 +30,12 @@
             <Attribute id="note" type="text"/>
         </Attribute>
         <Attribute id="operations" type="object[]">
-            <Attribute id="name" type="str"/>
+            <Attribute id="name" type="str">
+                <Template>
+                    <Text text="method"/>
+                    <Text text="#no"/>
+                </Template>
+            </Attribute>
             <Attribute id="rtype" type="str"/>
             <Attribute id="parameters" type="object[]">
                 <Attribute id="name" type="str"/>

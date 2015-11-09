@@ -6,11 +6,10 @@ class UflType:
     ALLOWED_DIRECT_ATTRIBUTES = {}
     ALLOWED_DIRECT_METHODS = {}
     
-    def build_default(self):
+    def build_default(self, generator):
         raise NotImplementedError
     
     def is_same_as(self, other):
-        
         if isinstance(other, self.__class__):
             return True
         

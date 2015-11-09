@@ -2,13 +2,14 @@ from .type import UflType
 
 
 class UflStringType(UflType):
-    def __init__(self, possibilities=None, default=None, multiline=False):
+    def __init__(self, possibilities=None, default=None, template=None, multiline=False):
         self.__default = default
         if possibilities:
             self.__possibilities = tuple(possibilities)
         else:
             self.__possibilities = None
         self.__multiline = multiline
+        self.__template = template
     
     @property
     def default(self):
@@ -22,7 +23,13 @@ class UflStringType(UflType):
     def multiline(self):
         return self.__multiline
     
-    def build_default(self):
+    @property
+    def template(self):
+        return self.__template
+    
+    def build_default(self, generator):
+        if generator is not None and self.__template is not None:
+            return generator.get_text(self.__template)
         return ''
     
     def parse(self, value):

@@ -3,7 +3,12 @@
     <Icon path="icons/package.png" />
     
     <Structure>
-        <Attribute id="name" type="str"/>
+        <Attribute id="name" type="str">
+            <Template>
+                <Text text="Package"/>
+                <Text text="#no"/>
+            </Template>
+        </Attribute>
         <Attribute id="stereotype" type="str"/>
         <Attribute id="note" type="text"/>
     </Structure>
