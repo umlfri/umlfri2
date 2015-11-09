@@ -3,277 +3,269 @@
            targetNamespace="http://umlfri.org/v2/addon.xsd" elementFormDefault="qualified"
            attributeFormDefault="unqualified">
     <xs:complexType name="text_component">
-        <xs:sequence>
-            <xs:choice minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="Text">
-                    <xs:complexType>
-                        <xs:attribute name="text" type="xs:string" use="required"/>
-                    </xs:complexType>
-                </xs:element>
-                <xs:element name="If">
-                    <xs:complexType>
-                        <xs:complexContent>
-                            <xs:extension base="text_component">
-                                <xs:attribute name="condition" type="xs:string" use="required"/>
-                            </xs:extension>
-                        </xs:complexContent>
-                    </xs:complexType>
-                </xs:element>
-                <xs:element name="ForEach">
-                    <xs:complexType>
-                        <xs:complexContent>
-                            <xs:extension base="text_component">
-                                <xs:attribute name="src" type="xs:string" use="required"/>
-                                <xs:attribute name="index" type="xs:string"/>
-                                <xs:attribute name="item" type="xs:string"/>
-                            </xs:extension>
-                        </xs:complexContent>
-                    </xs:complexType>
-                </xs:element>
-                <xs:element name="Switch">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="Case" maxOccurs="unbounded">
-                                <xs:complexType>
-                                    <xs:complexContent>
-                                        <xs:extension base="text_component">
-                                            <xs:attribute name="value" type="xs:string" use="required"/>
-                                        </xs:extension>
-                                    </xs:complexContent>
-                                </xs:complexType>
-                            </xs:element>
-                        </xs:sequence>
-                        <xs:attribute name="value" type="xs:string" use="required"/>
-                    </xs:complexType>
-                </xs:element>
-            </xs:choice>
-        </xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="Text">
+                <xs:complexType>
+                    <xs:attribute name="text" type="xs:string" use="required"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="If">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="text_component">
+                            <xs:attribute name="condition" type="xs:string" use="required"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ForEach">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="text_component">
+                            <xs:attribute name="src" type="xs:string" use="required"/>
+                            <xs:attribute name="index" type="xs:string"/>
+                            <xs:attribute name="item" type="xs:string"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Switch">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Case" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="text_component">
+                                        <xs:attribute name="value" type="xs:string" use="required"/>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="value" type="xs:string" use="required"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
     </xs:complexType>
     <xs:complexType name="visual_component">
-        <xs:sequence>
-            <xs:choice minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="Align">
-                    <xs:complexType>
-                        <xs:complexContent>
-                            <xs:extension base="visual_component">
-                                <xs:attribute name="horizontal" type="xs:string"/>
-                                <xs:attribute name="vertical" type="xs:string"/>
-                            </xs:extension>
-                        </xs:complexContent>
-                    </xs:complexType>
-                </xs:element>
-                <xs:element name="Empty">
-                    <xs:complexType />
-                </xs:element>
-                <xs:element name="HBox" type="visual_component"/>
-                <xs:element name="Line">
-                    <xs:complexType>
-                        <xs:attribute name="orientation" type="xs:string"/>
-                        <xs:attribute name="color" type="xs:string"/>
-                    </xs:complexType>
-                </xs:element>
-                <xs:element name="Padding">
-                    <xs:complexType>
-                        <xs:complexContent>
-                            <xs:extension base="visual_component">
-                                <xs:attribute name="padding" type="xs:string"/>
-                                <xs:attribute name="left" type="xs:string"/>
-                                <xs:attribute name="right" type="xs:string"/>
-                                <xs:attribute name="top" type="xs:string"/>
-                                <xs:attribute name="bottom" type="xs:string"/>
-                            </xs:extension>
-                        </xs:complexContent>
-                    </xs:complexType>
-                </xs:element>
-                <xs:element name="Rectangle">
-                    <xs:complexType>
-                        <xs:complexContent>
-                            <xs:extension base="visual_component">
-                                <xs:attribute name="fill" type="xs:string"/>
-                                <xs:attribute name="border" type="xs:string"/>
-                            </xs:extension>
-                        </xs:complexContent>
-                    </xs:complexType>
-                </xs:element>
-                <xs:element name="Shadow">
-                    <xs:complexType>
-                        <xs:complexContent>
-                            <xs:extension base="visual_component">
-                                <xs:attribute name="color" type="xs:string"/>
-                                <xs:attribute name="padding" type="xs:string"/>
-                            </xs:extension>
-                        </xs:complexContent>
-                    </xs:complexType>
-                </xs:element>
-                <xs:element name="Sizer">
-                    <xs:complexType>
-                        <xs:complexContent>
-                            <xs:extension base="visual_component">
-                                <xs:attribute name="minwidth" type="xs:string"/>
-                                <xs:attribute name="maxwidth" type="xs:string"/>
-                                <xs:attribute name="minheight" type="xs:string"/>
-                                <xs:attribute name="maxheight" type="xs:string"/>
-                                <xs:attribute name="width" type="xs:string"/>
-                                <xs:attribute name="height" type="xs:string"/>
-                            </xs:extension>
-                        </xs:complexContent>
-                    </xs:complexType>
-                </xs:element>
-                <xs:element name="Table" type="table_component"/>
-                <xs:element name="TextBox">
-                    <xs:complexType>
-                        <xs:complexContent>
-                            <xs:extension base="text_component">
-                                <xs:attribute name="text" type="xs:string"/>
-                                <xs:attribute name="color" type="xs:string"/>
-                                <xs:attribute name="font" type="xs:string"/>
-                            </xs:extension>
-                        </xs:complexContent>
-                    </xs:complexType>
-                </xs:element>
-                <xs:element name="VBox" type="visual_component"/>
-                <xs:element name="If">
-                    <xs:complexType>
-                        <xs:complexContent>
-                            <xs:extension base="visual_component">
-                                <xs:attribute name="condition" type="xs:string" use="required"/>
-                            </xs:extension>
-                        </xs:complexContent>
-                    </xs:complexType>
-                </xs:element>
-                <xs:element name="ForEach">
-                    <xs:complexType>
-                        <xs:complexContent>
-                            <xs:extension base="visual_component">
-                                <xs:attribute name="src" type="xs:string" use="required"/>
-                                <xs:attribute name="index" type="xs:string"/>
-                                <xs:attribute name="item" type="xs:string"/>
-                            </xs:extension>
-                        </xs:complexContent>
-                    </xs:complexType>
-                </xs:element>
-                <xs:element name="Switch">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="Case" maxOccurs="unbounded">
-                                <xs:complexType>
-                                    <xs:complexContent>
-                                        <xs:extension base="visual_component">
-                                            <xs:attribute name="value" type="xs:string" use="required"/>
-                                        </xs:extension>
-                                    </xs:complexContent>
-                                </xs:complexType>
-                            </xs:element>
-                        </xs:sequence>
-                        <xs:attribute name="value" type="xs:string" use="required"/>
-                    </xs:complexType>
-                </xs:element>
-            </xs:choice>
-        </xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="Align">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="visual_component">
+                            <xs:attribute name="horizontal" type="xs:string"/>
+                            <xs:attribute name="vertical" type="xs:string"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Empty">
+                <xs:complexType />
+            </xs:element>
+            <xs:element name="HBox" type="visual_component"/>
+            <xs:element name="Line">
+                <xs:complexType>
+                    <xs:attribute name="orientation" type="xs:string"/>
+                    <xs:attribute name="color" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Padding">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="visual_component">
+                            <xs:attribute name="padding" type="xs:string"/>
+                            <xs:attribute name="left" type="xs:string"/>
+                            <xs:attribute name="right" type="xs:string"/>
+                            <xs:attribute name="top" type="xs:string"/>
+                            <xs:attribute name="bottom" type="xs:string"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Rectangle">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="visual_component">
+                            <xs:attribute name="fill" type="xs:string"/>
+                            <xs:attribute name="border" type="xs:string"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Shadow">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="visual_component">
+                            <xs:attribute name="color" type="xs:string"/>
+                            <xs:attribute name="padding" type="xs:string"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Sizer">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="visual_component">
+                            <xs:attribute name="minwidth" type="xs:string"/>
+                            <xs:attribute name="maxwidth" type="xs:string"/>
+                            <xs:attribute name="minheight" type="xs:string"/>
+                            <xs:attribute name="maxheight" type="xs:string"/>
+                            <xs:attribute name="width" type="xs:string"/>
+                            <xs:attribute name="height" type="xs:string"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Table" type="table_component"/>
+            <xs:element name="TextBox">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="text_component">
+                            <xs:attribute name="text" type="xs:string"/>
+                            <xs:attribute name="color" type="xs:string"/>
+                            <xs:attribute name="font" type="xs:string"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="VBox" type="visual_component"/>
+            <xs:element name="If">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="visual_component">
+                            <xs:attribute name="condition" type="xs:string" use="required"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ForEach">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="visual_component">
+                            <xs:attribute name="src" type="xs:string" use="required"/>
+                            <xs:attribute name="index" type="xs:string"/>
+                            <xs:attribute name="item" type="xs:string"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Switch">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Case" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="visual_component">
+                                        <xs:attribute name="value" type="xs:string" use="required"/>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="value" type="xs:string" use="required"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
         <!-- TODO: only for box children -->
         <xs:attribute name="vbox-expand" type="xs:string"/>
         <xs:attribute name="hbox-expand" type="xs:string"/>
     </xs:complexType>
     <xs:complexType name="table_component">
-        <xs:sequence>
-            <xs:choice minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="Row" type="visual_component"/>
-                <xs:element name="Column" type="visual_component"/>
-                <xs:element name="If">
-                    <xs:complexType>
-                        <xs:complexContent>
-                            <xs:extension base="table_component">
-                                <xs:attribute name="condition" type="xs:string" use="required"/>
-                            </xs:extension>
-                        </xs:complexContent>
-                    </xs:complexType>
-                </xs:element>
-                <xs:element name="ForEach">
-                    <xs:complexType>
-                        <xs:complexContent>
-                            <xs:extension base="table_component">
-                                <xs:attribute name="src" type="xs:string" use="required"/>
-                                <xs:attribute name="index" type="xs:string"/>
-                                <xs:attribute name="item" type="xs:string"/>
-                            </xs:extension>
-                        </xs:complexContent>
-                    </xs:complexType>
-                </xs:element>
-                <xs:element name="Switch">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="Case" maxOccurs="unbounded">
-                                <xs:complexType>
-                                    <xs:complexContent>
-                                        <xs:extension base="table_component">
-                                            <xs:attribute name="value" type="xs:string" use="required"/>
-                                        </xs:extension>
-                                    </xs:complexContent>
-                                </xs:complexType>
-                            </xs:element>
-                        </xs:sequence>
-                        <xs:attribute name="value" type="xs:string" use="required"/>
-                    </xs:complexType>
-                </xs:element>
-            </xs:choice>
-        </xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="Row" type="visual_component"/>
+            <xs:element name="Column" type="visual_component"/>
+            <xs:element name="If">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="table_component">
+                            <xs:attribute name="condition" type="xs:string" use="required"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ForEach">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="table_component">
+                            <xs:attribute name="src" type="xs:string" use="required"/>
+                            <xs:attribute name="index" type="xs:string"/>
+                            <xs:attribute name="item" type="xs:string"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Switch">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Case" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="table_component">
+                                        <xs:attribute name="value" type="xs:string" use="required"/>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="value" type="xs:string" use="required"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
     </xs:complexType>
     <xs:complexType name="connection_component">
-        <xs:sequence>
-            <xs:choice minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="Line">
-                    <xs:complexType>
-                        <xs:attribute name="style" type="xs:string"/>
-                        <xs:attribute name="color" type="xs:string"/>
-                        <xs:attribute name="start" type="xs:string"/>
-                        <xs:attribute name="end" type="xs:string"/>
-                    </xs:complexType>
-                </xs:element>
-                <xs:element name="Arrow">
-                    <xs:complexType>
-                        <xs:attribute name="style" type="xs:string"/>
-                        <xs:attribute name="color" type="xs:string"/>
-                        <xs:attribute name="fill" type="xs:string"/>
-                        <xs:attribute name="position" type="xs:string"/>
-                    </xs:complexType>
-                </xs:element>
-                <xs:element name="If">
-                    <xs:complexType>
-                        <xs:complexContent>
-                            <xs:extension base="connection_component">
-                                <xs:attribute name="condition" type="xs:string" use="required"/>
-                            </xs:extension>
-                        </xs:complexContent>
-                    </xs:complexType>
-                </xs:element>
-                <xs:element name="ForEach">
-                    <xs:complexType>
-                        <xs:complexContent>
-                            <xs:extension base="connection_component">
-                                <xs:attribute name="src" type="xs:string" use="required"/>
-                                <xs:attribute name="index" type="xs:string"/>
-                                <xs:attribute name="item" type="xs:string"/>
-                            </xs:extension>
-                        </xs:complexContent>
-                    </xs:complexType>
-                </xs:element>
-                <xs:element name="Switch">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="Case" maxOccurs="unbounded">
-                                <xs:complexType>
-                                    <xs:complexContent>
-                                        <xs:extension base="connection_component">
-                                            <xs:attribute name="value" type="xs:string" use="required"/>
-                                        </xs:extension>
-                                    </xs:complexContent>
-                                </xs:complexType>
-                            </xs:element>
-                        </xs:sequence>
-                        <xs:attribute name="value" type="xs:string" use="required"/>
-                    </xs:complexType>
-                </xs:element>
-            </xs:choice>
-        </xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="Line">
+                <xs:complexType>
+                    <xs:attribute name="style" type="xs:string"/>
+                    <xs:attribute name="color" type="xs:string"/>
+                    <xs:attribute name="start" type="xs:string"/>
+                    <xs:attribute name="end" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Arrow">
+                <xs:complexType>
+                    <xs:attribute name="style" type="xs:string"/>
+                    <xs:attribute name="color" type="xs:string"/>
+                    <xs:attribute name="fill" type="xs:string"/>
+                    <xs:attribute name="position" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="If">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="connection_component">
+                            <xs:attribute name="condition" type="xs:string" use="required"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ForEach">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="connection_component">
+                            <xs:attribute name="src" type="xs:string" use="required"/>
+                            <xs:attribute name="index" type="xs:string"/>
+                            <xs:attribute name="item" type="xs:string"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Switch">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Case" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="connection_component">
+                                        <xs:attribute name="value" type="xs:string" use="required"/>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="value" type="xs:string" use="required"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
     </xs:complexType>
 </xs:schema>
