@@ -1,5 +1,5 @@
 from .componentloader import ComponentLoader
-from .constants import NAMESPACE
+from .constants import NAMESPACE, ADDON_SCHEMA
 from .structureloader import UflStructureLoader
 from umlfri2.components.expressions import ConstantExpression, UflExpression
 from umlfri2.components.text import TextContainerComponent
@@ -11,6 +11,8 @@ from umlfri2.ufl.types import UflColorType
 class DiagramTypeLoader:
     def __init__(self, xmlroot, elements, connections):
         self.__xmlroot = xmlroot
+        if not ADDON_SCHEMA.validate(xmlroot):
+            raise Exception("Cannot load diagram type: {0}".format(ADDON_SCHEMA.error_log.last_error))
         self.__elements = elements
         self.__connections = connections
     

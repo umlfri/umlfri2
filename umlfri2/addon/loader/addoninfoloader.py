@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-from .constants import NAMESPACE
+from .constants import NAMESPACE, ADDON_SCHEMA
 from .structureloader import UflStructureLoader
 from umlfri2.types.version import Version
 
@@ -11,6 +11,8 @@ AddOnInfo = namedtuple('AddOnInfo', ('identifier', 'name', 'version', 'author', 
 class AddOnInfoLoader:
     def __init__(self, xmlroot):
         self.__xmlroot = xmlroot
+        if not ADDON_SCHEMA.validate(xmlroot):
+            raise Exception("Cannot load addon info: {0}".format(ADDON_SCHEMA.error_log.last_error))
     
     def load(self):
         identifier = self.__xmlroot.attrib['uri']

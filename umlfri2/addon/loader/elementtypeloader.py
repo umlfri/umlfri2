@@ -1,5 +1,5 @@
 from .componentloader import ComponentLoader
-from .constants import NAMESPACE
+from .constants import NAMESPACE, ADDON_SCHEMA
 from .structureloader import UflStructureLoader
 from umlfri2.components.text import TextContainerComponent
 from umlfri2.metamodel import ElementType
@@ -8,6 +8,8 @@ from umlfri2.metamodel import ElementType
 class ElementTypeLoader:
     def __init__(self, xmlroot):
         self.__xmlroot = xmlroot
+        if not ADDON_SCHEMA.validate(xmlroot):
+            raise Exception("Cannot load element type: {0}".format(ADDON_SCHEMA.error_log.last_error))
     
     def load(self):
         id = self.__xmlroot.attrib["id"]

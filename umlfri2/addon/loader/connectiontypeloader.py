@@ -1,5 +1,5 @@
 from .componentloader import ComponentLoader
-from .constants import NAMESPACE
+from .constants import NAMESPACE, ADDON_SCHEMA
 from .structureloader import UflStructureLoader
 from umlfri2.components.connectionline import ConnectionLineContainerComponent
 from umlfri2.components.visual import SimpleComponent
@@ -12,6 +12,8 @@ class ConnectionTypeLoader:
     def __init__(self, xmlroot, definitions):
         self.__xmlroot = xmlroot
         self.__definitions = definitions
+        if not ADDON_SCHEMA.validate(xmlroot):
+            raise Exception("Cannot load connection type: {0}".format(ADDON_SCHEMA.error_log.last_error))
     
     def load(self):
         id = self.__xmlroot.attrib["id"]

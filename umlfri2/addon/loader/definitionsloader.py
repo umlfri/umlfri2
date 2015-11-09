@@ -1,5 +1,5 @@
 import math
-from .constants import NAMESPACE
+from .constants import NAMESPACE, ADDON_SCHEMA
 from umlfri2.components.connectionline.arrow import ArrowDefinition
 from umlfri2.types.geometry import PathBuilder, Point
 
@@ -7,6 +7,8 @@ from umlfri2.types.geometry import PathBuilder, Point
 class DefinitionsLoader:
     def __init__(self, xmlroot):
         self.__xmlroot = xmlroot
+        if not ADDON_SCHEMA.validate(xmlroot):
+            raise Exception("Cannot load definitions: {0}".format(ADDON_SCHEMA.error_log.last_error))
     
     def load(self):
         definitions = {
