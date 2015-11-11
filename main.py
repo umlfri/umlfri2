@@ -1,16 +1,20 @@
 import sys
+
 from PySide.QtGui import QApplication
-from umlfri2.addon.loader import AddOnLoader
-from umlfri2.model import Diagram, ElementObject, Project
+
+from umlfri2.datalayer.loaders import AddOnLoader
+from umlfri2.datalayer.storages import Storage
+from umlfri2.model import Project
 from umlfri2.qtgui.canvas.canvaswidget import CanvasWidget
 from umlfri2.types.geometry import Point, Size
+
 
 app = QApplication(sys.argv)
 
 widget = CanvasWidget()
 ruler = widget.get_ruler()
 
-addon = AddOnLoader('addons/infjavauml').load()
+addon = AddOnLoader(Storage.open('addons/infjavauml')).load()
 
 project = Project(addon.metamodel)
 

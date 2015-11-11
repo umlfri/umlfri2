@@ -1,4 +1,5 @@
 from collections import namedtuple
+
 from .constants import NAMESPACE
 from umlfri2.components.common import COMMON_COMPONENTS, SWITCH_COMPONENTS
 from umlfri2.components.connectionline import CONNECTION_LINE_COMPONENTS
