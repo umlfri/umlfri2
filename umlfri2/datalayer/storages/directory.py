@@ -12,7 +12,7 @@ class DirectoryStorage(Storage):
     def __init__(self, path):
         self.__path = path
     
-    def list(self, path):
+    def list(self, path=None):
         return os.listdir(self.__fix_path(path))
 
     def read(self, path):
@@ -35,4 +35,7 @@ class DirectoryStorage(Storage):
                 yield os.path.join(dirpath, file)
     
     def __fix_path(self, path):
+        if path is None:
+            return self.__path
+        
         return os.path.join(self.__path, path)

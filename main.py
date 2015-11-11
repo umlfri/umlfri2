@@ -2,9 +2,10 @@ import sys
 
 from PySide.QtGui import QApplication
 
-from umlfri2.datalayer.loaders import AddOnLoader
+from umlfri2.addon import AddOnManager
 from umlfri2.datalayer.storages import Storage
 from umlfri2.model import Project
+from umlfri2.paths import ADDONS
 from umlfri2.qtgui.canvas.canvaswidget import CanvasWidget
 from umlfri2.types.geometry import Point, Size
 
@@ -14,9 +15,9 @@ app = QApplication(sys.argv)
 widget = CanvasWidget()
 ruler = widget.get_ruler()
 
-addon = AddOnLoader(Storage.open('addons/infjavauml')).load()
+addon_manager = AddOnManager(Storage.open(ADDONS))
 
-project = Project(addon.metamodel)
+project = Project(addon_manager.get_addon('urn:umlfri.org:metamodel:infjavauml').metamodel)
 
 element_type = project.metamodel.get_element_type('class')
 package_type = project.metamodel.get_element_type('package')

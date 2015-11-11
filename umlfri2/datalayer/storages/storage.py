@@ -6,7 +6,7 @@ class Storage:
             if ret is not None:
                 return ret
     
-    def list(self, path):
+    def list(self, path=None):
         raise NotImplementedError
     
     def read(self, path):

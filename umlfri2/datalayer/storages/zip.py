@@ -36,7 +36,7 @@ class ZipStorage(Storage):
         self.__zip_file = zip_file
         self.__path = path
     
-    def list(self, path):
+    def list(self, path=None):
         path = self.__fix_path(path)
         for name in self.__zip_file.namelist():
             if os.path.dirname(name) == path:
@@ -65,6 +65,9 @@ class ZipStorage(Storage):
         return '/'.join(self.__fix_path_list(path))
 
     def __fix_path_list(self, path):
+        if path is None:
+            return self.__path
+        
         ret = []
         for part in itertools.chain(self.__path, path.split('/')):
             if part == '..':
