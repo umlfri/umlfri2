@@ -54,6 +54,8 @@ def create_example_project():
     visassoc = diagram.show(assoc)
     visassoc.add_point(ruler, Point(500, 300))
     
+    diagram2.show(pkg1)
+    
     return project
 
 project = create_example_project()
