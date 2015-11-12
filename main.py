@@ -68,14 +68,4 @@ for element in project.children:
 window = UmlFriMainWindow()
 window.showMaximized()
 
-def show_tree(node, indent = 0):
-    print('    '*indent + node.get_display_name())
-    if not isinstance(node, Project):
-        for diagram in node.diagrams:
-            print('    '*(indent + 1) + '*' + diagram.get_display_name())
-    for child in node.children:
-        show_tree(child, indent + 1)
-
-show_tree(project)
-
 sys.exit(app.exec_())
