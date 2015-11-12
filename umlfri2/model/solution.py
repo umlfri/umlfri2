@@ -3,5 +3,5 @@ class Solution:
         self.__project = project
     
     @property
-    def projects(self):
+    def children(self):
         yield self.__project
