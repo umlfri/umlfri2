@@ -1,3 +1,4 @@
+from umlfri2.types.image import Image
 from .componentloader import ComponentLoader
 from .constants import NAMESPACE, ADDON_SCHEMA
 from .structureloader import UflStructureLoader
@@ -9,7 +10,8 @@ from umlfri2.ufl.types import UflProportionType
 
 
 class ConnectionTypeLoader:
-    def __init__(self, xmlroot, definitions):
+    def __init__(self, storage, xmlroot, definitions):
+        self.__storage = storage
         self.__xmlroot = xmlroot
         self.__definitions = definitions
         if not ADDON_SCHEMA.validate(xmlroot):
@@ -24,7 +26,10 @@ class ConnectionTypeLoader:
         
         for child in self.__xmlroot:
             if child.tag == "{{{0}}}Icon".format(NAMESPACE):
-                icon = child.attrib["path"]
+                icon_path = child.attrib["path"]
+                if not self.__storage.exists(icon_path):
+                    raise Exception("Unknown icon {0}".format(icon_path))
+                icon = Image(self.__storage, icon_path)
             elif child.tag == "{{{0}}}Structure".format(NAMESPACE):
                 ufl_type = UflStructureLoader(child).load()
             elif child.tag == "{{{0}}}Appearance".format(NAMESPACE):

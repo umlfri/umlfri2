@@ -1,8 +1,8 @@
-from PySide.QtGui import QPainter, QPen, QBrush, QColor, QFont, QFontMetrics, QPainterPath
 from PySide.QtCore import Qt, QPoint
+from PySide.QtGui import QPainter, QPen, QBrush, QColor, QFont, QFontMetrics, QPainterPath
 
-from umlfri2.qtgui.canvas.qtruler import QTRuler
 from umlfri2.components.visual.canvas import Canvas, LineStyle
+from ..base.qtruler import QTRuler
 from umlfri2.types.font import FontStyle
 from umlfri2.types.geometry import PathLineTo, PathCubicTo
 

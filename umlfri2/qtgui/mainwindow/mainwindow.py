@@ -2,6 +2,7 @@ from PySide.QtCore import Qt
 from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget
 
 from umlfri2.application import Application
+from ..base import image_loader
 from .projecttree import ProjectTree
 from ..canvas import CanvasWidget
 
@@ -30,4 +31,4 @@ class UmlFriMainWindow(QMainWindow):
     
     def __reopen_diagrams(self):
         for tab in Application().tabs:
-            self.__tabs.addTab(CanvasWidget(tab), tab.name)
+            self.__tabs.addTab(CanvasWidget(tab), image_loader.load_icon(tab.icon), tab.name)

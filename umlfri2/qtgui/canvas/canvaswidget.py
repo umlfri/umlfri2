@@ -1,9 +1,10 @@
 from PySide.QtCore import Qt
 from PySide.QtGui import QWidget, QPainter
+
 from umlfri2.model.connection import ConnectionVisual
 from umlfri2.model.element import ElementVisual
-from umlfri2.qtgui.canvas.qtpaintercanvas import QTPainterCanvas
-from umlfri2.qtgui.canvas.qtruler import QTRuler
+from ..base.qtruler import QTRuler
+from .qtpaintercanvas import QTPainterCanvas
 from umlfri2.types.geometry import Point
 
 

@@ -12,3 +12,7 @@ class Tab:
     @property
     def name(self):
         return self.__diagram.get_display_name()
+    
+    @property
+    def icon(self):
+        return self.__diagram.type.icon

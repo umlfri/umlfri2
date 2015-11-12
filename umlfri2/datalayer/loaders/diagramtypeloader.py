@@ -1,3 +1,4 @@
+from umlfri2.types.image import Image
 from .componentloader import ComponentLoader
 from .constants import NAMESPACE, ADDON_SCHEMA
 from .structureloader import UflStructureLoader
@@ -9,7 +10,8 @@ from umlfri2.ufl.types import UflColorType
 
 
 class DiagramTypeLoader:
-    def __init__(self, xmlroot, elements, connections):
+    def __init__(self, storage, xmlroot, elements, connections):
+        self.__storage = storage
         self.__xmlroot = xmlroot
         if not ADDON_SCHEMA.validate(xmlroot):
             raise Exception("Cannot load diagram type: {0}".format(ADDON_SCHEMA.error_log.last_error))
@@ -27,7 +29,10 @@ class DiagramTypeLoader:
         
         for child in self.__xmlroot:
             if child.tag == "{{{0}}}Icon".format(NAMESPACE):
-                icon = child.attrib["path"]
+                icon_path = child.attrib["path"]
+                if not self.__storage.exists(icon_path):
+                    raise Exception("Unknown icon {0}".format(icon_path))
+                icon = Image(self.__storage, icon_path)
             elif child.tag == "{{{0}}}Structure".format(NAMESPACE):
                 ufl_type = UflStructureLoader(child).load()
             elif child.tag == "{{{0}}}DisplayName".format(NAMESPACE):

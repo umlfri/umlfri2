@@ -1,6 +1,3 @@
-import os
-import os.path
-
 import lxml.etree
 
 from .addoninfoloader import AddOnInfoLoader
@@ -55,17 +52,17 @@ class AddOnLoader:
         
         connections = {}
         for connection in connectionXMLs:
-            loaded = ConnectionTypeLoader(connection, definitions).load()
+            loaded = ConnectionTypeLoader(self.__storage, connection, definitions).load()
             connections[loaded.id] = loaded
         
         elements = {}
         for element in elementXMLs:
-            loaded = ElementTypeLoader(element).load()
+            loaded = ElementTypeLoader(self.__storage, element).load()
             elements[loaded.id] = loaded
         
         diagrams = {}
         for diagram in diagramXMLs:
-            loaded = DiagramTypeLoader(diagram, elements, connections).load()
+            loaded = DiagramTypeLoader(self.__storage, diagram, elements, connections).load()
             diagrams[loaded.id] = loaded
         
         return Metamodel(diagrams, elements, connections)

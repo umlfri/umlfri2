@@ -1,6 +1,7 @@
 from PySide.QtGui import QTreeWidget, QTreeWidgetItem
 
 from umlfri2.application import Application
+from ..base import image_loader
 
 
 class ProjectTree(QTreeWidget):
@@ -18,9 +19,11 @@ class ProjectTree(QTreeWidget):
     
     def __reload_element(self, parent, element):
         item = QTreeWidgetItem(parent, [element.get_display_name()])
+        item.setIcon(0, image_loader.load_icon(element.type.icon))
         
         for child_diagram in element.diagrams:
             child = QTreeWidgetItem(item, [child_diagram.get_display_name()])
+            child.setIcon(0, image_loader.load_icon(child_diagram.type.icon))
             item.addChild(child)
         
         for child_element in element.children:

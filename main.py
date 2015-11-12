@@ -4,7 +4,7 @@ from PySide.QtGui import QApplication
 
 from umlfri2.application import Application
 from umlfri2.model import Project, Solution
-from umlfri2.qtgui.canvas import QTRuler
+from umlfri2.qtgui.base.qtruler import QTRuler
 from umlfri2.qtgui import UmlFriMainWindow
 from umlfri2.types.geometry import Point, Size
 
