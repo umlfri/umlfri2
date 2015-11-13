@@ -4,7 +4,7 @@ from .selection import Selection
 class Tab:
     def __init__(self, diagram):
         self.__diagram = diagram
-        self.__selection = Selection()
+        self.__selection = Selection(self.__diagram)
     
     @property
     def diagram(self):

@@ -3,7 +3,7 @@ from umlfri2.types.geometry.line import Line
 
 
 class ConnectionVisual:
-    MAXIMAL_CLICKABLE_DISTANCE = 3
+    MAXIMAL_CLICKABLE_DISTANCE = 5
     
     def __init__(self, object, source, destination):
         self.__object = object
