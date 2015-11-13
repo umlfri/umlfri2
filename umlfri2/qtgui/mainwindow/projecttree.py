@@ -12,6 +12,8 @@ class ProjectTree(QTreeWidget):
     def reload(self):
         for project in Application().solution.children:
             item = QTreeWidgetItem(self, [project.name])
+            item.setIcon(0, image_loader.load_icon(project.metamodel.addon.icon))
+            
             for element in project.children:
                 self.__reload_element(item, element)
             item.setExpanded(True)

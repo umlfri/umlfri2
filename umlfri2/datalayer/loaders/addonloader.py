@@ -1,5 +1,6 @@
 import lxml.etree
 
+from umlfri2.types.image import Image
 from .addoninfoloader import AddOnInfoLoader
 from umlfri2.addon import AddOn
 from .constants import NAMESPACE
@@ -21,8 +22,13 @@ class AddOnLoader:
         if info.metamodel:
             metamodel = self.__load_metamodel(self.__storage.sub_open(info.metamodel))
         
+        if not self.__storage.exists(info.icon):
+            raise Exception("Unknown icon {0}".format(info.icon))
+        icon = Image(self.__storage, info.icon)
+
+        
         ret = AddOn(info.identifier, info.name, info.version, info.author, info.homepage,
-                     info.license, info.icon, info.description, info.config, None,
+                     info.license, icon, info.description, info.config, None,
                      metamodel)
         
         ret.compile()
