@@ -47,6 +47,22 @@ class SizerObject(VisualObject):
     def draw(self, canvas, shadow):
         if self.__child is not None:
             self.__child.draw(canvas, shadow)
+    
+    def is_resizable(self):
+        if self.__child is None:
+            resizable_x = True
+            resizable_y = True
+        else:
+            resizable_x, resizable_y = self.__child.is_resizable()
+        
+        if self.__width is not None:
+            resizable_x = False
+        
+        if self.__height is not None:
+            resizable_y = False
+        
+        return resizable_x, resizable_y
+
 
 class SizerComponent(VisualComponent):
     ATTRIBUTES = {
@@ -73,14 +89,6 @@ class SizerComponent(VisualComponent):
         
         self.__width = width or NoneExpression
         self.__height = height or NoneExpression
-    
-    def is_resizable(self, context):
-        rx, ry = super().is_resizable(context)
-        
-        return (
-            self.__width(context) is None and rx,
-            self.__height(context) is None and ry
-        )
     
     def _create_object(self, context, ruler):
         child_object = None

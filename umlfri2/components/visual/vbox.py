@@ -14,6 +14,9 @@ class VBoxObject(BoxObject):
     
     def _get_size_component(self, size):
         return size.height
+    
+    def _get_default_resizable(self):
+        return False, True
 
 class VBoxComponent(BoxComponent):
     def __init__(self, children, expand):

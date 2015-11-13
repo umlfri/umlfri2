@@ -11,23 +11,12 @@ class VisualObject:
     
     def draw(self, canvas, shadow):
         raise NotImplementedError
+    
+    def is_resizable(self):
+        raise NotImplementedError
 
 
 class VisualComponent(Component):
-    def is_resizable(self, context):
-        ret_x = False
-        ret_y = False
-        for child, local in self._get_children(context):
-            child_x, child_y = child.is_resizable(local)
-            
-            ret_x = ret_x or child_x
-            ret_y = ret_y or child_y
-            
-            if ret_x and ret_y:
-                return ret_x, ret_y
-        
-        return ret_x, ret_y
-    
     def _create_object(self, context, ruler):
         raise NotImplementedError
     

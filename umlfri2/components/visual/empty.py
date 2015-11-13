@@ -11,15 +11,16 @@ class EmptyObject(VisualObject):
             
     def draw(self, canvas, shadow):
         pass
+    
+    def is_resizable(self):
+        return True, True
+
 
 class EmptyComponent(VisualComponent):
     HAS_CHILDREN = False
     
     def __init__(self):
         super().__init__(())
-    
-    def is_resizable(self, context):
-        return True, True
     
     def _create_object(self, context, ruler):
         return EmptyObject()

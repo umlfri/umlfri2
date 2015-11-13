@@ -29,5 +29,8 @@ class VisualObjectContainer:
     def get_minimal_size(self):
         return self.__object.get_minimal_size()
     
+    def is_resizable(self):
+        return self.__object.is_resizable()
+    
     def draw(self, canvas):
         self.__object.draw(canvas, None)

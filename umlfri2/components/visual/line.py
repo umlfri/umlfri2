@@ -43,6 +43,10 @@ class LineObject(VisualObject):
             )
         else:
             canvas.draw_line(self.__point1, self.__point2, self.__color)
+    
+    def is_resizable(self):
+        return self.__orientation == LineOrientation.horizontal, self.__orientation == LineOrientation.vertical
+
 
 class LineComponent(VisualComponent):
     ATTRIBUTES = {
@@ -68,10 +72,6 @@ class LineComponent(VisualComponent):
                     return LineOrientation.vertical
             return LineOrientation.horizontal
         return orientation
-    
-    def is_resizable(self, context):
-        orientation = self.__get_orientation(context)
-        return orientation == LineOrientation.horizontal, orientation == LineOrientation.vertical
     
     def _create_object(self, context, ruler):
         return LineObject(self.__get_orientation(context), self.__color(context))

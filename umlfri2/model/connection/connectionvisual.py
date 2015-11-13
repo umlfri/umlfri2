@@ -18,6 +18,14 @@ class ConnectionVisual:
     def object(self):
         return self.__object
     
+    def get_points(self, ruler):
+        self.__ensure_appearance_object_exists(ruler)
+        
+        yield from self.__cached_points
+    
+    def get_labels(self):
+        yield from self.__labels
+    
     def add_point(self, ruler, point, index=None):
         if index is None:
             index = len(self.__points)

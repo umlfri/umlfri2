@@ -69,17 +69,21 @@ class Diagram:
                 self.__connections.append(visual)
                 return visual
     
-    def draw(self, canvas):
+    def draw(self, canvas, selection=None):
         context = Context().extend(self.__data, 'self')
         canvas.clear(self.__type.get_background_color(context))
         
         for element in self.__elements:
             element.draw(canvas)
+            if selection is not None:
+                selection.draw_for(canvas, element)
         
         for connection in self.__connections:
             connection.draw(canvas)
+            if selection is not None:
+                selection.draw_for(canvas, connection)
     
-    def get_object_at(self, ruler, position):
+    def get_visual_at(self, ruler, position):
         for connection in reversed(self.__connections):
             if connection.is_at_position(ruler, position):
                 return connection

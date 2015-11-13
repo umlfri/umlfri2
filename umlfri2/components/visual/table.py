@@ -41,6 +41,9 @@ class TableObject(VisualObject):
         for row in self.__table:
             for child in row:
                 child.draw(canvas, shadow)
+    
+    def is_resizable(self):
+        return True, True
 
 
 class TableRow(HelperComponent):

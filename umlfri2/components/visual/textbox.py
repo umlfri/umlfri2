@@ -31,6 +31,9 @@ class TextBoxObject(VisualObject):
             )
         else:
             canvas.draw_text(self.__position, self.__text, self.__font, self.__color)
+    
+    def is_resizable(self):
+        return False, False
 
 
 class TextBoxComponent(VisualComponent):
@@ -49,9 +52,6 @@ class TextBoxComponent(VisualComponent):
             self.__text = TextContainerComponent(children)
         else:
             self.__text = TextDataComponent(text)
-    
-    def is_resizable(self, context):
-        return False, False
     
     def _create_object(self, context, ruler):
         text = self.__text.get_text(context)

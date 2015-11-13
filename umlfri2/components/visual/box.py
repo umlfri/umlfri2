@@ -25,6 +25,9 @@ class BoxObject(VisualObject):
     def _get_size_component(self, size):
         raise NotImplementedError
     
+    def _get_default_resizable(self):
+        raise NotImplementedError
+    
     def assign_bounds(self, bounds):
         position = bounds.top_left
         whole_size = bounds.size
@@ -70,6 +73,19 @@ class BoxObject(VisualObject):
     def draw(self, canvas, shadow):
         for child in self.__children:
             child.child.draw(canvas, shadow)
+    
+    def is_resizable(self):
+        ret_x, ret_y = True, True
+        def_x, def_y = self._get_default_resizable()
+        
+        for child in self.__children:
+            child_x, child_y = child.child.is_resizable()
+            
+            ret_x = ret_x and child_x
+            ret_y = ret_y and child_y
+        
+        return def_x or ret_x, def_y or ret_y
+
 
 class BoxComponent(VisualComponent):
     CHILDREN_ATTRIBUTES = {

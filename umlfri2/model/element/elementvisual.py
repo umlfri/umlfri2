@@ -60,6 +60,12 @@ class ElementVisual:
     
     def is_at_position(self, ruler, position):
         return self.get_bounds(ruler).contains(position)
+    
+    def is_resizable(self, ruler):
+        # TODO: 3-state resizable indication
+        self.__ensure_appearance_object_exists(ruler)
+        
+        return self.__cached_appearance.is_resizable()
 
     def __ensure_appearance_object_exists(self, ruler):
         if self.__cached_appearance is None:

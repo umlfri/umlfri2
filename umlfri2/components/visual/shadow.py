@@ -26,6 +26,9 @@ class ShadowObject(VisualObject):
         self.__child.draw(canvas, ShadowInfo(self.__color,
                                              Vector(self.__padding, self.__padding)))
         self.__child.draw(canvas, None)
+    
+    def is_resizable(self):
+        return self.__child.is_resizable()
 
 
 class ShadowComponent(VisualComponent):

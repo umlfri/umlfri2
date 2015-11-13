@@ -1,8 +1,6 @@
 from PySide.QtCore import Qt
 from PySide.QtGui import QWidget, QPainter
 
-from umlfri2.model.connection import ConnectionVisual
-from umlfri2.model.element import ElementVisual
 from ..base.qtruler import QTRuler
 from .qtpaintercanvas import QTPainterCanvas
 from umlfri2.types.geometry import Point
@@ -29,17 +27,9 @@ class CanvasWidget(QWidget):
     def mousePressEvent(self, event):
         # TODO: for testing purposes only
         pos = event.pos()
-        object = self.__tab.diagram.get_object_at(self.__ruler, Point(pos.x(), pos.y()))
-        if isinstance(object, ElementVisual):
-            print('{0} at position {1}, {2}'.format(
-                object.object.get_display_name(),
-                pos.x(), pos.y())
-            )
-        elif isinstance(object, ConnectionVisual):
-            print('{0}=>{1} at position {2}, {3}'.format(
-                object.object.source.get_display_name(),
-                object.object.destination.get_display_name(),
-                pos.x(), pos.y())
-            )
+        object = self.__tab.diagram.get_visual_at(self.__ruler, Point(pos.x(), pos.y()))
+        if object is None:
+            self.__tab.selection.deselect_all()
         else:
-            print('None at position {0}, {1}'.format(pos.x(), pos.y()))
+            self.__tab.selection.toggle_select(object)
+        self.repaint()

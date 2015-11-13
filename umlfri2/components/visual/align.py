@@ -57,6 +57,16 @@ class AlignObject(VisualObject):
     
     def draw(self, canvas, shadow):
         self.__child.draw(canvas, shadow)
+    
+    def is_resizable(self):
+        resizable_x, resizable_y = self.__child.is_resizable()
+        
+        if self.__horizontal is not None:
+            resizable_x = True
+        if self.__vertical is not None:
+            resizable_y = True
+        
+        return resizable_x, resizable_y
 
 
 class AlignComponent(VisualComponent):

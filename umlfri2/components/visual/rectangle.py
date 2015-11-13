@@ -34,6 +34,9 @@ class RectangleObject(VisualObject):
         else:
             canvas.draw_rectangle(self.__rectangle, self.__border, self.__fill)
             self.__child.draw(canvas, None)
+    
+    def is_resizable(self):
+        return self.__child.is_resizable()
 
 
 class RectangleComponent(VisualComponent):

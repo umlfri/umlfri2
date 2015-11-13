@@ -29,6 +29,9 @@ class PaddingObject(VisualObject):
     
     def draw(self, canvas, shadow):
         self.__child.draw(canvas, shadow)
+    
+    def is_resizable(self):
+        return self.__child.is_resizable()
 
 
 class PaddingComponent(VisualComponent):

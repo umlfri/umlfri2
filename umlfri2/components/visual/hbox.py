@@ -14,6 +14,9 @@ class HBoxObject(BoxObject):
     
     def _get_size_component(self, size):
         return size.width
+    
+    def _get_default_resizable(self):
+        return True, False
 
 class HBoxComponent(BoxComponent):
     def __init__(self, children, expand):
