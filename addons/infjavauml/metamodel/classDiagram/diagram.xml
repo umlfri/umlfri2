@@ -17,6 +17,7 @@
 
     <Elements>
         <Element id="class"/>
+        <Element id="package"/>
     </Elements>
 
     <Connections>

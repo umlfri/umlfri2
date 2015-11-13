@@ -21,7 +21,7 @@
                 <xs:element name="Elements">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="Element">
+                            <xs:element name="Element" maxOccurs="unbounded">
                                 <xs:complexType>
                                     <xs:attribute name="id" type="xs:string"/>
                                 </xs:complexType>
@@ -33,7 +33,7 @@
                 <xs:element name="Connections">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="Connection">
+                            <xs:element name="Connection" maxOccurs="unbounded">
                                 <xs:complexType>
                                     <xs:attribute name="id" type="xs:string"/>
                                 </xs:complexType>
