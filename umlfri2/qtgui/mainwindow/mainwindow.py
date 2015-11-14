@@ -37,8 +37,8 @@ class UmlFriMainWindow(QMainWindow):
         self.__reopen_diagrams()
     
     def __tab_changed(self, index):
-        Application().tabs.current_tab = self.__tabs.widget(index).tab
+        Application().tabs.select_tab(self.__tabs.widget(index).diagram)
     
     def __reopen_diagrams(self):
         for tab in Application().tabs:
-            self.__tabs.addTab(CanvasWidget(tab), image_loader.load_icon(tab.icon), tab.name)
+            self.__tabs.addTab(CanvasWidget(tab.drawing_area), image_loader.load_icon(tab.icon), tab.name)

@@ -65,7 +65,7 @@ Application().solution = Solution(project)
 
 for element in project.children:
     for diagram in element.diagrams:
-        Application().tabs.open_tab(diagram)
+        Application().tabs.select_tab(diagram)
 
 window = UmlFriMainWindow()
 window.showMaximized()
