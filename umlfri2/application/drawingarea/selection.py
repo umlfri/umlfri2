@@ -1,14 +1,9 @@
-from .actions import MoveSelectionAction, ResizeElementAction, MoveConnectionPointAction, MoveConnectionLabelAction
+from .selectionpointposition import SelectionPointPosition
 from umlfri2.model.connection import ConnectionVisual
 from umlfri2.model.element import ElementVisual
 from umlfri2.types.color import Colors
 from umlfri2.types.geometry import Rectangle, Vector, Size
-
-
-class SelectionPointPosition:
-    first = 0
-    center = 1
-    last = 2
+from .actions import MoveSelectionAction, ResizeElementAction, MoveConnectionPointAction, MoveConnectionLabelAction
 
 
 class Selection:

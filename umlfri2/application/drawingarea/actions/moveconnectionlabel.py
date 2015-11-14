@@ -1,4 +1,8 @@
-class MoveConnectionLabelAction:
+from ..drawingareacursor import DrawingAreaCursor
+from .action import Action
+
+
+class MoveConnectionLabelAction(Action):
     def __init__(self, connection, id):
         self.__connection = connection
         self.__id = id
@@ -10,3 +14,6 @@ class MoveConnectionLabelAction:
     @property
     def id(self):
         return self.__id
+    
+    def get_cursor(self):
+        return DrawingAreaCursor.move

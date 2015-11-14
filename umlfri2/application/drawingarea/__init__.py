@@ -1,2 +1,2 @@
 from .drawingarea import DrawingArea
-from .drawingarea import DrawingAreaCursor
+from .drawingareacursor import DrawingAreaCursor

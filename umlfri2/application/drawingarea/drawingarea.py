@@ -1,18 +1,11 @@
-from .actions import AddVisualAction, MoveSelectionAction, ResizeElementAction, MoveConnectionPointAction, \
-    MoveConnectionLabelAction, SelectManyAction
-from .selection import Selection, SelectionPointPosition
+from .drawingareacursor import DrawingAreaCursor
 from umlfri2.types.color import Colors
 from umlfri2.types.geometry import Rectangle
+from .actions import AddVisualAction, MoveSelectionAction, ResizeElementAction, MoveConnectionPointAction, \
+    MoveConnectionLabelAction, SelectManyAction
+from .selection import Selection
+from umlfri2.application.drawingarea.selectionpointposition import SelectionPointPosition
 from ..commands.diagram import MoveSelectionCommand, ResizeMoveElementCommand, AddDiagramElementCommand
-
-
-class DrawingAreaCursor:
-    arrow = 0
-    move = 1
-    mainDiagonalResize = 2
-    antiDiagonalResize = 3
-    horizontalResize = 4
-    verticalResize = 5
 
 
 class DrawingArea:
@@ -69,7 +62,7 @@ class DrawingArea:
                 action = self.__selection.get_action_at(self.__application.ruler, point)
                 
                 if action is None:
-                    action = ActionSelectMany()
+                    action = SelectManyAction()
                 self.__start_action(action, point)
                 self.__postpone_action()
         
@@ -90,23 +83,10 @@ class DrawingArea:
 
     def __change_cursor(self, point):
         action = self.__selection.get_action_at(self.__application.ruler, point)
-        if isinstance(action, MoveSelectionAction):
-            self.__cursor = DrawingAreaCursor.move
-        elif isinstance(action, ResizeElementAction):
-            if action.horizontal == action.vertical:
-                self.__cursor = DrawingAreaCursor.mainDiagonalResize
-            elif action.horizontal == SelectionPointPosition.center:
-                self.__cursor = DrawingAreaCursor.verticalResize
-            elif action.vertical == SelectionPointPosition.center:
-                self.__cursor = DrawingAreaCursor.horizontalResize
-            elif action.horizontal != action.vertical:
-                self.__cursor = DrawingAreaCursor.antiDiagonalResize
-        elif isinstance(action, MoveConnectionPointAction):
-            self.__cursor = DrawingAreaCursor.move
-        elif isinstance(action, MoveConnectionLabelAction):
-            self.__cursor = DrawingAreaCursor.move
-        else:
+        if action is None:
             self.__cursor = DrawingAreaCursor.arrow
+        else:
+            self.__cursor = action.get_cursor()
     
     def __start_action(self, action, point):
         self.__current_action = action
