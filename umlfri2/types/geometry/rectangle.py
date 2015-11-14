@@ -78,14 +78,31 @@ class Rectangle:
     
     def intersect(self, other):
         intersections = set()
-        for line in Line.from_point_point(self.top_left, self.top_right),\
-                    Line.from_point_point(self.top_right, self.bottom_right),\
-                    Line.from_point_point(self.bottom_right, self.bottom_left),\
-                    Line.from_point_point(self.bottom_left, self.top_left):
+        for line in self.all_lines:
             intersections.update(line.intersect(other))
         
         yield from intersections
     
+    def get_nearest_point_to(self, other):
+        distance = float('inf')
+        point = None
+        
+        for line in self.all_lines:
+            new_point = line.get_nearest_point_to(other)
+            new_distance = (new_point - other).length
+            if new_distance < distance:
+                distance = new_distance
+                point = new_point
+        
+        return point
+
+    @property
+    def all_lines(self):
+        yield Line.from_point_point(self.top_left, self.top_right)
+        yield Line.from_point_point(self.top_right, self.bottom_right)
+        yield Line.from_point_point(self.bottom_right, self.bottom_left)
+        yield Line.from_point_point(self.bottom_left, self.top_left)
+
     def __add__(self, other):
         if isinstance(other, Vector):
             return Rectangle.from_point_size(self.top_left + other, self.size)

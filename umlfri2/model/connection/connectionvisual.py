@@ -97,13 +97,19 @@ class ConnectionVisual:
         
         
         points = []
-        points.extend(source_bounds.intersect(line1))
+        points.append(self.__get_common_point(line1, source_bounds, line1.second))
         points.extend(self.__points)
-        points.extend(destination_bounds.intersect(line2))
+        points.append(self.__get_common_point(line2, destination_bounds, line2.first))
         
         self.__cached_appearance.assign_points(points)
         
         self.__cached_points = tuple(points)
-    
+
+    def __get_common_point(self, line_component, object_bounds, point):
+        for point in object_bounds.intersect(line_component):
+            return point
+        
+        return object_bounds.get_nearest_point_to(point)
+
     def get_bounds(self, ruler):
         return None # TODO

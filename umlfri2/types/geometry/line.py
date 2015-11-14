@@ -52,7 +52,7 @@ class Line:
         else:
             yield from other.intersect(self)
     
-    def get_distance_to(self, other):
+    def get_nearest_point_to(self, other):
         if isinstance(other, Point):
             a, b, c = self.get_abc()
             x = other.x
@@ -64,12 +64,30 @@ class Line:
             closest_x = (b*(b*x - a*y) - a*c) / t
             closest_y = (a*(-b*x + a*y) - b*c) / t
             
-            if min(self.__x1, self.__x2) <= closest_x <= max(self.__x1, self.__x2) and \
-                    min(self.__y1, self.__y2) <= closest_y <= max(self.__y1, self.__y2):
-                # line=>point distance according to wikipedia
-                # https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
-                return abs(a*x + b*y + c) / math.sqrt(t)
-            return float('inf')
+            if self.__x2 > self.__x1 > closest_x:
+                return self.first
+            if self.__x1 > self.__x2 > closest_x:
+                return self.second
+            if self.__x2 < self.__x1 < closest_x:
+                return self.first
+            if self.__x1 < self.__x2 < closest_x:
+                return self.second
+            if self.__y2 > self.__y1 > closest_y:
+                return self.first
+            if self.__y1 > self.__y2 > closest_y:
+                return self.second
+            if self.__y2 < self.__y1 < closest_y:
+                return self.first
+            if self.__y1 < self.__y2 < closest_y:
+                return self.second
+            
+            return Point(closest_x, closest_y)
+        else:
+            return other.get_distance_to(self)
+    
+    def get_distance_to(self, other):
+        if isinstance(other, Point):
+            return (other - self.get_nearest_point_to(other)).length
         else:
             return other.get_distance_to(self)
     
