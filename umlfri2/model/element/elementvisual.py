@@ -1,4 +1,4 @@
-from _weakrefset import WeakSet
+from weakref import WeakSet
 
 from ..cache import ModelTemporaryDataCache
 from umlfri2.types.geometry import Point, Rectangle, Size
