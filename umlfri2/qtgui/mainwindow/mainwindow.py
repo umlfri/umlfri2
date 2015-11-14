@@ -32,13 +32,13 @@ class UmlFriMainWindow(QMainWindow):
         self.__properties_dock = QDockWidget("Properties")
         self.addDockWidget(Qt.RightDockWidgetArea, self.__properties_dock)
         
+        self.__toolbox.set_diagram_type(None)
+        
         self.__reopen_diagrams()
     
     def __tab_changed(self, index):
-        pass
+        Application().tabs.current_tab = self.__tabs.widget(index).tab
     
     def __reopen_diagrams(self):
         for tab in Application().tabs:
             self.__tabs.addTab(CanvasWidget(tab), image_loader.load_icon(tab.icon), tab.name)
-        
-        self.__toolbox.set_diagram_type(Application().tabs.current_tab.diagram.type)

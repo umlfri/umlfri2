@@ -1,4 +1,4 @@
-from .events.tabs import OpenTabEvent
+from .events.tabs import OpenTabEvent, ChangedCurrentTabEvent
 from .tab import Tab
 
 
@@ -21,6 +21,7 @@ class TabList:
     @current_tab.setter
     def current_tab(self, value):
         self.__current_tab = value
+        self.__dispatcher.dispatch(ChangedCurrentTabEvent(value))
     
     def __iter__(self):
         yield from self.__tabs

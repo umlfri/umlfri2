@@ -29,6 +29,10 @@ class CanvasWidget(QWidget):
         self.setMouseTracking(True)
         self.setAttribute(Qt.WA_OpaquePaintEvent)
     
+    @property
+    def tab(self):
+        return self.__tab
+    
     def paintEvent(self, event):
         painter = QPainter()
         painter.begin(self)
