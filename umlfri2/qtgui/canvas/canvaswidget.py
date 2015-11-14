@@ -46,7 +46,12 @@ class CanvasWidget(QWidget):
         self.update()
     
     def mouseReleaseEvent(self, event):
-        self.__tab.drawing_area.mouse_up()
+        pos = event.pos()
+        point = Point(pos.x(), pos.y())
+        
+        self.__tab.drawing_area.mouse_up(point)
+        
+        self.__update_cursor()
         self.update()
     
     def __update_cursor(self):

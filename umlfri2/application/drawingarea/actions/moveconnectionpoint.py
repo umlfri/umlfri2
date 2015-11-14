@@ -4,16 +4,10 @@ from .action import Action
 
 class MoveConnectionPointAction(Action):
     def __init__(self, connection, index):
+        super().__init__()
         self.__connection = connection
         self.__index = index
     
     @property
-    def connection(self):
-        return self.__connection
-    
-    @property
-    def index(self):
-        return self.__index
-    
-    def get_cursor(self):
+    def cursor(self):
         return DrawingAreaCursor.move
