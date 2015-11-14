@@ -10,7 +10,7 @@ class MoveSelectionCommand(Command):
     
     @property
     def description(self):
-        return "Selection in diagram {0} moved".format(self.__diagram_name)
+        return "Selection in diagram '{0}' moved".format(self.__diagram_name)
 
     def _do(self, ruler):
         self.__element_positions = []

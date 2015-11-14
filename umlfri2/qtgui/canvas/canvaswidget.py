@@ -3,12 +3,13 @@ from PySide.QtGui import QWidget, QPainter, QApplication
 
 from umlfri2.application import Application
 from umlfri2.application.commands.diagram import MoveSelectionCommand
+from umlfri2.application.commands.diagram.resizemoveelement import ResizeMoveElementCommand
 from umlfri2.application.selection import ActionMoveSelection, ActionResizeElement, SelectionPointPosition, \
     ActionMoveConnectionPoint, ActionMoveLabel
 from umlfri2.types.color import Colors
 from ..base.qtruler import QTRuler
 from .qtpaintercanvas import QTPainterCanvas
-from umlfri2.types.geometry import Point
+from umlfri2.types.geometry import Point, Rectangle
 
 
 class CanvasWidget(QWidget):
@@ -119,6 +120,8 @@ class CanvasWidget(QWidget):
         self.__current_action = action
         if isinstance(self.__current_action, ActionMoveSelection):
             self.__current_action_bounds = self.__tab.selection.get_bounds(self.__ruler)
+        elif isinstance(self.__current_action, ActionResizeElement):
+            self.__current_action_bounds = self.__current_action.element.get_bounds(self.__ruler)
         
         self.__current_action_point = point
     
@@ -134,9 +137,39 @@ class CanvasWidget(QWidget):
             self.__current_action = self.__postponed_action
             self.__postponed_action = None
         
-        if isinstance(self.__current_action, ActionMoveSelection):
-            self.__current_action_bounds += point - self.__current_action_point
+        vector = point - self.__current_action_point
         
+        if isinstance(self.__current_action, ActionMoveSelection):
+            self.__current_action_bounds += vector
+        elif isinstance(self.__current_action, ActionResizeElement):
+            x1 = self.__current_action_bounds.x1
+            y1 = self.__current_action_bounds.y1
+            x2 = self.__current_action_bounds.x2
+            y2 = self.__current_action_bounds.y2
+            
+            min_size = self.__current_action.element.get_minimal_size(self.__ruler)
+            
+            if self.__current_action.horizontal == SelectionPointPosition.first:
+                x1 += vector.x
+                if x2 - x1 < min_size.width:
+                    x1 = x2 - min_size.width
+            elif self.__current_action.horizontal == SelectionPointPosition.last:
+                x2 += vector.x
+                if x2 - x1 < min_size.width:
+                    x2 = x1 + min_size.width
+            
+            if self.__current_action.vertical == SelectionPointPosition.first:
+                y1 += vector.y
+                if y2 - y1 < min_size.height:
+                    y1 = y2 - min_size.height
+            elif self.__current_action.vertical == SelectionPointPosition.last:
+                y2 += vector.y
+                if y2 - y1 < min_size.height:
+                    y2 = y1 + min_size.height
+            
+            self.__current_action_bounds = Rectangle(x1, y1, x2 - x1, y2 - y1)
+        
+        # TODO: don't move current point
         self.__current_action_point = point
     
     def __finish_action(self):
@@ -147,6 +180,12 @@ class CanvasWidget(QWidget):
             command = MoveSelectionCommand(
                 self.__tab.selection,
                 self.__current_action_bounds.top_left - old_bounds.top_left
+            )
+            Application().commands.execute(command)
+        elif isinstance(self.__current_action, ActionResizeElement):
+            command = ResizeMoveElementCommand(
+                self.__current_action.element,
+                self.__current_action_bounds
             )
             Application().commands.execute(command)
         

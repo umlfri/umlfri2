@@ -29,6 +29,11 @@ class ElementVisual:
         
         return self.__size
     
+    def get_minimal_size(self, ruler):
+        self.__cache.ensure_valid(ruler=ruler)
+        
+        return self.__cached_appearance.get_minimal_size()
+    
     def get_bounds(self, ruler):
         self.__cache.ensure_valid(ruler=ruler)
         
