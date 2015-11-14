@@ -1,10 +1,15 @@
-from weakref import ref
 import math
-from umlfri2.types.geometry import Point, Vector, Rectangle
+from weakref import ref
+
+from ..cache import ModelTemporaryDataCache
+from umlfri2.types.geometry import Vector, Rectangle
 
 
 class ConnectionLabel:
     def __init__(self, connection, id):
+        self.__cache = ModelTemporaryDataCache(self.__create_appearance_object)
+        self.__cache.depend_on(connection.cache)
+        
         self.__connection = ref(connection)
         self.__id = id
         self.__cached_appearance = None
@@ -12,6 +17,10 @@ class ConnectionLabel:
         self.__line_position = connection.object.type.get_label(id).position
         self.__angle = math.pi/2
         self.__distance = 0
+    
+    @property
+    def cache(self):
+        return self.__cache
     
     @property
     def connection(self):
@@ -41,7 +50,7 @@ class ConnectionLabel:
             self.__cached_appearance = None
     
     def get_bounds(self, ruler):
-        self.__ensure_appearance_object_exists(ruler)
+        self.__cache.ensure_valid(ruler=ruler)
         
         return Rectangle.from_point_size(self.__cached_appearance.position, self.__cached_appearance.size)
     
@@ -49,23 +58,22 @@ class ConnectionLabel:
         return self.get_bounds(ruler).contains(position)
     
     def draw(self, canvas):
-        self.__ensure_appearance_object_exists(canvas.get_ruler())
+        self.__cache.ensure_valid(ruler=canvas.get_ruler())
         
         self.__cached_appearance.draw(canvas)
 
-    def __ensure_appearance_object_exists(self, ruler):
-        if self.__cached_appearance is None:
-            self.__cached_appearance = self.__connection().object.create_label_object(self.__id, ruler)
-            first_point = self.__connection().get_point(ruler, self.__line_index)
-            second_point = self.__connection().get_point(ruler, self.__line_index + 1)
-            
-            line_vector = second_point - first_point
-            
-            vector_to_label = Vector.from_angle_length(line_vector.angle + self.__angle, self.__distance)
-            
-            position = first_point\
-                       + line_vector * self.__line_position\
-                       + vector_to_label\
-                       - self.__cached_appearance.size.as_vector() / 2
-            
-            self.__cached_appearance.move(position)
+    def __create_appearance_object(self, ruler):
+        self.__cached_appearance = self.__connection().object.create_label_object(self.__id, ruler)
+        first_point = self.__connection().get_point(ruler, self.__line_index)
+        second_point = self.__connection().get_point(ruler, self.__line_index + 1)
+        
+        line_vector = second_point - first_point
+        
+        vector_to_label = Vector.from_angle_length(line_vector.angle + self.__angle, self.__distance)
+        
+        position = first_point\
+                   + line_vector * self.__line_position\
+                   + vector_to_label\
+                   - self.__cached_appearance.size.as_vector() / 2
+        
+        self.__cached_appearance.move(position)
