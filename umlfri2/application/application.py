@@ -21,7 +21,7 @@ class Application(metaclass=MetaApplication):
         self.__event_dispatcher = EventDispatcher()
         self.__commands = CommandProcessor(self)
         self.__addons = AddOnManager(Storage.open(ADDONS))
-        self.__tabs = TabList(self.__event_dispatcher)
+        self.__tabs = TabList(self)
         self.__solution = None
         self.__ruler = None
     

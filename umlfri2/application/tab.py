@@ -1,26 +1,22 @@
-from .selection import Selection
+from .drawingarea import DrawingArea
 
 
 class Tab:
-    def __init__(self, diagram):
-        self.__diagram = diagram
-        self.__selection = Selection(self.__diagram)
+    def __init__(self, application, diagram):
+        self.__drawing_area = DrawingArea(application, diagram)
     
     @property
-    def diagram(self):
-        return self.__diagram
+    def drawing_area(self):
+        return self.__drawing_area
     
     @property
-    def selection(self):
-        return self.__selection
-    
-    def draw(self, canvas):
-        self.__diagram.draw(canvas, self.__selection)
+    def diagram_type(self):
+        return self.__drawing_area.diagram.type
     
     @property
     def name(self):
-        return self.__diagram.get_display_name()
+        return self.__drawing_area.diagram.get_display_name()
     
     @property
     def icon(self):
-        return self.__diagram.type.icon
+        return self.__drawing_area.diagram.type.icon

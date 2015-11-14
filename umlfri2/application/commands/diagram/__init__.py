@@ -1,1 +1,2 @@
 from .moveselection import MoveSelectionCommand
+from .resizemoveelement import ResizeMoveElementCommand
