@@ -32,8 +32,6 @@ class UmlFriMainWindow(QMainWindow):
         self.__properties_dock = QDockWidget("Properties")
         self.addDockWidget(Qt.RightDockWidgetArea, self.__properties_dock)
         
-        self.__toolbox.set_diagram_type(None)
-        
         self.__reopen_diagrams()
     
     def __tab_changed(self, index):

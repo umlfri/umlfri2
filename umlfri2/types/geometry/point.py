@@ -17,6 +17,9 @@ class Point:
     def as_vector(self):
         return Vector(self.__x, self.__y)
     
+    def round(self):
+        return Point(int(round(self.__x)), int(round(self.__y)))
+    
     def __sub__(self, other):
         if isinstance(other, Point):
             return Vector(self.__x - other.__x, self.__y - other.__y)

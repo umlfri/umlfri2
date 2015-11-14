@@ -103,6 +103,12 @@ class ConnectionLabel:
     def is_at_position(self, ruler, position):
         return self.get_bounds(ruler).contains(position)
     
+    def get_nearest_point(self, ruler):
+        first_point = self.__connection().get_point(ruler, self.__line_index)
+        second_point = self.__connection().get_point(ruler, self.__line_index + 1)
+        
+        return first_point + (second_point - first_point) * self.__line_position
+    
     def draw(self, canvas):
         self.__cache.ensure_valid(ruler=canvas.get_ruler())
         
@@ -122,4 +128,4 @@ class ConnectionLabel:
                    + vector_to_label\
                    - self.__cached_appearance.size.as_vector() / 2
         
-        self.__cached_appearance.move(position)
+        self.__cached_appearance.move(position.round())

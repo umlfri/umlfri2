@@ -1,8 +1,9 @@
+from umlfri2.components.visual.canvas import LineStyle
 from .selectionpointposition import SelectionPointPosition
 from umlfri2.model.connection import ConnectionVisual
 from umlfri2.model.element import ElementVisual
 from umlfri2.types.color import Colors
-from umlfri2.types.geometry import Rectangle, Vector, Size
+from umlfri2.types.geometry import Rectangle, Vector, Size, Line
 from .actions import MoveSelectionAction, ResizeElementAction, MoveConnectionPointAction, MoveConnectionLabelAction
 
 
@@ -12,6 +13,8 @@ class Selection:
     
     SELECTION_POINT_COLOR = Colors.darkgray
     SELECTION_POINT_SIZE = 8
+    
+    LABEL_LINE_MINIMAL_DISTANCE = 10
     
     def __init__(self, diagram):
         self.__selected = set()
@@ -82,11 +85,11 @@ class Selection:
             else:
                 fg_color = self.SELECTION_POINT_COLOR
                 bg_color = None
-            
+
             for point in visual.get_points(canvas.get_ruler()):
                 canvas.draw_rectangle(
                     Rectangle.from_point_size(
-                        point-Vector(self.SELECTION_POINT_SIZE//2, self.SELECTION_POINT_SIZE//2),
+                        point - Vector(self.SELECTION_POINT_SIZE // 2, self.SELECTION_POINT_SIZE // 2),
                         Size(self.SELECTION_POINT_SIZE, self.SELECTION_POINT_SIZE)
                     ),
                     fg=fg_color, bg=bg_color
@@ -94,7 +97,16 @@ class Selection:
             
             for label in visual.get_labels():
                 bounds = label.get_bounds(canvas.get_ruler())
-                canvas.draw_rectangle(bounds, fg=self.SELECTION_POINT_COLOR, line_width=self.SELECTION_SIZE)
+                if bounds.width and bounds.height:
+                    canvas.draw_rectangle(bounds, fg=self.SELECTION_COLOR, line_width=self.SELECTION_SIZE)
+                    line_to_connection = Line.from_point_point(
+                        label.get_nearest_point(canvas.get_ruler()),
+                        bounds.center
+                    )
+                    intersect = list(bounds.intersect(line_to_connection))
+                    if intersect and (line_to_connection.first-intersect[0]).length > self.LABEL_LINE_MINIMAL_DISTANCE:
+                        canvas.draw_line(line_to_connection.first, intersect[0], fg=self.SELECTION_COLOR,
+                                         line_width=self.SELECTION_SIZE, line_style=LineStyle.dot)
     
     def __get_selection_points_positions(self, ruler, visual):
         resizable_x, resizable_y = visual.is_resizable(ruler)
