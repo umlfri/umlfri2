@@ -41,8 +41,8 @@ class Line:
             if a2*b1 == a1*b2:
                 return
             
-            x = (b2*c1 - b1*c2)/(a2*b1 - a1*b2)
-            y = (a2*c1 - a1*c2)/(a1*b2 - a2*b1)
+            x = int(round((b2*c1 - b1*c2)/(a2*b1 - a1*b2)))
+            y = int(round((a2*c1 - a1*c2)/(a1*b2 - a2*b1)))
             
             if min(self.__x1, self.__x2) <= x <= max(self.__x1, self.__x2) and \
                     min(other.__x1, other.__x2) <= x <= max(other.__x1, other.__x2) and \
