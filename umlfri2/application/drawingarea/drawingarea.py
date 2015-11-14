@@ -1,8 +1,14 @@
-from umlfri2.types.color import Colors
-from .commands.diagram import MoveSelectionCommand, ResizeMoveElementCommand
-from umlfri2.types.geometry import Rectangle
-from .selection import Selection, ActionMoveSelection, ActionResizeElement, ActionSelectMany, SelectionPointPosition, \
+from collections import namedtuple
+
+from .selection import Selection, ActionMoveSelection, ActionResizeElement, SelectionPointPosition, \
     ActionMoveConnectionPoint, ActionMoveLabel
+from umlfri2.types.color import Colors
+from umlfri2.types.geometry import Rectangle
+from ..commands.diagram import MoveSelectionCommand, ResizeMoveElementCommand, AddDiagramElementCommand
+
+
+ActionSelectMany = namedtuple('ActionSelectMany', ())
+ActionAddVisual = namedtuple('ActionAddVisual', ('category', 'type'))
 
 
 class DrawingAreaCursor:
@@ -49,6 +55,10 @@ class DrawingArea:
                 )
     
     def mouse_down(self, point, control_pressed):
+        if isinstance(self.__current_action, ActionAddVisual):
+            self.__current_action_point = point
+            return
+        
         action = self.__selection.get_action_at(self.__application.ruler, point)
         
         if action is not None:
@@ -71,6 +81,9 @@ class DrawingArea:
         self.__change_cursor(point)
     
     def mouse_move(self, point):
+        if self.__current_action_point is None:
+            return
+        
         if self.__is_in_action():
             self.__process_action(point)
         else:
@@ -178,6 +191,21 @@ class DrawingArea:
             self.__application.commands.execute(command)
         elif isinstance(self.__current_action, ActionSelectMany):
             self.__selection.select_in_area(self.__application.ruler, self.__current_action_bounds.normalize())
+        elif isinstance(self.__current_action, ActionAddVisual):
+            if self.__current_action.category == 'element':
+                type = self.__diagram.parent.project.metamodel.get_element_type(self.__current_action.type)
+                command = AddDiagramElementCommand(
+                    self.__diagram,
+                    type,
+                    self.__current_action_point
+                )
+                self.__application.commands.execute(command)
         
         self.__current_action = None
         self.__current_action_bounds = None
+    
+    def set_action(self, action):
+        self.__current_action = action
+    
+    def switched_to_background(self):
+        self.__current_action = None

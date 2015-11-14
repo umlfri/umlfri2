@@ -16,7 +16,6 @@ ActionMoveSelection = namedtuple('ActionMoveSelection', ())
 ActionResizeElement = namedtuple('ActionResizeElement', ('element', 'horizontal', 'vertical'))
 ActionMoveConnectionPoint = namedtuple('ActionMoveConnectionPoint', ('connection', 'index'))
 ActionMoveLabel = namedtuple('ActionMoveLabel', ('connection', 'id'))
-ActionSelectMany = namedtuple('ActionMoveLabel', ())
 
 
 class Selection:

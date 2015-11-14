@@ -4,6 +4,18 @@ from .drawingarea import DrawingArea
 class Tab:
     def __init__(self, application, diagram):
         self.__drawing_area = DrawingArea(application, diagram)
+        self.__is_current = False
+    
+    @property
+    def is_current(self):
+        return self.__is_current
+    
+    @is_current.setter
+    def is_current(self, value):
+        self.__is_current = value
+        
+        if not value:
+            self.__drawing_area.switched_to_background()
     
     @property
     def drawing_area(self):

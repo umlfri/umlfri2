@@ -39,6 +39,10 @@ class Diagram:
         self.__connections = []
     
     @property
+    def parent(self):
+        return self.__parent()
+    
+    @property
     def type(self):
         return self.__type
     

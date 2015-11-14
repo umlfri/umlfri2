@@ -66,10 +66,10 @@ class ElementObject:
     
     @property
     def project(self):
-        if isinstance(self.__parent, ElementObject):
-            return self.__parent.__parent
+        if isinstance(self.__parent(), ElementObject):
+            return self.__parent().project
         else:
-            return self.__parent
+            return self.__parent()
     
     @property
     def children(self):
