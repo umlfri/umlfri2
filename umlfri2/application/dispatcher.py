@@ -2,8 +2,11 @@ class EventDispatcher:
     def __init__(self):
         self.__events = {}
     
-    def catch(self, event_type, function):
+    def register(self, event_type, function):
         self.__events.setdefault(event_type, []).append(function)
+    
+    def deregister(self, event_type, function):
+        self.__events[event_type].remove(function)
     
     def dispatch(self, event):
         for function in self.__events.get(event.__class__, ()):
