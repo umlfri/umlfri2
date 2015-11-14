@@ -2,39 +2,39 @@ MAX_STACK_SIZE = 100
 
 
 class CommandProcessor:
-    def __init__(self, dispatcher):
+    def __init__(self, application):
         self.__undo_stack = []
         self.__redo_stack = []
-        self.__dispatcher = dispatcher
+        self.__application = application
     
     def execute(self, command):
-        command.execute()
+        command.do(self.__application.ruler)
         
-        if not command.is_error:
+        if not command.has_error:
             self.__redo_stack = []
             
             self.__undo_stack.append(command)
             del self.__undo_stack[:-MAX_STACK_SIZE]
             
-            self.__dispatcher.dispatch_all(command.get_updates())
-            self.__dispatcher.dispatch_all(command.get_actions())
+            self.__application.event_dispatcher.dispatch_all(command.get_updates())
+            self.__application.event_dispatcher.dispatch_all(command.get_actions())
     
     def undo(self, count=1):
         for i in range(count):
             command = self.__undo_stack.pop()
-            command.undo()
+            command.undo(self.__application.ruler)
             self.__redo_stack.append(command)
             for event in command.get_updates():
                 opposite = event.get_opposite()
                 if opposite is not None:
-                    self.__dispatcher.dispatch(opposite)
+                    self.__application.event_dispatcher.dispatch(opposite)
             
     def redo(self, count=1):
         for i in range(count):
             command = self.__redo_stack.pop()
-            command.redo()
+            command.redo(self.__application.ruler)
             self.__undo_stack.append(command)
-            self.__dispatcher.dispatch_all(command.get_updates())
+            self.__application.event_dispatcher.dispatch_all(command.get_updates())
     
     def clear_buffers(self):
         self.__undo_stack = []

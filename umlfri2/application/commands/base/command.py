@@ -11,21 +11,25 @@ class Command:
     def has_error(self):
         return self.__error
     
-    def _execute(self):
+    @property
+    def description(self):
         raise NotImplementedError
     
-    def _undo(self):
+    def _do(self, ruler):
         raise NotImplementedError
     
-    def _redo(self):
+    def _undo(self, ruler):
         raise NotImplementedError
     
-    def execute(self):
+    def _redo(self, ruler):
+        raise NotImplementedError
+    
+    def do(self, ruler):
         if self.__executed:
             raise Exception("Cannot execute already executed operation")
         
         try:
-            self._execute()
+            self._do(ruler)
         except CommandNotDone:
             self.__error = True
         except:
@@ -34,7 +38,7 @@ class Command:
         
         self.__executed = True
     
-    def undo(self):
+    def undo(self, ruler):
         if self.__error:
             raise Exception("There was an error executing command")
         if not self.__executed:
@@ -42,10 +46,10 @@ class Command:
         if self.__undone:
             raise Exception("Command was already undone")
         
-        self._undo()
+        self._undo(ruler)
         self.__undone = True
     
-    def redo(self):
+    def redo(self, ruler):
         if self.__error:
             raise Exception("There was an error executing command")
         if not self.__executed:
@@ -53,7 +57,7 @@ class Command:
         if not self.__undone:
             raise Exception("Command must be undone in order to be redone")
         
-        self._redo()
+        self._redo(ruler)
         self.__undone = False
     
     def get_updates(self):

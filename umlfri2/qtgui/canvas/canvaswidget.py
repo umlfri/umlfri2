@@ -1,6 +1,8 @@
 from PySide.QtCore import Qt
 from PySide.QtGui import QWidget, QPainter, QApplication
 
+from umlfri2.application import Application
+from umlfri2.application.commands.diagram import MoveSelectionCommand
 from umlfri2.application.selection import ActionMoveSelection, ActionResizeElement, SelectionPointPosition, \
     ActionMoveConnectionPoint, ActionMoveLabel
 from umlfri2.types.color import Colors
@@ -141,6 +143,12 @@ class CanvasWidget(QWidget):
         if self.__postponed_action is not None:
             self.__postponed_action = None
         elif isinstance(self.__current_action, ActionMoveSelection):
-            pass
+            old_bounds = self.__tab.selection.get_bounds(self.__ruler)
+            command = MoveSelectionCommand(
+                self.__tab.selection,
+                self.__current_action_bounds.top_left - old_bounds.top_left
+            )
+            Application().commands.execute(command)
+        
         self.__current_action = None
         self.__current_action_bounds = None

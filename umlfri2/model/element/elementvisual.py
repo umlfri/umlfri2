@@ -7,6 +7,11 @@ class ElementVisual:
         self.__cached_appearance = None
         self.__position = Point(0, 0)
         self.__size = None
+        self.__version = 0
+    
+    @property
+    def version(self):
+        return self.__version
     
     @property
     def object(self):
@@ -51,12 +56,15 @@ class ElementVisual:
         
         self.__cached_appearance.resize(new_size)
         self.__size = new_size
+        self.__version += 1
     
     def move(self, ruler, new_position):
         self.__ensure_appearance_object_exists(ruler)
         
         self.__cached_appearance.move(new_position)
         self.__position = new_position
+        
+        self.__version += 1
     
     def is_at_position(self, ruler, position):
         return self.get_bounds(ruler).contains(position)

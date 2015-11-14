@@ -13,6 +13,9 @@ class ConnectionVisual:
         self.__points = []
         self.__cached_points = ()
         self.__labels = [ConnectionLabel(self, label.id) for label in object.type.labels]
+        
+        self.__source_version = source.version
+        self.__destination_version = destination.version
     
     @property
     def object(self):
@@ -72,8 +75,14 @@ class ConnectionVisual:
         
         return self.__cached_points[id]
     
+    def invalidate(self):
+        self.__cached_appearance = None
+    
     def __ensure_appearance_object_exists(self, ruler):
-        if self.__cached_appearance is None:
+        source_changed = self.__source_version != self.__source.version
+        destination_changed = self.__destination.version != self.__destination_version
+        
+        if self.__cached_appearance is None or source_changed or destination_changed:
             self.__cached_appearance = self.__object.create_appearance_object(ruler)
 
             source_bounds = self.__source.get_bounds(ruler)

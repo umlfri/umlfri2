@@ -58,6 +58,8 @@ def create_example_project():
     
     return project
 
+Application().use_ruler(QTRuler())
+
 project = create_example_project()
 Application().solution = Solution(project)
 

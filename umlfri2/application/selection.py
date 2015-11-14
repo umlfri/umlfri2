@@ -29,6 +29,26 @@ class Selection:
         self.__selected = set()
         self.__diagram = diagram
     
+    @property
+    def selected_visuals(self):
+        yield from self.__selected
+    
+    @property
+    def selected_elements(self):
+        for visual in self.__selected:
+            if isinstance(visual, ElementVisual):
+                yield visual
+    
+    @property
+    def selected_connections(self):
+        for visual in self.__selected:
+            if isinstance(visual, ConnectionVisual):
+                yield visual
+    
+    @property
+    def diagram(self):
+        return self.__diagram
+    
     def select(self, visual):
         self.__selected.clear()
         if visual is not None:

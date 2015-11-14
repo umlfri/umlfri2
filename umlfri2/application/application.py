@@ -19,10 +19,20 @@ class MetaApplication(type):
 class Application(metaclass=MetaApplication):
     def __init__(self):
         self.__event_dispatcher = EventDispatcher()
-        self.__commands = CommandProcessor(self.__event_dispatcher)
+        self.__commands = CommandProcessor(self)
         self.__addons = AddOnManager(Storage.open(ADDONS))
         self.__tabs = TabList(self.__event_dispatcher)
         self.__solution = None
+        self.__ruler = None
+    
+    def use_ruler(self, ruler):
+        if self.__ruler is not None:
+            raise Exception("Cannot change used ruler")
+        self.__ruler = ruler
+    
+    @property
+    def ruler(self):
+        return self.__ruler
     
     @property
     def event_dispatcher(self):
