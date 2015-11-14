@@ -4,9 +4,17 @@ from ..drawingareacursor import DrawingAreaCursor
 class Action:
     def __init__(self):
         self.__finished = False
+        self.__callback = None
     
     def _finish(self):
         self.__finished = True
+        
+        if self.__callback is not None:
+            self.__callback()
+    
+    def after_finish(self, callback):
+        self.__callback = callback
+        return self
     
     @property
     def box(self):
