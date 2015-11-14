@@ -27,27 +27,46 @@ class ConnectionVisual:
     def object(self):
         return self.__object
     
-    def get_points(self, ruler):
+    @property
+    def source(self):
+        return self.__source
+    
+    @property
+    def destination(self):
+        return self.__destination
+    
+    def get_points(self, ruler, source_and_end=True):
         self.__cache.ensure_valid(ruler=ruler)
         
-        yield from self.__cached_points
+        if source_and_end:
+            yield from self.__cached_points
+        else:
+            yield from self.__points
     
     def get_labels(self):
         yield from self.__labels
     
     def add_point(self, ruler, point, index=None):
         if index is None:
-            index = len(self.__points)
+            index = len(self.__points) + 1
         
-        self.__points.insert(index, point)
+        self.__points.insert(index - 1, point)
         
         self.__cache.refresh(ruler=ruler)
         
-        line1_length = (self.__cached_points[index + 1] - self.__cached_points[index]).length
-        line2_length = (self.__cached_points[index + 2] - self.__cached_points[index + 1]).length
+        line1_length = (self.__cached_points[index] - self.__cached_points[index - 1]).length
+        line2_length = (self.__cached_points[index + 1] - self.__cached_points[index]).length
         
         for label in self.__labels:
             label._adding_point(index, line1_length, line2_length)
+    
+    def move_point(self, ruler, index, point):
+        if index < 1 or index > len(self.__points):
+            raise Exception("Point index out of range")
+        
+        self.__points[index - 1] = point
+        
+        self.__cache.invalidate()
     
     def draw(self, canvas):
         self.__cache.ensure_valid(ruler=canvas.get_ruler())

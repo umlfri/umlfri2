@@ -1,3 +1,5 @@
+from _weakrefset import WeakSet
+
 from ..cache import ModelTemporaryDataCache
 from umlfri2.types.geometry import Point, Rectangle, Size
 
@@ -10,6 +12,13 @@ class ElementVisual:
         self.__cached_appearance = None
         self.__position = Point(0, 0)
         self.__size = None
+        self.__connections = WeakSet()
+    
+    def add_connection(self, connection):
+        if connection.source != self and connection.destination != self:
+            raise Exception("Cannot add connection not connected to the element")
+        
+        self.__connections.add(connection)
     
     @property
     def cache(self):
@@ -18,6 +27,10 @@ class ElementVisual:
     @property
     def object(self):
         return self.__object
+    
+    @property
+    def connections(self):
+        yield from self.__connections
     
     def get_position(self, ruler):
         self.__cache.ensure_valid(ruler=ruler)
