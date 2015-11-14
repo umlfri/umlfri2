@@ -42,10 +42,14 @@ class ConnectionVisual:
     def diagram(self):
         return self.__diagram()
     
-    def get_points(self, ruler, source_and_end=True):
+    def get_points(self, ruler, source_and_end=True, element_centers=False):
         self.__cache.ensure_valid(ruler=ruler)
         
-        if source_and_end:
+        if element_centers:
+            yield self.__source.get_bounds(ruler).center
+            yield from self.__points
+            yield self.__destination.get_bounds(ruler).center
+        elif source_and_end:
             yield from self.__cached_points
         else:
             yield from self.__points

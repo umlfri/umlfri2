@@ -13,6 +13,10 @@ class Action:
         return None
     
     @property
+    def path(self):
+        return None
+    
+    @property
     def finished(self):
         return self.__finished
     

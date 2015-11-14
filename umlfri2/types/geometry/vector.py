@@ -36,3 +36,9 @@ class Vector:
     def __truediv__(self, other):
         if isinstance(other, (int, float)):
             return Vector(self.__x / other, self.__y / other)
+    
+    def __str__(self):
+        return "{0},{1}".format(self.__x, self.__y)
+    
+    def __repr__(self):
+        return "<Vector {0}>".format(self)

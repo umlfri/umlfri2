@@ -10,7 +10,7 @@ class MoveConnectionLabelCommand(Command):
     
     @property
     def description(self):
-        return "Moved point on connection in diagram {0}".format(self.__diagram_name)
+        return "Moved label on connection in diagram {0}".format(self.__diagram_name)
     
     def _do(self, ruler):
         self.__label_position = self.__connection_label.get_position(ruler)

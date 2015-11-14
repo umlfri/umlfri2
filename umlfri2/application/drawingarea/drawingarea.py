@@ -39,6 +39,12 @@ class DrawingArea:
                     self.SELECTION_RECTANGLE_FILL,
                     self.SELECTION_RECTANGLE_WIDTH
                 )
+            if self.__current_action.path is not None:
+                canvas.draw_path(
+                    self.__current_action.path,
+                    fg=self.SELECTION_RECTANGLE_BORDER,
+                    line_width=self.SELECTION_RECTANGLE_WIDTH
+                )
     
     def mouse_down(self, point, control_pressed):
         if self.__current_action is not None:
