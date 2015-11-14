@@ -12,6 +12,7 @@ class TabList:
         for tab in self.__tabs:
             if tab.drawing_area.diagram is diagram:
                 self.__current_tab = tab
+                self.__application.event_dispatcher.dispatch(ChangedCurrentTabEvent(tab))
                 break
         else:
             tab = Tab(self.__application, diagram)
