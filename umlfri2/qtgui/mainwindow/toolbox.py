@@ -4,7 +4,7 @@ from PySide.QtCore import Qt
 from PySide.QtGui import QWidget, QVBoxLayout, QIcon, QFrame, QPushButton
 
 from umlfri2.application import Application
-from umlfri2.application.drawingarea import ActionAddVisual
+from umlfri2.application.drawingarea.actions import AddVisualAction
 from umlfri2.application.events.tabs import ChangedCurrentTabEvent
 from umlfri2.paths import GRAPHICS
 from ..base import image_loader
@@ -42,7 +42,7 @@ class ToolBox(QWidget):
             has_elements = False
             for element_type in diagram_type.element_types:
                 self.__add_button(image_loader.load_icon(element_type.icon), element_type.id,
-                                  ActionAddVisual('element', element_type.id), tab)
+                                  AddVisualAction('element', element_type.id), tab)
                 has_elements = True
             
             if has_elements:
@@ -50,7 +50,7 @@ class ToolBox(QWidget):
             
             for connection_type in diagram_type.connection_types:
                 self.__add_button(image_loader.load_icon(connection_type.icon), connection_type.id,
-                                  ActionAddVisual('connection', connection_type.id), tab)
+                                  AddVisualAction('connection', connection_type.id), tab)
         self.__widgets[0].setChecked(True)
     
     def __add_button(self, icon, text, action, tab):

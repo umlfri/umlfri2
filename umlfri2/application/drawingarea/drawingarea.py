@@ -1,14 +1,9 @@
-from collections import namedtuple
-
-from .selection import Selection, ActionMoveSelection, ActionResizeElement, SelectionPointPosition, \
-    ActionMoveConnectionPoint, ActionMoveLabel
+from .actions import AddVisualAction, MoveSelectionAction, ResizeElementAction, MoveConnectionPointAction, \
+    MoveConnectionLabelAction, SelectManyAction
+from .selection import Selection, SelectionPointPosition
 from umlfri2.types.color import Colors
 from umlfri2.types.geometry import Rectangle
 from ..commands.diagram import MoveSelectionCommand, ResizeMoveElementCommand, AddDiagramElementCommand
-
-
-ActionSelectMany = namedtuple('ActionSelectMany', ())
-ActionAddVisual = namedtuple('ActionAddVisual', ('category', 'type'))
 
 
 class DrawingAreaCursor:
@@ -55,7 +50,7 @@ class DrawingArea:
                 )
     
     def mouse_down(self, point, control_pressed):
-        if isinstance(self.__current_action, ActionAddVisual):
+        if isinstance(self.__current_action, AddVisualAction):
             self.__current_action_point = point
             return
         
@@ -95,9 +90,9 @@ class DrawingArea:
 
     def __change_cursor(self, point):
         action = self.__selection.get_action_at(self.__application.ruler, point)
-        if isinstance(action, ActionMoveSelection):
+        if isinstance(action, MoveSelectionAction):
             self.__cursor = DrawingAreaCursor.move
-        elif isinstance(action, ActionResizeElement):
+        elif isinstance(action, ResizeElementAction):
             if action.horizontal == action.vertical:
                 self.__cursor = DrawingAreaCursor.mainDiagonalResize
             elif action.horizontal == SelectionPointPosition.center:
@@ -106,20 +101,20 @@ class DrawingArea:
                 self.__cursor = DrawingAreaCursor.horizontalResize
             elif action.horizontal != action.vertical:
                 self.__cursor = DrawingAreaCursor.antiDiagonalResize
-        elif isinstance(action, ActionMoveConnectionPoint):
+        elif isinstance(action, MoveConnectionPointAction):
             self.__cursor = DrawingAreaCursor.move
-        elif isinstance(action, ActionMoveLabel):
+        elif isinstance(action, MoveConnectionLabelAction):
             self.__cursor = DrawingAreaCursor.move
         else:
             self.__cursor = DrawingAreaCursor.arrow
     
     def __start_action(self, action, point):
         self.__current_action = action
-        if isinstance(self.__current_action, ActionMoveSelection):
+        if isinstance(self.__current_action, MoveSelectionAction):
             self.__current_action_bounds = self.__selection.get_bounds(self.__application.ruler)
-        elif isinstance(self.__current_action, ActionResizeElement):
+        elif isinstance(self.__current_action, ResizeElementAction):
             self.__current_action_bounds = self.__current_action.element.get_bounds(self.__application.ruler)
-        elif isinstance(self.__current_action, ActionSelectMany):
+        elif isinstance(self.__current_action, SelectManyAction):
             self.__current_action_bounds = Rectangle.from_point_point(point, point)
         
         self.__current_action_point = point
@@ -138,9 +133,9 @@ class DrawingArea:
         
         vector = point - self.__current_action_point
         
-        if isinstance(self.__current_action, ActionMoveSelection):
+        if isinstance(self.__current_action, MoveSelectionAction):
             self.__current_action_bounds += vector
-        elif isinstance(self.__current_action, ActionResizeElement):
+        elif isinstance(self.__current_action, ResizeElementAction):
             x1 = self.__current_action_bounds.x1
             y1 = self.__current_action_bounds.y1
             x2 = self.__current_action_bounds.x2
@@ -167,7 +162,7 @@ class DrawingArea:
                     y2 = y1 + min_size.height
             
             self.__current_action_bounds = Rectangle(x1, y1, x2 - x1, y2 - y1)
-        elif isinstance(self.__current_action, ActionSelectMany):
+        elif isinstance(self.__current_action, SelectManyAction):
             self.__current_action_bounds = Rectangle.from_point_point(self.__current_action_bounds.top_left, point)
         
         # TODO: don't move current point
@@ -176,22 +171,22 @@ class DrawingArea:
     def __finish_action(self):
         if self.__postponed_action is not None:
             self.__postponed_action = None
-        elif isinstance(self.__current_action, ActionMoveSelection):
+        elif isinstance(self.__current_action, MoveSelectionAction):
             old_bounds = self.__selection.get_bounds(self.__application.ruler)
             command = MoveSelectionCommand(
                 self.__selection,
                 self.__current_action_bounds.top_left - old_bounds.top_left
             )
             self.__application.commands.execute(command)
-        elif isinstance(self.__current_action, ActionResizeElement):
+        elif isinstance(self.__current_action, ResizeElementAction):
             command = ResizeMoveElementCommand(
                 self.__current_action.element,
                 self.__current_action_bounds
             )
             self.__application.commands.execute(command)
-        elif isinstance(self.__current_action, ActionSelectMany):
+        elif isinstance(self.__current_action, SelectManyAction):
             self.__selection.select_in_area(self.__application.ruler, self.__current_action_bounds.normalize())
-        elif isinstance(self.__current_action, ActionAddVisual):
+        elif isinstance(self.__current_action, AddVisualAction):
             if self.__current_action.category == 'element':
                 type = self.__diagram.parent.project.metamodel.get_element_type(self.__current_action.type)
                 command = AddDiagramElementCommand(

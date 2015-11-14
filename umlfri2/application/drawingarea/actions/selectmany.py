@@ -1,0 +1,2 @@
+class SelectManyAction:
+    pass

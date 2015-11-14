@@ -1,0 +1,2 @@
+class MoveSelectionAction:
+    pass

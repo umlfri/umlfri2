@@ -1,5 +1,4 @@
-from collections import namedtuple
-
+from .actions import MoveSelectionAction, ResizeElementAction, MoveConnectionPointAction, MoveConnectionLabelAction
 from umlfri2.model.connection import ConnectionVisual
 from umlfri2.model.element import ElementVisual
 from umlfri2.types.color import Colors
@@ -10,12 +9,6 @@ class SelectionPointPosition:
     first = 0
     center = 1
     last = 2
-
-
-ActionMoveSelection = namedtuple('ActionMoveSelection', ())
-ActionResizeElement = namedtuple('ActionResizeElement', ('element', 'horizontal', 'vertical'))
-ActionMoveConnectionPoint = namedtuple('ActionMoveConnectionPoint', ('connection', 'index'))
-ActionMoveLabel = namedtuple('ActionMoveLabel', ('connection', 'id'))
 
 
 class Selection:
@@ -148,15 +141,15 @@ class Selection:
             return None
         
         if len(self.__selected) > 1:
-            return ActionMoveSelection()
+            return MoveSelectionAction()
         
         if isinstance(visual, ElementVisual):
             bounds = visual.get_bounds(ruler)
             for pos_x, pos_y in self.__get_selection_points_positions(ruler, visual):
                 if self.__get_selection_point(bounds, pos_x, pos_y).contains(position):
-                    return ActionResizeElement(visual, pos_x, pos_y)
+                    return ResizeElementAction(visual, pos_x, pos_y)
             
-            return ActionMoveSelection()
+            return MoveSelectionAction()
         elif isinstance(visual, ConnectionVisual):
             found = None
             for idx, point in enumerate(visual.get_points(ruler)):
@@ -164,11 +157,11 @@ class Selection:
                     if (position - point).length < ConnectionVisual.MAXIMAL_CLICKABLE_DISTANCE:
                         found = idx
                     elif found is not None: # don't return it for last point
-                        return ActionMoveConnectionPoint(visual, found)
+                        return MoveConnectionPointAction(visual, found)
             
             for label in visual.get_labels():
                 if label.get_bounds(ruler).contains(position):
-                    return ActionMoveLabel(visual, label.id)
+                    return MoveConnectionLabelAction(visual, label.id)
         
         return None
     
