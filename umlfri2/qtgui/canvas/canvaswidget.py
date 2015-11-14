@@ -24,6 +24,7 @@ class CanvasWidget(QWidget):
         self.__current_action_bounds = None
         self.setFocusPolicy(Qt.StrongFocus)
         self.setMouseTracking(True)
+        self.setAttribute(Qt.WA_OpaquePaintEvent)
     
     def paintEvent(self, event):
         painter = QPainter()
