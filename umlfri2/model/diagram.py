@@ -73,7 +73,7 @@ class Diagram:
                     element2 = element
             
             if element1 is not None and element2 is not None:
-                visual = ConnectionVisual(object, element1, element2)
+                visual = ConnectionVisual(self, object, element1, element2)
                 element1.add_connection(visual)
                 element2.add_connection(visual)
                 self.__connections.append(visual)

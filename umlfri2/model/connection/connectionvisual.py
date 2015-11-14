@@ -1,3 +1,5 @@
+from weakref import ref
+
 from ..cache import ModelTemporaryDataCache
 from .connectionlabel import ConnectionLabel
 from umlfri2.types.geometry import Line
@@ -6,11 +8,12 @@ from umlfri2.types.geometry import Line
 class ConnectionVisual:
     MAXIMAL_CLICKABLE_DISTANCE = 5
     
-    def __init__(self, object, source, destination):
+    def __init__(self, diagram, object, source, destination):
         self.__cache = ModelTemporaryDataCache(self.__create_appearance_object)
         self.__cache.depend_on(source.cache)
         self.__cache.depend_on(destination.cache)
         
+        self.__diagram = ref(diagram)
         self.__object = object
         self.__source = source
         self.__destination = destination
@@ -35,6 +38,10 @@ class ConnectionVisual:
     def destination(self):
         return self.__destination
     
+    @property
+    def diagram(self):
+        return self.__diagram()
+    
     def get_points(self, ruler, source_and_end=True):
         self.__cache.ensure_valid(ruler=ruler)
         
@@ -45,6 +52,11 @@ class ConnectionVisual:
     
     def get_labels(self):
         yield from self.__labels
+    
+    def get_label(self, id):
+        for label in self.__labels:
+            if label.id == id:
+                return label
     
     def add_point(self, ruler, point, index=None):
         if index is None:
