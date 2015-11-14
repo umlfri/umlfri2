@@ -58,7 +58,7 @@ class ConnectionVisual:
         line2_length = (self.__cached_points[index + 1] - self.__cached_points[index]).length
         
         for label in self.__labels:
-            label._adding_point(index, line1_length, line2_length)
+            label._adding_point(index - 1, line1_length, line2_length)
     
     def move_point(self, ruler, index, point):
         if index < 1 or index > len(self.__points):
