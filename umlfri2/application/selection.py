@@ -16,6 +16,7 @@ ActionMoveSelection = namedtuple('ActionMoveSelection', ())
 ActionResizeElement = namedtuple('ActionResizeElement', ('element', 'horizontal', 'vertical'))
 ActionMoveConnectionPoint = namedtuple('ActionMoveConnectionPoint', ('connection', 'index'))
 ActionMoveLabel = namedtuple('ActionMoveLabel', ('connection', 'id'))
+ActionSelectMany = namedtuple('ActionMoveLabel', ())
 
 
 class Selection:
@@ -68,6 +69,12 @@ class Selection:
             self.__selected.remove(visual)
         else:
             self.__selected.add(visual)
+    
+    def select_in_area(self, ruler, area):
+        self.__selected.clear()
+        for element in self.__diagram.elements:
+            if element.get_bounds(ruler).is_overlapping(area):
+                self.__selected.add(element)
     
     def draw_for(self, canvas, visual):
         if visual not in self.__selected:

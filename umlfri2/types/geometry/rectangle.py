@@ -95,6 +95,19 @@ class Rectangle:
                 point = new_point
         
         return point
+    
+    def is_overlapping(self, other):
+        if self.contains(other.top_left):
+            return True
+        if self.contains(other.top_right):
+            return True
+        if self.contains(other.bottom_left):
+            return True
+        if self.contains(other.bottom_right):
+            return True
+        if other.contains(self.top_left):
+            return True
+        return False
 
     @property
     def all_lines(self):
@@ -102,7 +115,21 @@ class Rectangle:
         yield Line.from_point_point(self.top_right, self.bottom_right)
         yield Line.from_point_point(self.bottom_right, self.bottom_left)
         yield Line.from_point_point(self.bottom_left, self.top_left)
-
+    
+    def normalize(self):
+        x1 = self.x1
+        x2 = self.x2
+        y1 = self.y1
+        y2 = self.y2
+        
+        if x1 > x2:
+            x1, x2 = x2, x1
+        
+        if y1 > y2:
+            y1, y2 = y2, y1
+        
+        return Rectangle(x1, y1, x2 - x1, y2 - y1)
+        
     def __add__(self, other):
         if isinstance(other, Vector):
             return Rectangle.from_point_size(self.top_left + other, self.size)

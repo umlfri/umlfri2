@@ -46,6 +46,10 @@ class Diagram:
     def data(self):
         return self.__data
     
+    @property
+    def elements(self):
+        yield from self.__elements
+    
     def get_display_name(self):
         context = Context().extend(self.__data, 'self')
         return self.__type.get_display_name(context)

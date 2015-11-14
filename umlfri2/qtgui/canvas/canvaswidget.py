@@ -5,7 +5,7 @@ from umlfri2.application import Application
 from umlfri2.application.commands.diagram import MoveSelectionCommand
 from umlfri2.application.commands.diagram.resizemoveelement import ResizeMoveElementCommand
 from umlfri2.application.selection import ActionMoveSelection, ActionResizeElement, SelectionPointPosition, \
-    ActionMoveConnectionPoint, ActionMoveLabel
+    ActionMoveConnectionPoint, ActionMoveLabel, ActionSelectMany
 from umlfri2.types.color import Colors
 from ..base.qtruler import QTRuler
 from .qtpaintercanvas import QTPainterCanvas
@@ -66,9 +66,10 @@ class CanvasWidget(QWidget):
                 self.__tab.selection.select(object)
                 action = self.__tab.selection.get_action_at(self.__ruler, point)
                 
-                if action is not None:
-                    self.__start_action(action, point)
-                    self.__postpone_action()
+                if action is None:
+                    action = ActionSelectMany()
+                self.__start_action(action, point)
+                self.__postpone_action()
         
         self.__change_cursor(point)
         
@@ -122,6 +123,8 @@ class CanvasWidget(QWidget):
             self.__current_action_bounds = self.__tab.selection.get_bounds(self.__ruler)
         elif isinstance(self.__current_action, ActionResizeElement):
             self.__current_action_bounds = self.__current_action.element.get_bounds(self.__ruler)
+        elif isinstance(self.__current_action, ActionSelectMany):
+            self.__current_action_bounds = Rectangle.from_point_point(point, point)
         
         self.__current_action_point = point
     
@@ -168,6 +171,8 @@ class CanvasWidget(QWidget):
                     y2 = y1 + min_size.height
             
             self.__current_action_bounds = Rectangle(x1, y1, x2 - x1, y2 - y1)
+        elif isinstance(self.__current_action, ActionSelectMany):
+            self.__current_action_bounds = Rectangle.from_point_point(self.__current_action_bounds.top_left, point)
         
         # TODO: don't move current point
         self.__current_action_point = point
@@ -188,6 +193,8 @@ class CanvasWidget(QWidget):
                 self.__current_action_bounds
             )
             Application().commands.execute(command)
+        elif isinstance(self.__current_action, ActionSelectMany):
+            self.__tab.selection.select_in_area(self.__ruler, self.__current_action_bounds.normalize())
         
         self.__current_action = None
         self.__current_action_bounds = None
