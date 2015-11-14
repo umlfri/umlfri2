@@ -98,3 +98,6 @@ class ConnectionVisual:
             self.__cached_appearance.assign_points(points)
             
             self.__cached_points = tuple(points)
+    
+    def get_bounds(self, ruler):
+        return None # TODO

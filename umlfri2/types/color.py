@@ -38,6 +38,9 @@ class Color:
     def invert(self):
         return Color(self.__value & 0xff000000 + (0xffffff - self.__value & 0xffffff))
     
+    def add_alpha(self, alpha):
+        return Color(self.__value & 0xffffff + alpha << 24)
+    
     def __str__(self):
         return "#{0:08x}".format(self.__value)
     

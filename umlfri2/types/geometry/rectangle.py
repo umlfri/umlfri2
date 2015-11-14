@@ -1,3 +1,4 @@
+from .vector import Vector
 from .point import Point
 from .size import Size
 from .line import Line
@@ -84,6 +85,11 @@ class Rectangle:
             intersections.update(line.intersect(other))
         
         yield from intersections
+    
+    def __add__(self, other):
+        if isinstance(other, Vector):
+            return Rectangle.from_point_size(self.top_left + other, self.size)
+        return NotImplemented
     
     def __str__(self):
         return "[{0}, {1}], [{2}, {3}]".format(self.__x, self.__y, self.__x + self.__width, self.__y + self.__height)

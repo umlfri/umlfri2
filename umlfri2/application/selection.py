@@ -145,3 +145,23 @@ class Selection:
                     return ActionMoveLabel(visual, label.id)
         
         return None
+    
+    def get_bounds(self, ruler):
+        x1 = float('inf')
+        x2 = -float('inf')
+        y1 = float('inf')
+        y2 = -float('inf')
+        
+        for visual in self.__selected:
+            if isinstance(visual, ElementVisual):
+                bounds = visual.get_bounds(ruler)
+                if bounds.x1 < x1:
+                    x1 = bounds.x1
+                if bounds.y1 < y1:
+                    y1 = bounds.y1
+                if bounds.x2 > x2:
+                    x2 = bounds.x2
+                if bounds.y2 > y2:
+                    y2 = bounds.y2
+        
+        return Rectangle(x1, y1, x2 - x1, y2 - y1)
