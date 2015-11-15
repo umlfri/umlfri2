@@ -42,7 +42,8 @@ class ToolBox(QWidget):
             has_elements = False
             for element_type in diagram_type.element_types:
                 self.__add_button(image_loader.load_icon(element_type.icon), element_type.id,
-                                  AddElementAction(element_type.id).after_finish(self.__reset_selection), tab)
+                                  lambda: AddElementAction(element_type.id).after_finish(self.__reset_selection),
+                                  tab)
                 has_elements = True
             
             if has_elements:
@@ -50,7 +51,8 @@ class ToolBox(QWidget):
             
             for connection_type in diagram_type.connection_types:
                 self.__add_button(image_loader.load_icon(connection_type.icon), connection_type.id,
-                                  AddConnectionAction(connection_type.id).after_finish(self.__reset_selection), tab)
+                                  lambda: AddConnectionAction(connection_type.id).after_finish(self.__reset_selection),
+                                  tab)
         
         self.__reset_selection()
     
@@ -65,7 +67,7 @@ class ToolBox(QWidget):
         button = QPushButton(text)
         button.setIcon(icon)
         button.setCheckable(True)
-        button.clicked.connect(lambda checked=False: self.__select(button, action, tab))
+        button.clicked.connect(lambda checked=False: self.__select(button, action(), tab))
         self.__vbox.addWidget(button)
         self.__widgets.append(button)
     
