@@ -3,3 +3,5 @@ from .moveconnectionpoint import MoveConnectionPointCommand
 from .moveselection import MoveSelectionCommand
 from .resizemoveelement import ResizeMoveElementCommand
 from .adddiagramelement import AddDiagramElementCommand
+from .removeconnectionpoint import RemoveConnectionPointCommand
+from .addconnectionpoint import AddConnectionPointCommand

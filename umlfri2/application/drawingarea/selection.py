@@ -4,7 +4,8 @@ from umlfri2.model.connection import ConnectionVisual
 from umlfri2.model.element import ElementVisual
 from umlfri2.types.color import Colors
 from umlfri2.types.geometry import Rectangle, Vector, Size, Line
-from .actions import MoveSelectionAction, ResizeElementAction, MoveConnectionPointAction, MoveConnectionLabelAction
+from .actions import MoveSelectionAction, ResizeElementAction, MoveConnectionPointAction, MoveConnectionLabelAction, \
+    RemoveConnectionPointAction, AddConnectionPointAction
 
 
 class Selection:
@@ -141,7 +142,7 @@ class Selection:
         elif pos == SelectionPointPosition.last:
             return start + size - self.SELECTION_POINT_SIZE, start + size
     
-    def get_action_at(self, ruler, position):
+    def get_action_at(self, ruler, position, shift_pressed):
         visual = self.__diagram.get_visual_at(ruler, position)
         
         if visual not in self.__selected:
@@ -164,11 +165,23 @@ class Selection:
                     if (position - point).length < ConnectionVisual.MAXIMAL_CLICKABLE_DISTANCE:
                         found = idx
                     elif found is not None: # don't return it for last point
-                        return MoveConnectionPointAction(visual, found)
+                        if shift_pressed:
+                            return RemoveConnectionPointAction(visual, found)
+                        else:
+                            return MoveConnectionPointAction(visual, found)
             
             for label in visual.get_labels():
                 if label.get_bounds(ruler).contains(position):
                     return MoveConnectionLabelAction(visual, label.id)
+            
+            if shift_pressed:
+                last = None
+                for idx, point in enumerate(visual.get_points(ruler)):
+                    if last is not None:
+                        distance = Line.from_point_point(last, point).get_distance_to(position)
+                        if distance < ConnectionVisual.MAXIMAL_CLICKABLE_DISTANCE:
+                            return AddConnectionPointAction(visual, idx)
+                    last = point
         
         return None
     

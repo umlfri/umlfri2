@@ -51,8 +51,7 @@ def create_example_project():
     vispkg1.move(ruler, Point(500, 50))
     vispkg1.resize(ruler, Size(200, 200))
     
-    visassoc = diagram.show(assoc)
-    visassoc.add_point(ruler, Point(500, 300))
+    diagram.show(assoc)
     
     diagram2.show(pkg1)
     

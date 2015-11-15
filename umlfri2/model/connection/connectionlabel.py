@@ -83,7 +83,7 @@ class ConnectionLabel:
     def _adding_point(self, line_index, line1_length, line2_length):
         if line_index > self.__line_index:
             self.__line_index += 1
-            self.__cached_appearance = None
+            self.__cache.invalidate()
         elif line_index == self.__line_index:
             proportions = line1_length / (line1_length + line2_length)
             new_position = self.__line_position / proportions
@@ -93,7 +93,21 @@ class ConnectionLabel:
             else:
                 self.__line_index += 1
                 self.__line_position = new_position - 1
-            self.__cached_appearance = None
+            self.__cache.invalidate()
+    
+    def _removing_point(self, line_index, line1_length, line2_length):
+        if line_index + 1 > self.__line_index:
+            self.__line_index -= 1
+            self.__cache.invalidate()
+        elif line_index + 1 == self.__line_index:
+            proportions = line2_length / (line1_length + line2_length)
+            self.__line_position = self.__line_position * proportions + 0.5
+            self.__line_index -= 1
+            self.__cache.invalidate()
+        elif line_index == self.__line_index:
+            proportions = line1_length / (line1_length + line2_length)
+            self.__line_position = self.__line_position * proportions
+            self.__cache.invalidate()
     
     def get_bounds(self, ruler):
         self.__cache.ensure_valid(ruler=ruler)

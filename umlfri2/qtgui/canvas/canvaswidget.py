@@ -31,7 +31,11 @@ class CanvasWidget(QWidget):
         pos = event.pos()
         point = Point(pos.x(), pos.y())
         
-        self.__drawing_area.mouse_down(point, QApplication.keyboardModifiers() == Qt.ControlModifier)
+        self.__drawing_area.mouse_down(
+            point,
+            QApplication.keyboardModifiers() == Qt.ControlModifier,
+            QApplication.keyboardModifiers() == Qt.ShiftModifier
+        )
         
         self.__update_cursor()
         self.update()
@@ -40,7 +44,11 @@ class CanvasWidget(QWidget):
         pos = event.pos()
         point = Point(pos.x(), pos.y())
         
-        self.__drawing_area.mouse_move(point)
+        self.__drawing_area.mouse_move(
+            point,
+            QApplication.keyboardModifiers() == Qt.ControlModifier,
+            QApplication.keyboardModifiers() == Qt.ShiftModifier
+        )
         
         self.__update_cursor()
         self.update()
@@ -49,7 +57,11 @@ class CanvasWidget(QWidget):
         pos = event.pos()
         point = Point(pos.x(), pos.y())
         
-        self.__drawing_area.mouse_up(point)
+        self.__drawing_area.mouse_up(
+            point,
+            QApplication.keyboardModifiers() == Qt.ControlModifier,
+            QApplication.keyboardModifiers() == Qt.ShiftModifier
+        )
         
         self.__update_cursor()
         self.update()
@@ -70,5 +82,7 @@ class CanvasWidget(QWidget):
             self.setCursor(Qt.SizeVerCursor)
         elif self.__drawing_area.cursor == DrawingAreaCursor.horizontalResize:
             self.setCursor(Qt.SizeHorCursor)
+        elif self.__drawing_area.cursor == DrawingAreaCursor.cross:
+            self.setCursor(Qt.CrossCursor)
         
         self.__old_cursor = self.__drawing_area.cursor

@@ -62,9 +62,9 @@ class ConnectionVisual:
             if label.id == id:
                 return label
     
-    def add_point(self, ruler, point, index=None):
-        if index is None:
-            index = len(self.__points) + 1
+    def add_point(self, ruler, index, point):
+        if index < 1 or index > len(self.__points) + 1:
+            raise Exception("Point index out of range")
         
         self.__points.insert(index - 1, point)
         
@@ -81,6 +81,22 @@ class ConnectionVisual:
             raise Exception("Point index out of range")
         
         self.__points[index - 1] = point
+        
+        self.__cache.invalidate()
+    
+    def remove_point(self, ruler, index):
+        if index < 1 or index > len(self.__points):
+            raise Exception("Point index out of range")
+        
+        self.__cache.ensure_valid(ruler=ruler)
+        
+        line1_length = (self.__cached_points[index] - self.__cached_points[index - 1]).length
+        line2_length = (self.__cached_points[index + 1] - self.__cached_points[index]).length
+        
+        del self.__points[index - 1]
+        
+        for label in self.__labels:
+            label._removing_point(index - 1, line1_length, line2_length)
         
         self.__cache.invalidate()
     

@@ -46,17 +46,17 @@ class DrawingArea:
                     line_width=self.SELECTION_RECTANGLE_WIDTH
                 )
     
-    def mouse_down(self, point, control_pressed):
+    def mouse_down(self, point, control_pressed, shift_pressed):
         if self.__current_action is not None:
             self.__current_action.mouse_down(self, self.__application, point)
-            self.__postprocess_action(point)
+            self.__postprocess_action(point, shift_pressed)
         else:
-            action = self.__selection.get_action_at(self.__application.ruler, point)
+            action = self.__selection.get_action_at(self.__application.ruler, point, shift_pressed)
             
             if action is not None:
                 self.__current_action = action
                 self.__current_action.mouse_down(self, self.__application, point)
-                self.__postprocess_action(point)
+                self.__postprocess_action(point, shift_pressed)
             else:
                 object = self.__diagram.get_visual_at(self.__application.ruler, point)
                 
@@ -65,20 +65,15 @@ class DrawingArea:
                         self.__selection.toggle_select(object)
                 else:
                     self.__selection.select(object)
-                    action = self.__selection.get_action_at(self.__application.ruler, point)
+                    action = self.__selection.get_action_at(self.__application.ruler, point, shift_pressed)
                     
                     if action is None:
                         action = SelectManyAction()
                     self.__postponed_action = action, point
             
-            self.__change_cursor(point)
+            self.__change_cursor(point, shift_pressed)
 
-    def __postprocess_action(self, point):
-        if self.__current_action is not None and self.__current_action.finished:
-            self.__current_action = None
-            self.__change_cursor(point)
-
-    def mouse_move(self, point):
+    def mouse_move(self, point, control_pressed, shift_pressed):
         if self.__postponed_action is not None:
             self.__current_action, postponed_point = self.__postponed_action
             self.__current_action.mouse_down(self, self.__application, postponed_point)
@@ -86,19 +81,24 @@ class DrawingArea:
         
         if self.__current_action is not None:
             self.__current_action.mouse_move(self, self.__application, point)
-            self.__postprocess_action(point)
+            self.__postprocess_action(point, shift_pressed)
         else:
-            self.__change_cursor(point)
+            self.__change_cursor(point, shift_pressed)
     
-    def mouse_up(self, point):
+    def mouse_up(self, point, control_pressed, shift_pressed):
         if self.__postponed_action is not None:
             self.__postponed_action = None
         elif self.__current_action is not None:
             self.__current_action.mouse_up(self, self.__application)
-            self.__postprocess_action(point)
+            self.__postprocess_action(point, shift_pressed)
 
-    def __change_cursor(self, point):
-        action = self.__selection.get_action_at(self.__application.ruler, point)
+    def __postprocess_action(self, point, shift_pressed):
+        if self.__current_action is not None and self.__current_action.finished:
+            self.__current_action = None
+            self.__change_cursor(point, shift_pressed)
+
+    def __change_cursor(self, point, shift_pressed):
+        action = self.__selection.get_action_at(self.__application.ruler, point, shift_pressed)
         if action is None:
             self.__cursor = DrawingAreaCursor.arrow
         else:

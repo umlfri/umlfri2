@@ -5,3 +5,4 @@ class DrawingAreaCursor:
     antiDiagonalResize = 3
     horizontalResize = 4
     verticalResize = 5
+    cross = 6
