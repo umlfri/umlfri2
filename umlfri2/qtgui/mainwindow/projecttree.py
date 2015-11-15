@@ -1,6 +1,7 @@
 from PySide.QtGui import QTreeWidget, QTreeWidgetItem
 
 from umlfri2.application import Application
+from umlfri2.application.events.project import ElementCreatedEvent
 from ..base import image_loader
 
 
@@ -8,8 +9,11 @@ class ProjectTree(QTreeWidget):
     def __init__(self):
         super().__init__()
         self.header().close()
+        
+        Application().event_dispatcher.register(ElementCreatedEvent, self.__element_created)
     
     def reload(self):
+        self.clear()
         for project in Application().solution.children:
             item = QTreeWidgetItem(self, [project.name])
             item.setIcon(0, image_loader.load_icon(project.metamodel.addon.icon))
@@ -31,3 +35,6 @@ class ProjectTree(QTreeWidget):
         for child_element in element.children:
             self.__reload_element(item, child_element)
         parent.addChild(item)
+    
+    def __element_created(self, event):
+        self.reload() # TODO: add only the element

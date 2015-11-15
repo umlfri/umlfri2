@@ -1,3 +1,5 @@
+from umlfri2.application.events.diagram import ElementShownEvent
+from umlfri2.application.events.project import ElementCreatedEvent
 from ..base import Command
 
 
@@ -24,3 +26,7 @@ class AddDiagramElementCommand(Command):
     
     def _undo(self, ruler):
         pass # TODO
+    
+    def get_updates(self):
+        yield ElementCreatedEvent(self.__element_object)
+        yield ElementShownEvent(self.__element_visual)
