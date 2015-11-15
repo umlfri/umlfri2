@@ -1,2 +1,1 @@
-from .list import UflList
-from .object import UflObject
+from .immutable import UflObject, UflList
