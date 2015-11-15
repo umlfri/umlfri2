@@ -149,15 +149,23 @@ class Selection:
             return None
         
         if len(self.__selected) > 1:
-            return MoveSelectionAction()
+            if shift_pressed:
+                return None
+            else:
+                return MoveSelectionAction()
         
         if isinstance(visual, ElementVisual):
             bounds = visual.get_bounds(ruler)
             for pos_x, pos_y in self.__get_selection_points_positions(ruler, visual):
                 if self.__get_selection_point(bounds, pos_x, pos_y).contains(position):
-                    return ResizeElementAction(visual, pos_x, pos_y)
-            
-            return MoveSelectionAction()
+                    if shift_pressed:
+                        return None
+                    else:
+                        return ResizeElementAction(visual, pos_x, pos_y)
+            if shift_pressed:
+                return None
+            else:
+                return MoveSelectionAction()
         elif isinstance(visual, ConnectionVisual):
             found = None
             for idx, point in enumerate(visual.get_points(ruler)):
@@ -172,7 +180,10 @@ class Selection:
             
             for label in visual.get_labels():
                 if label.get_bounds(ruler).contains(position):
-                    return MoveConnectionLabelAction(visual, label.id)
+                    if shift_pressed:
+                        return None
+                    else:
+                        return MoveConnectionLabelAction(visual, label.id)
             
             if shift_pressed:
                 last = None
