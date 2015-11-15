@@ -11,6 +11,9 @@ class UflListPatch:
         @property
         def new_value(self):
             return self.__new_value
+        
+        def make_reverse(self):
+            return UflListPatch.ItemRemoved(self.__index, self.__new_value)
     
     class ItemRemoved:
         def __init__(self, index, old_value):
@@ -24,6 +27,9 @@ class UflListPatch:
         @property
         def old_value(self):
             return self.__old_value
+        
+        def make_reverse(self):
+            return UflListPatch.ItemAdded(self.__index, self.__old_value)
     
     class ItemPatch:
         def __init__(self, index, patch):
@@ -37,6 +43,9 @@ class UflListPatch:
         @property
         def patch(self):
             return self.__patch
+        
+        def make_reverse(self):
+            return UflListPatch.ItemPatch(self.__index, self.__patch.make_reverse())
     
     def __init__(self, type, changes):
         self.__type = type
@@ -51,3 +60,10 @@ class UflListPatch:
     
     def has_changes(self):
         return len(self.__changes) > 0
+    
+    def make_reverse(self):
+        return UflListPatch(self.__type, [change.make_reverse() for change in self.__changes])
+    
+    def get_exactly_one_change(self):
+        if len(self.__changes) == 1:
+            return self.__changes[0]
