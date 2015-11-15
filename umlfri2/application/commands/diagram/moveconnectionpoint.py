@@ -1,3 +1,4 @@
+from umlfri2.application.events.diagram import ConnectionMovedEvent
 from ..base import Command
 
 
@@ -22,3 +23,6 @@ class MoveConnectionPointCommand(Command):
     
     def _undo(self, ruler):
         self.__connection.move_point(ruler, self.__index, self.__point_position)
+    
+    def get_updates(self):
+        yield ConnectionMovedEvent(self.__connection)

@@ -24,3 +24,6 @@ class ResizeMoveElementCommand(Command):
     def _undo(self, ruler):
         self.__element.move(ruler, self.__old_bounds.top_left)
         self.__element.resize(ruler, self.__old_bounds.size)
+    
+    def get_updates(self):
+        yield self.__element

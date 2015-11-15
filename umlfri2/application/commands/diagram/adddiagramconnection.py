@@ -1,3 +1,5 @@
+from umlfri2.application.events.diagram import ConnectionShownEvent
+from umlfri2.application.events.project import ConnectionCreatedEvent
 from ..base import Command
 
 
@@ -27,3 +29,7 @@ class AddDiagramConnectionCommand(Command):
     
     def _undo(self, ruler):
         pass # TODO
+    
+    def get_updates(self):
+        yield ConnectionCreatedEvent(self.__connection_object)
+        yield ConnectionShownEvent(self.__connection_visual)

@@ -1,2 +1,4 @@
+from .connectioncreated import ConnectionCreatedEvent
+from .connectiondeleted import ConnectionDeletedEvent
 from .elementcreated import ElementCreatedEvent
 from .elementdeleted import ElementDeletedEvent

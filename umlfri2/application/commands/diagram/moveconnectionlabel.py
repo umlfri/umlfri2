@@ -1,4 +1,5 @@
 from umlfri2.application.commands.base import Command
+from umlfri2.application.events.diagram import ConnectionMovedEvent
 
 
 class MoveConnectionLabelCommand(Command):
@@ -21,3 +22,6 @@ class MoveConnectionLabelCommand(Command):
     
     def _undo(self, ruler):
         self.__connection_label.move(ruler, self.__label_position)
+    
+    def get_updates(self):
+        yield ConnectionMovedEvent(self.__connection_label.connection)
