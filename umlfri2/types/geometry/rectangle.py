@@ -107,6 +107,12 @@ class Rectangle:
             return True
         if other.contains(self.top_left):
             return True
+        if other.contains(self.top_right):
+            return True
+        if other.contains(self.bottom_left):
+            return True
+        if other.contains(self.bottom_right):
+            return True
         return False
 
     @property
