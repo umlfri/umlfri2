@@ -49,12 +49,14 @@ class DrawingArea:
     def mouse_down(self, point, control_pressed):
         if self.__current_action is not None:
             self.__current_action.mouse_down(self, self.__application, point)
+            self.__postprocess_action(point)
         else:
             action = self.__selection.get_action_at(self.__application.ruler, point)
             
             if action is not None:
                 self.__current_action = action
                 self.__current_action.mouse_down(self, self.__application, point)
+                self.__postprocess_action(point)
             else:
                 object = self.__diagram.get_visual_at(self.__application.ruler, point)
                 
@@ -70,7 +72,12 @@ class DrawingArea:
                     self.__postponed_action = action, point
             
             self.__change_cursor(point)
-            
+
+    def __postprocess_action(self, point):
+        if self.__current_action is not None and self.__current_action.finished:
+            self.__current_action = None
+            self.__change_cursor(point)
+
     def mouse_move(self, point):
         if self.__postponed_action is not None:
             self.__current_action, postponed_point = self.__postponed_action
@@ -79,6 +86,7 @@ class DrawingArea:
         
         if self.__current_action is not None:
             self.__current_action.mouse_move(self, self.__application, point)
+            self.__postprocess_action(point)
         else:
             self.__change_cursor(point)
     
@@ -87,9 +95,7 @@ class DrawingArea:
             self.__postponed_action = None
         elif self.__current_action is not None:
             self.__current_action.mouse_up(self, self.__application)
-            if self.__current_action.finished:
-                self.__current_action = None
-                self.__change_cursor(point)
+            self.__postprocess_action(point)
 
     def __change_cursor(self, point):
         action = self.__selection.get_action_at(self.__application.ruler, point)

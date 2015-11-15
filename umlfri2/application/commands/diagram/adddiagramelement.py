@@ -20,7 +20,7 @@ class AddDiagramElementCommand(Command):
         self.__element_visual.move(ruler, self.__point)
     
     def _redo(self, ruler):
-        pass
+        pass # TODO
     
     def _undo(self, ruler):
-        pass
+        pass # TODO

@@ -2,4 +2,4 @@ from .moveconnectionlabel import MoveConnectionLabelCommand
 from .moveconnectionpoint import MoveConnectionPointCommand
 from .moveselection import MoveSelectionCommand
 from .resizemoveelement import ResizeMoveElementCommand
-from .adddiagrameleemnt import AddDiagramElementCommand
+from .adddiagramelement import AddDiagramElementCommand
