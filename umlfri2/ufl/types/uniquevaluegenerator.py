@@ -10,7 +10,7 @@ class UniqueValueGenerator:
         while True:
             new = template.get_text(context.extend(i, 'no'))
             if new == prev:
-                return "" # cant find template
+                return new # cant find template
             
             if not self.has_value(new):
                 return new
