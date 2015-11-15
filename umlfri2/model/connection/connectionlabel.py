@@ -81,7 +81,7 @@ class ConnectionLabel:
         self.__cache.invalidate()
     
     def _adding_point(self, line_index, line1_length, line2_length):
-        if line_index > self.__line_index:
+        if line_index < self.__line_index:
             self.__line_index += 1
             self.__cache.invalidate()
         elif line_index == self.__line_index:
@@ -96,7 +96,7 @@ class ConnectionLabel:
             self.__cache.invalidate()
     
     def _removing_point(self, line_index, line1_length, line2_length):
-        if line_index + 1 > self.__line_index:
+        if line_index + 1 < self.__line_index:
             self.__line_index -= 1
             self.__cache.invalidate()
         elif line_index + 1 == self.__line_index:
