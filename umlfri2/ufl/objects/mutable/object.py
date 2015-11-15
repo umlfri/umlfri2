@@ -53,4 +53,4 @@ class UflMutableObject:
                 if patch.has_changes():
                     changes.append(UflObjectPatch.AttributePatch(name, patch))
         
-        return UflObjectPatch(changes)
+        return UflObjectPatch(self.__type, changes)

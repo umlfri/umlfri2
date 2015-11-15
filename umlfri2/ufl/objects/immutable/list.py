@@ -1,4 +1,5 @@
-from umlfri2.ufl.objects.mutable import UflMutableList
+from ..mutable import UflMutableList
+from ..patch import UflListPatch
 
 
 class UflList:
@@ -27,3 +28,15 @@ class UflList:
     
     def make_mutable(self):
         return UflMutableList(self.__type, self.__values)
+    
+    def apply_patch(self, patch):
+        if not isinstance(patch, UflListPatch) or patch.type != self.__type:
+            raise ValueError()
+        
+        for change in patch:
+            if isinstance(change, UflListPatch.ItemAdded):
+                self.__values.insert(change.index, change.new_value)
+            elif isinstance(change, UflListPatch.ItemRemoved):
+                del self.__values[change.index]
+            elif isinstance(change, UflListPatch.ItemPatch):
+                self.__values[change.index].apply_patch(change.patch)

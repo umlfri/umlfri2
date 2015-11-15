@@ -94,4 +94,4 @@ class UflMutableList:
                 if patch.has_changes():
                     changes.append(UflListPatch.ItemPatch(new_index, patch))
         
-        return UflListPatch(changes)
+        return UflListPatch(self.__type, changes)

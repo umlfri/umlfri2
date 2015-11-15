@@ -12,13 +12,6 @@ from umlfri2.types.geometry import Point, Size
 app = QApplication(sys.argv)
 
 
-def show_patch(patch, level=0):
-    for action in patch:
-        print('    '*level, action)
-        if hasattr(action, 'patch'):
-            show_patch(action.patch, level + 1)
-
-
 def create_example_project():
     ruler = QTRuler()
     project = Project(Application().addons.get_addon('urn:umlfri.org:metamodel:infjavauml').metamodel)
@@ -35,6 +28,7 @@ def create_example_project():
     
     diagram2_ufl = diagram2.data.make_mutable()
     diagram2_ufl.set_value("name", "Test diagram")
+    diagram2.data.apply_patch(diagram2_ufl.make_patch())
     
     obj1 = pkg1.create_child_element(element_type)
     obj2 = pkg1.create_child_element(element_type)
@@ -44,14 +38,12 @@ def create_example_project():
     assoc = obj1.connect_with(connection_type, obj2)
     
     obj1_ufl = obj1.data.make_mutable()
-    
     obj1_ufl.get_value("attributes").append()
     obj1_ufl.get_value("attributes").append()
     obj1_ufl.get_value("attributes").get_item(1).set_value("type", "int")
     obj1_ufl.get_value("operations").append()
     obj1_ufl.get_value("operations").append()
-    
-    show_patch(obj1_ufl.make_patch())
+    obj1.data.apply_patch(obj1_ufl.make_patch())
     
     vis1 = diagram.show(obj1)
     vis1.move(ruler, Point(30, 30))
