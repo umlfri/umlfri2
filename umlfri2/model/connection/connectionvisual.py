@@ -63,7 +63,9 @@ class ConnectionVisual:
                 return label
     
     def add_point(self, ruler, index, point):
-        if index < 1 or index > len(self.__points) + 1:
+        if index is None:
+            index = len(self.__points) + 1
+        elif index < 1 or index > len(self.__points) + 1:
             raise Exception("Point index out of range")
         
         self.__points.insert(index - 1, point)

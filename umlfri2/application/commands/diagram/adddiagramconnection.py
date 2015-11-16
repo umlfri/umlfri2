@@ -22,7 +22,7 @@ class AddDiagramConnectionCommand(Command):
         self.__connection_object = self.__source_element.connect_with(self.__connection_type, self.__destination_element)
         self.__connection_visual = self.__diagram.show(self.__connection_object)
         for point in self.__points:
-            self.__connection_visual.add_point(ruler, point)
+            self.__connection_visual.add_point(ruler, None, point)
     
     def _redo(self, ruler):
         pass # TODO
