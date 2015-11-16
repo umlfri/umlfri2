@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from .constants import NAMESPACE
 from .componentloader import ComponentLoader
 from umlfri2.components.text import TextContainerComponent
@@ -19,7 +21,7 @@ class UflStructureLoader:
         return UflObjectType(self.__load_object(self.__xmlroot))
 
     def __load_object(self, node):
-        attributes = {}
+        attributes = OrderedDict()
         
         for child in node:
             type = child.attrib["type"]

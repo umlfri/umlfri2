@@ -53,7 +53,7 @@ class UflObjectPatch:
     def make_reverse(self):
         return UflObjectPatch(self.__type, [change.make_reverse() for change in self.__changes])
     
-    def get_exactly_one_change(self):
+    def get_lonely_change(self):
         if len(self.__changes) == 1:
             return self.__changes[0]
         else:

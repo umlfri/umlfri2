@@ -15,7 +15,7 @@ class ApplyPatchCommand(Command):
         else:
             name = "connection"
         
-        change = self.__patch.get_exactly_one_change()
+        change = self.__patch.get_lonely_change()
         is_object_patch = isinstance(change, UflObjectPatch)
         if change is not None and is_object_patch and isinstance(change, UflObjectPatch.AttributeChanged):
             change_desc = "property {0}".format(change.name)

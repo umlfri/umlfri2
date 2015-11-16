@@ -4,11 +4,11 @@ from ..objects import UflObject
 
 class UflObjectType(UflType):
     def __init__(self, attributes):
-        self.__attributes = dict(attributes)
+        self.__attributes = attributes.copy()
     
     @property
     def attributes(self):
-        return self.__attributes.copy()
+        yield from self.__attributes.items()
     
     def get_attribute_type(self, name):
         return self.__attributes[name]

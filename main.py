@@ -7,9 +7,30 @@ from umlfri2.model import Project, Solution
 from umlfri2.qtgui.base.qtruler import QTRuler
 from umlfri2.qtgui import UmlFriMainWindow
 from umlfri2.types.geometry import Point, Size
-
+from umlfri2.ufl.dialog import UflDialog, UflDialogSelectWidget, UflDialogComboWidget, UflDialogChildWidget
 
 app = QApplication(sys.argv)
+
+
+def print_dialog_tab(tab, indent=0):
+    for name, widget in tab.widgets:
+        print("    "*indent, name, widget.__class__.__name__)
+        if isinstance(widget, (UflDialogSelectWidget, UflDialogComboWidget)):
+            for possibility in widget.possibilities:
+                print("    "*(indent + 1), possibility)
+        elif isinstance(widget, UflDialogChildWidget):
+            print_dialog(widget.dialog, indent + 1)
+
+
+def print_dialog(dialog, indent=0):
+    print("    "*indent, "Dialog")
+    lonely_tab = dialog.get_lonely_tab()
+    if lonely_tab is None:
+        for tab in dialog.tabs:
+            print("    "*(indent + 1), "Tab", tab.name, tab.__class__.__name__)
+            print_dialog_tab(tab, indent + 2)
+    else:
+        print_dialog_tab(lonely_tab, indent + 1)
 
 
 def create_example_project():
@@ -44,6 +65,8 @@ def create_example_project():
     obj1_ufl.get_value("operations").append()
     obj1_ufl.get_value("operations").append()
     obj1.data.apply_patch(obj1_ufl.make_patch())
+    
+    print_dialog(UflDialog(obj1.data.type))
     
     vis1 = diagram.show(obj1)
     vis1.move(ruler, Point(30, 30))
