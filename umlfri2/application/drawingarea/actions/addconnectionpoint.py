@@ -30,12 +30,13 @@ class AddConnectionPointAction(Action):
         self.__build_path()
     
     def mouse_up(self, drawing_area, application):
-        command = AddConnectionPointCommand(
-            self.__connection,
-            self.__index,
-            self.__point
-        )
-        application.commands.execute(command)
+        if self.__point is not None:
+            command = AddConnectionPointCommand(
+                self.__connection,
+                self.__index,
+                self.__point
+            )
+            application.commands.execute(command)
         self._finish()
     
     def __build_path(self):
