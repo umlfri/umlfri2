@@ -85,15 +85,18 @@ class ConnectionLabel:
             self.__line_index += 1
             self.__cache.invalidate()
         elif line_index == self.__line_index:
-            proportions = line1_length / (line1_length + line2_length)
-            new_position = self.__line_position / proportions
-            
-            if new_position < 1:
-                self.__line_position = new_position
-            else:
+            if line1_length == 0:
                 self.__line_index += 1
-                self.__line_position = new_position - 1
-            self.__cache.invalidate()
+            elif line2_length > 0:
+                proportions = line1_length / (line1_length + line2_length)
+                new_position = self.__line_position / proportions
+                
+                if new_position < 1:
+                    self.__line_position = new_position
+                else:
+                    self.__line_index += 1
+                    self.__line_position = new_position - 1
+                self.__cache.invalidate()
     
     def _removing_point(self, line_index, line1_length, line2_length):
         if line_index + 1 < self.__line_index:
