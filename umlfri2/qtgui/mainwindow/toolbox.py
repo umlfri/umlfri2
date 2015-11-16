@@ -7,6 +7,7 @@ from umlfri2.application import Application
 from umlfri2.application.drawingarea.actions import AddElementAction, AddConnectionAction
 from umlfri2.application.events.tabs import ChangedCurrentTabEvent
 from umlfri2.paths import GRAPHICS
+from ..base.hlinewidget import HLineWidget
 from ..base import image_loader
 
 
@@ -78,9 +79,7 @@ class ToolBox(QWidget):
         self.__widgets.append(button)
     
     def __add_separator(self):
-        line = QFrame()
-        line.setFrameShape(QFrame.HLine)
-        line.setFrameShadow(QFrame.Sunken)
+        line = HLineWidget()
         self.__vbox.addWidget(line)
         self.__widgets.append(line)
     

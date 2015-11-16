@@ -39,4 +39,4 @@ class UmlFriMainWindow(QMainWindow):
     
     def __reopen_diagrams(self):
         for tab in Application().tabs:
-            self.__tabs.addTab(CanvasWidget(tab.drawing_area), image_loader.load_icon(tab.icon), tab.name)
+            self.__tabs.addTab(CanvasWidget(self, tab.drawing_area), image_loader.load_icon(tab.icon), tab.name)

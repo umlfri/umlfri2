@@ -2,8 +2,8 @@ from .widget import UflDialogWidget
 
 
 class UflDialogComboWidget(UflDialogWidget):
-    def __init__(self, tab, id, possibilities): 
-        super().__init__(tab, id)
+    def __init__(self, tab, id, label, possibilities): 
+        super().__init__(tab, id, label)
         self.__possibilities = possibilities
     
     @property

@@ -2,13 +2,15 @@ from PySide.QtCore import Qt
 from PySide.QtGui import QWidget, QPainter, QApplication
 
 from umlfri2.application.drawingarea import DrawingAreaCursor
+from ..properties import PropertiesDialog
 from .qtpaintercanvas import QTPainterCanvas
 from umlfri2.types.geometry import Point
 
 
 class CanvasWidget(QWidget):
-    def __init__(self, drawing_area):
+    def __init__(self, main_window, drawing_area):
         super().__init__()
+        self.__main_window = main_window
         self.__drawing_area = drawing_area
         self.setFocusPolicy(Qt.StrongFocus)
         self.setMouseTracking(True)
@@ -65,6 +67,16 @@ class CanvasWidget(QWidget):
         
         self.__update_cursor()
         self.update()
+    
+    def mouseDoubleClickEvent(self, event):
+        pos = event.pos()
+        point = Point(pos.x(), pos.y())
+        dialog = self.__drawing_area.edit_attributes(point)
+        self.__update_cursor()
+        if dialog is not None:
+            dialog = PropertiesDialog(self.__main_window, dialog)
+            dialog.setModal(True)
+            dialog.exec_()
     
     def __update_cursor(self):
         if self.__old_cursor == self.__drawing_area.cursor:

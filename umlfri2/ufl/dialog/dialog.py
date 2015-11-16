@@ -24,45 +24,45 @@ class UflDialog:
             elif isinstance(type, UflObjectType):
                 self.__add_object_tab(name, type)
             else:
-                tab.add_widget(name, self.__make_widget(tab, name, type))
+                tab.add_widget(self.__make_widget(tab, name, name, type))
     
     def __add_list_tab(self, name, type):
-        tab = UflDialogListTab(name)
+        tab = UflDialogListTab(name, type)
         self.__tabs.append(tab)
         
         if isinstance(type.item_type, UflObjectType):
             for name, attr_type in type.item_type.attributes:
-                tab.add_widget(name, self.__make_widget(tab, name, attr_type))
+                tab.add_widget(self.__make_widget(tab, name, name, attr_type))
         else:
-            tab.add_widget(None, self.__make_widget(tab, None, type))
+            tab.add_widget(self.__make_widget(tab, None, None, type))
     
     def __add_object_tab(self, name, type):
         tab = UflDialogObjectTab(name)
         self.__tabs.append(tab)
         
         for name, attr_type in type.attributes:
-            tab.add_widget(name, self.__make_widget(tab, name, attr_type))
+            tab.add_widget(self.__make_widget(tab, name, name, attr_type))
 
-    def __make_widget(self, tab, id, type):
+    def __make_widget(self, tab, id, label, type):
         if isinstance(type, UflBoolType):
-            return UflDialogCheckWidget(tab, id)
+            return UflDialogCheckWidget(tab, id, label)
         elif isinstance(type, UflColorType):
-            return UflDialogColorWidget(tab, id)
+            return UflDialogColorWidget(tab, id, label)
         elif isinstance(type, (UflDefinedEnumType, UflEnumType, UflTypedEnumType)):
-            return UflDialogSelectWidget(tab, id, type.possibilities)
+            return UflDialogSelectWidget(tab, id, label, type.possibilities)
         elif isinstance(type, UflFontType):
-            return UflDialogFontWidget(tab, id)
+            return UflDialogFontWidget(tab, id, label)
         elif isinstance(type, UflFontType):
-            return UflDialogFontWidget(tab, id)
+            return UflDialogFontWidget(tab, id, label)
         elif isinstance(type, (UflObjectType, UflListType)):
-            return UflDialogChildWidget(tab, id, UflDialog(type))
+            return UflDialogChildWidget(tab, id, label, UflDialog(type))
         elif isinstance(type, UflStringType):
             if type.multiline:
-                return UflDialogTextAreaWidget(tab, id)
+                return UflDialogTextAreaWidget(tab, id, label)
             elif type.possibilities:
-                return UflDialogComboWidget(tab, id, type.possibilities)
+                return UflDialogComboWidget(tab, id, label, type.possibilities)
             else:
-                return UflDialogTextWidget(tab, id)
+                return UflDialogTextWidget(tab, id, label)
         else:
             raise ValueError
     

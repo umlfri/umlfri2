@@ -11,5 +11,5 @@ class UflDialogTab:
     def widgets(self):
         yield from self.__widgets
     
-    def add_widget(self, name, widget):
-        self.__widgets.append((name, widget))
+    def add_widget(self, widget):
+        self.__widgets.append(widget)
