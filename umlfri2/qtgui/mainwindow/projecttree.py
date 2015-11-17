@@ -120,12 +120,14 @@ class ProjectTree(QTreeWidget):
         for diagram_type in metamodel.diagram_types:
             # TODO: translation
             action = sub_menu.addAction(diagram_type.id)
+            action.setIcon(image_loader.load_icon(diagram_type.icon))
             action.triggered.connect(partial(self.__create_diagram_action, diagram_type, element))
         
         sub_menu = menu.addMenu(_("Add element"))
         for element_type in metamodel.element_types:
             # TODO: translation
             action = sub_menu.addAction(element_type.id)
+            action.setIcon(image_loader.load_icon(element_type.icon))
             action.triggered.connect(partial(self.__create_element_action, element_type, element))
         
         return menu
@@ -139,6 +141,7 @@ class ProjectTree(QTreeWidget):
         for element_type in metamodel.element_types:
             # TODO: translation
             action = sub_menu.addAction(element_type.id)
+            action.setIcon(image_loader.load_icon(element_type.icon))
             action.triggered.connect(partial(self.__create_element_action, element_type, project))
         
         return menu
