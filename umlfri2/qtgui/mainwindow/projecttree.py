@@ -57,6 +57,8 @@ class ProjectTree(QTreeWidget):
         parent_item = self.__get_item(event.element.parent)
         
         self.__reload_element(parent_item, event.element)
+        
+        parent_item.setExpanded(True)
     
     def __item_double_clicked(self, item, column):
         if isinstance(item, ProjectTreeItem):
