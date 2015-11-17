@@ -78,13 +78,17 @@ class UflDialog:
             return None
     
     def associate(self, ufl_object):
-        if ufl_object.type is not self.__type:
-            raise ValueError
-        
-        self.__ufl_object = ufl_object
-        
-        for tab in self.__tabs:
-            if tab.id is None:
-                tab.associate(ufl_object)
-            else:
-                tab.associate(ufl_object.get_value(tab.id))
+        if ufl_object is None:
+            for tab in self.__tabs:
+                tab.associate(None)
+        else:
+            if ufl_object.type is not self.__type:
+                raise ValueError
+            
+            self.__ufl_object = ufl_object
+            
+            for tab in self.__tabs:
+                if tab.id is None:
+                    tab.associate(ufl_object)
+                else:
+                    tab.associate(ufl_object.get_value(tab.id))

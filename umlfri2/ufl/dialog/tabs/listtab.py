@@ -35,9 +35,3 @@ class UflDialogListTab(UflDialogTab):
     def associate(self, ufl_object):
         self.__list = ufl_object
         self._set_current_object(None)
-    
-    def get_value(self, id):
-        if id is None:
-            return self.current_object
-        else:
-            return self.current_object.get_value(id)

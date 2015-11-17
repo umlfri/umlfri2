@@ -15,6 +15,5 @@ class UflDialogWidget:
     def label(self):
         return self.__label
     
-    @property
-    def value(self):
-        return self.__tab().get_value(self.__id)
+    def associate(self, ufl_object):
+        raise NotImplementedError

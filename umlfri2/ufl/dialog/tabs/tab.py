@@ -23,13 +23,8 @@ class UflDialogTab:
     def _set_current_object(self, ufl_object):
         self.__ufl_object = ufl_object
         
-        if self.__ufl_object is not None:
-            for widget in self.__widgets:
-                if isinstance(widget, UflDialogChildWidget):
-                    if widget.id is None:
-                        widget.dialog.associate(self.__ufl_object)
-                    else:
-                        widget.dialog.associate(self.__ufl_object.get_value(widget.id))
+        for widget in self.__widgets:
+            widget.associate(ufl_object)
     
     @property
     def widgets(self):
@@ -39,7 +34,4 @@ class UflDialogTab:
         self.__widgets.append(widget)
     
     def associate(self, ufl_object):
-        raise NotImplementedError
-    
-    def get_value(self, id):
         raise NotImplementedError

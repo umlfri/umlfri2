@@ -1,5 +1,5 @@
-from .widget import UflDialogWidget
+from .valued import UflDialogValuedWidget
 
 
-class UflDialogFontWidget(UflDialogWidget):
+class UflDialogFontWidget(UflDialogValuedWidget):
     pass

@@ -9,3 +9,12 @@ class UflDialogChildWidget(UflDialogWidget):
     @property
     def dialog(self):
         return self.__dialog
+    
+    def associate(self, ufl_object):
+        if ufl_object is None:
+            self.__dialog.associate(None)
+        elif self.id is None:
+            self.__dialog.associate(ufl_object)
+        else:
+            self.__dialog.associate(ufl_object.get_value(self.id))
+

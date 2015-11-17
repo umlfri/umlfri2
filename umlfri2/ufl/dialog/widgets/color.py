@@ -1,5 +1,5 @@
-from .widget import UflDialogWidget
+from .valued import UflDialogValuedWidget
 
 
-class UflDialogColorWidget(UflDialogWidget):
+class UflDialogColorWidget(UflDialogValuedWidget):
     pass

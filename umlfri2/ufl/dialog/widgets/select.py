@@ -1,7 +1,7 @@
-from .widget import UflDialogWidget
+from .valued import UflDialogValuedWidget
 
 
-class UflDialogSelectWidget(UflDialogWidget):
+class UflDialogSelectWidget(UflDialogValuedWidget):
     def __init__(self, tab, id, label, possibilities): 
         super().__init__(tab, id, label)
         self.__possibilities = possibilities
