@@ -2,7 +2,8 @@ from PySide.QtCore import Qt
 from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget
 
 from umlfri2.application import Application
-from umlfri2.qtgui.mainwindow.toolbox import ToolBox
+from .propertieswidget import PropertiesWidget
+from .toolbox import ToolBox
 from ..base import image_loader
 from .projecttree import ProjectTree
 from ..canvas import CanvasWidget
@@ -31,6 +32,8 @@ class UmlFriMainWindow(QMainWindow):
         
         self.__properties_dock = QDockWidget("Properties")
         self.addDockWidget(Qt.RightDockWidgetArea, self.__properties_dock)
+        self.__properties = PropertiesWidget()
+        self.__properties_dock.setWidget(self.__properties)
         
         self.__reopen_diagrams()
     
