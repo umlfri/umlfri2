@@ -12,23 +12,9 @@ app = QApplication(sys.argv)
 
 gettext.install('umlfri2')
 
-
-def create_example_project():
-    ruler = QTRuler()
-    project = Project(Application().addons.get_addon('urn:umlfri.org:metamodel:infjavauml').metamodel)
-    
-    package_type = project.metamodel.get_element_type('package')
-    diagram_type = project.metamodel.get_diagram_type('class_diagram')
-    
-    pkg1 = project.create_child_element(package_type)
-    
-    pkg1.create_child_diagram(diagram_type)
-    
-    return project
-
 Application().use_ruler(QTRuler())
 
-project = create_example_project()
+project = Project(Application().addons.get_addon('urn:umlfri.org:metamodel:infjavauml').metamodel)
 Application().solution = Solution(project)
 
 window = UmlFriMainWindow()

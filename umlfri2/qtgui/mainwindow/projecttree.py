@@ -1,8 +1,10 @@
+from functools import partial
+
 from PySide.QtCore import Qt
 from PySide.QtGui import QTreeWidget, QTreeWidgetItem, QMenu
 from umlfri2.application import Application
-from umlfri2.application.commands.model import ApplyPatchCommand
-from umlfri2.application.events.model import ElementCreatedEvent, ObjectChangedEvent
+from umlfri2.application.commands.model import ApplyPatchCommand, CreateElementCommand, CreateDiagramCommand
+from umlfri2.application.events.model import ElementCreatedEvent, ObjectChangedEvent, DiagramCreatedEvent
 from umlfri2.model import Diagram, ElementObject, Project
 from umlfri2.qtgui.properties import PropertiesDialog
 from umlfri2.ufl.dialog import UflDialog
@@ -30,6 +32,7 @@ class ProjectTree(QTreeWidget):
         self.setExpandsOnDoubleClick(False)
         
         Application().event_dispatcher.register(ElementCreatedEvent, self.__element_created)
+        Application().event_dispatcher.register(DiagramCreatedEvent, self.__diagram_created)
         Application().event_dispatcher.register(ObjectChangedEvent, self.__object_changed)
     
     def reload(self):
@@ -60,6 +63,24 @@ class ProjectTree(QTreeWidget):
         parent_item = self.__get_item(event.element.parent)
         
         self.__reload_element(parent_item, event.element)
+        
+        parent_item.setExpanded(True)
+    
+    def __diagram_created(self, event):
+        parent_item = self.__get_item(event.diagram.parent)
+        
+        diagram_item = ProjectTreeItem(parent_item, [event.diagram.get_display_name()], event.diagram)
+        diagram_item.setIcon(0, image_loader.load_icon(event.diagram.type.icon))
+        
+        for item_id in range(parent_item.childCount()):
+            item = parent_item.child(item_id)
+            
+            if isinstance(item, ProjectTreeItem):
+                if isinstance(item.model_object, ElementObject):
+                    parent_item.insertChild(item_id, diagram_item)
+                    break
+        else:
+            parent_item.addChild(diagram_item)
         
         parent_item.setExpanded(True)
     
@@ -98,12 +119,14 @@ class ProjectTree(QTreeWidget):
         sub_menu = menu.addMenu(_("Add diagram"))
         for diagram_type in metamodel.diagram_types:
             # TODO: translation
-            sub_menu.addAction(diagram_type.id)
+            action = sub_menu.addAction(diagram_type.id)
+            action.triggered.connect(partial(self.__create_diagram_action, diagram_type, element))
         
         sub_menu = menu.addMenu(_("Add element"))
         for element_type in metamodel.element_types:
             # TODO: translation
-            sub_menu.addAction(element_type.id)
+            action = sub_menu.addAction(element_type.id)
+            action.triggered.connect(partial(self.__create_element_action, element_type, element))
         
         return menu
     
@@ -115,9 +138,18 @@ class ProjectTree(QTreeWidget):
         sub_menu = menu.addMenu(_("Add element"))
         for element_type in metamodel.element_types:
             # TODO: translation
-            sub_menu.addAction(element_type.id)
+            action = sub_menu.addAction(element_type.id)
+            action.triggered.connect(partial(self.__create_element_action, element_type, project))
         
         return menu
+    
+    def __create_element_action(self, element_type, parent, checked=False):
+        command = CreateElementCommand(parent, element_type)
+        Application().commands.execute(command)
+    
+    def __create_diagram_action(self, element_type, parent, checked=False):
+        command = CreateDiagramCommand(parent, element_type)
+        Application().commands.execute(command)
 
     def __edit(self, model_object):
         dialog = UflDialog(model_object.data.type)
