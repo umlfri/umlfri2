@@ -17,8 +17,9 @@ class TabList:
         else:
             tab = Tab(self.__application, diagram)
             self.__tabs.append(tab)
-            self.__application.event_dispatcher.dispatch(OpenTabEvent(tab))
             self.__current_tab = tab
+            self.__application.event_dispatcher.dispatch(OpenTabEvent(tab))
+            self.__application.event_dispatcher.dispatch(ChangedCurrentTabEvent(tab))
     
     @property
     def current_tab(self):

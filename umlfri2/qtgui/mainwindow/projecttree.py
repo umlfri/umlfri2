@@ -150,7 +150,8 @@ class ProjectTree(QTreeWidget):
     def __create_diagram_action(self, element_type, parent, checked=False):
         command = CreateDiagramCommand(parent, element_type)
         Application().commands.execute(command)
-
+        Application().tabs.select_tab(command.diagram)
+    
     def __edit(self, model_object):
         dialog = UflDialog(model_object.data.type)
         dialog.associate(model_object.data)
