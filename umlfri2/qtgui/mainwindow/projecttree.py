@@ -70,7 +70,7 @@ class ProjectTree(QTreeWidget):
         qt_dialog.setModal(True)
         if qt_dialog.exec_() == PropertiesDialog.Accepted:
             dialog.finish()
-            command = ApplyPatchCommand(object, dialog.make_patch())
+            command = ApplyPatchCommand(model_object, dialog.make_patch())
             Application().commands.execute(command)
             self.update()
     
