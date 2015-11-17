@@ -1,6 +1,6 @@
 from .connectionlinecomponent import ConnectionLineComponent, ConnectionLineObject
 from ..expressions import ConstantExpression
-from umlfri2.components.visual.canvas import LineStyle
+from umlfri2.types.enums import LineStyle
 from umlfri2.types.color import Colors
 from umlfri2.types.geometry import PathBuilder
 from umlfri2.ufl.types import UflColorType, UflProportionType, UflTypedEnumType

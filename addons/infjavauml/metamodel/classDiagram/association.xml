@@ -60,11 +60,11 @@
                 <Arrow position="100%" style="simple" color="#cfg.connection.arrow"/>
             </Case>
             <Case value="toSource">
-                <Arrow position="0%" style="simple" color="#cfg.connection.arrow"/>
+                <Arrow position="0%" orientation="source" style="simple" color="#cfg.connection.arrow"/>
             </Case>
             <Case value="bidirectional">
                 <Arrow position="100%" style="simple" color="#cfg.connection.arrow"/>
-                <Arrow position="0%" style="simple" color="#cfg.connection.arrow"/>
+                <Arrow position="0%" orientation="source" style="simple" color="#cfg.connection.arrow"/>
             </Case>
         </Switch>
 

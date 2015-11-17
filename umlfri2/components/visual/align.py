@@ -1,19 +1,8 @@
+from umlfri2.types.enums import HorizontalAlignment, VerticalAlignment
 from ..expressions import NoneExpression
-from umlfri2.types.geometry import Size, Point, Rectangle
+from umlfri2.types.geometry import Rectangle
 from umlfri2.ufl.types import UflTypedEnumType, UflNullableType
 from .visualcomponent import VisualComponent, VisualObject
-
-
-class VerticalAlignment:
-    top = 1
-    center = 2
-    bottom = 3
-
-
-class HorizontalAlignment:
-    left = 1
-    center = 2
-    right = 3
 
 
 class AlignObject(VisualObject):

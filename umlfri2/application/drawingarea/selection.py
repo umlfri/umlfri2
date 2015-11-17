@@ -1,4 +1,4 @@
-from umlfri2.components.visual.canvas import LineStyle
+from umlfri2.types.enums import LineStyle
 from .selectionpointposition import SelectionPointPosition
 from umlfri2.model.connection import ConnectionVisual
 from umlfri2.model.element import ElementVisual

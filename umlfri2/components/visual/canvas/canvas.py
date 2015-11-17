@@ -3,13 +3,6 @@ from umlfri2.types.color import Color
 from .ruler import Ruler
 
 
-# TODO: replace with enum in Python 3.4.x
-class LineStyle:
-    solid = 1
-    dot = 2
-    dashdot = 3
-
-
 class Canvas(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def draw_ellipse(self, rectangle, fg=None, bg=None, line_width=None, line_style=None):

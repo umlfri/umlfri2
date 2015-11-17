@@ -1,16 +1,11 @@
+from umlfri2.types.enums import LineOrientation
 from ..expressions import ConstantExpression
 from .hbox import HBoxComponent
-from umlfri2.types.color import Color, Colors
-from umlfri2.types.geometry import Size, Point
+from umlfri2.types.color import Colors
+from umlfri2.types.geometry import Size
 from umlfri2.ufl.types import UflTypedEnumType, UflColorType
 from .visualcomponent import VisualComponent, VisualObject
 from .vbox import VBoxComponent
-
-
-class LineOrientation:
-    auto = 1,
-    horizontal = 2
-    vertical = 3
 
 
 class LineObject(VisualObject):

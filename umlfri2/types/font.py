@@ -1,8 +1,5 @@
-class FontStyle:
-    italic = 1
-    bold = 2
-    underline = 3
-    strike = 4
+from umlfri2.types.enums import FontStyle
+
 
 class Font:
     def __init__(self, family, size, style=()):
