@@ -1,3 +1,4 @@
+from .object import UflMutableObject
 from umlfri2.ufl.types.uniquevaluegenerator import UniqueValueGenerator
 from ..patch import UflListPatch
 
@@ -66,9 +67,13 @@ class UflMutableList:
         elif value.type != self.__type.item_type:
             raise ValueError
         elif not self.__type.item_type.is_immutable:
-            value = value.make_mutable()
+            if not isinstance(value, (UflMutableList, UflMutableObject)):
+                value = value.make_mutable()
         self.__values.append((None, value))
         return value
+    
+    def delete(self, index):
+        del self.__values[index]
     
     def make_immutable(self):
         from ..immutable import UflList
