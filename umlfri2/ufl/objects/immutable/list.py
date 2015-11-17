@@ -1,8 +1,9 @@
+from .immutable import UflImmutable
 from ..mutable import UflMutableList
 from ..patch import UflListPatch
 
 
-class UflList:
+class UflList(UflImmutable):
     def __init__(self, type, values=None):
         if values is None:
             self.__values = []

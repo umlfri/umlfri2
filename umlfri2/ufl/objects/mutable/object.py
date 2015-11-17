@@ -1,7 +1,8 @@
+from .muttable import UflMutable
 from umlfri2.ufl.objects.patch import UflObjectPatch
 
 
-class UflMutableObject:
+class UflMutableObject(UflMutable):
     def __init__(self, type, attributes):
         self.__type = type
         self.__attributes = {}

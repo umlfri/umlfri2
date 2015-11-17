@@ -1,8 +1,9 @@
+from .immutable import UflImmutable
 from ..patch import UflObjectPatch
 from ..mutable import UflMutableObject
 
 
-class UflObject:
+class UflObject(UflImmutable):
     def __init__(self, type, attributes):
         self.__type = type
         self.__attributes = attributes.copy()

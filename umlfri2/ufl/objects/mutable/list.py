@@ -1,4 +1,4 @@
-from .object import UflMutableObject
+from .muttable import UflMutable
 from umlfri2.ufl.types.uniquevaluegenerator import UniqueValueGenerator
 from ..patch import UflListPatch
 
@@ -27,7 +27,7 @@ class ListItemValueGenerator(UniqueValueGenerator):
         return False
 
 
-class UflMutableList:
+class UflMutableList(UflMutable):
     def __init__(self, type, values):
         if type.item_type.is_immutable:
             self.__values = list(enumerate(values))
@@ -67,7 +67,7 @@ class UflMutableList:
         elif value.type != self.__type.item_type:
             raise ValueError
         elif not self.__type.item_type.is_immutable:
-            if not isinstance(value, (UflMutableList, UflMutableObject)):
+            if not isinstance(value, UflMutable):
                 value = value.make_mutable()
         self.__values.append((None, value))
         return value
