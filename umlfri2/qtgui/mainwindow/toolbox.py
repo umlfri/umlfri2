@@ -42,6 +42,7 @@ class ToolBox(QWidget):
             self.__add_separator()
             has_elements = False
             for element_type in diagram_type.element_types:
+                # TODO: translation
                 self.__add_button(image_loader.load_icon(element_type.icon), element_type.id,
                                   (AddElementAction, element_type.id),
                                   tab)
@@ -51,6 +52,7 @@ class ToolBox(QWidget):
                 self.__add_separator()
             
             for connection_type in diagram_type.connection_types:
+                # TODO: translation
                 self.__add_button(image_loader.load_icon(connection_type.icon), connection_type.id,
                                   (AddConnectionAction, connection_type.id),
                                   tab)

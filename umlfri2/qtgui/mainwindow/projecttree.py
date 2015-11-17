@@ -1,9 +1,9 @@
-from PySide.QtGui import QTreeWidget, QTreeWidgetItem
-
+from PySide.QtCore import Qt
+from PySide.QtGui import QTreeWidget, QTreeWidgetItem, QMenu
 from umlfri2.application import Application
 from umlfri2.application.commands.model import ApplyPatchCommand
 from umlfri2.application.events.model import ElementCreatedEvent, ObjectChangedEvent
-from umlfri2.model import Diagram, ElementObject
+from umlfri2.model import Diagram, ElementObject, Project
 from umlfri2.qtgui.properties import PropertiesDialog
 from umlfri2.ufl.dialog import UflDialog
 from ..base import image_loader
@@ -23,6 +23,8 @@ class ProjectTree(QTreeWidget):
     def __init__(self, main_window):
         super().__init__()
         self.__main_window = main_window
+        self.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.customContextMenuRequested.connect(self.__show_tree_menu)
         self.header().close()
         self.itemDoubleClicked.connect(self.__item_double_clicked)
         self.setExpandsOnDoubleClick(False)
@@ -72,6 +74,50 @@ class ProjectTree(QTreeWidget):
                 Application().tabs.select_tab(item.model_object)
             elif isinstance(item.model_object, ElementObject):
                 self.__edit(item.model_object)
+    
+    def __show_tree_menu(self, position):
+        item = self.itemAt(position)
+        
+        if item is not None:
+            if isinstance(item, ProjectTreeItem):
+                if isinstance(item.model_object, ElementObject):
+                    menu = self.__create_element_menu(item.model_object)
+                elif isinstance(item.model_object, Project):
+                    menu = self.__create_project_menu(item.model_object)
+                else:
+                    menu = None
+                
+                if menu is not None:
+                    menu.exec_(self.viewport().mapToGlobal(position))
+    
+    def __create_element_menu(self, element):
+        metamodel = element.project.metamodel
+        
+        menu = QMenu()
+        
+        sub_menu = menu.addMenu(_("Add diagram"))
+        for diagram_type in metamodel.diagram_types:
+            # TODO: translation
+            sub_menu.addAction(diagram_type.id)
+        
+        sub_menu = menu.addMenu(_("Add element"))
+        for element_type in metamodel.element_types:
+            # TODO: translation
+            sub_menu.addAction(element_type.id)
+        
+        return menu
+    
+    def __create_project_menu(self, project):
+        metamodel = project.metamodel
+        
+        menu = QMenu()
+        
+        sub_menu = menu.addMenu(_("Add element"))
+        for element_type in metamodel.element_types:
+            # TODO: translation
+            sub_menu.addAction(element_type.id)
+        
+        return menu
 
     def __edit(self, model_object):
         dialog = UflDialog(model_object.data.type)

@@ -26,6 +26,18 @@ class Metamodel:
     def addon(self):
         return self.__addon()
     
+    @property
+    def diagram_types(self):
+        yield from self.__diagrams.values()
+    
+    @property
+    def element_types(self):
+        yield from self.__elements.values()
+    
+    @property
+    def connection_types(self):
+        yield from self.__connections.values()
+    
     def get_element_type(self, name):
         return self.__elements[name]
     

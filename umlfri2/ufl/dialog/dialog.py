@@ -11,22 +11,25 @@ class UflDialog:
         self.__original_object = None
         self.__mutable_object = None
         if isinstance(self.__type, UflListType):
-            self.__add_list_tab(None, "General", self.__type)
+            self.__add_list_tab(None, _("General"), self.__type)
         elif isinstance(self.__type, UflObjectType):
             self.__add_tabs()
         else:
             raise ValueError("UflDialog can be constructed using list or object type only")
     
     def __add_tabs(self):
-        tab = UflDialogObjectTab(None, "General")
+        tab = UflDialogObjectTab(None, _("General"))
         self.__tabs.append(tab)
         
         for name, type in self.__type.attributes:
             if isinstance(type, UflListType):
+                # TODO: translations
                 self.__add_list_tab(name, name, type)
             elif isinstance(type, UflObjectType):
+                # TODO: translations
                 self.__add_object_tab(name, name, type)
             else:
+                # TODO: translations
                 tab.add_widget(self.__make_widget(tab, name, name, type))
     
     def __add_list_tab(self, id, name, type):
@@ -35,6 +38,7 @@ class UflDialog:
         
         if isinstance(type.item_type, UflObjectType):
             for name, attr_type in type.item_type.attributes:
+                # TODO: translations
                 tab.add_widget(self.__make_widget(tab, name, name, attr_type))
         else:
             tab.add_widget(self.__make_widget(tab, None, None, type))
@@ -44,6 +48,7 @@ class UflDialog:
         self.__tabs.append(tab)
         
         for name, attr_type in type.attributes:
+            # TODO: translations
             tab.add_widget(self.__make_widget(tab, name, name, attr_type))
 
     def __make_widget(self, tab, id, label, type):
