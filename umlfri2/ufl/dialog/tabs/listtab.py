@@ -32,6 +32,15 @@ class UflDialogListTab(UflDialogTab):
     def current_index(self):
         return self.__current_index
     
+    @current_index.setter
+    def current_index(self, value):
+        self.__current_index = value
+        
+        if value is None:
+            self._set_current_object(None)
+        else:
+            self._set_current_object(self.__list.get_item(value))
+    
     def associate(self, ufl_object):
         self.__list = ufl_object
         self._set_current_object(None)

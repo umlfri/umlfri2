@@ -13,6 +13,7 @@ class ListPropertyTab(PropertyTab):
         
         self.__list = QTreeWidget()
         self.__list.setHeaderLabels(list(tab.columns))
+        self.__list.itemSelectionChanged.connect(self.__item_changed)
         
         buttons = QHBoxLayout()
         buttons.addWidget(QPushButton(QIcon.fromTheme("edit-delete"), "Delete"))
@@ -34,3 +35,12 @@ class ListPropertyTab(PropertyTab):
             self.__list.setCurrentItem(item)
         else:
             self.__list.setCurrentItem(None)
+    
+    def __item_changed(self):
+        items = self.__list.selectedItems()
+        if items:
+            index = self.__list.indexOfTopLevelItem(items[0])
+            self._tab.current_index = index
+        else:
+            self._tab.current_index = None
+        self._update_values()
