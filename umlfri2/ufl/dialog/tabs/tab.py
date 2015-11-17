@@ -1,6 +1,3 @@
-from ..widgets import UflDialogChildWidget
-
-
 class UflDialogTab:
     def __init__(self, id, name):
         self.__widgets = []

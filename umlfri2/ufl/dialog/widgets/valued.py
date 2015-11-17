@@ -10,6 +10,10 @@ class UflDialogValuedWidget(UflDialogWidget):
     def value(self):
         return self.__value
     
+    @value.setter
+    def value(self, value):
+        self.__value = value
+    
     def associate(self, ufl_object):
         if ufl_object is None:
             self.__value = None
