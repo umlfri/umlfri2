@@ -1,5 +1,4 @@
-from PySide.QtGui import QVBoxLayout, QTreeWidget, QHBoxLayout, QPushButton, QIcon
-
+from PySide.QtGui import QVBoxLayout, QTreeWidget, QHBoxLayout, QPushButton, QIcon, QTreeWidgetItem
 from ..base.hlinewidget import HLineWidget
 from .tab import PropertyTab
 
@@ -23,6 +22,15 @@ class ListPropertyTab(PropertyTab):
         
         layout.addWidget(self.__list)
         self.setLayout(layout)
+        self.__update_list()
+        self._update_values()
     
-    def __get_icon(self, type):
-        return 
+    def __update_list(self):
+        self.__list.clear()
+        for row in self._tab.rows:
+            self.__list.addTopLevelItem(QTreeWidgetItem(row))
+        if self._tab.current_index is not None:
+            item = self.__list.topLevelItem(self._tab.current_index)
+            self.__list.setCurrentItem(item)
+        else:
+            self.__list.setCurrentItem(None)

@@ -37,7 +37,7 @@ class UflMutableObject:
         attributes = {}
         for name, (old_value, value) in self.__attributes.items():
             if not self.__type.get_attribute_type(name).is_immutable:
-                value = value.make_imutable()
+                value = value.make_immutable()
             attributes[name] = value
 
         return UflObject(self.__type, attributes)

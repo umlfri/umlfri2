@@ -99,7 +99,9 @@ class DrawingArea:
             return None
         else:
             self.__current_action = None
-            return UflDialog(visual.object.data.type)
+            dialog = UflDialog(visual.object.data.type)
+            dialog.associate(visual.object.data.make_mutable())
+            return dialog
 
     def __postprocess_action(self, point, shift_pressed):
         if self.__current_action is not None and self.__current_action.finished:

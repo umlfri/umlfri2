@@ -57,9 +57,15 @@ class UflMutableList:
     def get_length(self):
         return len(self.__values)
     
-    def append(self):
-        value = self.__type.item_type.build_default(ListItemValueGenerator(self))
-        if not self.__type.item_type.is_immutable:
+    def create_default(self):
+        return self.__type.item_type.build_default(ListItemValueGenerator(self)).make_mutable()
+    
+    def append(self, value=None):
+        if value is None:
+            value = self.create_default()
+        elif value.type != self.__type.item_type:
+            raise ValueError
+        elif not self.__type.item_type.is_immutable:
             value = value.make_mutable()
         self.__values.append((None, value))
         return value
@@ -85,8 +91,8 @@ class UflMutableList:
         
         for new_index, (index, value) in enumerate(self.__values):
             if index is None:
-                if self.__type.item_type.is_immutable:
-                    value = value.make_imutable()
+                if not self.__type.item_type.is_immutable:
+                    value = value.make_immutable()
                 
                 changes.append(UflListPatch.ItemAdded(new_index, value))
             elif not self.__type.item_type.is_immutable:

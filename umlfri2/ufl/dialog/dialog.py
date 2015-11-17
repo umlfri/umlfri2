@@ -7,27 +7,28 @@ class UflDialog:
     def __init__(self, type):
         self.__type = type
         self.__tabs = []
+        self.__ufl_object = None
         if isinstance(self.__type, UflListType):
-            self.__add_list_tab("General", self.__type)
+            self.__add_list_tab(None, "General", self.__type)
         elif isinstance(self.__type, UflObjectType):
             self.__add_tabs()
         else:
             raise ValueError("UflDialog can be constructed using list or object type only")
     
     def __add_tabs(self):
-        tab = UflDialogObjectTab("General")
+        tab = UflDialogObjectTab(None, "General")
         self.__tabs.append(tab)
         
         for name, type in self.__type.attributes:
             if isinstance(type, UflListType):
-                self.__add_list_tab(name, type)
+                self.__add_list_tab(name, name, type)
             elif isinstance(type, UflObjectType):
-                self.__add_object_tab(name, type)
+                self.__add_object_tab(name, name, type)
             else:
                 tab.add_widget(self.__make_widget(tab, name, name, type))
     
-    def __add_list_tab(self, name, type):
-        tab = UflDialogListTab(name, type)
+    def __add_list_tab(self, id, name, type):
+        tab = UflDialogListTab(id, name, type)
         self.__tabs.append(tab)
         
         if isinstance(type.item_type, UflObjectType):
@@ -36,8 +37,8 @@ class UflDialog:
         else:
             tab.add_widget(self.__make_widget(tab, None, None, type))
     
-    def __add_object_tab(self, name, type):
-        tab = UflDialogObjectTab(name)
+    def __add_object_tab(self, id, name, type):
+        tab = UflDialogObjectTab(id, name)
         self.__tabs.append(tab)
         
         for name, attr_type in type.attributes:
@@ -75,3 +76,15 @@ class UflDialog:
             return self.__tabs[0]
         else:
             return None
+    
+    def associate(self, ufl_object):
+        if ufl_object.type is not self.__type:
+            raise ValueError
+        
+        self.__ufl_object = ufl_object
+        
+        for tab in self.__tabs:
+            if tab.id is None:
+                tab.associate(ufl_object)
+            else:
+                tab.associate(ufl_object.get_value(tab.id))
