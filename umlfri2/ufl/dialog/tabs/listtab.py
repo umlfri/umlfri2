@@ -13,7 +13,7 @@ class UflDialogListTab(UflDialogTab):
     @property
     def columns(self):
         if self.__list_type.item_type.is_immutable:
-            yield 'Value'
+            yield None
         else:
             for name, type in self.__list_type.item_type.attributes:
                 yield name

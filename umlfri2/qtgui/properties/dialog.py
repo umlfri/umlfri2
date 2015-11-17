@@ -9,9 +9,11 @@ class PropertiesDialog(QDialog):
     def __init__(self, main_window, dialog): 
         super().__init__(main_window)
         self.__main_window = main_window
-        self.setWindowTitle("Properties")
+        self.setWindowTitle(_("Properties"))
         self.__dialog = dialog
         buttonBox = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        buttonBox.button(QDialogButtonBox.Ok).setText(_("Ok"))
+        buttonBox.button(QDialogButtonBox.Cancel).setText(_("Cancel"))
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
         layout = QVBoxLayout()
@@ -27,9 +29,9 @@ class PropertiesDialog(QDialog):
             
             for tab in dialog.tabs:
                 if isinstance(tab, UflDialogListTab):
-                    tabs.addTab(ListPropertyTab(self, tab), tab.name)
+                    tabs.addTab(ListPropertyTab(self, tab), tab.name or _("General"))
                 elif isinstance(tab, UflDialogObjectTab):
-                    tabs.addTab(ObjectPropertyTab(self, tab), tab.name)
+                    tabs.addTab(ObjectPropertyTab(self, tab), tab.name or _("General"))
             layout.addWidget(tabs)
         
         layout.addWidget(buttonBox)

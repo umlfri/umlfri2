@@ -37,7 +37,7 @@ class ToolBox(QWidget):
         
         self.__widgets = []
         
-        self.__add_button(self.__arrow, 'Select', None, tab)
+        self.__add_button(self.__arrow, _('Select'), None, tab)
         if diagram_type is not None:
             self.__add_separator()
             has_elements = False

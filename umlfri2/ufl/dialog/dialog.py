@@ -11,14 +11,14 @@ class UflDialog:
         self.__original_object = None
         self.__mutable_object = None
         if isinstance(self.__type, UflListType):
-            self.__add_list_tab(None, _("General"), self.__type)
+            self.__add_list_tab(None, None, self.__type)
         elif isinstance(self.__type, UflObjectType):
             self.__add_tabs()
         else:
             raise ValueError("UflDialog can be constructed using list or object type only")
     
     def __add_tabs(self):
-        tab = UflDialogObjectTab(None, _("General"))
+        tab = UflDialogObjectTab(None, None)
         self.__tabs.append(tab)
         
         for name, type in self.__type.attributes:

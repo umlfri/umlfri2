@@ -14,17 +14,20 @@ class ListPropertyTab(PropertyTab):
         layout.addWidget(HLineWidget())
         
         self.__list = QTreeWidget()
-        self.__list.setHeaderLabels(list(tab.columns))
+        headers = []
+        for column in tab.columns:
+            headers.append(column or _('Value'))
+        self.__list.setHeaderLabels(headers)
         self.__list.itemSelectionChanged.connect(self.__item_changed)
         
         buttons = QHBoxLayout()
-        self.__delete_button = QPushButton(QIcon.fromTheme("edit-delete"), "&Delete")
+        self.__delete_button = QPushButton(QIcon.fromTheme("edit-delete"), _("&Delete"))
         self.__delete_button.clicked.connect(self.__delete)
         buttons.addWidget(self.__delete_button)
-        self.__save_button = QPushButton(QIcon.fromTheme("document-save"), "&Save")
+        self.__save_button = QPushButton(QIcon.fromTheme("document-save"), _("&Save"))
         self.__save_button.clicked.connect(self.__save)
         buttons.addWidget(self.__save_button)
-        self.__new_button = QPushButton(QIcon.fromTheme("document-new"), "&New")
+        self.__new_button = QPushButton(QIcon.fromTheme("document-new"), _("&New"))
         self.__new_button.clicked.connect(self.__new)
         buttons.addWidget(self.__new_button)
         layout.addLayout(buttons)
