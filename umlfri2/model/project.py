@@ -7,6 +7,10 @@ class Project:
         self.__metamodel = metamodel
         self.__children = []
     
+    @property
+    def parent(self):
+        return None
+    
     def get_display_name(self):
         return self.__name
     

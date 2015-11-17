@@ -54,7 +54,9 @@ class ProjectTree(QTreeWidget):
         parent.addChild(item)
     
     def __element_created(self, event):
-        self.reload() # TODO: add only the element
+        parent_item = self.__get_item(event.element.parent)
+        
+        self.__reload_element(parent_item, event.element)
     
     def __item_double_clicked(self, item, column):
         if isinstance(item, ProjectTreeItem):
@@ -73,6 +75,22 @@ class ProjectTree(QTreeWidget):
             command = ApplyPatchCommand(model_object, dialog.make_patch())
             Application().commands.execute(command)
             self.update()
+    
+    def __get_item(self, element):
+        if element.parent is None:
+            for item_id in range(self.topLevelItemCount()):
+                item = self.topLevelItem(item_id)
+                
+                if isinstance(item, ProjectTreeItem) and item.model_object is element:
+                    return item
+        else:
+            parent_item = self.__get_item(element.parent)
+            
+            for item_id in range(parent_item.childCount()):
+                item = parent_item.child(item_id)
+                
+                if isinstance(item, ProjectTreeItem) and item.model_object is element:
+                    return item
     
     def reload_texts(self):
         pass

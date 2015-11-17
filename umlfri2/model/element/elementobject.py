@@ -45,6 +45,10 @@ class ElementObject:
         return self.__cache
     
     @property
+    def parent(self):
+        return self.__parent()
+    
+    @property
     def type(self):
         return self.__type
     
