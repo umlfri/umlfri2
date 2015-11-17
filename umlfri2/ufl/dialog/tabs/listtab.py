@@ -27,7 +27,7 @@ class UflDialogListTab(UflDialogTab):
             for object in self.__list:
                 row = []
                 for name, type in self.__list_type.item_type.attributes:
-                    row.append(object.get_value(name))
+                    row.append(str(object.get_value(name)))
                 yield row
     
     @property
