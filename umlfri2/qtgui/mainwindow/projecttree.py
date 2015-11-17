@@ -2,7 +2,7 @@ from PySide.QtGui import QTreeWidget, QTreeWidgetItem
 
 from umlfri2.application import Application
 from umlfri2.application.commands.model import ApplyPatchCommand
-from umlfri2.application.events.project import ElementCreatedEvent
+from umlfri2.application.events.model import ElementCreatedEvent, ObjectChangedEvent
 from umlfri2.model import Diagram, ElementObject
 from umlfri2.qtgui.properties import PropertiesDialog
 from umlfri2.ufl.dialog import UflDialog
@@ -28,6 +28,7 @@ class ProjectTree(QTreeWidget):
         self.setExpandsOnDoubleClick(False)
         
         Application().event_dispatcher.register(ElementCreatedEvent, self.__element_created)
+        Application().event_dispatcher.register(ObjectChangedEvent, self.__object_changed)
     
     def reload(self):
         self.clear()
@@ -59,6 +60,11 @@ class ProjectTree(QTreeWidget):
         self.__reload_element(parent_item, event.element)
         
         parent_item.setExpanded(True)
+    
+    def __object_changed(self, event):
+        if isinstance(event.object, (ElementObject, Diagram)):
+            item = self.__get_item(event.object)
+            item.setText(0, event.object.get_display_name())
     
     def __item_double_clicked(self, item, column):
         if isinstance(item, ProjectTreeItem):
@@ -93,6 +99,8 @@ class ProjectTree(QTreeWidget):
                 
                 if isinstance(item, ProjectTreeItem) and item.model_object is element:
                     return item
+        
+        return None
     
     def reload_texts(self):
         pass

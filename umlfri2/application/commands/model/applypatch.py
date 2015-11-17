@@ -1,3 +1,4 @@
+from umlfri2.application.events.model import ObjectChangedEvent
 from umlfri2.model import ElementObject
 from umlfri2.ufl.objects.patch import UflObjectPatch
 from ..base import Command
@@ -32,3 +33,6 @@ class ApplyPatchCommand(Command):
     
     def _undo(self, ruler):
         self.__object.apply_ufl_patch(self.__patch.make_reverse())
+    
+    def get_updates(self):
+        yield ObjectChangedEvent(self.__object, self.__patch)

@@ -1,5 +1,5 @@
 from umlfri2.application.events.diagram import ConnectionShownEvent
-from umlfri2.application.events.project import ConnectionCreatedEvent
+from umlfri2.application.events.model import ConnectionCreatedEvent
 from ..base import Command
 
 

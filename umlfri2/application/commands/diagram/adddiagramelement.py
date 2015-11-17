@@ -1,5 +1,5 @@
 from umlfri2.application.events.diagram import ElementShownEvent
-from umlfri2.application.events.project import ElementCreatedEvent
+from umlfri2.application.events.model import ElementCreatedEvent
 from ..base import Command
 
 
