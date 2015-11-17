@@ -86,7 +86,7 @@ class UflMutableList(UflMutable):
         return UflList(self.__type, values)
     
     def make_patch(self):
-        kept_indices = {index for value, index in self.__values}
+        kept_indices = {index for index, value in self.__values}
         
         changes = []
         

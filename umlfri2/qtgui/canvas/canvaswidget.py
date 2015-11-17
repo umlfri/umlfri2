@@ -1,6 +1,8 @@
 from PySide.QtCore import Qt
 from PySide.QtGui import QWidget, QPainter, QApplication
 
+from umlfri2.application import Application
+from umlfri2.application.commands.model import ApplyPatchCommand
 from umlfri2.application.drawingarea import DrawingAreaCursor
 from ..properties import PropertiesDialog
 from .qtpaintercanvas import QTPainterCanvas
@@ -71,12 +73,16 @@ class CanvasWidget(QWidget):
     def mouseDoubleClickEvent(self, event):
         pos = event.pos()
         point = Point(pos.x(), pos.y())
-        dialog = self.__drawing_area.edit_attributes(point)
-        self.__update_cursor()
-        if dialog is not None:
-            dialog = PropertiesDialog(self.__main_window, dialog)
-            dialog.setModal(True)
-            dialog.exec_()
+        object, dialog = self.__drawing_area.edit_attributes(point)
+        if object is not None:
+            self.unsetCursor()
+            qt_dialog = PropertiesDialog(self.__main_window, dialog)
+            qt_dialog.setModal(True)
+            if qt_dialog.exec_() == PropertiesDialog.Accepted:
+                dialog.finish()
+                command = ApplyPatchCommand(object, dialog.make_patch())
+                Application().commands.execute(command)
+                self.update()
     
     def __update_cursor(self):
         if self.__old_cursor == self.__drawing_area.cursor:

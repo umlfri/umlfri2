@@ -16,7 +16,8 @@ class ModelTemporaryDataCache:
     
     def refresh(self, **kwargs):
         self.__is_refreshing = True
-        self.__callback(**kwargs)
+        if self.__callback is not None:
+            self.__callback(**kwargs)
         
         for dependant in self.__reverse_dependencies:
             dependant.invalidate()

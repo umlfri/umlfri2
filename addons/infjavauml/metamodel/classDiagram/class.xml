@@ -127,7 +127,7 @@
                                                 </TextBox>
 
                                                 <TextBox
-                                                        font="#cfg.element.textfont.change(FontStyle::underline, static).change(FontStyle::underline, abstract)"
+                                                        font="#cfg.element.textfont.change(FontStyle::underline, static).change(FontStyle::italic, abstract)"
                                                         color="#cfg.element.text">
                                                     <If condition="#stereotype">
                                                         <Text text="&#171;"/>

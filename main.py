@@ -15,49 +15,12 @@ def create_example_project():
     ruler = QTRuler()
     project = Project(Application().addons.get_addon('urn:umlfri.org:metamodel:infjavauml').metamodel)
     
-    element_type = project.metamodel.get_element_type('class')
     package_type = project.metamodel.get_element_type('package')
     diagram_type = project.metamodel.get_diagram_type('class_diagram')
-    connection_type = project.metamodel.get_connection_type('association')
     
     pkg1 = project.create_child_element(package_type)
     
-    diagram = pkg1.create_child_diagram(diagram_type)
-    diagram2 = pkg1.create_child_diagram(diagram_type)
-    
-    diagram2_ufl = diagram2.data.make_mutable()
-    diagram2_ufl.set_value("name", "Test diagram")
-    diagram2.data.apply_patch(diagram2_ufl.make_patch())
-    
-    obj1 = pkg1.create_child_element(element_type)
-    obj2 = pkg1.create_child_element(element_type)
-    
-    pkg1.create_child_element(package_type)
-    
-    assoc = obj1.connect_with(connection_type, obj2)
-    
-    obj1_ufl = obj1.data.make_mutable()
-    obj1_ufl.get_value("attributes").append()
-    obj1_ufl.get_value("attributes").append()
-    obj1_ufl.get_value("attributes").get_item(1).set_value("type", "int")
-    obj1_ufl.get_value("operations").append()
-    obj1_ufl.get_value("operations").append()
-    obj1.data.apply_patch(obj1_ufl.make_patch())
-    
-    vis1 = diagram.show(obj1)
-    vis1.move(ruler, Point(30, 30))
-    vis1.resize(ruler, Size(200, 200))
-    vis2 = diagram.show(obj2)
-    vis2.move(ruler, Point(300, 100))
-    vis2.resize(ruler, Size(100, 100))
-    
-    vispkg1 = diagram.show(pkg1)
-    vispkg1.move(ruler, Point(500, 50))
-    vispkg1.resize(ruler, Size(200, 200))
-    
-    diagram.show(assoc)
-    
-    diagram2.show(pkg1)
+    pkg1.create_child_diagram(diagram_type)
     
     return project
 

@@ -96,12 +96,12 @@ class DrawingArea:
     def edit_attributes(self, point):
         visual = self.__diagram.get_visual_at(self.__application.ruler, point)
         if visual is None:
-            return None
+            return None, None
         else:
             self.__current_action = None
             dialog = UflDialog(visual.object.data.type)
-            dialog.associate(visual.object.data.make_mutable())
-            return dialog
+            dialog.associate(visual.object.data)
+            return visual.object, dialog
 
     def __postprocess_action(self, point, shift_pressed):
         if self.__current_action is not None and self.__current_action.finished:

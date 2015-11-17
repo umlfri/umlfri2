@@ -1,3 +1,6 @@
+from ..widgets import UflDialogChildWidget
+
+
 class UflDialogTab:
     def __init__(self, id, name):
         self.__widgets = []
@@ -31,4 +34,7 @@ class UflDialogTab:
         self.__widgets.append(widget)
     
     def associate(self, ufl_object):
+        raise NotImplementedError
+    
+    def finish(self):
         raise NotImplementedError

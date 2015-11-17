@@ -83,3 +83,6 @@ class UflDialogListTab(UflDialogTab):
     def associate(self, ufl_object):
         self.__list = ufl_object
         self.current_index = None
+    
+    def finish(self):
+        pass

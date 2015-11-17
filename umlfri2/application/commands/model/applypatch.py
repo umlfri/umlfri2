@@ -28,7 +28,7 @@ class ApplyPatchCommand(Command):
         self._redo(ruler)
 
     def _redo(self, ruler):
-        self.__object.data.apply_patch(self.__patch)
+        self.__object.apply_ufl_patch(self.__patch)
     
     def _undo(self, ruler):
-        self.__object.data.apply_patch(self.__patch.make_reverse())
+        self.__object.apply_ufl_patch(self.__patch.make_reverse())

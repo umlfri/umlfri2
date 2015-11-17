@@ -1,5 +1,6 @@
 from weakref import ref
 from umlfri2.components.base.context import Context
+from umlfri2.model.cache import ModelTemporaryDataCache
 
 
 class ConnectionObject:
@@ -8,6 +9,11 @@ class ConnectionObject:
         self.__data = type.ufl_type.build_default(None)
         self.__source = ref(source)
         self.__destination = ref(destination)
+        self.__cache = ModelTemporaryDataCache(None)
+    
+    @property
+    def cache(self):
+        return self.__cache
     
     @property
     def type(self):
@@ -32,3 +38,7 @@ class ConnectionObject:
     def create_label_object(self, id, ruler):
         context = Context().extend(self.__data, 'self')
         return self.__type.get_label(id).create_appearance_object(context, ruler)
+    
+    def apply_ufl_patch(self, patch):
+        self.__data.apply_patch(patch)
+        self.__cache.refresh()

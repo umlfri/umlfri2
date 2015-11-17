@@ -1,3 +1,4 @@
+from ..objects.mutable import UflMutable
 from .tabs import *
 from umlfri2.ufl.dialog.widgets import *
 from ..types import *
@@ -7,7 +8,8 @@ class UflDialog:
     def __init__(self, type):
         self.__type = type
         self.__tabs = []
-        self.__ufl_object = None
+        self.__original_object = None
+        self.__mutable_object = None
         if isinstance(self.__type, UflListType):
             self.__add_list_tab(None, "General", self.__type)
         elif isinstance(self.__type, UflObjectType):
@@ -68,6 +70,17 @@ class UflDialog:
             raise ValueError
     
     @property
+    def original_object(self):
+        return self.__original_object
+    
+    def finish(self):
+        for tab in self.__tabs:
+            tab.finish()
+    
+    def make_patch(self):
+        return self.__mutable_object.make_patch()
+    
+    @property
     def tabs(self):
         yield from self.__tabs
     
@@ -82,10 +95,16 @@ class UflDialog:
             for tab in self.__tabs:
                 tab.associate(None)
         else:
+            if not isinstance(ufl_object, UflMutable):
+                self.__original_object = ufl_object
+                ufl_object = ufl_object.make_mutable()
+            else:
+                self.__original_object = None
+            
             if ufl_object.type is not self.__type:
                 raise ValueError
             
-            self.__ufl_object = ufl_object
+            self.__mutable_object = ufl_object
             
             for tab in self.__tabs:
                 if tab.id is None:

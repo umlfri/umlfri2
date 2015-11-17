@@ -1,5 +1,6 @@
 from weakref import ref
 from umlfri2.components.base.context import Context
+from ..cache import ModelTemporaryDataCache
 from ..connection.connectionobject import ConnectionObject
 from umlfri2.ufl.types.uniquevaluegenerator import UniqueValueGenerator
 
@@ -37,6 +38,11 @@ class ElementObject:
         self.__connections = []
         self.__children = []
         self.__diagrams = []
+        self.__cache = ModelTemporaryDataCache(None)
+    
+    @property
+    def cache(self):
+        return self.__cache
     
     @property
     def type(self):
@@ -90,3 +96,7 @@ class ElementObject:
         diagram = Diagram(self, type)
         self.__diagrams.append(diagram)
         return diagram
+    
+    def apply_ufl_patch(self, patch):
+        self.__data.apply_patch(patch)
+        self.__cache.refresh()

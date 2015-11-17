@@ -7,6 +7,9 @@ from umlfri2.types.geometry import Point, Rectangle, Size
 class ElementVisual:
     def __init__(self, object):
         self.__cache = ModelTemporaryDataCache(self.__create_appearance_object)
+        self.__cache.depend_on(object.cache)
+        
+        self.__cache.depend_on(self.__cache)
         
         self.__object = object
         self.__cached_appearance = None
@@ -76,6 +79,7 @@ class ElementVisual:
         
         self.__cached_appearance.resize(new_size)
         self.__size = new_size
+        
         self.__cache.invalidate()
     
     def move(self, ruler, new_position):
