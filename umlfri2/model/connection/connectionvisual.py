@@ -55,6 +55,14 @@ class ConnectionVisual:
         else:
             yield from self.__points
     
+    @property
+    def number_of_points_on_line(self):
+        return len(self.__points)
+    
+    @property
+    def is_identity(self):
+        return self.__source is self.__destination
+    
     def get_labels(self):
         yield from self.__labels
     

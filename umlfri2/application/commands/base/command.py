@@ -1,5 +1,4 @@
-class CommandNotDone(Exception):
-    pass
+from .commandnotdone import CommandNotDone
 
 
 class Command:

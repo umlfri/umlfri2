@@ -1,5 +1,5 @@
 from umlfri2.application.events.diagram import ConnectionMovedEvent
-from ..base import Command
+from ..base import Command, CommandNotDone
 
 
 class RemoveConnectionPointCommand(Command):
@@ -14,6 +14,8 @@ class RemoveConnectionPointCommand(Command):
         return "Removed point from connection in diagram {0}".format(self.__diagram_name)
 
     def _do(self, ruler):
+        if self.__connection.is_identity and self.__connection.number_of_points_on_line < 2:
+            raise CommandNotDone
         self.__point_position = self.__connection.get_point(ruler, self.__index)
         self._redo(ruler)
 

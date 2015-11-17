@@ -69,7 +69,7 @@ class Diagram:
             for element in self.__elements:
                 if element.object is object.source:
                     element1 = element
-                elif element.object is object.destination:
+                if element.object is object.destination:
                     element2 = element
             
             if element1 is not None and element2 is not None:

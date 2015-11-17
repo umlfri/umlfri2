@@ -1,0 +1,2 @@
+class CommandNotDone(Exception):
+    pass
