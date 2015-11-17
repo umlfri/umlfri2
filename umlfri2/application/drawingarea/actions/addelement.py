@@ -19,4 +19,5 @@ class AddElementAction(Action):
             self.__point
         )
         application.commands.execute(command)
+        drawing_area.selection.select(command.element_visual)
         self._finish()

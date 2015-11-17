@@ -39,6 +39,7 @@ class AddConnectionAction(Action):
                     self.__points
                 )
                 application.commands.execute(command)
+                drawing_area.selection.select(command.connection_visual)
                 self._finish()
             else:
                 self.__points.append(point)

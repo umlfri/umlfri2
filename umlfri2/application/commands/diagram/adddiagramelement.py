@@ -27,6 +27,14 @@ class AddDiagramElementCommand(Command):
     def _undo(self, ruler):
         pass # TODO
     
+    @property
+    def element_visual(self):
+        return self.__element_visual
+    
+    @property
+    def element_object(self):
+        return self.__element_object
+    
     def get_updates(self):
         yield ElementCreatedEvent(self.__element_object)
         yield ElementShownEvent(self.__element_visual)

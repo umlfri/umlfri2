@@ -30,6 +30,14 @@ class AddDiagramConnectionCommand(Command):
     def _undo(self, ruler):
         pass # TODO
     
+    @property
+    def connection_visual(self):
+        return self.__connection_visual
+    
+    @property
+    def connection_object(self):
+        return self.__connection_object
+    
     def get_updates(self):
         yield ConnectionCreatedEvent(self.__connection_object)
         yield ConnectionShownEvent(self.__connection_visual)
