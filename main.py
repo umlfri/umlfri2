@@ -31,10 +31,6 @@ Application().use_ruler(QTRuler())
 project = create_example_project()
 Application().solution = Solution(project)
 
-for element in project.children:
-    for diagram in element.diagrams:
-        Application().tabs.select_tab(diagram)
-
 window = UmlFriMainWindow()
 window.showMaximized()
 

@@ -2,6 +2,7 @@ from PySide.QtCore import Qt
 from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget
 
 from umlfri2.application import Application
+from umlfri2.application.events.tabs import OpenTabEvent
 from .propertieswidget import PropertiesWidget
 from .toolbox import ToolBox
 from ..base import image_loader
@@ -26,7 +27,7 @@ class UmlFriMainWindow(QMainWindow):
         
         self.__project_dock = QDockWidget()
         self.addDockWidget(Qt.RightDockWidgetArea, self.__project_dock)
-        self.__project_tree = ProjectTree()
+        self.__project_tree = ProjectTree(self)
         self.__project_tree.reload()
         self.__project_dock.setWidget(self.__project_tree)
         
@@ -35,15 +36,16 @@ class UmlFriMainWindow(QMainWindow):
         self.__properties = PropertiesWidget()
         self.__properties_dock.setWidget(self.__properties)
         
-        self.__reopen_diagrams()
         self.reload_texts()
+        
+        Application().event_dispatcher.register(OpenTabEvent, self.__open_tab)
     
     def __tab_changed(self, index):
         Application().tabs.select_tab(self.__tabs.widget(index).diagram)
     
-    def __reopen_diagrams(self):
-        for tab in Application().tabs:
-            self.__tabs.addTab(CanvasWidget(self, tab.drawing_area), image_loader.load_icon(tab.icon), tab.name)
+    def __open_tab(self, event):
+        self.__tabs.addTab(CanvasWidget(self, event.tab.drawing_area), image_loader.load_icon(event.tab.icon),
+                           event.tab.name)
     
     def reload_texts(self):
         self.setWindowTitle(_("UML .FRI 2"))
