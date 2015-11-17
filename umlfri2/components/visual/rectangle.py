@@ -45,6 +45,7 @@ class RectangleComponent(VisualComponent):
         'border': UflColorType(),
     }
     
+    # TODO: rounded rectangle
     def __init__(self, children, fill=None, border=None):
         super().__init__(children)
         self.__fill = fill or ConstantExpression(None, UflColorType())
