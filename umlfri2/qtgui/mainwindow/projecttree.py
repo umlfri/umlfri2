@@ -38,3 +38,6 @@ class ProjectTree(QTreeWidget):
     
     def __element_created(self, event):
         self.reload() # TODO: add only the element
+    
+    def reload_texts(self):
+        pass

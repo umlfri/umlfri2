@@ -89,3 +89,6 @@ class ToolBox(QWidget):
                 widget.setChecked(widget is button)
         
         tab.drawing_area.set_action(action)
+    
+    def reload_texts(self):
+        pass

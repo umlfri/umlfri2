@@ -7,7 +7,12 @@ class PropertiesWidget(QTabWidget):
         
         self.__table = QTableWidget()
         self.__table.setColumnCount(2)
-        self.__table.setHorizontalHeaderLabels(["Name", "Value"])
+        #self.__table.setHorizontalHeaderLabels(["Name", "Value"])
         self.__table.horizontalHeader().setStretchLastSection(True)
         self.setTabPosition(QTabWidget.South)
-        self.addTab(self.__table, "Properties")
+        self.addTab(self.__table, None)
+        self.reload_texts()
+    
+    def reload_texts(self):
+        self.__table.setHorizontalHeaderLabels([_("Name"), _("Value")])
+        self.setTabText(0, _("Properties"))
