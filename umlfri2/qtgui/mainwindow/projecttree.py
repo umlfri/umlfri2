@@ -12,9 +12,18 @@ from ..base import image_loader
 
 
 class ProjectTreeItem(QTreeWidgetItem):
-    def __init__(self, parent, values, model_object): 
-        super().__init__(parent, values)
+    def __init__(self, parent, model_object): 
+        super().__init__(parent)
         self.__model_object = model_object
+        
+        if isinstance(model_object, Project):
+            self.setText(0, model_object.name)
+            self.setIcon(0, image_loader.load_icon(model_object.metamodel.addon.icon))
+            self.setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable)
+        else:
+            self.setText(0, model_object.get_display_name())
+            self.setIcon(0, image_loader.load_icon(model_object.type.icon))
+            self.setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsDragEnabled)
     
     @property
     def model_object(self):
@@ -25,6 +34,8 @@ class ProjectTree(QTreeWidget):
     def __init__(self, main_window):
         super().__init__()
         self.__main_window = main_window
+        self.setDragEnabled(True)
+        self.setDropIndicatorShown(True)
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self.__show_tree_menu)
         self.header().close()
@@ -38,8 +49,7 @@ class ProjectTree(QTreeWidget):
     def reload(self):
         self.clear()
         for project in Application().solution.children:
-            item = ProjectTreeItem(self, [project.name], project)
-            item.setIcon(0, image_loader.load_icon(project.metamodel.addon.icon))
+            item = ProjectTreeItem(self, project)
             
             for element in project.children:
                 self.__reload_element(item, element)
@@ -47,16 +57,14 @@ class ProjectTree(QTreeWidget):
             self.addTopLevelItem(item)
     
     def __reload_element(self, parent, element):
-        item = ProjectTreeItem(parent, [element.get_display_name()], element)
-        item.setIcon(0, image_loader.load_icon(element.type.icon))
+        item = ProjectTreeItem(parent, element)
         
         for child_diagram in element.diagrams:
-            child = ProjectTreeItem(item, [child_diagram.get_display_name()], child_diagram)
-            child.setIcon(0, image_loader.load_icon(child_diagram.type.icon))
-            item.addChild(child)
+            item.addChild(ProjectTreeItem(item, child_diagram))
         
         for child_element in element.children:
             self.__reload_element(item, child_element)
+        
         parent.addChild(item)
     
     def __element_created(self, event):
@@ -69,18 +77,15 @@ class ProjectTree(QTreeWidget):
     def __diagram_created(self, event):
         parent_item = self.__get_item(event.diagram.parent)
         
-        diagram_item = ProjectTreeItem(parent_item, [event.diagram.get_display_name()], event.diagram)
-        diagram_item.setIcon(0, image_loader.load_icon(event.diagram.type.icon))
-        
         for item_id in range(parent_item.childCount()):
             item = parent_item.child(item_id)
             
             if isinstance(item, ProjectTreeItem):
                 if isinstance(item.model_object, ElementObject):
-                    parent_item.insertChild(item_id, diagram_item)
+                    parent_item.insertChild(item_id, ProjectTreeItem(parent_item, event.diagram))
                     break
         else:
-            parent_item.addChild(diagram_item)
+            parent_item.addChild(ProjectTreeItem(parent_item, event.diagram))
         
         parent_item.setExpanded(True)
     

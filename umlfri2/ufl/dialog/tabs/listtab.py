@@ -64,6 +64,8 @@ class UflDialogListTab(UflDialogTab):
     
     def delete(self):
         self.__list.delete(self.__current_index)
+        self._set_current_object(None)
+        self.__current_index = None
     
     @property
     def current_index(self):
