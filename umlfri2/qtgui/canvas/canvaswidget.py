@@ -2,8 +2,11 @@ from PySide.QtCore import Qt
 from PySide.QtGui import QWidget, QPainter, QApplication
 
 from umlfri2.application import Application
+from umlfri2.application.commands.diagram import ShowElementCommand
 from umlfri2.application.commands.model import ApplyPatchCommand
 from umlfri2.application.drawingarea import DrawingAreaCursor
+from umlfri2.model import ElementObject
+from ..mainwindow.projecttree import ProjectMimeData
 from ..properties import PropertiesDialog
 from .qtpaintercanvas import QTPainterCanvas
 from umlfri2.types.geometry import Point
@@ -18,6 +21,7 @@ class CanvasWidget(QWidget):
         self.setMouseTracking(True)
         self.setAttribute(Qt.WA_OpaquePaintEvent)
         self.__old_cursor = None
+        self.setAcceptDrops(True)
     
     @property
     def diagram(self):
@@ -83,6 +87,21 @@ class CanvasWidget(QWidget):
                 command = ApplyPatchCommand(object, dialog.make_patch())
                 Application().commands.execute(command)
                 self.update()
+    
+    def dragEnterEvent(self, event):
+        mime_data = event.mimeData()
+        if isinstance(mime_data, ProjectMimeData) and isinstance(mime_data.model_object, ElementObject):
+            event.acceptProposedAction()
+    
+    def dropEvent(self, event):
+        mime_data = event.mimeData()
+        if isinstance(mime_data, ProjectMimeData) and isinstance(mime_data.model_object, ElementObject):
+            pos = event.pos()
+            point = Point(pos.x(), pos.y())
+            element = mime_data.model_object
+            command = ShowElementCommand(self.diagram, element, point)
+            Application().commands.execute(command)
+            
     
     def __update_cursor(self):
         if self.__old_cursor == self.__drawing_area.cursor:

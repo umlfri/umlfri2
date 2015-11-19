@@ -103,3 +103,21 @@ class Diagram:
                 return element
         
         return None
+    
+    def contains(self, object):
+        if isinstance(object, ElementObject):
+            for visual in self.__elements:
+                if visual.object is object:
+                    return True
+        elif isinstance(object, ElementVisual):
+            for visual in self.__elements:
+                if visual is object:
+                    return True
+        elif isinstance(object, ConnectionObject):
+            for visual in self.__connections:
+                if visual.object is object:
+                    return True
+        elif isinstance(object, ConnectionVisual):
+            for visual in self.__elements:
+                if visual is object:
+                    return True

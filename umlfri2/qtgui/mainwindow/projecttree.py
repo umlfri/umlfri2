@@ -1,6 +1,6 @@
 from functools import partial
 
-from PySide.QtCore import Qt
+from PySide.QtCore import Qt, QMimeData
 from PySide.QtGui import QTreeWidget, QTreeWidgetItem, QMenu
 from umlfri2.application import Application
 from umlfri2.application.commands.model import ApplyPatchCommand, CreateElementCommand, CreateDiagramCommand
@@ -9,6 +9,16 @@ from umlfri2.model import Diagram, ElementObject, Project
 from umlfri2.qtgui.properties import PropertiesDialog
 from umlfri2.ufl.dialog import UflDialog
 from ..base import image_loader
+
+
+class ProjectMimeData(QMimeData):
+    def __init__(self, model_object):
+        super().__init__()
+        self.__model_object = model_object
+    
+    @property
+    def model_object(self):
+        return self.__model_object
 
 
 class ProjectTreeItem(QTreeWidgetItem):
@@ -188,6 +198,18 @@ class ProjectTree(QTreeWidget):
                     return item
         
         return None
+    
+    def mimeData(self, items):
+        if items and isinstance(items[0], ProjectTreeItem):
+            ret = super().mimeData([items[0]])
+            formats = ret.formats()
+            data = ret.data(formats[0])
+            ret = ProjectMimeData(items[0].model_object)
+            self.__mime_data_temp = ret # QT does not keep the reference!
+            ret.setData(formats[0], data)
+            return ret
+        else:
+            return None
     
     def reload_texts(self):
         pass
