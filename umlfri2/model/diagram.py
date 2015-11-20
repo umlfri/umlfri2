@@ -1,5 +1,6 @@
 from weakref import ref
 from umlfri2.components.base.context import Context
+from umlfri2.ufl.dialog import UflDialog
 from .connection import ConnectionObject, ConnectionVisual
 from .element import ElementObject, ElementVisual
 from umlfri2.ufl.types.uniquevaluegenerator import UniqueValueGenerator
@@ -121,3 +122,11 @@ class Diagram:
             for visual in self.__elements:
                 if visual is object:
                     return True
+    
+    def apply_ufl_patch(self, patch):
+        self.__data.apply_patch(patch)
+    
+    def create_ufl_dialog(self):
+        dialog = UflDialog(self.type.ufl_type)
+        dialog.associate(self.data)
+        return dialog

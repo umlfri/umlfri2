@@ -1,6 +1,7 @@
 from weakref import ref
 from umlfri2.components.base.context import Context
 from umlfri2.model.cache import ModelTemporaryDataCache
+from umlfri2.ufl.dialog import UflDialog
 
 
 class ConnectionObject:
@@ -42,3 +43,8 @@ class ConnectionObject:
     def apply_ufl_patch(self, patch):
         self.__data.apply_patch(patch)
         self.__cache.refresh()
+    
+    def create_ufl_dialog(self):
+        dialog = UflDialog(self.type.ufl_type)
+        dialog.associate(self.data)
+        return dialog

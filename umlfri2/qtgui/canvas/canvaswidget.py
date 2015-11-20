@@ -101,7 +101,6 @@ class CanvasWidget(QWidget):
             element = mime_data.model_object
             command = ShowElementCommand(self.diagram, element, point)
             Application().commands.execute(command)
-            
     
     def __update_cursor(self):
         if self.__old_cursor == self.__drawing_area.cursor:

@@ -92,7 +92,7 @@ class ProjectTree(QTreeWidget):
             
             if isinstance(item, ProjectTreeItem):
                 if isinstance(item.model_object, ElementObject):
-                    parent_item.insertChild(item_id, ProjectTreeItem(parent_item, event.diagram))
+                    parent_item.insertChild(item_id, ProjectTreeItem(None, event.diagram))
                     break
         else:
             parent_item.addChild(ProjectTreeItem(parent_item, event.diagram))
@@ -120,6 +120,8 @@ class ProjectTree(QTreeWidget):
                     menu = self.__create_element_menu(item.model_object)
                 elif isinstance(item.model_object, Project):
                     menu = self.__create_project_menu(item.model_object)
+                elif isinstance(item.model_object, Diagram):
+                    menu = self.__create_diagram_menu(item.model_object)
                 else:
                     menu = None
                 
@@ -145,6 +147,9 @@ class ProjectTree(QTreeWidget):
             action.setIcon(image_loader.load_icon(element_type.icon))
             action.triggered.connect(partial(self.__create_element_action, element_type, element))
         
+        menu.addSeparator()
+        menu.addAction(_("Properties...")).triggered.connect(partial(self.__open_properties_action, element))
+        
         return menu
     
     def __create_project_menu(self, project):
@@ -160,6 +165,30 @@ class ProjectTree(QTreeWidget):
             action.triggered.connect(partial(self.__create_element_action, element_type, project))
         
         return menu
+    
+    def __create_diagram_menu(self, diagram):
+        menu = QMenu()
+        
+        show = menu.addAction(_("Show diagram in tab"))
+        show.triggered.connect(partial(self.__show_diagram_action, diagram))
+        menu.setDefaultAction(show)
+        
+        menu.addSeparator()
+        menu.addAction(_("Properties...")).triggered.connect(partial(self.__open_properties_action, diagram))
+        
+        return menu
+    
+    def __show_diagram_action(self, diagram, checked=False):
+        Application().tabs.select_tab(diagram)
+    
+    def __open_properties_action(self, object, checked=False):
+        dialog = object.create_ufl_dialog()
+        qt_dialog = PropertiesDialog(self.__main_window, dialog)
+        qt_dialog.setModal(True)
+        if qt_dialog.exec_() == PropertiesDialog.Accepted:
+            dialog.finish()
+            command = ApplyPatchCommand(object, dialog.make_patch())
+            Application().commands.execute(command)
     
     def __create_element_action(self, element_type, parent, checked=False):
         command = CreateElementCommand(parent, element_type)
