@@ -1,6 +1,6 @@
 from umlfri2.types.image import Image
 from .componentloader import ComponentLoader
-from .constants import NAMESPACE, ADDON_SCHEMA
+from ..constants import NAMESPACE, ADDON_SCHEMA
 from .structureloader import UflStructureLoader
 from umlfri2.components.text import TextContainerComponent
 from umlfri2.metamodel import ElementType

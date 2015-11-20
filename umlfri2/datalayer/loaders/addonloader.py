@@ -3,7 +3,7 @@ import lxml.etree
 from umlfri2.types.image import Image
 from .addoninfoloader import AddOnInfoLoader
 from umlfri2.addon import AddOn
-from .constants import NAMESPACE
+from ..constants import NAMESPACE
 from .elementtypeloader import ElementTypeLoader
 from .diagramtypeloader import DiagramTypeLoader
 from .connectiontypeloader import ConnectionTypeLoader

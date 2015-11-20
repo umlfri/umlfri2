@@ -1,6 +1,6 @@
 from collections import OrderedDict
 
-from .constants import NAMESPACE
+from ..constants import NAMESPACE
 from .componentloader import ComponentLoader
 from umlfri2.components.text import TextContainerComponent
 from umlfri2.ufl.types import *

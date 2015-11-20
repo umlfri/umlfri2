@@ -1,6 +1,6 @@
 import math
 
-from .constants import NAMESPACE, ADDON_SCHEMA
+from ..constants import NAMESPACE, ADDON_SCHEMA
 from umlfri2.components.connectionline.arrow import ArrowDefinition
 from umlfri2.types.geometry import PathBuilder, Point
 

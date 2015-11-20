@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-from .constants import NAMESPACE, ADDON_SCHEMA
+from ..constants import NAMESPACE, ADDON_SCHEMA
 from .structureloader import UflStructureLoader
 from umlfri2.types.version import Version
 
