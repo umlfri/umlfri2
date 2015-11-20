@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://umlfri.org/v2/model.xsd" saveversion="2.0">
+    <Info>
+        <Name name="Testing UML model"/>
+        <Metamodel uri="urn:umlfri.org:metamodel:infjavauml" version="0.1"/>
+    </Info>
+    <Element id="82878a5a-8f90-11e5-b00e-88ae1da9fec3" type="package">
+        <Diagram type="class_diagram">
+            <Element id="9f9751fc-8f90-11e5-b00e-88ae1da9fec3" x="30" y="30" width="200" height="200"/>
+            <Element id="b8a16eee-8f90-11e5-b00e-88ae1da9fec3" x="300" y="100" width="100" height="100"/>
+            <Connection id="cb0734e2-8f90-11e5-b00e-88ae1da9fec3">
+                <Point x="500" y="300"/>
+            </Connection>
+        </Diagram>
+        <Diagram type="class_diagram">
+            <Element id="82878a5a-8f90-11e5-b00e-88ae1da9fec3" x="500" y="50" width="200" height="200"/>
+        </Diagram>
+        <Element id="9f9751fc-8f90-11e5-b00e-88ae1da9fec3" type="class">
+            <Connection id="cb0734e2-8f90-11e5-b00e-88ae1da9fec3" to="b8a16eee-8f90-11e5-b00e-88ae1da9fec3"
+                        type="association">
+                <Attribute id="name" value="assoc"/>
+            </Connection>
+            <Attribute id="attributes">
+                <Item/>
+                <Item>
+                    <Attribute id="type" value="int"/>
+                </Item>
+            </Attribute>
+            <Attribute id="operations">
+                <Item/>
+                <Item/>
+            </Attribute>
+        </Element>
+        <Element id="b8a16eee-8f90-11e5-b00e-88ae1da9fec3" type="class"/>
+    </Element>
+</Project>
