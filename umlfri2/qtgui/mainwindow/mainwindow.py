@@ -2,7 +2,9 @@ from PySide.QtCore import Qt
 from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget
 
 from umlfri2.application import Application
+from umlfri2.application.events.model import ObjectChangedEvent
 from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent
+from umlfri2.model import Diagram
 from .propertieswidget import PropertiesWidget
 from .toolbox import ToolBox
 from ..base import image_loader
@@ -40,6 +42,7 @@ class UmlFriMainWindow(QMainWindow):
         
         Application().event_dispatcher.register(OpenTabEvent, self.__open_tab)
         Application().event_dispatcher.register(ChangedCurrentTabEvent, self.__change_tab)
+        Application().event_dispatcher.register(ObjectChangedEvent, self.__object_changed)
     
     def __tab_changed(self, index):
         Application().tabs.select_tab(self.__tabs.widget(index).diagram)
@@ -54,6 +57,17 @@ class UmlFriMainWindow(QMainWindow):
             
             if widget.diagram is event.tab.drawing_area.diagram:
                 self.__tabs.setCurrentWidget(widget)
+                return
+    
+    def __object_changed(self, event):
+        if not isinstance(event.object, Diagram):
+            return
+        
+        for widget_id in range(self.__tabs.count()):
+            widget = self.__tabs.widget(widget_id)
+            
+            if widget.diagram is event.object:
+                self.__tabs.setTabText(widget_id, widget.diagram.get_display_name())
                 return
     
     def reload_texts(self):
