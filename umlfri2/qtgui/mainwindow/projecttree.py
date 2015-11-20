@@ -50,7 +50,6 @@ class ProjectTree(QTreeWidget):
         self.customContextMenuRequested.connect(self.__show_tree_menu)
         self.header().close()
         self.itemDoubleClicked.connect(self.__item_double_clicked)
-        self.setExpandsOnDoubleClick(False)
         
         Application().event_dispatcher.register(ElementCreatedEvent, self.__element_created)
         Application().event_dispatcher.register(DiagramCreatedEvent, self.__diagram_created)
@@ -108,8 +107,6 @@ class ProjectTree(QTreeWidget):
         if isinstance(item, ProjectTreeItem):
             if isinstance(item.model_object, Diagram):
                 Application().tabs.select_tab(item.model_object)
-            elif isinstance(item.model_object, ElementObject):
-                self.__edit(item.model_object)
     
     def __show_tree_menu(self, position):
         item = self.itemAt(position)
@@ -198,17 +195,6 @@ class ProjectTree(QTreeWidget):
         command = CreateDiagramCommand(parent, element_type)
         Application().commands.execute(command)
         Application().tabs.select_tab(command.diagram)
-    
-    def __edit(self, model_object):
-        dialog = UflDialog(model_object.data.type)
-        dialog.associate(model_object.data)
-        qt_dialog = PropertiesDialog(self.__main_window, dialog)
-        qt_dialog.setModal(True)
-        if qt_dialog.exec_() == PropertiesDialog.Accepted:
-            dialog.finish()
-            command = ApplyPatchCommand(model_object, dialog.make_patch())
-            Application().commands.execute(command)
-            self.update()
     
     def __get_item(self, element):
         if element.parent is None:
