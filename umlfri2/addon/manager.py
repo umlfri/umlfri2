@@ -1,4 +1,4 @@
-from umlfri2.datalayer.loaders import AddOnLoader
+from umlfri2.datalayer import AddOnLoader
 
 
 class AddOnManager:

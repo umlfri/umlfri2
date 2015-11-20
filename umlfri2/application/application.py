@@ -1,6 +1,6 @@
 from umlfri2.addon import AddOnManager
 from umlfri2.application.tablist import TabList
-from umlfri2.datalayer.storages import Storage
+from umlfri2.datalayer import Storage
 from umlfri2.paths import ADDONS
 from .dispatcher import EventDispatcher
 from .commandprocessor import CommandProcessor
