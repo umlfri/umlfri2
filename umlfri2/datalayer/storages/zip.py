@@ -1,12 +1,35 @@
 import os.path
 import zipfile
 import itertools
+from io import BytesIO
+
 from .storage import Storage
+
+
+class ZipFileWriter(BytesIO):
+    def __init__(self, zip_file, file_path): 
+        super().__init__()
+        self.__zip_file = zip_file
+        self.__file_path = file_path
+        self.__closed = False
+    
+    def __enter__(self):
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if not self.__closed:
+            self.close()
+    
+    def close(self):
+        super().flush()
+        self.__zip_file.writestr(self.__file_path, self.getvalue())
+        super().close()
+        self.__closed = True
 
 
 class ZipStorage(Storage):
     @staticmethod
-    def open(path):
+    def create_storage(path, mode='r'):
         if os.path.isdir(path):
             return None
         
@@ -29,12 +52,13 @@ class ZipStorage(Storage):
             zip_path.append(file_path.pop(0))
             
             if zipfile.is_zipfile(os.path.join(*zip_path)):
-                z = open(os.path.join(*zip_path), 'rb')
-                return ZipStorage(zipfile.ZipFile(z), file_path)
+                z = open(os.path.join(*zip_path), mode+'b')
+                return ZipStorage(zipfile.ZipFile(z, mode=mode), file_path, mode)
         
-    def __init__(self, zip_file, path):
+    def __init__(self, zip_file, path, mode):
         self.__zip_file = zip_file
         self.__path = path
+        self.__mode = mode
     
     def list(self, path=None):
         path = self.__fix_path(path)
@@ -42,13 +66,18 @@ class ZipStorage(Storage):
             if os.path.dirname(name) == path:
                 yield os.path.basename(name)
     
-    def read(self, path):
-        return self.__zip_file.open(self.__fix_path(path))
+    def open(self, path, mode='r'):
+        if mode == 'r':
+            return self.__zip_file.open(self.__fix_path(path))
+        elif mode == 'w':
+            if self.__mode == 'r':
+                raise ValueError("Storage is opened for read only")
+            return ZipFileWriter(self.__zip_file, path)
     
     def exists(self, path):
         return self.__fix_path(path) in self.__zip_file.namelist()
     
-    def sub_open(self, path):
+    def create_substorage(self, path):
         if self.__dir_exists(path):
             return ZipStorage(self.__zip_file, self.__fix_path_list(path))
     

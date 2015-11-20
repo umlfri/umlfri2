@@ -5,29 +5,32 @@ from .storage import Storage
 
 class DirectoryStorage(Storage):
     @staticmethod
-    def open(path):
+    def create_storage(path, mode='r'):
         if os.path.isdir(path):
-            return DirectoryStorage(os.path.abspath(path))
+            return DirectoryStorage(os.path.abspath(path), mode)
     
-    def __init__(self, path):
+    def __init__(self, path, mode):
         self.__path = path
+        self.__mode = mode
     
     def list(self, path=None):
         return os.listdir(self.__fix_path(path))
 
-    def read(self, path):
+    def open(self, path, mode='r'):
+        if mode != 'r' and self.__mode == 'r':
+            raise ValueError("Storage is opened for read only")
         path = self.__fix_path(path)
         if os.path.exists(path):
-            return open(path, 'rb')
+            return open(path, mode + 'b')
     
     def exists(self, path):
         path = self.__fix_path(path)
         return os.path.exists(path)
     
-    def sub_open(self, path):
+    def create_substorage(self, path):
         path = self.__fix_path(path)
         if os.path.exists(path):
-            return Storage.open(path)
+            return Storage.create_storage(path)
     
     def get_all_files(self):
         for dirpath, dirs, files in os.walk(self.__path):

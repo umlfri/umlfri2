@@ -16,11 +16,11 @@ class AddOnLoader:
         self.__storage = storage
     
     def load(self):
-        info = AddOnInfoLoader(lxml.etree.parse(self.__storage.read('addon.xml')).getroot()).load()
+        info = AddOnInfoLoader(lxml.etree.parse(self.__storage.open('addon.xml')).getroot()).load()
         
         metamodel = None
         if info.metamodel:
-            metamodel = self.__load_metamodel(self.__storage.sub_open(info.metamodel))
+            metamodel = self.__load_metamodel(self.__storage.create_substorage(info.metamodel))
         
         if not self.__storage.exists(info.icon):
             raise Exception("Unknown icon {0}".format(info.icon))
@@ -41,7 +41,7 @@ class AddOnLoader:
         diagramXMLs = []
         definitionXMLs = None # TODO: multiple definition files
         for file in storage.get_all_files():
-            xml = lxml.etree.parse(storage.read(file)).getroot()
+            xml = lxml.etree.parse(storage.open(file)).getroot()
             if xml.tag == "{{{0}}}ElementType".format(NAMESPACE):
                 elementXMLs.append(xml)
             elif xml.tag == "{{{0}}}ConnectionType".format(NAMESPACE):

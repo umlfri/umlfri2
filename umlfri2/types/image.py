@@ -12,7 +12,7 @@ class Image:
         return self.__path
     
     def load(self):
-        return self.__storage.read(self.__path)
+        return self.__storage.open(self.__path)
     
     def __repr__(self):
         return "<Icon {0}>".format(self.__path)

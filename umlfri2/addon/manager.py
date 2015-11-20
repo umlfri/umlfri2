@@ -5,7 +5,7 @@ class AddOnManager:
     def __init__(self, storage):
         self.__addons = []
         for dir in storage.list():
-            addon_storage = storage.sub_open(dir)
+            addon_storage = storage.create_substorage(dir)
             if addon_storage.exists('addon.xml'):
                 self.__addons.append(AddOnLoader(addon_storage).load())
     
