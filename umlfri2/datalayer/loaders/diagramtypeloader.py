@@ -1,6 +1,6 @@
 from umlfri2.types.image import Image
 from .componentloader import ComponentLoader
-from ..constants import NAMESPACE, ADDON_SCHEMA
+from ..constants import ADDON_NAMESPACE, ADDON_SCHEMA
 from .structureloader import UflStructureLoader
 from umlfri2.components.expressions import ConstantExpression, UflExpression
 from umlfri2.components.text import TextContainerComponent
@@ -28,24 +28,24 @@ class DiagramTypeLoader:
         elements = []
         
         for child in self.__xmlroot:
-            if child.tag == "{{{0}}}Icon".format(NAMESPACE):
+            if child.tag == "{{{0}}}Icon".format(ADDON_NAMESPACE):
                 icon_path = child.attrib["path"]
                 if not self.__storage.exists(icon_path):
                     raise Exception("Unknown icon {0}".format(icon_path))
                 icon = Image(self.__storage, icon_path)
-            elif child.tag == "{{{0}}}Structure".format(NAMESPACE):
+            elif child.tag == "{{{0}}}Structure".format(ADDON_NAMESPACE):
                 ufl_type = UflStructureLoader(child).load()
-            elif child.tag == "{{{0}}}DisplayName".format(NAMESPACE):
+            elif child.tag == "{{{0}}}DisplayName".format(ADDON_NAMESPACE):
                 display_name = TextContainerComponent(ComponentLoader(child, 'text').load())
-            elif child.tag == "{{{0}}}Connections".format(NAMESPACE):
+            elif child.tag == "{{{0}}}Connections".format(ADDON_NAMESPACE):
                 for childchild in child:
                     connections.append(childchild.attrib["id"])
-            elif child.tag == "{{{0}}}Elements".format(NAMESPACE):
+            elif child.tag == "{{{0}}}Elements".format(ADDON_NAMESPACE):
                 for childchild in child:
                     elements.append(childchild.attrib["id"])
-            elif child.tag == "{{{0}}}Appearance".format(NAMESPACE):
+            elif child.tag == "{{{0}}}Appearance".format(ADDON_NAMESPACE):
                 for childchild in child:
-                    if childchild.tag == "{{{0}}}Background".format(NAMESPACE):
+                    if childchild.tag == "{{{0}}}Background".format(ADDON_NAMESPACE):
                         attrvalue = childchild.attrib["color"]
                         if attrvalue.startswith("##"):
                             background = ConstantExpression(Color.get_color(attrvalue[1:]), UflColorType())

@@ -1,6 +1,6 @@
 from umlfri2.types.image import Image
 from .componentloader import ComponentLoader
-from ..constants import NAMESPACE, ADDON_SCHEMA
+from ..constants import ADDON_NAMESPACE, ADDON_SCHEMA
 from .structureloader import UflStructureLoader
 from umlfri2.components.connectionline import ConnectionLineContainerComponent
 from umlfri2.components.visual import SimpleComponent
@@ -25,17 +25,17 @@ class ConnectionTypeLoader:
         labels = []
         
         for child in self.__xmlroot:
-            if child.tag == "{{{0}}}Icon".format(NAMESPACE):
+            if child.tag == "{{{0}}}Icon".format(ADDON_NAMESPACE):
                 icon_path = child.attrib["path"]
                 if not self.__storage.exists(icon_path):
                     raise Exception("Unknown icon {0}".format(icon_path))
                 icon = Image(self.__storage, icon_path)
-            elif child.tag == "{{{0}}}Structure".format(NAMESPACE):
+            elif child.tag == "{{{0}}}Structure".format(ADDON_NAMESPACE):
                 ufl_type = UflStructureLoader(child).load()
-            elif child.tag == "{{{0}}}Appearance".format(NAMESPACE):
+            elif child.tag == "{{{0}}}Appearance".format(ADDON_NAMESPACE):
                 appearance_children = list(child)
                 
-                while appearance_children[-1].tag == "{{{0}}}Label".format(NAMESPACE):
+                while appearance_children[-1].tag == "{{{0}}}Label".format(ADDON_NAMESPACE):
                     label = appearance_children[-1]
                     
                     label_position = UflProportionType().parse(label.attrib["position"])

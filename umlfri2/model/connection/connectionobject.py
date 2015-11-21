@@ -1,3 +1,4 @@
+from uuid import uuid4
 from weakref import ref
 from umlfri2.components.base.context import Context
 from umlfri2.model.cache import ModelTemporaryDataCache
@@ -5,12 +6,16 @@ from umlfri2.ufl.dialog import UflDialog
 
 
 class ConnectionObject:
-    def __init__(self, type, source, destination):
+    def __init__(self, type, source, destination, save_id=None):
         self.__type = type
         self.__data = type.ufl_type.build_default(None)
         self.__source = ref(source)
         self.__destination = ref(destination)
         self.__cache = ModelTemporaryDataCache(None)
+        if save_id is None:
+            self.__save_id = uuid4()
+        else:
+            self.__save_id = save_id
     
     @property
     def cache(self):
@@ -31,6 +36,10 @@ class ConnectionObject:
     @property
     def destination(self):
         return self.__destination()
+    
+    @property
+    def save_id(self):
+        return self.__save_id
     
     def create_appearance_object(self, ruler):
         context = Context().extend(self.__data, 'self')

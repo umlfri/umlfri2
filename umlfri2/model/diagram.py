@@ -1,3 +1,4 @@
+from uuid import uuid4
 from weakref import ref
 from umlfri2.components.base.context import Context
 from umlfri2.ufl.dialog import UflDialog
@@ -32,12 +33,16 @@ class DiagramValueGenerator(UniqueValueGenerator):
 
 
 class Diagram:
-    def __init__(self, parent, type):
+    def __init__(self, parent, type, save_id=None):
         self.__parent = ref(parent)
         self.__type = type
         self.__data = type.ufl_type.build_default(DiagramValueGenerator(parent, type))
         self.__elements = []
         self.__connections = []
+        if save_id is None:
+            self.__save_id = uuid4()
+        else:
+            self.__save_id = save_id
     
     @property
     def parent(self):
@@ -54,6 +59,14 @@ class Diagram:
     @property
     def elements(self):
         yield from self.__elements
+    
+    @property
+    def connections(self):
+        yield from self.__connections
+    
+    @property
+    def save_id(self):
+        return self.__save_id
     
     def get_display_name(self):
         context = Context().extend(self.__data, 'self')

@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-from ..constants import NAMESPACE
+from ..constants import ADDON_NAMESPACE
 from umlfri2.components.common import COMMON_COMPONENTS, SWITCH_COMPONENTS
 from umlfri2.components.connectionline import CONNECTION_LINE_COMPONENTS
 from umlfri2.components.expressions import UflExpression, ConstantExpression
@@ -37,8 +37,8 @@ class ComponentLoader:
     
     def __load_children(self, node, component_type, previous_types, children_attributes):
         for child in node:
-            if child.tag.startswith("{{{0}}}".format(NAMESPACE)):
-                tagname = child.tag[len(NAMESPACE) + 2:]
+            if child.tag.startswith("{{{0}}}".format(ADDON_NAMESPACE)):
+                tagname = child.tag[len(ADDON_NAMESPACE) + 2:]
                 
                 component = self.__components[component_type][tagname]
                 

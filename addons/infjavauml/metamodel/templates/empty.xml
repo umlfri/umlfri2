@@ -2,6 +2,6 @@
 <Project xmlns="http://umlfri.org/v2/model.xsd" saveversion="2.0">
     <Info>
         <Name name="Empty UML model"/>
-        <Metamodel uri="urn:umlfri.org:metamodel:infjavauml" version="0.1"/>
+        <Metamodel id="urn:umlfri.org:metamodel:infjavauml" version="0.1"/>
     </Info>
 </Project>

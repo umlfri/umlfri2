@@ -1,6 +1,6 @@
 import math
 
-from ..constants import NAMESPACE, ADDON_SCHEMA
+from ..constants import ADDON_NAMESPACE, ADDON_SCHEMA
 from umlfri2.components.connectionline.arrow import ArrowDefinition
 from umlfri2.types.geometry import PathBuilder, Point
 
@@ -19,7 +19,7 @@ class DefinitionsLoader:
         }
         
         for child in self.__xmlroot:
-            if child.tag == "{{{0}}}ArrowDefinition".format(NAMESPACE):
+            if child.tag == "{{{0}}}ArrowDefinition".format(ADDON_NAMESPACE):
                 definition = ArrowDefinition(
                     child.attrib["id"],
                     PathBuilder().from_string(child.attrib["path"]).build(),

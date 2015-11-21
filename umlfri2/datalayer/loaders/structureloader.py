@@ -1,6 +1,6 @@
 from collections import OrderedDict
 
-from ..constants import NAMESPACE
+from ..constants import ADDON_NAMESPACE
 from .componentloader import ComponentLoader
 from umlfri2.components.text import TextContainerComponent
 from umlfri2.ufl.types import *
@@ -58,14 +58,14 @@ class UflStructureLoader:
     def __load_possibilities(self, node):
         ret = []
         for child in node:
-            if child.tag == "{{{0}}}Value".format(NAMESPACE):
+            if child.tag == "{{{0}}}Value".format(ADDON_NAMESPACE):
                 ret.append(child.attrib["value"])
         
         return ret
 
     def __load_template(self, node):
         for child in node:
-            if child.tag == "{{{0}}}Template".format(NAMESPACE):
+            if child.tag == "{{{0}}}Template".format(ADDON_NAMESPACE):
                 template = TextContainerComponent(ComponentLoader(child, 'text').load())
                 template.compile({'parent': UflStringType(), 'no': UflIntegerType()})
                 return template

@@ -1,6 +1,6 @@
 from umlfri2.types.image import Image
 from .componentloader import ComponentLoader
-from ..constants import NAMESPACE, ADDON_SCHEMA
+from ..constants import ADDON_NAMESPACE, ADDON_SCHEMA
 from .structureloader import UflStructureLoader
 from umlfri2.components.text import TextContainerComponent
 from umlfri2.metamodel import ElementType
@@ -21,16 +21,16 @@ class ElementTypeLoader:
         appearance = None
         
         for child in self.__xmlroot:
-            if child.tag == "{{{0}}}Icon".format(NAMESPACE):
+            if child.tag == "{{{0}}}Icon".format(ADDON_NAMESPACE):
                 icon_path = child.attrib["path"]
                 if not self.__storage.exists(icon_path):
                     raise Exception("Unknown icon {0}".format(icon_path))
                 icon = Image(self.__storage, icon_path)
-            elif child.tag == "{{{0}}}Structure".format(NAMESPACE):
+            elif child.tag == "{{{0}}}Structure".format(ADDON_NAMESPACE):
                 ufl_type = UflStructureLoader(child).load()
-            elif child.tag == "{{{0}}}DisplayName".format(NAMESPACE):
+            elif child.tag == "{{{0}}}DisplayName".format(ADDON_NAMESPACE):
                 display_name = TextContainerComponent(ComponentLoader(child, 'text').load())
-            elif child.tag == "{{{0}}}Appearance".format(NAMESPACE):
+            elif child.tag == "{{{0}}}Appearance".format(ADDON_NAMESPACE):
                 appearance = ComponentLoader(child, 'visual').load()[0]
             else:
                 raise Exception

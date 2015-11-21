@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<AddOn uri="urn:umlfri.org:metamodel:infjavauml" xmlns="http://umlfri.org/v2/addon.xsd">
+<AddOn id="urn:umlfri.org:metamodel:infjavauml" xmlns="http://umlfri.org/v2/addon.xsd">
     <AddOnInfo>
         <Name name="UML for FRI students"/>
         <Version version="0.1"/>

@@ -3,7 +3,7 @@ import lxml.etree
 from umlfri2.types.image import Image
 from .addoninfoloader import AddOnInfoLoader
 from umlfri2.addon import AddOn
-from ..constants import NAMESPACE
+from ..constants import ADDON_NAMESPACE
 from .elementtypeloader import ElementTypeLoader
 from .diagramtypeloader import DiagramTypeLoader
 from .connectiontypeloader import ConnectionTypeLoader
@@ -42,13 +42,13 @@ class AddOnLoader:
         definitionXMLs = None # TODO: multiple definition files
         for file in storage.get_all_files():
             xml = lxml.etree.parse(storage.open(file)).getroot()
-            if xml.tag == "{{{0}}}ElementType".format(NAMESPACE):
+            if xml.tag == "{{{0}}}ElementType".format(ADDON_NAMESPACE):
                 elementXMLs.append(xml)
-            elif xml.tag == "{{{0}}}ConnectionType".format(NAMESPACE):
+            elif xml.tag == "{{{0}}}ConnectionType".format(ADDON_NAMESPACE):
                 connectionXMLs.append(xml)
-            elif xml.tag == "{{{0}}}DiagramType".format(NAMESPACE):
+            elif xml.tag == "{{{0}}}DiagramType".format(ADDON_NAMESPACE):
                 diagramXMLs.append(xml)
-            elif xml.tag == "{{{0}}}Definitions".format(NAMESPACE):
+            elif xml.tag == "{{{0}}}Definitions".format(ADDON_NAMESPACE):
                 definitionXMLs = xml
         
         if definitionXMLs is not None:

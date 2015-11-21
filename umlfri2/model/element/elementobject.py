@@ -1,3 +1,4 @@
+from uuid import uuid4
 from weakref import ref
 from umlfri2.components.base.context import Context
 from umlfri2.ufl.dialog import UflDialog
@@ -32,7 +33,7 @@ class ElementValueGenerator(UniqueValueGenerator):
 
 
 class ElementObject:
-    def __init__(self, parent, type):
+    def __init__(self, parent, type, save_id=None):
         self.__parent = ref(parent)
         self.__type = type
         self.__data = type.ufl_type.build_default(ElementValueGenerator(parent, type))
@@ -40,6 +41,10 @@ class ElementObject:
         self.__children = []
         self.__diagrams = []
         self.__cache = ModelTemporaryDataCache(None)
+        if save_id is None:
+            self.__save_id = uuid4()
+        else:
+            self.__save_id = save_id
     
     @property
     def cache(self):
@@ -69,8 +74,8 @@ class ElementObject:
         context = Context().extend(self.__data, 'self')
         return self.__type.create_appearance_object(context, ruler)
     
-    def connect_with(self, connection_type, second_element):
-        connection = ConnectionObject(connection_type, self, second_element)
+    def connect_with(self, connection_type, second_element, save_id=None):
+        connection = ConnectionObject(connection_type, self, second_element, save_id)
         self.__connections.append(connection)
         second_element.__connections.append(connection)
         return connection
@@ -90,15 +95,19 @@ class ElementObject:
     def diagrams(self):
         yield from self.__diagrams
     
-    def create_child_element(self, type):
-        obj = ElementObject(self, type)
+    @property
+    def save_id(self):
+        return self.__save_id
+    
+    def create_child_element(self, type, save_id=None):
+        obj = ElementObject(self, type, save_id)
         self.__children.append(obj)
         return obj
     
-    def create_child_diagram(self, type):
+    def create_child_diagram(self, type, save_id=None):
         from ..diagram import Diagram # circular imports
         
-        diagram = Diagram(self, type)
+        diagram = Diagram(self, type, save_id)
         self.__diagrams.append(diagram)
         return diagram
     
