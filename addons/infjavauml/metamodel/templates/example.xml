@@ -6,7 +6,6 @@
     </Info>
     <Element id="82878a5a-8f90-11e5-b00e-88ae1da9fec3" type="package">
         <Diagram id="b67702d1-5f4c-4e82-a6c3-c22a9afd446b" type="class_diagram">
-            <Attribute id="name" value="Test diagram"/>
             <Element id="9f9751fc-8f90-11e5-b00e-88ae1da9fec3" x="30" y="30" width="200" height="200"/>
             <Element id="b8a16eee-8f90-11e5-b00e-88ae1da9fec3" x="300" y="100" width="100" height="100"/>
             <Connection id="cb0734e2-8f90-11e5-b00e-88ae1da9fec3">
@@ -14,6 +13,7 @@
             </Connection>
         </Diagram>
         <Diagram id="440e8bcd-6f87-47a2-893c-628ee162fc97" type="class_diagram">
+            <Attribute id="name" value="Test diagram"/>
             <Element id="82878a5a-8f90-11e5-b00e-88ae1da9fec3" x="500" y="50" width="200" height="200"/>
         </Diagram>
         <Element id="9f9751fc-8f90-11e5-b00e-88ae1da9fec3" type="class">

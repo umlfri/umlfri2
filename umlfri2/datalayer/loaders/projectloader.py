@@ -1,6 +1,6 @@
 from umlfri2.types.geometry import Point, Size
 from umlfri2.ufl.types import UflObjectType, UflListType
-from ..constants import MODEL_NAMESPACE
+from ..constants import MODEL_NAMESPACE, MODEL_SCHEMA
 from umlfri2.model import Project
 
 
@@ -9,6 +9,9 @@ class ProjectLoader:
     
     def __init__(self, xmlroot, ruler, addon_manager):
         self.__xmlroot = xmlroot
+        if not MODEL_SCHEMA.validate(xmlroot):
+            raise Exception("Cannot load project: {0}".format(MODEL_SCHEMA.error_log.last_error))
+        
         self.__addon_manager = addon_manager
         self.__connections = []
         self.__visuals = []
