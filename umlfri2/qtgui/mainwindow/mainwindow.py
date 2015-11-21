@@ -3,7 +3,7 @@ from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget
 
 from umlfri2.application import Application
 from umlfri2.application.events.model import ObjectChangedEvent
-from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent
+from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent
 from umlfri2.model import Diagram
 from .propertieswidget import PropertiesWidget
 from .toolbox import ToolBox
@@ -21,6 +21,7 @@ class UmlFriMainWindow(QMainWindow):
         
         self.__tabs.setFocusPolicy(Qt.NoFocus)
         self.__tabs.currentChanged.connect(self.__tab_changed)
+        self.__tabs.tabCloseRequested.connect(self.__tab_close_requested)
         
         self.__toolbox_dock = QDockWidget()
         self.addDockWidget(Qt.LeftDockWidgetArea, self.__toolbox_dock)
@@ -42,10 +43,15 @@ class UmlFriMainWindow(QMainWindow):
         
         Application().event_dispatcher.register(OpenTabEvent, self.__open_tab)
         Application().event_dispatcher.register(ChangedCurrentTabEvent, self.__change_tab)
+        Application().event_dispatcher.register(ClosedTabEvent, self.__close_tab)
         Application().event_dispatcher.register(ObjectChangedEvent, self.__object_changed)
     
     def __tab_changed(self, index):
-        Application().tabs.select_tab(self.__tabs.widget(index).diagram)
+        if index >= 0:
+            Application().tabs.select_tab(self.__tabs.widget(index).diagram)
+    
+    def __tab_close_requested(self, index):
+        Application().tabs.close_tab(self.__tabs.widget(index).diagram)
     
     def __open_tab(self, event):
         self.__tabs.addTab(CanvasWidget(self, event.tab.drawing_area), image_loader.load_icon(event.tab.icon),
@@ -57,6 +63,14 @@ class UmlFriMainWindow(QMainWindow):
             
             if widget.diagram is event.tab.drawing_area.diagram:
                 self.__tabs.setCurrentWidget(widget)
+                return
+    
+    def __close_tab(self, event):
+        for widget_id in range(self.__tabs.count()):
+            widget = self.__tabs.widget(widget_id)
+            
+            if widget.diagram is event.tab.drawing_area.diagram:
+                self.__tabs.removeTab(widget_id)
                 return
     
     def __object_changed(self, event):
