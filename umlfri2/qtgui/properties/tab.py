@@ -55,7 +55,6 @@ class PropertyTab(QWidget):
     def _tab(self):
         return self.__tab
     
-    @property
     def _create_layout(self):
         self.__qt_widgets = {}
         self.__actions = []
@@ -108,6 +107,7 @@ class PropertyTab(QWidget):
             elif isinstance(widget, UflDialogTextAreaWidget):
                 ret.addRow(QLabel(widget.label))
                 qt_widget = QTextEdit()
+                qt_widget.setTabChangesFocus(True)
                 self.__qt_widgets[widget.id] = qt_widget
                 self.__connect_action(qt_widget.textChanged, WidgetChanged(qt_widget, widget))
                 ret.addRow(qt_widget)

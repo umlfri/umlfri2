@@ -9,7 +9,7 @@ class ListPropertyTab(PropertyTab):
         self.__disable_selection_handling = False
         
         layout = QVBoxLayout()
-        layout.addLayout(self._create_layout)
+        layout.addLayout(self._create_layout())
         
         layout.addWidget(HLineWidget())
         
