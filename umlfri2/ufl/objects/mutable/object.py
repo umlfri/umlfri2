@@ -1,4 +1,4 @@
-from .muttable import UflMutable
+from .mutable import UflMutable
 from umlfri2.ufl.objects.patch import UflObjectPatch
 
 
