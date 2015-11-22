@@ -14,7 +14,7 @@ class ShowDialogAction:
     def action(self, checked=False):
         from .dialog import PropertiesDialog
         
-        PropertiesDialog(self.__window, self.__dialog).exec_()
+        PropertiesDialog(self.__window, self.__dialog, None).exec_()
 
 
 class WidgetChanged:

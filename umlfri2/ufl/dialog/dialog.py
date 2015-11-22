@@ -116,3 +116,14 @@ class UflDialog:
                     tab.associate(ufl_object)
                 else:
                     tab.associate(ufl_object.get_value(tab.id))
+    
+    def reset(self):
+        if self.__original_object is None:
+            raise Exception
+        
+        self.__mutable_object = self.__original_object.make_mutable()
+        for tab in self.__tabs:
+            if tab.id is None:
+                tab.associate(self.__mutable_object)
+            else:
+                tab.associate(self.__mutable_object.get_value(tab.id))
