@@ -115,3 +115,7 @@ class DrawingArea:
     
     def set_action(self, action):
         self.__current_action = action
+        if action is None:
+            self.__cursor = DrawingAreaCursor.arrow
+        else:
+            self.__cursor = action.cursor
