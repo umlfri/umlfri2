@@ -8,7 +8,7 @@ class ShowDialogAction:
         self.__dialog = dialog
         self.__window = window
     
-    def setEnabled(self, enabled):
+    def set_enabled(self, enabled):
         pass
     
     def action(self, checked=False):
@@ -23,7 +23,7 @@ class WidgetChanged:
         self.__widget = widget
         self.__enabled = True
     
-    def setEnabled(self, enabled):
+    def set_enabled(self, enabled):
         self.__enabled = enabled
     
     def action(self, *args):
@@ -119,7 +119,7 @@ class PropertyTab(QWidget):
 
     def _update_values(self):
         for action in self.__actions:
-            action.setEnabled(False)
+            action.set_enabled(False)
         try:
             if self.__tab.current_object is None:
                 for qt_widget in self.__qt_widgets.values():
@@ -142,4 +142,4 @@ class PropertyTab(QWidget):
                         qt_widget.setPlainText(widget.value)
         finally:
             for action in self.__actions:
-                action.setEnabled(True)
+                action.set_enabled(True)
