@@ -5,3 +5,4 @@ from .diagramdeleted import DiagramDeletedEvent
 from .elementcreated import ElementCreatedEvent
 from .elementdeleted import ElementDeletedEvent
 from .objectchanged import ObjectChangedEvent
+from .projectchanged import ProjectChangedEvent

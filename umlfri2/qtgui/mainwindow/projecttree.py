@@ -3,11 +3,11 @@ from functools import partial
 from PySide.QtCore import Qt, QMimeData
 from PySide.QtGui import QTreeWidget, QTreeWidgetItem, QMenu
 from umlfri2.application import Application
-from umlfri2.application.commands.model import ApplyPatchCommand, CreateElementCommand, CreateDiagramCommand
-from umlfri2.application.events.model import ElementCreatedEvent, ObjectChangedEvent, DiagramCreatedEvent
+from umlfri2.application.commands.model import CreateElementCommand, CreateDiagramCommand
+from umlfri2.application.events.model import ElementCreatedEvent, ObjectChangedEvent, DiagramCreatedEvent, \
+    ProjectChangedEvent
 from umlfri2.model import Diagram, ElementObject, Project
-from umlfri2.qtgui.properties import PropertiesDialog
-from umlfri2.ufl.dialog import UflDialog
+from umlfri2.qtgui.properties import PropertiesDialog, ProjectPropertiesDialog
 from ..base import image_loader
 
 
@@ -54,6 +54,7 @@ class ProjectTree(QTreeWidget):
         Application().event_dispatcher.register(ElementCreatedEvent, self.__element_created)
         Application().event_dispatcher.register(DiagramCreatedEvent, self.__diagram_created)
         Application().event_dispatcher.register(ObjectChangedEvent, self.__object_changed)
+        Application().event_dispatcher.register(ProjectChangedEvent, self.__project_changed)
     
     def reload(self):
         self.clear()
@@ -102,6 +103,10 @@ class ProjectTree(QTreeWidget):
         if isinstance(event.object, (ElementObject, Diagram)):
             item = self.__get_item(event.object)
             item.setText(0, event.object.get_display_name())
+    
+    def __project_changed(self, event):
+        item = self.__get_item(event.project)
+        item.setText(0, event.project.name)
     
     def __item_double_clicked(self, item, column):
         if isinstance(item, ProjectTreeItem):
@@ -161,6 +166,9 @@ class ProjectTree(QTreeWidget):
             action.setIcon(image_loader.load_icon(element_type.icon))
             action.triggered.connect(partial(self.__create_element_action, element_type, project))
         
+        menu.addSeparator()
+        menu.addAction(_("Properties...")).triggered.connect(partial(self.__open_project_properties_action, project))
+        
         return menu
     
     def __create_diagram_menu(self, diagram):
@@ -180,6 +188,9 @@ class ProjectTree(QTreeWidget):
     
     def __open_properties_action(self, object, checked=False):
         PropertiesDialog.open_for(self.__main_window, object)
+    
+    def __open_project_properties_action(self, project, checked=False):
+        ProjectPropertiesDialog.open_for(self.__main_window, project)
     
     def __create_element_action(self, element_type, parent, checked=False):
         command = CreateElementCommand(parent, element_type)
