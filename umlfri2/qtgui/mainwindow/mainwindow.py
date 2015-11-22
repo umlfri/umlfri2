@@ -19,6 +19,7 @@ class UmlFriMainWindow(QMainWindow):
         self.__tabs.setTabsClosable(True)
         self.setCentralWidget(self.__tabs)
         
+        self.__tabs.setMovable(True)
         self.__tabs.setFocusPolicy(Qt.NoFocus)
         self.__tabs.currentChanged.connect(self.__tab_changed)
         self.__tabs.tabCloseRequested.connect(self.__tab_close_requested)
