@@ -3,8 +3,8 @@ from PySide.QtGui import QWidget, QPainter, QApplication
 
 from umlfri2.application import Application
 from umlfri2.application.commands.diagram import ShowElementCommand
-from umlfri2.application.commands.model import ApplyPatchCommand
 from umlfri2.application.drawingarea import DrawingAreaCursor
+from umlfri2.application.events.model import ObjectChangedEvent
 from umlfri2.model import ElementObject
 from ..mainwindow.projecttree import ProjectMimeData
 from ..properties import PropertiesDialog
@@ -22,6 +22,7 @@ class CanvasWidget(QWidget):
         self.setAttribute(Qt.WA_OpaquePaintEvent)
         self.__old_cursor = None
         self.setAcceptDrops(True)
+        Application().event_dispatcher.register(ObjectChangedEvent, self.__object_changed)
     
     @property
     def diagram(self):
@@ -82,7 +83,6 @@ class CanvasWidget(QWidget):
             self.__drawing_area.set_action(None)
             self.unsetCursor()
             PropertiesDialog.open_for(self.__main_window, object)
-            self.update()
     
     def dragEnterEvent(self, event):
         mime_data = event.mimeData()
@@ -118,3 +118,6 @@ class CanvasWidget(QWidget):
             self.setCursor(Qt.CrossCursor)
         
         self.__old_cursor = self.__drawing_area.cursor
+    
+    def __object_changed(self, event):
+        self.update()
