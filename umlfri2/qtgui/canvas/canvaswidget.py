@@ -77,16 +77,12 @@ class CanvasWidget(QWidget):
     def mouseDoubleClickEvent(self, event):
         pos = event.pos()
         point = Point(pos.x(), pos.y())
-        object, dialog = self.__drawing_area.edit_attributes(point)
+        object = self.__drawing_area.get_object_at(point)
         if object is not None:
+            self.__drawing_area.set_action(None)
             self.unsetCursor()
-            qt_dialog = PropertiesDialog(self.__main_window, dialog)
-            qt_dialog.setModal(True)
-            if qt_dialog.exec_() == PropertiesDialog.Accepted:
-                dialog.finish()
-                command = ApplyPatchCommand(object, dialog.make_patch())
-                Application().commands.execute(command)
-                self.update()
+            PropertiesDialog.open_for(self.__main_window, object)
+            self.update()
     
     def dragEnterEvent(self, event):
         mime_data = event.mimeData()

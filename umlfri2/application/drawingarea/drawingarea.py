@@ -93,14 +93,13 @@ class DrawingArea:
             self.__current_action.mouse_up(self, self.__application)
             self.__postprocess_action(point, shift_pressed)
     
-    def edit_attributes(self, point):
+    def get_object_at(self, point):
         # TODO: refactor
         visual = self.__diagram.get_visual_at(self.__application.ruler, point)
         if visual is None:
-            return None, None
+            return None
         else:
-            self.__current_action = None
-            return visual.object, visual.object.create_ufl_dialog()
+            return visual.object
     
     def __postprocess_action(self, point, shift_pressed):
         if self.__current_action is not None and self.__current_action.finished:

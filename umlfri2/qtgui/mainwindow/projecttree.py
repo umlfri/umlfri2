@@ -179,13 +179,7 @@ class ProjectTree(QTreeWidget):
         Application().tabs.select_tab(diagram)
     
     def __open_properties_action(self, object, checked=False):
-        dialog = object.create_ufl_dialog()
-        qt_dialog = PropertiesDialog(self.__main_window, dialog)
-        qt_dialog.setModal(True)
-        if qt_dialog.exec_() == PropertiesDialog.Accepted:
-            dialog.finish()
-            command = ApplyPatchCommand(object, dialog.make_patch())
-            Application().commands.execute(command)
+        PropertiesDialog.open_for(self.__main_window, object)
     
     def __create_element_action(self, element_type, parent, checked=False):
         command = CreateElementCommand(parent, element_type)

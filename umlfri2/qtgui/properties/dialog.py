@@ -1,5 +1,8 @@
 from PySide.QtCore import QSize, Qt
 from PySide.QtGui import QDialog, QDialogButtonBox, QVBoxLayout, QTabWidget
+
+from umlfri2.application import Application
+from umlfri2.application.commands.model import ApplyPatchCommand
 from .listtab import ListPropertyTab
 from .objecttab import ObjectPropertyTab
 from umlfri2.ufl.dialog import UflDialogListTab, UflDialogObjectTab
@@ -40,3 +43,13 @@ class PropertiesDialog(QDialog):
     def sizeHint(self):
         orig = super().sizeHint()
         return QSize(500, orig.height())
+    
+    @staticmethod
+    def open_for(main_window, object):
+        dialog = object.create_ufl_dialog()
+        qt_dialog = PropertiesDialog(main_window, dialog)
+        qt_dialog.setModal(True)
+        if qt_dialog.exec_() == PropertiesDialog.Accepted:
+            dialog.finish()
+            command = ApplyPatchCommand(object, dialog.make_patch())
+            Application().commands.execute(command)
