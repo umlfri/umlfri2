@@ -44,5 +44,11 @@ class UflObjectType(UflType):
     def is_immutable(self):
         return False
     
+    def is_default_value(self, value):
+        for name, type in self.__attributes.items():
+            if not type.is_default_value(value.get_value(name)):
+                return False
+        return True
+    
     def __str__(self):
         return "Object[{0}]".format(", ".join("{0}: {1}".format(name, type) for name, type in self.__attributes.items()))

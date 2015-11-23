@@ -41,6 +41,11 @@ class Color:
     def add_alpha(self, alpha):
         return Color(self.__value & 0xffffff + alpha << 24)
     
+    def __eq__(self, other):
+        if isinstance(other, Color):
+            return self.__value == other.__value
+        return NotImplemented
+    
     def __str__(self):
         return "#{0:08x}".format(self.__value)
     

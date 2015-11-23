@@ -46,5 +46,8 @@ class UflTypedEnumType(UflType):
     def is_valid_value(self, value):
         return isinstance(value, int) # TODO: Python 3.4: self.__type
     
+    def is_default_value(self, value):
+        return self.__default == value
+    
     def __str__(self):
         return 'TypedEnum[{0}]'.format(self.name)

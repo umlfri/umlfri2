@@ -8,14 +8,14 @@ from umlfri2.ufl.types import UflBoolType
 
 class UflFontType(UflType):
     def __init__(self, default=None):
-        self.__default = default
+        self.__default = default or Font('Arial', 10)
     
     @property
     def default(self):
         return self.__default
     
     def build_default(self, generator):
-        return self.__default or Font('Arial', 10)
+        return self.__default
     
     def parse(self, value):
         return Font.get_font(value)
@@ -26,6 +26,9 @@ class UflFontType(UflType):
     
     def is_valid_value(self, value):
         return isinstance(value, Font)
+    
+    def is_default_value(self, value):
+        return self.__default == value
     
     def __str__(self):
         return "Font"

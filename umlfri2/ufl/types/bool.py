@@ -2,8 +2,8 @@ from .type import UflType
 
 
 class UflBoolType(UflType):
-    def __init__(self, default=False):
-        self.__default = default
+    def __init__(self, default=None):
+        self.__default = default or False
     
     @property
     def default(self):
@@ -21,6 +21,9 @@ class UflBoolType(UflType):
     
     def is_valid_value(self, value):
         return isinstance(value, bool)
+    
+    def is_default_value(self, value):
+        return self.__default == value
     
     def __str__(self):
         return 'Bool'

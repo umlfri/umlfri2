@@ -1,8 +1,8 @@
 from .type import UflType
 
 class UflIntegerType(UflType):
-    def __init__(self, default=0):
-        self.__default = default
+    def __init__(self, default=None):
+        self.__default = default or 0
     
     @property
     def default(self):
@@ -20,6 +20,9 @@ class UflIntegerType(UflType):
     
     def is_valid_value(self, value):
         return isinstance(value, int)
+    
+    def is_default_value(self, value):
+        return self.__default == value
     
     def __str__(self):
         return "Integer"

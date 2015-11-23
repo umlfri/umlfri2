@@ -38,5 +38,8 @@ class UflEnumType(UflType):
     def is_valid_value(self, value):
         return value in self.__possibilities
     
+    def is_default_value(self, value):
+        return self.__default == value
+    
     def __str__(self):
         return 'Enum[{0}]'.format(", ".join(self.__possibilities))

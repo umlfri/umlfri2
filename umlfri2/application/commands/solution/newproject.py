@@ -1,5 +1,5 @@
 from umlfri2.application.events.solution import OpenProjectEvent
-from umlfri2.datalayer.loaders.projectloader import ProjectLoader
+from umlfri2.datalayer.loaders import ProjectLoader
 from ..base import Command
 
 
@@ -15,7 +15,6 @@ class NewProjectCommand(Command):
     
     def _do(self, ruler):
         self.__project = ProjectLoader(self.__template.load(), ruler, True, addon=self.__template.addon).load()
-        self.__project.name = 'Project'
         
         self._redo(ruler)
     

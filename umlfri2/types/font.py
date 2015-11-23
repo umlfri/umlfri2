@@ -34,6 +34,11 @@ class Font:
         else:
             return "{0} {1}".format(self.__family, self.__size)
     
+    def __eq__(self, other):
+        if isinstance(other, Font):
+            return self.__family == other.__family and self.__style == other.__style and self.__size == other.__size
+        return NotImplemented
+    
     @staticmethod
     def get_font(description):
         tmp = description.split()

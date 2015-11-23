@@ -19,6 +19,9 @@ class UflListType(UflType):
         
         return self.__item_type.is_same_as(other.__item_type)
     
+    def is_default_value(self, value):
+        return value.get_length() == 0
+    
     @property
     def is_immutable(self):
         return False

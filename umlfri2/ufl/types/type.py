@@ -30,6 +30,9 @@ class UflType:
     def is_valid_value(self, value):
         raise NotImplementedError
     
+    def is_default_value(self, value):
+        raise NotImplementedError
+    
     def __str__(self):
         return 'Type'
     

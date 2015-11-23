@@ -3,7 +3,7 @@ from .type import UflType
 
 class UflProportionType(UflType):
     def __init__(self, allow_over_one=False, default=None):
-        self.__default = default
+        self.__default = default or 1.
         self.__allow_over_one = allow_over_one
     
     @property
@@ -15,7 +15,7 @@ class UflProportionType(UflType):
         return self.__default
     
     def build_default(self, generator):
-        return self.__default or Colors.black
+        return self.__default
     
     def parse(self, value):
         if ':' in value:
@@ -44,6 +44,9 @@ class UflProportionType(UflType):
             return False
         
         return True
+    
+    def is_default_value(self, value):
+        return self.__default == value
     
     def __str__(self):
         return 'Proportion'

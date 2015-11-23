@@ -1,5 +1,6 @@
 from PySide.QtGui import QMenuBar, QAction, QMenu, QKeySequence, QIcon
 
+from umlfri2.application import Application
 from .newproject import NewProjectDialog
 
 
@@ -17,7 +18,7 @@ class MainWindowMenu(QMenuBar):
 
         self.__file_new = self.__add_menu_item(file_menu, "Ctrl+N", "document-new", self.__file_new_action)
         self.__file_open = self.__add_menu_item(file_menu, "Ctrl+O", "document-open")
-        self.__file_save = self.__add_menu_item(file_menu, "Ctrl+S", "document-save")
+        self.__file_save = self.__add_menu_item(file_menu, "Ctrl+S", "document-save", self.__file_save_action)
         self.__file_save_as = self.__add_menu_item(file_menu, None, "document-save-as")
         file_menu.addSeparator()
         self.__file_exit = self.__add_menu_item(file_menu, "Ctrl+Q", "application-exit", self.__file_exit_action)
@@ -46,6 +47,9 @@ class MainWindowMenu(QMenuBar):
     
     def __file_new_action(self, checked=False):
         NewProjectDialog.open_dialog(self.__main_window)
+    
+    def __file_save_action(self, checked=False):
+        Application().save_project()
     
     def __file_exit_action(self, checked=False):
         self.__main_window.close()

@@ -20,8 +20,14 @@ class DirectoryStorage(Storage):
         if mode != 'r' and self.__mode == 'r':
             raise ValueError("Storage is opened for read only")
         path = self.__fix_path(path)
-        if os.path.exists(path):
-            return open(path, mode + 'b')
+        if mode == 'w':
+            dir = os.path.dirname(path)
+            if not os.path.exists(dir):
+                os.makedirs(dir, exist_ok=True)
+            return open(path, 'wb')
+        else:
+            if os.path.exists(path):
+                return open(path, 'rb')
     
     def exists(self, path):
         path = self.__fix_path(path)
