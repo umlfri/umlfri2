@@ -2,10 +2,11 @@ from weakref import ref
 
 
 class Metamodel:
-    def __init__(self, diagrams, elements, connections):
+    def __init__(self, diagrams, elements, connections, templates):
         self.__diagrams = diagrams
         self.__elements = elements
         self.__connections = connections
+        self.__templates = templates
         
         self.__addon = None
         self.__config_structure = None
@@ -21,6 +22,9 @@ class Metamodel:
         
         for connection in self.__connections.values():
             connection._set_metamodel(self)
+        
+        for template in self.__templates:
+            template._set_metamodel(self)
     
     @property
     def addon(self):
@@ -37,6 +41,10 @@ class Metamodel:
     @property
     def connection_types(self):
         yield from self.__connections.values()
+    
+    @property
+    def templates(self):
+        yield from self.__templates
     
     def get_element_type(self, name):
         return self.__elements[name]

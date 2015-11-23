@@ -1,9 +1,12 @@
+from collections import namedtuple
+
 import lxml.etree
 
+from .templateloader import TemplateLoader
 from umlfri2.types.image import Image
 from .addoninfoloader import AddOnInfoLoader
 from umlfri2.addon import AddOn
-from ..constants import ADDON_NAMESPACE
+from ..constants import ADDON_NAMESPACE, MODEL_NAMESPACE
 from .elementtypeloader import ElementTypeLoader
 from .diagramtypeloader import DiagramTypeLoader
 from .connectiontypeloader import ConnectionTypeLoader
@@ -20,7 +23,7 @@ class AddOnLoader:
         
         metamodel = None
         if info.metamodel:
-            metamodel = self.__load_metamodel(self.__storage.create_substorage(info.metamodel))
+            metamodel = self.__load_metamodel(info, self.__storage.create_substorage(info.metamodel))
         
         if not self.__storage.exists(info.icon):
             raise Exception("Unknown icon {0}".format(info.icon))
@@ -35,40 +38,47 @@ class AddOnLoader:
         
         return ret
     
-    def __load_metamodel(self, storage):
+    def __load_metamodel(self, info, storage):
         elementXMLs = []
         connectionXMLs = []
         diagramXMLs = []
+        templateXMLs = []
         definitionXMLs = None # TODO: multiple definition files
         for file in storage.get_all_files():
             xml = lxml.etree.parse(storage.open(file)).getroot()
             if xml.tag == "{{{0}}}ElementType".format(ADDON_NAMESPACE):
-                elementXMLs.append(xml)
+                elementXMLs.append((file, xml))
             elif xml.tag == "{{{0}}}ConnectionType".format(ADDON_NAMESPACE):
-                connectionXMLs.append(xml)
+                connectionXMLs.append((file, xml))
             elif xml.tag == "{{{0}}}DiagramType".format(ADDON_NAMESPACE):
-                diagramXMLs.append(xml)
+                diagramXMLs.append((file, xml))
             elif xml.tag == "{{{0}}}Definitions".format(ADDON_NAMESPACE):
-                definitionXMLs = xml
+                definitionXMLs = (file, xml)
+            elif xml.tag == "{{{0}}}Project".format(MODEL_NAMESPACE):
+                templateXMLs.append((file, xml))
         
         if definitionXMLs is not None:
-            definitions = DefinitionsLoader(definitionXMLs).load()
+            definitions = DefinitionsLoader(definitionXMLs[1]).load()
         else:
             definitions = None
         
         connections = {}
-        for connection in connectionXMLs:
+        for file, connection in connectionXMLs:
             loaded = ConnectionTypeLoader(self.__storage, connection, definitions).load()
             connections[loaded.id] = loaded
         
         elements = {}
-        for element in elementXMLs:
+        for file, element in elementXMLs:
             loaded = ElementTypeLoader(self.__storage, element).load()
             elements[loaded.id] = loaded
         
         diagrams = {}
-        for diagram in diagramXMLs:
+        for file, diagram in diagramXMLs:
             loaded = DiagramTypeLoader(self.__storage, diagram, elements, connections).load()
             diagrams[loaded.id] = loaded
         
-        return Metamodel(diagrams, elements, connections)
+        templates = []
+        for file, template in templateXMLs:
+            templates.append(TemplateLoader(self.__storage, template, file, info.identifier).load())
+        
+        return Metamodel(diagrams, elements, connections, templates)
