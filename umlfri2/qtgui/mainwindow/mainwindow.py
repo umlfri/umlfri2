@@ -94,23 +94,23 @@ class UmlFriMainWindow(QMainWindow):
         return None
     
     def closeEvent(self, event):
+        if self.check_save():
+            event.accept()
+        else:
+            event.ignore()
+
+    def check_save(self):
         if Application().unsaved:
             resp = QMessageBox.question(self, _("Application exit"), _("Do you want to save the project?"),
                                         QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
                                         QMessageBox.Yes)
-            
+
             if resp == QMessageBox.Cancel:
-                event.ignore()
+                return False
             elif resp == QMessageBox.Yes:
-                if self.save_project():
-                    event.accept()
-                else:
-                    event.ignore()
-            else:
-                event.accept()
-        else:
-            event.accept()
-    
+                return self.save_project()
+        return True
+
     def get_dock_actions(self):
         yield self.__toolbox_dock.toggleViewAction()
         yield self.__project_dock.toggleViewAction()
