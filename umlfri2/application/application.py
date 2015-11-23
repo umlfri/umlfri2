@@ -87,6 +87,10 @@ class Application(metaclass=MetaApplication):
     def should_save_as(self):
         return self.__solution_storage_ref is None
     
+    @property
+    def can_save_project(self):
+        return self.__solution is not None and self.unsaved
+    
     def save_project(self):
         if self.__solution_storage_ref is None:
             raise Exception
@@ -95,6 +99,10 @@ class Application(metaclass=MetaApplication):
             WholeSolutionSaver(storage, self.__ruler).save(self.__solution)
         
         self.__commands.mark_unchanged()
+    
+    @property
+    def can_save_project_as(self):
+        return self.__solution is not None
     
     def save_project_as(self, filename):
         with ZipStorage.new_storage(filename) as storage:

@@ -15,6 +15,7 @@ class MainWindowMenu(QMenuBar):
         self.addAction(self.__file)
         file_menu = QMenu()
         self.__file.setMenu(file_menu)
+        file_menu.aboutToShow.connect(self.__file_enabled_reload)
 
         self.__file_new = self.__add_menu_item(file_menu, "Ctrl+N", "document-new", self.__file_new_action)
         self.__file_open = self.__add_menu_item(file_menu, "Ctrl+O", "document-open")
@@ -44,6 +45,10 @@ class MainWindowMenu(QMenuBar):
             ret.triggered.connect(action)
         menu.addAction(ret)
         return ret
+    
+    def __file_enabled_reload(self):
+        self.__file_save.setEnabled(Application().can_save_project)
+        self.__file_save_as.setEnabled(Application().can_save_project_as)
     
     def __file_new_action(self, checked=False):
         NewProjectDialog.open_dialog(self.__main_window)
