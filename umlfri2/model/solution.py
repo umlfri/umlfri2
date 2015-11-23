@@ -1,7 +1,10 @@
 class Solution:
     def __init__(self, project):
-        self.__project = project
+        self.__projects = [project]
+    
+    def add_project(self, project):
+        self.__projects.append(project)
     
     @property
     def children(self):
-        yield self.__project
+        yield from self.__projects

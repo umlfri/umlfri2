@@ -1,6 +1,10 @@
 from umlfri2.addon import AddOnManager
+from umlfri2.application.commands.solution import NewProjectCommand
+from umlfri2.application.events.solution import OpenSolutionEvent
 from umlfri2.application.tablist import TabList
 from umlfri2.datalayer import Storage
+from umlfri2.datalayer.loaders.projectloader import ProjectLoader
+from umlfri2.model import Solution
 from umlfri2.paths import ADDONS
 from .dispatcher import EventDispatcher
 from .commandprocessor import CommandProcessor
@@ -60,6 +64,12 @@ class Application(metaclass=MetaApplication):
             if addon.metamodel is not None:
                 yield from addon.metamodel.templates
     
-    @solution.setter
-    def solution(self, value):
-        self.__solution = value
+    def new_project(self, template, new_solution=True):
+        if new_solution:
+            project = ProjectLoader(template.load(), self.__ruler, addon=template.addon).load()
+            project.name = 'Project'
+            self.__solution = Solution(project)
+            self.__event_dispatcher.dispatch(OpenSolutionEvent(self.__solution))
+        else:
+            command = NewProjectCommand(self.__solution, template)
+            self.__commands.execute(command)

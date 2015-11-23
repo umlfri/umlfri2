@@ -1,0 +1,1 @@
+from .newproject import NewProjectCommand

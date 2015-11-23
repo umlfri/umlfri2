@@ -18,14 +18,6 @@ gettext.install('umlfri2')
 
 Application().use_ruler(QTRuler())
 
-project_loader = ProjectLoader(
-    lxml.etree.parse(open('addons/infjavauml/metamodel/templates/example.xml')).getroot(),
-    Application().ruler,
-    Application().addons
-)
-
-Application().solution = Solution(project_loader.load())
-
 window = UmlFriMainWindow()
 window.showMaximized()
 

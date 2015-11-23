@@ -2,7 +2,7 @@ import html
 
 from PySide.QtCore import Qt, QSize
 from PySide.QtGui import QDialog, QDialogButtonBox, QVBoxLayout, QListWidget, QLabel, QFont, QPalette, QSizePolicy, \
-    QListWidgetItem, QScrollArea
+    QListWidgetItem, QScrollArea, QCheckBox
 
 from umlfri2.application import Application
 from ..base import image_loader
@@ -17,6 +17,7 @@ class TemplateItem(QListWidgetItem):
     @property
     def template(self):
         return self.__template
+
 
 class NewProjectDialog(QDialog):
     def __init__(self, main_window):
@@ -37,6 +38,7 @@ class NewProjectDialog(QDialog):
         self.__templates.setViewMode(QListWidget.IconMode)
         self.__templates.setMovement(QListWidget.Static)
         self.__templates.currentItemChanged.connect(self.__selection_changed)
+        self.__templates.itemDoubleClicked.connect(self.__selection_double_clicked)
         
         self.__description = QLabel()
         self.__description.setStyleSheet("background-color: white")
@@ -44,8 +46,15 @@ class NewProjectDialog(QDialog):
         self.__description.setAlignment(Qt.AlignTop)
         self.__description.setWordWrap(True)
         
+        self.__new_solution = QCheckBox(_("Create a new solution"))
+        self.__new_solution.setChecked(True)
+        
+        if Application().solution is None:
+            self.__new_solution.setEnabled(False)
+        
         layout.addWidget(self.__templates)
         layout.addWidget(self.__description)
+        layout.addWidget(self.__new_solution)
         layout.addWidget(button_box)
         self.setLayout(layout)
         
@@ -63,9 +72,20 @@ class NewProjectDialog(QDialog):
         text += "<p>" + html.escape(current.template.addon.description).replace('\n', '</p><p>') + "</p>"
         self.__description.setText(text)
     
+    def __selection_double_clicked(self, item):
+        self.accept()
+    
+    @property
+    def selected_template(self):
+        return self.__templates.selectedItems()[0].template
+    
+    @property
+    def new_solution(self):
+        return self.__new_solution.isChecked()
+    
     @staticmethod
     def open_dialog(main_window):
         qt_dialog = NewProjectDialog(main_window)
         qt_dialog.setModal(True)
         if qt_dialog.exec_() == NewProjectDialog.Accepted:
-            pass
+            Application().new_project(qt_dialog.selected_template, qt_dialog.new_solution)

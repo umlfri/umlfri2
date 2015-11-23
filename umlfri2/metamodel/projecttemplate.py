@@ -27,3 +27,6 @@ class ProjectTemplate:
     @property
     def addon(self):
         return self.__metamodel.addon
+    
+    def load(self):
+        return self.__storage.open(self.__path)

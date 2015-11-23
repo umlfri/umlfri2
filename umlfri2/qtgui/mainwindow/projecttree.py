@@ -6,6 +6,7 @@ from umlfri2.application import Application
 from umlfri2.application.commands.model import CreateElementCommand, CreateDiagramCommand
 from umlfri2.application.events.model import ElementCreatedEvent, ObjectChangedEvent, DiagramCreatedEvent, \
     ProjectChangedEvent
+from umlfri2.application.events.solution import OpenProjectEvent, OpenSolutionEvent
 from umlfri2.model import Diagram, ElementObject, Project
 from umlfri2.qtgui.properties import PropertiesDialog, ProjectPropertiesDialog
 from ..base import image_loader
@@ -55,17 +56,25 @@ class ProjectTree(QTreeWidget):
         Application().event_dispatcher.register(DiagramCreatedEvent, self.__diagram_created)
         Application().event_dispatcher.register(ObjectChangedEvent, self.__object_changed)
         Application().event_dispatcher.register(ProjectChangedEvent, self.__project_changed)
+        Application().event_dispatcher.register(OpenProjectEvent, self.__project_open)
+        Application().event_dispatcher.register(OpenSolutionEvent, self.__solution_open)
     
     def reload(self):
         self.clear()
+        
+        if Application().solution is None:
+            return
+        
         for project in Application().solution.children:
-            item = ProjectTreeItem(self, project)
-            
-            for element in project.children:
-                self.__reload_element(item, element)
-            item.setExpanded(True)
-            self.addTopLevelItem(item)
-    
+            self.__reload_project(project)
+
+    def __reload_project(self, project):
+        item = ProjectTreeItem(self, project)
+        for element in project.children:
+            self.__reload_element(item, element)
+        item.setExpanded(True)
+        self.addTopLevelItem(item)
+
     def __reload_element(self, parent, element):
         item = ProjectTreeItem(parent, element)
         
@@ -200,6 +209,12 @@ class ProjectTree(QTreeWidget):
         command = CreateDiagramCommand(parent, element_type)
         Application().commands.execute(command)
         Application().tabs.select_tab(command.diagram)
+    
+    def __solution_open(self, event):
+        self.reload()
+    
+    def __project_open(self, event):
+        self.__reload_project(event.project)
     
     def __get_item(self, element):
         if element.parent is None:

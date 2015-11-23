@@ -1,3 +1,5 @@
+import lxml.etree
+
 from umlfri2.types.geometry import Point, Size
 from umlfri2.ufl.types import UflObjectType, UflListType
 from ..constants import MODEL_NAMESPACE, MODEL_SCHEMA
@@ -7,11 +9,13 @@ from umlfri2.model import Project
 class ProjectLoader:
     # TODO: ignore incorrect attributes
     
-    def __init__(self, xmlroot, ruler, addon_manager):
-        self.__xmlroot = xmlroot
-        if not MODEL_SCHEMA.validate(xmlroot):
+    def __init__(self, xmlfile, ruler, addon=None, addon_manager=None):
+        self.__xmlroot = lxml.etree.parse(xmlfile).getroot()
+        
+        if not MODEL_SCHEMA.validate(self.__xmlroot):
             raise Exception("Cannot load project: {0}".format(MODEL_SCHEMA.error_log.last_error))
         
+        self.__addon = addon
         self.__addon_manager = addon_manager
         self.__connections = []
         self.__visuals = []
@@ -56,9 +60,15 @@ class ProjectLoader:
             else:
                 raise Exception
         
+        if self.__addon is not None and self.__addon.identifier == metamodel:
+            addon = self.__addon
+        elif self.__addon_manager is not None:
+            addon = self.__addon_manager.get_addon(metamodel)
+        else:
+            addon = None
+        
         # TODO: check version and raise warning if needed
         
-        addon = self.__addon_manager.get_addon(metamodel)
         if addon is None or addon.metamodel is None:
             raise Exception("AddOn not found")
         
