@@ -84,6 +84,9 @@ class UmlFriMainWindow(QMainWindow):
             if widget.diagram is event.object:
                 self.__tabs.setTabText(widget_id, widget.diagram.get_display_name())
                 return
+
+    def createPopupMenu(self):
+        return None
     
     def reload_texts(self):
         self.setWindowTitle(_("UML .FRI 2"))
