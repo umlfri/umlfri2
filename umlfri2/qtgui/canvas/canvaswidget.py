@@ -87,7 +87,8 @@ class CanvasWidget(QWidget):
     def dragEnterEvent(self, event):
         mime_data = event.mimeData()
         if isinstance(mime_data, ProjectMimeData) and isinstance(mime_data.model_object, ElementObject):
-            event.acceptProposedAction()
+            if mime_data.model_object.project is self.diagram.parent.project:
+                event.acceptProposedAction()
     
     def dropEvent(self, event):
         mime_data = event.mimeData()
