@@ -38,7 +38,7 @@ class MainWindowMenu(QMenuBar):
         if icon is not None:
             ret.setIcon(QIcon.fromTheme(icon))
         if action is not None:
-            menu.triggered.connect(action)
+            ret.triggered.connect(action)
         menu.addAction(ret)
         return ret
     
