@@ -1,5 +1,7 @@
 from collections import namedtuple
 
+import re
+
 from ..constants import ADDON_NAMESPACE, ADDON_SCHEMA
 from .structureloader import UflStructureLoader
 from umlfri2.types.version import Version
@@ -9,6 +11,7 @@ AddOnInfo = namedtuple('AddOnInfo', ('identifier', 'name', 'version', 'author', 
 
 
 class AddOnInfoLoader:
+    __SPACES = re.compile('\\s+')
     def __init__(self, xmlroot):
         self.__xmlroot = xmlroot
         if not ADDON_SCHEMA.validate(xmlroot):
@@ -43,7 +46,7 @@ class AddOnInfoLoader:
                     elif childchild.tag == "{{{0}}}Icon".format(ADDON_NAMESPACE):
                         icon = childchild.attrib["path"]
                     elif childchild.tag == "{{{0}}}Description".format(ADDON_NAMESPACE):
-                        description = childchild.text
+                        description = self.__format_text(childchild.text)
                     else:
                         raise Exception
             elif child.tag == "{{{0}}}Config".format(ADDON_NAMESPACE):
@@ -56,3 +59,15 @@ class AddOnInfoLoader:
                 raise Exception
         
         return AddOnInfo(identifier, name, version, author, homepage, license, icon, description, config, translations, metamodel)
+    
+    def __format_text(self, text):
+        current_text = []
+        current_line = []
+        for line in text.splitlines():
+            line = self.__SPACES.sub(' ', line.strip())
+            if line:
+                current_line.append(line)
+            elif current_line:
+                current_text.append(' '.join(current_line))
+                current_line = []
+        return '\n'.join(current_text)

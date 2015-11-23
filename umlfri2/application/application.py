@@ -54,6 +54,12 @@ class Application(metaclass=MetaApplication):
     def tabs(self):
         return self.__tabs
     
+    @property
+    def templates(self):
+        for addon in self.__addons:
+            if addon.metamodel is not None:
+                yield from addon.metamodel.templates
+    
     @solution.setter
     def solution(self, value):
         self.__solution = value

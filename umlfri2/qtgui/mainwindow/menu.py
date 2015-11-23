@@ -1,5 +1,7 @@
 from PySide.QtGui import QMenuBar, QAction, QMenu, QKeySequence, QIcon
 
+from .newproject import NewProjectDialog
+
 
 class MainWindowMenu(QMenuBar):
     def __init__(self, main_window): 
@@ -13,7 +15,7 @@ class MainWindowMenu(QMenuBar):
         file_menu = QMenu()
         self.__file.setMenu(file_menu)
 
-        self.__file_new = self.__add_menu_item(file_menu, "Ctrl+N", "document-new")
+        self.__file_new = self.__add_menu_item(file_menu, "Ctrl+N", "document-new", self.__file_new_action)
         self.__file_open = self.__add_menu_item(file_menu, "Ctrl+O", "document-open")
         self.__file_save = self.__add_menu_item(file_menu, "Ctrl+S", "document-save")
         self.__file_save_as = self.__add_menu_item(file_menu, None, "document-save-as")
@@ -41,6 +43,9 @@ class MainWindowMenu(QMenuBar):
             ret.triggered.connect(action)
         menu.addAction(ret)
         return ret
+    
+    def __file_new_action(self, checked=False):
+        NewProjectDialog.open_dialog(self.__main_window)
     
     def __file_exit_action(self, checked=False):
         self.__main_window.close()

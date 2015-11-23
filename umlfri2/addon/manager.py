@@ -13,3 +13,6 @@ class AddOnManager:
         for addon in self.__addons:
             if addon.identifier == identifier:
                 return addon
+    
+    def __iter__(self):
+        yield from self.__addons

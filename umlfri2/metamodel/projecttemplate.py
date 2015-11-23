@@ -23,3 +23,7 @@ class ProjectTemplate:
     @property
     def path(self):
         return self.__path
+    
+    @property
+    def addon(self):
+        return self.__metamodel.addon
