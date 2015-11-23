@@ -25,6 +25,7 @@
                 <xs:element name="Element" type="element" minOccurs="0" maxOccurs="unbounded"/>
             </xs:sequence>
             <xs:attribute name="saveversion" type="version" use="required"/>
+            <xs:attribute name="id" type="xs:string" use="required"/>
         </xs:complexType>
     </xs:element>
     <xs:complexType name="element">

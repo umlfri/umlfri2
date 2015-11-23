@@ -1,3 +1,5 @@
+from uuid import UUID
+
 import lxml.etree
 
 from umlfri2.types.geometry import Point, Size
@@ -9,11 +11,13 @@ from umlfri2.model import Project
 class ProjectLoader:
     # TODO: ignore incorrect attributes
     
-    def __init__(self, xmlfile, ruler, addon=None, addon_manager=None):
+    def __init__(self, xmlfile, ruler, new_project, addon=None, addon_manager=None):
         self.__xmlroot = lxml.etree.parse(xmlfile).getroot()
         
         if not MODEL_SCHEMA.validate(self.__xmlroot):
             raise Exception("Cannot load project: {0}".format(MODEL_SCHEMA.error_log.last_error))
+        
+        self.__new_project = new_project
         
         self.__addon = addon
         self.__addon_manager = addon_manager
@@ -26,10 +30,14 @@ class ProjectLoader:
     
     def load(self):
         project = None
+        if self.__new_project:
+            save_id = None
+        else:
+            save_id = UUID(self.__xmlroot.attrib["id"])
         
         for node in self.__xmlroot:
             if node.tag == "{{{0}}}Info".format(MODEL_NAMESPACE):
-                project = self.__load_info(node)
+                project = self.__load_info(node, save_id)
             elif node.tag == "{{{0}}}Element".format(MODEL_NAMESPACE):
                 self.__load_element(project, project, node)
             else:
@@ -46,14 +54,15 @@ class ProjectLoader:
         
         return project
 
-    def __load_info(self, node):
+    def __load_info(self, node, save_id):
         metamodel = None
         metamodel_version = None
         name = None
         
         for child in node:
             if child.tag == "{{{0}}}Name".format(MODEL_NAMESPACE):
-                name = child.attrib["name"]
+                if not self.__new_project:
+                    name = child.attrib["name"]
             elif child.tag == "{{{0}}}Metamodel".format(MODEL_NAMESPACE):
                 metamodel = child.attrib["id"]
                 metamodel_version = child.attrib["version"]
@@ -72,11 +81,11 @@ class ProjectLoader:
         if addon is None or addon.metamodel is None:
             raise Exception("AddOn not found")
         
-        return Project(addon.metamodel, name)
+        return Project(addon.metamodel, name, save_id)
 
     def __load_element(self, project, parent, node):
         type = project.metamodel.get_element_type(node.attrib["type"])
-        save_id = node.attrib["id"]
+        save_id = UUID(node.attrib["id"])
         
         element = parent.create_child_element(type, save_id)
         self.__element_map[element.save_id] = element
@@ -99,8 +108,8 @@ class ProjectLoader:
     
     def __load_connection(self, project, element, node):
         type = project.metamodel.get_connection_type(node.attrib["type"])
-        save_id = node.attrib["id"]
-        to = self.__element_map[node.attrib["to"]]
+        save_id = UUID(node.attrib["id"])
+        to = self.__element_map[UUID(node.attrib["to"])]
         
         connection = element.connect_with(type, to, save_id)
         self.__connection_map[connection.save_id] = connection
@@ -117,7 +126,7 @@ class ProjectLoader:
     
     def __load_diagram(self, project, parent, node):
         type = project.metamodel.get_diagram_type(node.attrib["type"])
-        save_id = node.attrib["id"]
+        save_id = UUID(node.attrib["id"])
         
         diagram = parent.create_child_diagram(type, save_id)
         ufl_object = diagram.data.make_mutable()
@@ -165,14 +174,14 @@ class ProjectLoader:
     def __load_element_visual(self, diagram, node):
         position = Point(int(node.attrib["x"]), int(node.attrib["y"]))
         size = Size(int(node.attrib["width"]), int(node.attrib["height"]))
-        element = self.__element_map[node.attrib["id"]]
+        element = self.__element_map[UUID(node.attrib["id"])]
         
         visual = diagram.show(element)
         visual.move(self.__ruler, position)
         visual.resize(self.__ruler, size)
 
     def __load_connection_visual(self, diagram, node):
-        connection = self.__connection_map[node.attrib["id"]]
+        connection = self.__connection_map[UUID(node.attrib["id"])]
         
         visual = diagram.show(connection)
         

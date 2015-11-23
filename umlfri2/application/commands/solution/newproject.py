@@ -14,7 +14,7 @@ class NewProjectCommand(Command):
         return "Creating a new project from template '{0}'".format(self.__template_name)
     
     def _do(self, ruler):
-        self.__project = ProjectLoader(self.__template.load(), ruler, addon=self.__template.addon).load()
+        self.__project = ProjectLoader(self.__template.load(), ruler, True, addon=self.__template.addon).load()
         self.__project.name = 'Project'
         
         self._redo(ruler)

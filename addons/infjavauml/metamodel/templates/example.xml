@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project xmlns="http://umlfri.org/v2/model.xsd" saveversion="2.0">
+<Project id="4d78dc5e-9208-11e5-89a7-88ae1da9fec3" xmlns="http://umlfri.org/v2/model.xsd" saveversion="2.0">
     <Info>
         <Name name="Testing UML model"/>
         <Metamodel id="urn:umlfri.org:metamodel:infjavauml" version="0.1"/>

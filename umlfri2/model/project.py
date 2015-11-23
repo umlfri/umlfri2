@@ -1,14 +1,20 @@
+from uuid import uuid4
+
 from umlfri2.model import ElementObject
 
 
 class Project:
-    def __init__(self, metamodel, name=None):
+    def __init__(self, metamodel, name=None, save_id=None):
         if name is None:
             self.__name = "Project"
         else:
             self.__name = name
         self.__metamodel = metamodel
         self.__children = []
+        if save_id is None:
+            self.__save_id = uuid4()
+        else:
+            self.__save_id = save_id
     
     @property
     def parent(self):
@@ -32,6 +38,10 @@ class Project:
     @property
     def children(self):
         yield from self.__children
+    
+    @property
+    def save_id(self):
+        return self.__save_id
     
     def create_child_element(self, type, save_id=None):
         obj = ElementObject(self, type, save_id)

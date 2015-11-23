@@ -71,7 +71,7 @@ class Application(metaclass=MetaApplication):
     
     def new_project(self, template, new_solution=True):
         if new_solution:
-            project = ProjectLoader(template.load(), self.__ruler, addon=template.addon).load()
+            project = ProjectLoader(template.load(), self.__ruler, True, addon=template.addon).load()
             project.name = 'Project'
             self.__solution = Solution(project)
             self.__event_dispatcher.dispatch(OpenSolutionEvent(self.__solution))
