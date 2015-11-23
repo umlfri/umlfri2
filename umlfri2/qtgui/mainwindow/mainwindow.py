@@ -1,6 +1,5 @@
 from PySide.QtCore import Qt
-from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget
-
+from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget, QMessageBox
 from umlfri2.application import Application
 from umlfri2.application.events.model import ObjectChangedEvent
 from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent
@@ -91,6 +90,22 @@ class UmlFriMainWindow(QMainWindow):
 
     def createPopupMenu(self):
         return None
+    
+    def closeEvent(self, event):
+        if not Application().commands.is_empty:
+            resp = QMessageBox.question(self, _("Application exit"), _("Do you want to save the project?"),
+                                        QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
+                                        QMessageBox.Yes)
+            
+            if resp == QMessageBox.Cancel:
+                event.ignore()
+            elif resp == QMessageBox.Yes:
+                # TODO: save
+                event.accept()
+            else:
+                event.accept()
+        else:
+            event.accept()
     
     def get_dock_actions(self):
         yield self.__toolbox_dock.toggleViewAction()

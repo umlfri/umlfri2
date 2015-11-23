@@ -61,3 +61,7 @@ class CommandProcessor:
             return True
         else:
             return False
+    
+    @property
+    def is_empty(self):
+        return not self.__undo_stack and not self.__redo_stack

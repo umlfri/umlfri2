@@ -18,7 +18,7 @@ class MainWindowMenu(QMenuBar):
         self.__file_save = self.__add_menu_item(file_menu, "Ctrl+S", "document-save")
         self.__file_save_as = self.__add_menu_item(file_menu, None, "document-save-as")
         file_menu.addSeparator()
-        self.__file_exit = self.__add_menu_item(file_menu, "Ctrl+Q", "application-exit")
+        self.__file_exit = self.__add_menu_item(file_menu, "Ctrl+Q", "application-exit", self.__file_exit_action)
         
         # VIEW MENU
         self.__view = QAction(None)
@@ -31,15 +31,20 @@ class MainWindowMenu(QMenuBar):
         
         self.reload_texts()
 
-    def __add_menu_item(self, menu, shortcut, icon):
+    def __add_menu_item(self, menu, shortcut, icon, action=None):
         ret = QAction(None)
         if shortcut is not None:
             ret.setShortcut(QKeySequence(shortcut))
         if icon is not None:
             ret.setIcon(QIcon.fromTheme(icon))
+        if action is not None:
+            menu.triggered.connect(action)
         menu.addAction(ret)
         return ret
-
+    
+    def __file_exit_action(self, checked=False):
+        self.__main_window.close()
+    
     def reload_texts(self):
         self.__file.setText(_("&File"))
         self.__file_new.setText(_("&New"))
