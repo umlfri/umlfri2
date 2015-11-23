@@ -28,6 +28,7 @@ class Application(metaclass=MetaApplication):
         self.__tabs = TabList(self)
         self.__solution = None
         self.__ruler = None
+        self.__solution_path = None
     
     def use_ruler(self, ruler):
         if self.__ruler is not None:
@@ -57,6 +58,10 @@ class Application(metaclass=MetaApplication):
     @property
     def tabs(self):
         return self.__tabs
+    
+    @property
+    def unsaved(self):
+        return (not self.__commands.is_empty) or (self.__solution is not None and self.__solution_path is None)
     
     @property
     def templates(self):

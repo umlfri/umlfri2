@@ -92,7 +92,7 @@ class UmlFriMainWindow(QMainWindow):
         return None
     
     def closeEvent(self, event):
-        if not Application().commands.is_empty:
+        if Application().unsaved:
             resp = QMessageBox.question(self, _("Application exit"), _("Do you want to save the project?"),
                                         QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
                                         QMessageBox.Yes)
