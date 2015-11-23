@@ -5,6 +5,7 @@ from umlfri2.application import Application
 from umlfri2.application.events.model import ObjectChangedEvent
 from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent
 from umlfri2.model import Diagram
+from .menu import MainWindowMenu
 from .propertieswidget import PropertiesWidget
 from .toolbox import ToolBox
 from ..base import image_loader
@@ -39,6 +40,9 @@ class UmlFriMainWindow(QMainWindow):
         self.addDockWidget(Qt.RightDockWidgetArea, self.__properties_dock)
         self.__properties = PropertiesWidget()
         self.__properties_dock.setWidget(self.__properties)
+        
+        self.__menu_bar = MainWindowMenu(self)
+        self.setMenuBar(self.__menu_bar)
         
         self.reload_texts()
         
@@ -88,6 +92,11 @@ class UmlFriMainWindow(QMainWindow):
     def createPopupMenu(self):
         return None
     
+    def get_dock_actions(self):
+        yield self.__toolbox_dock.toggleViewAction()
+        yield self.__project_dock.toggleViewAction()
+        yield self.__properties_dock.toggleViewAction()
+    
     def reload_texts(self):
         self.setWindowTitle(_("UML .FRI 2"))
         
@@ -98,3 +107,5 @@ class UmlFriMainWindow(QMainWindow):
         self.__toolbox.reload_texts()
         self.__project_tree.reload_texts()
         self.__properties.reload_texts()
+        
+        self.__menu_bar.reload_texts()
