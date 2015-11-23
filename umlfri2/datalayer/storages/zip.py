@@ -3,7 +3,18 @@ import zipfile
 import itertools
 from io import BytesIO
 
-from .storage import Storage
+from .storage import Storage, StorageReference
+
+
+class ZipStorageReference(StorageReference):
+    def __init__(self, zip_path, path, mode):
+        self.__zip_path = zip_path
+        self.__path = path
+        self.__mode = mode
+    
+    def open(self):
+        z = open(self.__zip_path, self.__mode + 'b')
+        return ZipStorage(self.__zip_path, zipfile.ZipFile(z, mode=self.__mode), self.__path, self.__mode)
 
 
 class ZipFileWriter(BytesIO):
@@ -52,10 +63,17 @@ class ZipStorage(Storage):
             zip_path.append(file_path.pop(0))
             
             if zipfile.is_zipfile(os.path.join(*zip_path)):
-                z = open(os.path.join(*zip_path), mode+'b')
-                return ZipStorage(zipfile.ZipFile(z, mode=mode), file_path, mode)
-        
-    def __init__(self, zip_file, path, mode):
+                z_path = os.path.join(*zip_path)
+                z = open(z_path, mode+'b')
+                return ZipStorage(z_path, zipfile.ZipFile(z, mode=mode), file_path, mode)
+    
+    @staticmethod
+    def new_storage(path):
+        z = open(path, 'wb')
+        return ZipStorage(path, zipfile.ZipFile(z, mode='w'), [], 'w')
+    
+    def __init__(self, zip_path, zip_file, path, mode):
+        self.__zip_path = zip_path
         self.__zip_file = zip_file
         self.__path = path
         self.__mode = mode
@@ -79,13 +97,19 @@ class ZipStorage(Storage):
     
     def create_substorage(self, path):
         if self.__dir_exists(path):
-            return ZipStorage(self.__zip_file, self.__fix_path_list(path))
+            return ZipStorage(self.__zip_path, self.__zip_file, self.__fix_path_list(path))
     
     def get_all_files(self):
         path = self.__fix_path('')
         for name in self.__zip_file.namelist():
             if name.startswith(path) and not name.endswith('/'):
                 yield name[len(path):]
+    
+    def remember_reference(self):
+        return ZipStorageReference(self.__zip_path, self.__path, self.__mode)
+    
+    def close(self):
+        self.__zip_file.close()
     
     def __dir_exists(self, path):
         return (self.__fix_path(path) + '/') in self.__zip_file.namelist()

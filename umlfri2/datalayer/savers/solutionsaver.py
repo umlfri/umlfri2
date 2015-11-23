@@ -17,4 +17,5 @@ class SolutionSaver:
             root.append(project_xml)
         
         tree = lxml.etree.ElementTree(root)
-        tree.write(self.__storage.open(self.__path, "w"), pretty_print=True, encoding="UTF-8", xml_declaration=True)
+        with self.__storage.open(self.__path, "w") as file:
+            tree.write(file, pretty_print=True, encoding="UTF-8", xml_declaration=True)

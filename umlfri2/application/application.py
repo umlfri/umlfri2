@@ -5,6 +5,7 @@ from umlfri2.application.tablist import TabList
 from umlfri2.datalayer import Storage
 from umlfri2.datalayer.loaders import ProjectLoader
 from umlfri2.datalayer.savers import WholeSolutionSaver
+from umlfri2.datalayer.storages import ZipStorage
 from umlfri2.model import Solution
 from umlfri2.paths import ADDONS
 from .dispatcher import EventDispatcher
@@ -29,7 +30,7 @@ class Application(metaclass=MetaApplication):
         self.__tabs = TabList(self)
         self.__solution = None
         self.__ruler = None
-        self.__solution_path = None
+        self.__solution_storage_ref = None
     
     def use_ruler(self, ruler):
         if self.__ruler is not None:
@@ -62,7 +63,7 @@ class Application(metaclass=MetaApplication):
     
     @property
     def unsaved(self):
-        return (not self.__commands.is_empty) or (self.__solution is not None and self.__solution_path is None)
+        return self.__commands.changed or (self.__solution is not None and self.__solution_storage_ref is None)
     
     @property
     def templates(self):
@@ -75,10 +76,29 @@ class Application(metaclass=MetaApplication):
             project = ProjectLoader(template.load(), self.__ruler, True, addon=template.addon).load()
             self.__solution = Solution(project)
             self.__event_dispatcher.dispatch(OpenSolutionEvent(self.__solution))
+            self.__solution_storage_ref = None
+            self.__commands.clear_buffers()
+            self.__commands.mark_unchanged()
         else:
             command = NewProjectCommand(self.__solution, template)
             self.__commands.execute(command)
     
+    @property
+    def should_save_as(self):
+        return self.__solution_storage_ref is None
+    
     def save_project(self):
-        pass
-
+        if self.__solution_storage_ref is None:
+            raise Exception
+        
+        with self.__solution_storage_ref.open() as storage:
+            WholeSolutionSaver(storage, self.__ruler).save(self.__solution)
+        
+        self.__commands.mark_unchanged()
+    
+    def save_project_as(self, filename):
+        with ZipStorage.new_storage(filename) as storage:
+            WholeSolutionSaver(storage, self.__ruler).save(self.__solution)
+            self.__solution_storage_ref = storage.remember_reference()
+        
+        self.__commands.mark_unchanged()

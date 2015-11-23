@@ -1,5 +1,7 @@
+import os.path
+
 from PySide.QtCore import Qt
-from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget, QMessageBox
+from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget, QMessageBox, QFileDialog
 from umlfri2.application import Application
 from umlfri2.application.events.model import ObjectChangedEvent
 from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent
@@ -100,8 +102,10 @@ class UmlFriMainWindow(QMainWindow):
             if resp == QMessageBox.Cancel:
                 event.ignore()
             elif resp == QMessageBox.Yes:
-                # TODO: save
-                event.accept()
+                if self.save_project():
+                    event.accept()
+                else:
+                    event.ignore()
             else:
                 event.accept()
         else:
@@ -111,6 +115,23 @@ class UmlFriMainWindow(QMainWindow):
         yield self.__toolbox_dock.toggleViewAction()
         yield self.__project_dock.toggleViewAction()
         yield self.__properties_dock.toggleViewAction()
+    
+    def save_project(self):
+        if Application().should_save_as:
+            return self.save_project_as()
+        else:
+            Application().save_project()
+            return True
+    
+    def save_project_as(self):
+        file_name, filter = QFileDialog.getSaveFileName(self, filter = _("UML .FRI 2 projects") + "(*.frip2)")
+        if file_name:
+            if '.' not in os.path.basename(file_name):
+                file_name = file_name + '.frip2'
+            Application().save_project_as(file_name)
+            return True # the project was saved
+        else:
+            return False # the project was not saved
     
     def reload_texts(self):
         self.setWindowTitle(_("UML .FRI 2"))

@@ -1,6 +1,15 @@
 import os
 import os.path
-from .storage import Storage
+from .storage import Storage, StorageReference
+
+
+class DirectoryStorageReference(StorageReference):
+    def __init__(self, path, mode):
+        self.__path = path
+        self.__mode = mode
+    
+    def open(self):
+        return DirectoryStorage(self.__path, self.__mode)
 
 
 class DirectoryStorage(Storage):
@@ -48,3 +57,9 @@ class DirectoryStorage(Storage):
             return self.__path
         
         return os.path.join(self.__path, path)
+    
+    def remember_reference(self):
+        return DirectoryStorageReference(self.__path, self.__mode)
+    
+    def close(self):
+        pass

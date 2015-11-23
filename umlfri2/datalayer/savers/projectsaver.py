@@ -31,7 +31,8 @@ class ProjectSaver:
             root.append(self.__element_to_xml(element))
         
         tree = lxml.etree.ElementTree(root)
-        tree.write(self.__storage.open(self.__path, "w"), pretty_print=True, encoding="UTF-8", xml_declaration=True)
+        with self.__storage.open(self.__path, "w") as file:
+            tree.write(file, pretty_print=True, encoding="UTF-8", xml_declaration=True)
     
     def __element_to_xml(self, element):
         xml = lxml.etree.Element('{{{0}}}Element'.format(MODEL_NAMESPACE))

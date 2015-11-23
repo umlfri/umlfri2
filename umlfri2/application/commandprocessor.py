@@ -6,6 +6,7 @@ class CommandProcessor:
         self.__undo_stack = []
         self.__redo_stack = []
         self.__application = application
+        self.__unchanged_command = None
     
     def execute(self, command):
         command.do(self.__application.ruler)
@@ -63,5 +64,14 @@ class CommandProcessor:
             return False
     
     @property
-    def is_empty(self):
-        return not self.__undo_stack and not self.__redo_stack
+    def changed(self):
+        if self.__undo_stack:
+            return self.__unchanged_command is None or self.__undo_stack[-1] is not self.__unchanged_command
+        else:
+            return self.__unchanged_command is not None
+    
+    def mark_unchanged(self):
+        if self.__undo_stack:
+            self.__unchanged_command = self.__undo_stack[-1]
+        else:
+            self.__unchanged_command = None

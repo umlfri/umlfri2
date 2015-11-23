@@ -1,3 +1,7 @@
+class StorageReference:
+    def open(self):
+        raise NotImplementedError
+
 class Storage:
     @staticmethod
     def create_storage(path, mode='r'):
@@ -20,3 +24,15 @@ class Storage:
     
     def get_all_files(self):
         raise NotImplementedError
+    
+    def remember_reference(self):
+        raise NotImplementedError
+    
+    def close(self):
+        raise NotImplementedError
+    
+    def __enter__(self):
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
