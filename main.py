@@ -15,7 +15,10 @@ from umlfri2.qtgui import UmlFriMainWindow
 
 if os.name == 'nt':
     import ctypes
-    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("FriUniza.UmlFri.{0}".format(Application().VERSION))
+    SetCurrentProcessExplicitAppUserModelID = getattr(ctypes.windll.shell32, 'SetCurrentProcessExplicitAppUserModelID', None)
+    
+    if SetCurrentProcessExplicitAppUserModelID is not None:
+        SetCurrentProcessExplicitAppUserModelID("FriUniza.UmlFri.{0}".format(Application().VERSION))
 
 app = QApplication(sys.argv)
 
