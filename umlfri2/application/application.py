@@ -1,6 +1,6 @@
 from umlfri2.addon import AddOnManager
 from umlfri2.application.commands.solution import NewProjectCommand
-from umlfri2.application.events.solution import OpenSolutionEvent
+from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent
 from umlfri2.application.tablist import TabList
 from umlfri2.datalayer import Storage
 from umlfri2.datalayer.loaders import ProjectLoader
@@ -98,6 +98,8 @@ class Application(metaclass=MetaApplication):
         with self.__solution_storage_ref.open() as storage:
             WholeSolutionSaver(storage, self.__ruler).save(self.__solution)
         
+        self.__event_dispatcher.dispatch(SaveSolutionEvent(self.__solution))
+        
         self.__commands.mark_unchanged()
     
     @property
@@ -108,5 +110,7 @@ class Application(metaclass=MetaApplication):
         with ZipStorage.new_storage(filename) as storage:
             WholeSolutionSaver(storage, self.__ruler).save(self.__solution)
             self.__solution_storage_ref = storage.remember_reference()
+        
+        self.__event_dispatcher.dispatch(SaveSolutionEvent(self.__solution))
         
         self.__commands.mark_unchanged()

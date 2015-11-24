@@ -11,6 +11,8 @@ class EventDispatcher:
     def dispatch(self, event):
         for function in self.__events.get(event.__class__, ()):
             function(event)
+        for function in self.__events.get(None, ()):
+            function(event)
     
     def dispatch_all(self, events):
         for event in events:
