@@ -8,6 +8,7 @@ from umlfri2.datalayer.savers import WholeSolutionSaver
 from umlfri2.datalayer.storages import ZipStorage
 from umlfri2.model import Solution
 from umlfri2.paths import ADDONS
+from umlfri2.types.version import Version
 from .dispatcher import EventDispatcher
 from .commandprocessor import CommandProcessor
 
@@ -23,6 +24,8 @@ class MetaApplication(type):
 
 
 class Application(metaclass=MetaApplication):
+    VERSION = Version("2.0")
+
     def __init__(self):
         self.__event_dispatcher = EventDispatcher()
         self.__commands = CommandProcessor(self)

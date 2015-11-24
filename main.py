@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import gettext
+import os
 import sys
 
 import lxml.etree
@@ -11,6 +12,10 @@ from umlfri2.datalayer.loaders.projectloader import ProjectLoader
 from umlfri2.model import Solution
 from umlfri2.qtgui.base.qtruler import QTRuler
 from umlfri2.qtgui import UmlFriMainWindow
+
+if os.name == 'nt':
+    import ctypes
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("FriUniza.UmlFri.{0}".format(Application().VERSION))
 
 app = QApplication(sys.argv)
 
