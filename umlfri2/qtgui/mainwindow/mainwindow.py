@@ -1,11 +1,12 @@
 import os.path
 
 from PySide.QtCore import Qt
-from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget, QMessageBox, QFileDialog
+from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget, QMessageBox, QFileDialog, QIcon
 from umlfri2.application import Application
 from umlfri2.application.events.model import ObjectChangedEvent
 from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent
 from umlfri2.model import Diagram
+from umlfri2.paths import GRAPHICS
 from .menu import MainWindowMenu
 from .propertieswidget import PropertiesWidget
 from .toolbox import ToolBox
@@ -17,6 +18,7 @@ from ..canvas import CanvasWidget
 class UmlFriMainWindow(QMainWindow):
     def __init__(self): 
         super().__init__()
+        self.setWindowIcon(QIcon(os.path.join(GRAPHICS, "icon", "icon.ico")))
         self.__tabs = QTabWidget()
         self.__tabs.setTabsClosable(True)
         self.setCentralWidget(self.__tabs)
