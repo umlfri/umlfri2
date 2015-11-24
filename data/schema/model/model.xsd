@@ -2,5 +2,6 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://umlfri.org/v2/model.xsd"
            targetNamespace="http://umlfri.org/v2/model.xsd" elementFormDefault="qualified"
            attributeFormDefault="unqualified">
+    <xs:include schemaLocation="solution.xsd"/>
     <xs:include schemaLocation="project.xsd"/>
 </xs:schema>

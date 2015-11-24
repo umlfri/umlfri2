@@ -61,7 +61,7 @@
             <xs:element name="Connection" minOccurs="0" maxOccurs="unbounded">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="Point">
+                        <xs:element name="Point" minOccurs="0" maxOccurs="unbounded">
                             <xs:complexType>
                                 <xs:attribute name="x" type="xs:integer"/>
                                 <xs:attribute name="y" type="xs:integer"/>

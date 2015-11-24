@@ -1,6 +1,6 @@
 import lxml.etree
 
-from ..constants import MODEL_NAMESPACE
+from ..constants import MODEL_NAMESPACE, MODEL_SCHEMA
 
 
 class SolutionSaver:
@@ -15,6 +15,9 @@ class SolutionSaver:
             project_xml = lxml.etree.Element('{{{0}}}Project'.format(MODEL_NAMESPACE))
             project_xml.attrib["id"] = str(project.save_id)
             root.append(project_xml)
+        
+        if not MODEL_SCHEMA.validate(root):
+            raise Exception("Cannot save solution! {0}".format(MODEL_SCHEMA.error_log.last_error))
         
         tree = lxml.etree.ElementTree(root)
         with self.__storage.open(self.__path, "w") as file:

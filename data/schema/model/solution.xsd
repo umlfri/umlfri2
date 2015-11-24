@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://umlfri.org/v2/model.xsd"
+           targetNamespace="http://umlfri.org/v2/model.xsd" elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+    <xs:element name="Solution">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Project">
+                    <xs:complexType>
+                        <xs:attribute name="id" type="xs:string"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

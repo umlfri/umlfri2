@@ -14,7 +14,8 @@ class ZipStorageReference(StorageReference):
     
     def open(self):
         z = open(self.__zip_path, self.__mode + 'b')
-        return ZipStorage(self.__zip_path, zipfile.ZipFile(z, mode=self.__mode), self.__path, self.__mode)
+        return ZipStorage(self.__zip_path, zipfile.ZipFile(z, mode=self.__mode, compression=zipfile.ZIP_DEFLATED),
+                          self.__path, self.__mode)
 
 
 class ZipFileWriter(BytesIO):
@@ -65,12 +66,13 @@ class ZipStorage(Storage):
             if zipfile.is_zipfile(os.path.join(*zip_path)):
                 z_path = os.path.join(*zip_path)
                 z = open(z_path, mode+'b')
-                return ZipStorage(z_path, zipfile.ZipFile(z, mode=mode), file_path, mode)
+                return ZipStorage(z_path, zipfile.ZipFile(z, mode=mode, compression=zipfile.ZIP_DEFLATED),
+                                  file_path, mode)
     
     @staticmethod
     def new_storage(path):
         z = open(path, 'wb')
-        return ZipStorage(path, zipfile.ZipFile(z, mode='w'), [], 'w')
+        return ZipStorage(path, zipfile.ZipFile(z, mode='w', compression=zipfile.ZIP_DEFLATED), [], 'w')
     
     def __init__(self, zip_path, zip_file, path, mode):
         self.__zip_path = zip_path

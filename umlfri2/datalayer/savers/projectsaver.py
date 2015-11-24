@@ -1,7 +1,7 @@
 import lxml.etree
 
 from umlfri2.ufl.types import UflObjectType, UflListType
-from ..constants import MODEL_NAMESPACE, MODEL_SAVE_VERSION
+from ..constants import MODEL_NAMESPACE, MODEL_SAVE_VERSION, MODEL_SCHEMA
 
 
 class ProjectSaver:
@@ -18,7 +18,7 @@ class ProjectSaver:
         name = lxml.etree.Element('{{{0}}}Name'.format(MODEL_NAMESPACE))
         name.attrib['name'] = project.name
         
-        metamodel = lxml.etree.Element('{{{0}}}Name'.format(MODEL_NAMESPACE))
+        metamodel = lxml.etree.Element('{{{0}}}Metamodel'.format(MODEL_NAMESPACE))
         metamodel.attrib['id'] = project.metamodel.addon.identifier
         metamodel.attrib['version'] = str(project.metamodel.addon.version)
         
@@ -29,6 +29,9 @@ class ProjectSaver:
         
         for element in project.children:
             root.append(self.__element_to_xml(element))
+        
+        if not MODEL_SCHEMA.validate(root):
+            raise Exception("Cannot save project! {0}".format(MODEL_SCHEMA.error_log.last_error))
         
         tree = lxml.etree.ElementTree(root)
         with self.__storage.open(self.__path, "w") as file:
