@@ -49,20 +49,20 @@ class MainWindowMenu(QMenuBar):
         return ret
     
     def __refresh_enable(self):
-        self.__file_save.setEnabled(Application().can_save_project)
-        self.__file_save_as.setEnabled(Application().can_save_project_as)
+        self.__file_save.setEnabled(Application().can_save_solution)
+        self.__file_save_as.setEnabled(Application().can_save_solution_as)
     
     def __file_new_action(self, checked=False):
         NewProjectDialog.open_dialog(self.__main_window)
     
     def __file_open_action(self, checked=False):
-        self.__main_window.open_project()
+        self.__main_window.open_solution()
     
     def __file_save_action(self, checked=False):
-        self.__main_window.save_project()
+        self.__main_window.save_solution()
     
     def __file_save_as_action(self, checked=False):
-        self.__main_window.save_project_as()
+        self.__main_window.save_solution_as()
     
     def __file_exit_action(self, checked=False):
         self.__main_window.close()

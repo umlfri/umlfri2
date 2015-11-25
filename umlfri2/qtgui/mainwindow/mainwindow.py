@@ -110,7 +110,7 @@ class UmlFriMainWindow(QMainWindow):
             if resp == QMessageBox.Cancel:
                 return False
             elif resp == QMessageBox.Yes:
-                return self.save_project()
+                return self.save_solution()
         return True
 
     def get_dock_actions(self):
@@ -118,24 +118,24 @@ class UmlFriMainWindow(QMainWindow):
         yield self.__project_dock.toggleViewAction()
         yield self.__properties_dock.toggleViewAction()
     
-    def open_project(self):
+    def open_solution(self):
         file_name, filter = QFileDialog.getOpenFileName(self, filter = _("UML .FRI 2 projects") + "(*.frip2)")
         if file_name:
-            Application().open_project(file_name)
+            Application().open_solution(file_name)
     
-    def save_project(self):
+    def save_solution(self):
         if Application().should_save_as:
-            return self.save_project_as()
+            return self.save_solution_as()
         else:
-            Application().save_project()
+            Application().save_solution()
             return True
     
-    def save_project_as(self):
+    def save_solution_as(self):
         file_name, filter = QFileDialog.getSaveFileName(self, filter = _("UML .FRI 2 projects") + "(*.frip2)")
         if file_name:
             if '.' not in os.path.basename(file_name):
                 file_name = file_name + '.frip2'
-            Application().save_project_as(file_name)
+            Application().save_solution_as(file_name)
             return True # the project was saved
         else:
             return False # the project was not saved
