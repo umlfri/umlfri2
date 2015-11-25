@@ -90,10 +90,10 @@ class Application(metaclass=MetaApplication):
             self.__commands.clear_buffers()
             self.__commands.mark_unchanged()
             self.__event_dispatcher.dispatch(OpenSolutionEvent(self.__solution))
+            self.tabs.close_all()
         else:
             command = NewProjectCommand(self.__solution, template, project_name)
             self.__commands.execute(command)
-        self.tabs.close_all()
     
     @property
     def should_save_as(self):

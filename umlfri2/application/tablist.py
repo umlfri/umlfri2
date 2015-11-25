@@ -44,6 +44,7 @@ class TabList:
             events.append(ClosedTabEvent(tab))
         self.__tabs = []
         self.__application.event_dispatcher.dispatch_all(events)
+        self.__application.event_dispatcher.dispatch(ChangedCurrentTabEvent(None))
     
     @property
     def current_tab(self):
