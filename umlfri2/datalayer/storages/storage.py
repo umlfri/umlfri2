@@ -3,7 +3,7 @@ class StorageReference:
     def name(self):
         raise NotImplementedError
     
-    def open(self):
+    def open(self, mode=None):
         raise NotImplementedError
 
 class Storage:

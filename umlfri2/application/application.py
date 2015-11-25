@@ -106,7 +106,7 @@ class Application(metaclass=MetaApplication):
         if self.__solution_storage_ref is None:
             raise Exception
         
-        with self.__solution_storage_ref.open() as storage:
+        with self.__solution_storage_ref.open(mode='w') as storage:
             WholeSolutionSaver(storage, self.__ruler).save(self.__solution)
         
         self.__event_dispatcher.dispatch(SaveSolutionEvent(self.__solution))
@@ -134,3 +134,4 @@ class Application(metaclass=MetaApplication):
         self.__commands.clear_buffers()
         self.__commands.mark_unchanged()
         self.__event_dispatcher.dispatch(OpenSolutionEvent(self.__solution))
+        self.tabs.close_all()

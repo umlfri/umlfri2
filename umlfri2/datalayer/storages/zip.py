@@ -16,10 +16,12 @@ class ZipStorageReference(StorageReference):
     def name(self):
         return self.__zip_path
     
-    def open(self):
-        z = open(self.__zip_path, self.__mode + 'b')
-        return ZipStorage(self.__zip_path, zipfile.ZipFile(z, mode=self.__mode, compression=zipfile.ZIP_DEFLATED),
-                          self.__path, self.__mode)
+    def open(self, mode=None):
+        if mode is None:
+            mode = self.__mode
+        z = open(self.__zip_path, mode + 'b')
+        return ZipStorage(self.__zip_path, zipfile.ZipFile(z, mode=mode, compression=zipfile.ZIP_DEFLATED),
+                          self.__path, mode)
 
 
 class ZipFileWriter(BytesIO):

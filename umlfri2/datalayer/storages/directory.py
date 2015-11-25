@@ -12,8 +12,10 @@ class DirectoryStorageReference(StorageReference):
     def name(self):
         return self.__path
     
-    def open(self):
-        return DirectoryStorage(self.__path, self.__mode)
+    def open(self, mode=None):
+        if mode is None:
+            mode = self.__mode
+        return DirectoryStorage(self.__path, mode)
 
 
 class DirectoryStorage(Storage):
