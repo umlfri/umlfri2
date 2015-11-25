@@ -8,7 +8,8 @@ from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionE
 from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent
 from umlfri2.model import Diagram
 from umlfri2.paths import GRAPHICS
-from umlfri2.qtgui.mainwindow.newproject import NewProjectDialog
+from .newproject import NewProjectDialog
+from .toolbar import MainToolBar
 from .menu import MainWindowMenu
 from .propertieswidget import PropertiesWidget
 from .toolbox import ToolBox
@@ -45,6 +46,9 @@ class UmlFriMainWindow(QMainWindow):
         self.addDockWidget(Qt.RightDockWidgetArea, self.__properties_dock)
         self.__properties = PropertiesWidget()
         self.__properties_dock.setWidget(self.__properties)
+        
+        self.__tool_bar = MainToolBar(self)
+        self.addToolBar(self.__tool_bar)
         
         self.__menu_bar = MainWindowMenu(self)
         self.setMenuBar(self.__menu_bar)
@@ -119,7 +123,10 @@ class UmlFriMainWindow(QMainWindow):
             elif resp == QMessageBox.Save:
                 return self.save_solution()
         return True
-
+    
+    def get_toolbar_actions(self):
+        yield self.__tool_bar.toggleViewAction()
+    
     def get_dock_actions(self):
         yield self.__toolbox_dock.toggleViewAction()
         yield self.__project_dock.toggleViewAction()

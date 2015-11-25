@@ -32,6 +32,11 @@ class MainWindowMenu(QMenuBar):
         for action in main_window.get_dock_actions():
             view_menu.addAction(action)
         
+        view_menu.addSeparator()
+            
+        for action in main_window.get_toolbar_actions():
+            view_menu.addAction(action)
+        
         self.reload_texts()
         
         Application().event_dispatcher.register(None, lambda event: self.__refresh_enable())
