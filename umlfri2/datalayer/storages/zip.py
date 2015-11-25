@@ -12,6 +12,10 @@ class ZipStorageReference(StorageReference):
         self.__path = path
         self.__mode = mode
     
+    @property
+    def name(self):
+        return self.__zip_path
+    
     def open(self):
         z = open(self.__zip_path, self.__mode + 'b')
         return ZipStorage(self.__zip_path, zipfile.ZipFile(z, mode=self.__mode, compression=zipfile.ZIP_DEFLATED),

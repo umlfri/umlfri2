@@ -4,6 +4,7 @@ from PySide.QtCore import Qt
 from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget, QMessageBox, QFileDialog, QIcon
 from umlfri2.application import Application
 from umlfri2.application.events.model import ObjectChangedEvent
+from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent
 from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent
 from umlfri2.model import Diagram
 from umlfri2.paths import GRAPHICS
@@ -53,6 +54,8 @@ class UmlFriMainWindow(QMainWindow):
         Application().event_dispatcher.register(ChangedCurrentTabEvent, self.__change_tab)
         Application().event_dispatcher.register(ClosedTabEvent, self.__close_tab)
         Application().event_dispatcher.register(ObjectChangedEvent, self.__object_changed)
+        Application().event_dispatcher.register(OpenSolutionEvent, self.__solution_name_changed)
+        Application().event_dispatcher.register(SaveSolutionEvent, self.__solution_name_changed)
     
     def __tab_changed(self, index):
         if index >= 0:
@@ -91,7 +94,10 @@ class UmlFriMainWindow(QMainWindow):
             if widget.diagram is event.object:
                 self.__tabs.setTabText(widget_id, widget.diagram.get_display_name())
                 return
-
+    
+    def __solution_name_changed(self, event):
+        self.__reload_window_title()
+    
     def createPopupMenu(self):
         return None
     
@@ -140,8 +146,14 @@ class UmlFriMainWindow(QMainWindow):
         else:
             return False # the project was not saved
     
+    def __reload_window_title(self):
+        title = _("UML .FRI 2")
+        if Application().solution_name is not None:
+            title += " [{0}]".format(Application().solution_name)
+        self.setWindowTitle(title)
+    
     def reload_texts(self):
-        self.setWindowTitle(_("UML .FRI 2"))
+        self.__reload_window_title()
         
         self.__toolbox_dock.setWindowTitle(_("Tools"))
         self.__project_dock.setWindowTitle(_("Project"))

@@ -8,6 +8,10 @@ class DirectoryStorageReference(StorageReference):
         self.__path = path
         self.__mode = mode
     
+    @property
+    def name(self):
+        return self.__path
+    
     def open(self):
         return DirectoryStorage(self.__path, self.__mode)
 

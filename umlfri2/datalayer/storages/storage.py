@@ -1,4 +1,8 @@
 class StorageReference:
+    @property
+    def name(self):
+        raise NotImplementedError
+    
     def open(self):
         raise NotImplementedError
 

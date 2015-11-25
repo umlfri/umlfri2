@@ -74,6 +74,13 @@ class Application(metaclass=MetaApplication):
             if addon.metamodel is not None:
                 yield from addon.metamodel.templates
     
+    @property
+    def solution_name(self):
+        if self.__solution_storage_ref is None:
+            return None
+        else:
+            return self.__solution_storage_ref.name
+    
     def new_project(self, template, new_solution=True, project_name="Project"):
         if new_solution:
             project = ProjectLoader(template.load(), self.__ruler, True, project_name, addon=template.addon).load()
