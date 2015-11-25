@@ -131,4 +131,6 @@ class Application(metaclass=MetaApplication):
             self.__solution = WholeSolutionLoader(storage, self.__ruler, self.__addons).load()
             self.__solution_storage_ref = storage.remember_reference()
         
+        self.__commands.clear_buffers()
+        self.__commands.mark_unchanged()
         self.__event_dispatcher.dispatch(OpenSolutionEvent(self.__solution))
