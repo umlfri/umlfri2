@@ -85,10 +85,10 @@ class Application(metaclass=MetaApplication):
         if new_solution:
             project = ProjectLoader(template.load(), self.__ruler, True, project_name, addon=template.addon).load()
             self.__solution = Solution(project)
-            self.__event_dispatcher.dispatch(OpenSolutionEvent(self.__solution))
             self.__solution_storage_ref = None
             self.__commands.clear_buffers()
             self.__commands.mark_unchanged()
+            self.__event_dispatcher.dispatch(OpenSolutionEvent(self.__solution))
         else:
             command = NewProjectCommand(self.__solution, template, project_name)
             self.__commands.execute(command)
