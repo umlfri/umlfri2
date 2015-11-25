@@ -16,12 +16,12 @@ class MainWindowMenu(QMenuBar):
         file_menu = QMenu()
         self.__file.setMenu(file_menu)
 
-        self.__file_new = self.__add_menu_item(file_menu, "Ctrl+N", "document-new", self.__file_new_action)
-        self.__file_open = self.__add_menu_item(file_menu, "Ctrl+O", "document-open", self.__file_open_action)
-        self.__file_save = self.__add_menu_item(file_menu, "Ctrl+S", "document-save", self.__file_save_action)
-        self.__file_save_as = self.__add_menu_item(file_menu, None, "document-save-as", self.__file_save_as_action)
+        self.__file_new = self.__add_menu_item(file_menu, QKeySequence.New, "document-new", self.__file_new_action)
+        self.__file_open = self.__add_menu_item(file_menu, QKeySequence.Open, "document-open", self.__file_open_action)
+        self.__file_save = self.__add_menu_item(file_menu, QKeySequence.Save, "document-save", self.__file_save_action)
+        self.__file_save_as = self.__add_menu_item(file_menu, QKeySequence.SaveAs, "document-save-as", self.__file_save_as_action)
         file_menu.addSeparator()
-        self.__file_exit = self.__add_menu_item(file_menu, "Ctrl+Q", "application-exit", self.__file_exit_action)
+        self.__file_exit = self.__add_menu_item(file_menu, QKeySequence.Quit, "application-exit", self.__file_exit_action)
         
         # VIEW MENU
         self.__view = QAction(None)
