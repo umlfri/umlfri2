@@ -11,13 +11,14 @@ from umlfri2.model import Project
 class ProjectLoader:
     # TODO: ignore incorrect attributes
     
-    def __init__(self, xmlfile, ruler, new_project, addon=None, addon_manager=None):
+    def __init__(self, xmlfile, ruler, new_project, rename_project_to=None, addon=None, addon_manager=None):
         self.__xmlroot = lxml.etree.parse(xmlfile).getroot()
         
         if not MODEL_SCHEMA.validate(self.__xmlroot):
             raise Exception("Cannot load project: {0}".format(MODEL_SCHEMA.error_log.last_error))
         
         self.__new_project = new_project
+        self.__rename_project_to = rename_project_to
         
         self.__addon = addon
         self.__addon_manager = addon_manager
@@ -51,6 +52,9 @@ class ProjectLoader:
                 self.__load_element_visual(diagram, visual)
             elif visual.tag == "{{{0}}}Connection".format(MODEL_NAMESPACE):
                 self.__load_connection_visual(diagram, visual)
+        
+        if self.__rename_project_to is not None:
+            project.name = self.__rename_project_to
         
         return project
 

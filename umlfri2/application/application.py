@@ -74,16 +74,16 @@ class Application(metaclass=MetaApplication):
             if addon.metamodel is not None:
                 yield from addon.metamodel.templates
     
-    def new_project(self, template, new_solution=True):
+    def new_project(self, template, new_solution=True, project_name="Project"):
         if new_solution:
-            project = ProjectLoader(template.load(), self.__ruler, True, addon=template.addon).load()
+            project = ProjectLoader(template.load(), self.__ruler, True, project_name, addon=template.addon).load()
             self.__solution = Solution(project)
             self.__event_dispatcher.dispatch(OpenSolutionEvent(self.__solution))
             self.__solution_storage_ref = None
             self.__commands.clear_buffers()
             self.__commands.mark_unchanged()
         else:
-            command = NewProjectCommand(self.__solution, template)
+            command = NewProjectCommand(self.__solution, template, project_name)
             self.__commands.execute(command)
         self.tabs.close_all()
     

@@ -2,8 +2,7 @@ import html
 
 from PySide.QtCore import Qt, QSize
 from PySide.QtGui import QDialog, QDialogButtonBox, QVBoxLayout, QListWidget, QLabel, QFont, QPalette, QSizePolicy, \
-    QListWidgetItem, QScrollArea, QCheckBox
-
+    QListWidgetItem, QScrollArea, QCheckBox, QLineEdit, QFormLayout
 from umlfri2.application import Application
 from ..base import image_loader
 
@@ -32,6 +31,8 @@ class NewProjectDialog(QDialog):
         button_box.accepted.connect(self.accept)
         button_box.rejected.connect(self.reject)
         
+        self.__ok_button = button_box.button(QDialogButtonBox.Ok)
+        
         layout = QVBoxLayout()
         
         self.__templates = QListWidget()
@@ -46,7 +47,13 @@ class NewProjectDialog(QDialog):
         self.__description.setAlignment(Qt.AlignTop)
         self.__description.setWordWrap(True)
         
-        self.__new_solution = QCheckBox(_("Create a new solution"))
+        self.__project_name = QLineEdit()
+        self.__project_name.setText("Project")
+        self.__project_name.textChanged.connect(self.__name_changed)
+        project_name_layout = QFormLayout()
+        project_name_layout.addRow(_("Project &name:"), self.__project_name)
+        
+        self.__new_solution = QCheckBox(_("Create a new &solution"))
         self.__new_solution.setChecked(True)
         
         if Application().solution is None:
@@ -54,6 +61,7 @@ class NewProjectDialog(QDialog):
         
         layout.addWidget(self.__templates)
         layout.addWidget(self.__description)
+        layout.addLayout(project_name_layout)
         layout.addWidget(self.__new_solution)
         layout.addWidget(button_box)
         self.setLayout(layout)
@@ -72,6 +80,9 @@ class NewProjectDialog(QDialog):
         text += "<p>" + html.escape(current.template.addon.description).replace('\n', '</p><p>') + "</p>"
         self.__description.setText(text)
     
+    def __name_changed(self, text):
+        self.__ok_button.setEnabled(text != "")
+    
     def __selection_double_clicked(self, item):
         self.accept()
     
@@ -83,9 +94,13 @@ class NewProjectDialog(QDialog):
     def new_solution(self):
         return self.__new_solution.isChecked()
     
+    @property
+    def project_name(self):
+        return self.__project_name.text()
+    
     @staticmethod
     def open_dialog(main_window):
         qt_dialog = NewProjectDialog(main_window)
         qt_dialog.setModal(True)
         if qt_dialog.exec_() == NewProjectDialog.Accepted:
-            Application().new_project(qt_dialog.selected_template, qt_dialog.new_solution)
+            Application().new_project(qt_dialog.selected_template, qt_dialog.new_solution, qt_dialog.project_name)
