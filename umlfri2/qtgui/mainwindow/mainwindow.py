@@ -102,12 +102,12 @@ class UmlFriMainWindow(QMainWindow):
         return None
     
     def closeEvent(self, event):
-        if self.check_save():
+        if self.__check_save():
             event.accept()
         else:
             event.ignore()
 
-    def check_save(self):
+    def __check_save(self):
         if Application().unsaved:
             resp = QMessageBox.question(self, _("Application exit"), _("Do you want to save the project?"),
                                         QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
@@ -127,7 +127,8 @@ class UmlFriMainWindow(QMainWindow):
     def open_solution(self):
         file_name, filter = QFileDialog.getOpenFileName(self, filter = _("UML .FRI 2 projects") + "(*.frip2)")
         if file_name:
-            Application().open_solution(file_name)
+            if self.__check_save():
+                Application().open_solution(file_name)
     
     def save_solution(self):
         if Application().should_save_as:
