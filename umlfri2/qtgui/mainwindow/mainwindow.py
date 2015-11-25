@@ -110,12 +110,12 @@ class UmlFriMainWindow(QMainWindow):
     def __check_save(self):
         if Application().unsaved:
             resp = QMessageBox.question(self, _("Application exit"), _("Do you want to save the project?"),
-                                        QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
-                                        QMessageBox.Yes)
+                                        QMessageBox.Save | QMessageBox.Discard | QMessageBox.Cancel,
+                                        QMessageBox.Save)
 
             if resp == QMessageBox.Cancel:
                 return False
-            elif resp == QMessageBox.Yes:
+            elif resp == QMessageBox.Save:
                 return self.save_solution()
         return True
 
