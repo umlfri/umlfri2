@@ -103,4 +103,5 @@ class NewProjectDialog(QDialog):
         qt_dialog = NewProjectDialog(main_window)
         qt_dialog.setModal(True)
         if qt_dialog.exec_() == NewProjectDialog.Accepted:
-            Application().new_project(qt_dialog.selected_template, qt_dialog.new_solution, qt_dialog.project_name)
+            return qt_dialog
+        return None

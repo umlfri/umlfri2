@@ -8,6 +8,7 @@ from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionE
 from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent
 from umlfri2.model import Diagram
 from umlfri2.paths import GRAPHICS
+from umlfri2.qtgui.mainwindow.newproject import NewProjectDialog
 from .menu import MainWindowMenu
 from .propertieswidget import PropertiesWidget
 from .toolbox import ToolBox
@@ -123,6 +124,14 @@ class UmlFriMainWindow(QMainWindow):
         yield self.__toolbox_dock.toggleViewAction()
         yield self.__project_dock.toggleViewAction()
         yield self.__properties_dock.toggleViewAction()
+    
+    def new_project(self):
+        dialog = NewProjectDialog.open_dialog(self)
+        if dialog:
+            if dialog.new_solution and Application().unsaved:
+                if not self.__check_save():
+                    return
+            Application().new_project(dialog.selected_template, dialog.new_solution, dialog.project_name)
     
     def open_solution(self):
         file_name, filter = QFileDialog.getOpenFileName(self, filter = _("UML .FRI 2 projects") + "(*.frip2)")

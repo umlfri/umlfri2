@@ -53,7 +53,7 @@ class MainWindowMenu(QMenuBar):
         self.__file_save_as.setEnabled(Application().can_save_solution_as)
     
     def __file_new_action(self, checked=False):
-        NewProjectDialog.open_dialog(self.__main_window)
+        self.__main_window.new_project()
     
     def __file_open_action(self, checked=False):
         self.__main_window.open_solution()
