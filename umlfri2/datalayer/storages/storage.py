@@ -4,9 +4,9 @@ class StorageReference:
 
 class Storage:
     @staticmethod
-    def create_storage(path, mode='r'):
+    def read_storage(path):
         for subclass in Storage.__subclasses__():
-            ret = subclass.create_storage(path, mode)
+            ret = subclass.read_storage(path)
             if ret is not None:
                 return ret
     

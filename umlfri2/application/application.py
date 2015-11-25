@@ -3,7 +3,7 @@ from umlfri2.application.commands.solution import NewProjectCommand
 from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent
 from umlfri2.application.tablist import TabList
 from umlfri2.datalayer import Storage
-from umlfri2.datalayer.loaders import ProjectLoader
+from umlfri2.datalayer.loaders import ProjectLoader, WholeSolutionLoader
 from umlfri2.datalayer.savers import WholeSolutionSaver
 from umlfri2.datalayer.storages import ZipStorage
 from umlfri2.model import Solution
@@ -29,7 +29,7 @@ class Application(metaclass=MetaApplication):
     def __init__(self):
         self.__event_dispatcher = EventDispatcher()
         self.__commands = CommandProcessor(self)
-        self.__addons = AddOnManager(Storage.create_storage(ADDONS))
+        self.__addons = AddOnManager(Storage.read_storage(ADDONS))
         self.__tabs = TabList(self)
         self.__solution = None
         self.__ruler = None
@@ -118,3 +118,10 @@ class Application(metaclass=MetaApplication):
         self.__event_dispatcher.dispatch(SaveSolutionEvent(self.__solution))
         
         self.__commands.mark_unchanged()
+
+    def open_project(self, filename):
+        with Storage.read_storage(filename) as storage:
+            self.__solution = WholeSolutionLoader(storage, self.__ruler, self.__addons).load()
+            self.__solution_storage_ref = storage.remember_reference()
+        
+        self.__event_dispatcher.dispatch(OpenSolutionEvent(self.__solution))

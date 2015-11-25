@@ -118,6 +118,11 @@ class UmlFriMainWindow(QMainWindow):
         yield self.__project_dock.toggleViewAction()
         yield self.__properties_dock.toggleViewAction()
     
+    def open_project(self):
+        file_name, filter = QFileDialog.getOpenFileName(self, filter = _("UML .FRI 2 projects") + "(*.frip2)")
+        if file_name:
+            Application().open_project(file_name)
+    
     def save_project(self):
         if Application().should_save_as:
             return self.save_project_as()

@@ -14,9 +14,9 @@ class DirectoryStorageReference(StorageReference):
 
 class DirectoryStorage(Storage):
     @staticmethod
-    def create_storage(path, mode='r'):
+    def read_storage(path):
         if os.path.isdir(path):
-            return DirectoryStorage(os.path.abspath(path), mode)
+            return DirectoryStorage(os.path.abspath(path), 'r')
     
     def __init__(self, path, mode):
         self.__path = path
@@ -45,7 +45,7 @@ class DirectoryStorage(Storage):
     def create_substorage(self, path):
         path = self.__fix_path(path)
         if os.path.exists(path):
-            return Storage.create_storage(path)
+            return Storage.read_storage(path)
     
     def get_all_files(self):
         for dirpath, dirs, files in os.walk(self.__path):

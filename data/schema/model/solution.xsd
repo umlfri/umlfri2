@@ -5,7 +5,7 @@
     <xs:element name="Solution">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="Project">
+                <xs:element name="Project" minOccurs="1" maxOccurs="unbounded">
                     <xs:complexType>
                         <xs:attribute name="id" type="xs:string"/>
                     </xs:complexType>

@@ -11,8 +11,11 @@ from umlfri2.model import Project
 class ProjectLoader:
     # TODO: ignore incorrect attributes
     
-    def __init__(self, xmlfile, ruler, new_project, rename_project_to=None, addon=None, addon_manager=None):
-        self.__xmlroot = lxml.etree.parse(xmlfile).getroot()
+    def __init__(self, xmlfile_or_xmlroot, ruler, new_project, rename_project_to=None, addon=None, addon_manager=None):
+        if isinstance(xmlfile_or_xmlroot, lxml.etree._Element):
+            self.__xmlroot = xmlfile_or_xmlroot
+        else:
+            self.__xmlroot = lxml.etree.parse(xmlfile_or_xmlroot).getroot()
         
         if not MODEL_SCHEMA.validate(self.__xmlroot):
             raise Exception("Cannot load project: {0}".format(MODEL_SCHEMA.error_log.last_error))

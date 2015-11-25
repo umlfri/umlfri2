@@ -41,7 +41,7 @@ class ZipFileWriter(BytesIO):
 
 class ZipStorage(Storage):
     @staticmethod
-    def create_storage(path, mode='r'):
+    def read_storage(path):
         if os.path.isdir(path):
             return None
         
@@ -63,11 +63,15 @@ class ZipStorage(Storage):
             
             zip_path.append(file_path.pop(0))
             
-            if zipfile.is_zipfile(os.path.join(*zip_path)):
-                z_path = os.path.join(*zip_path)
-                z = open(z_path, mode+'b')
-                return ZipStorage(z_path, zipfile.ZipFile(z, mode=mode, compression=zipfile.ZIP_DEFLATED),
-                                  file_path, mode)
+            zip_path_joined = os.path.join(*zip_path)
+            
+            if zip_path[0] == "":
+                zip_path_joined = os.path.sep + zip_path_joined
+            
+            if zipfile.is_zipfile(zip_path_joined):
+                z = open(zip_path_joined, 'rb')
+                return ZipStorage(zip_path_joined, zipfile.ZipFile(z, mode='r', compression=zipfile.ZIP_DEFLATED),
+                                  file_path, 'r')
     
     @staticmethod
     def new_storage(path):

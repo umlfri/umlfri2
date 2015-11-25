@@ -88,7 +88,7 @@ class ProjectSaver:
             connection_xml = lxml.etree.Element('{{{0}}}Connection'.format(MODEL_NAMESPACE))
             connection_xml.attrib['id'] = str(connection.object.save_id)
             
-            for point in connection.get_points(self.__ruler):
+            for point in connection.get_points(self.__ruler, source_and_end=False):
                 point_xml = lxml.etree.Element('{{{0}}}Point'.format(MODEL_NAMESPACE))
                 point_xml.attrib['x'] = str(point.x)
                 point_xml.attrib['y'] = str(point.y)

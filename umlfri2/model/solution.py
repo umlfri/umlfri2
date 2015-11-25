@@ -1,6 +1,9 @@
 class Solution:
-    def __init__(self, project):
-        self.__projects = [project]
+    def __init__(self, project=None):
+        if project is None:
+            self.__projects = []
+        else:
+            self.__projects = [project]
     
     def add_project(self, project):
         self.__projects.append(project)
