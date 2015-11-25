@@ -33,10 +33,17 @@ class TabList:
                     self.__current_tab = self.__tabs[-1]
                 else:
                     self.__current_tab = None
-                
+                    
                 self.__application.event_dispatcher.dispatch(ClosedTabEvent(tab))
                 self.__application.event_dispatcher.dispatch(ChangedCurrentTabEvent(self.__current_tab))
                 break
+    
+    def close_all(self):
+        events = []
+        for tab in self.__tabs:
+            events.append(ClosedTabEvent(tab))
+        self.__tabs = []
+        self.__application.event_dispatcher.dispatch_all(events)
     
     @property
     def current_tab(self):

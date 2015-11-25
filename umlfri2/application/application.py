@@ -85,6 +85,7 @@ class Application(metaclass=MetaApplication):
         else:
             command = NewProjectCommand(self.__solution, template)
             self.__commands.execute(command)
+        self.tabs.close_all()
     
     @property
     def should_save_as(self):
