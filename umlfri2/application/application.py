@@ -29,7 +29,8 @@ class Application(metaclass=MetaApplication):
     def __init__(self):
         self.__event_dispatcher = EventDispatcher()
         self.__commands = CommandProcessor(self)
-        self.__addons = AddOnManager(Storage.read_storage(ADDONS))
+        with Storage.read_storage(ADDONS) as addon_storage:
+            self.__addons = AddOnManager(addon_storage)
         self.__tabs = TabList(self)
         self.__solution = None
         self.__ruler = None

@@ -6,7 +6,7 @@ from .templateloader import TemplateLoader
 from umlfri2.types.image import Image
 from .addoninfoloader import AddOnInfoLoader
 from umlfri2.addon import AddOn
-from ..constants import ADDON_NAMESPACE, MODEL_NAMESPACE
+from ..constants import ADDON_NAMESPACE, MODEL_NAMESPACE, ADDON_ADDON_FILE
 from .elementtypeloader import ElementTypeLoader
 from .diagramtypeloader import DiagramTypeLoader
 from .connectiontypeloader import ConnectionTypeLoader
@@ -18,12 +18,16 @@ class AddOnLoader:
     def __init__(self, storage):
         self.__storage = storage
     
+    def is_addon(self):
+        return self.__storage.exists(ADDON_ADDON_FILE)
+    
     def load(self):
-        info = AddOnInfoLoader(lxml.etree.parse(self.__storage.open('addon.xml')).getroot()).load()
+        info = AddOnInfoLoader(lxml.etree.parse(self.__storage.open(ADDON_ADDON_FILE)).getroot()).load()
         
         metamodel = None
         if info.metamodel:
-            metamodel = self.__load_metamodel(info, self.__storage.create_substorage(info.metamodel))
+            with self.__storage.create_substorage(info.metamodel) as metamodel_storage:
+                metamodel = self.__load_metamodel(info, metamodel_storage)
         
         if not self.__storage.exists(info.icon):
             raise Exception("Unknown icon {0}".format(info.icon))

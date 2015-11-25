@@ -39,4 +39,4 @@ class TemplateLoader:
         if metamodel != self.__metamodel_identifier:
             raise Exception
         
-        return ProjectTemplate(self.__storage, name, self.__path)
+        return ProjectTemplate(self.__storage.remember_reference(), name, self.__path)
