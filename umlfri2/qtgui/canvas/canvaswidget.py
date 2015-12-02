@@ -107,13 +107,13 @@ class CanvasWidget(QWidget):
             self.unsetCursor()
         elif self.__drawing_area.cursor == DrawingAreaCursor.move:
             self.setCursor(Qt.SizeAllCursor)
-        elif self.__drawing_area.cursor == DrawingAreaCursor.mainDiagonalResize:
+        elif self.__drawing_area.cursor == DrawingAreaCursor.main_diagonal_resize:
             self.setCursor(Qt.SizeFDiagCursor)
-        elif self.__drawing_area.cursor == DrawingAreaCursor.antiDiagonalResize:
+        elif self.__drawing_area.cursor == DrawingAreaCursor.anti_diagonal_resize:
             self.setCursor(Qt.SizeBDiagCursor)
-        elif self.__drawing_area.cursor == DrawingAreaCursor.verticalResize:
+        elif self.__drawing_area.cursor == DrawingAreaCursor.vertical_resize:
             self.setCursor(Qt.SizeVerCursor)
-        elif self.__drawing_area.cursor == DrawingAreaCursor.horizontalResize:
+        elif self.__drawing_area.cursor == DrawingAreaCursor.horizontal_resize:
             self.setCursor(Qt.SizeHorCursor)
         elif self.__drawing_area.cursor == DrawingAreaCursor.cross:
             self.setCursor(Qt.CrossCursor)

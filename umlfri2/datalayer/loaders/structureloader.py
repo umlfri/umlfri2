@@ -7,7 +7,7 @@ from umlfri2.ufl.types import *
 
 
 class UflStructureLoader:
-    __simpleTypes = {
+    __simple_types = {
         "bool": UflBoolType,
         "color": UflColorType,
         "font": UflFontType,
@@ -31,8 +31,8 @@ class UflStructureLoader:
                 is_list = True
                 type = type[:-2]
             
-            if type in self.__simpleTypes:
-                ufltype = self.__simpleTypes[type]
+            if type in self.__simple_types:
+                ufltype = self.__simple_types[type]
                 default = child.attrib.get("default")
                 if default:
                     attr = ufltype(ufltype().parse(default))

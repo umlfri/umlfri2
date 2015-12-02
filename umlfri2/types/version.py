@@ -2,10 +2,10 @@ import re
 
 
 class Version:
-    __reVersion = re.compile(r'^(?P<version>[0-9]+(\.[0-9]+)*)(-(?P<suffix>(alpha|beta|pre|rc|p))(?P<sufnum>[0-9]+))?$')
+    __RE_VERSION = re.compile(r'^(?P<version>[0-9]+(\.[0-9]+)*)(-(?P<suffix>(alpha|beta|pre|rc|p))(?P<sufnum>[0-9]+))?$')
     
     def __init__(self, value):
-        parsed = self.__reVersion.search(value)
+        parsed = self.__RE_VERSION.search(value)
         
         if parsed is None:
             raise Exception("Invalid version number")

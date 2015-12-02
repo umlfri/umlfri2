@@ -21,13 +21,13 @@ class ResizeElementAction(Action):
     @property
     def cursor(self):
         if self.__horizontal == self.__vertical:
-            return DrawingAreaCursor.mainDiagonalResize
+            return DrawingAreaCursor.main_diagonal_resize
         elif self.__horizontal == SelectionPointPosition.center:
-            return DrawingAreaCursor.verticalResize
+            return DrawingAreaCursor.vertical_resize
         elif self.__vertical == SelectionPointPosition.center:
-            return DrawingAreaCursor.horizontalResize
+            return DrawingAreaCursor.horizontal_resize
         else:
-            return DrawingAreaCursor.antiDiagonalResize
+            return DrawingAreaCursor.anti_diagonal_resize
     
     def mouse_down(self, drawing_area, application, point):
         self.__box = drawing_area.selection.get_bounds(application.ruler)

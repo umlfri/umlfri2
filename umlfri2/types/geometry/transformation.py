@@ -3,13 +3,13 @@ from .point import Point
 
 
 class Transformation:
-    def __init__(self, m11, m12, m21, m22, offsetX, offsetY):
+    def __init__(self, m11, m12, m21, m22, offset_x, offset_y):
         self.__m11 = m11
         self.__m12 = m12
         self.__m21 = m21
         self.__m22 = m22
-        self.__offset_x = offsetX
-        self.__offset_y = offsetY
+        self.__offset_x = offset_x
+        self.__offset_y = offset_y
     
     @property
     def m11(self):

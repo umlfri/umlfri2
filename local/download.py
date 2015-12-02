@@ -1,7 +1,6 @@
 import os
 import os.path
 import re
-import shlex
 import tarfile
 import urllib.request
 from io import BytesIO
