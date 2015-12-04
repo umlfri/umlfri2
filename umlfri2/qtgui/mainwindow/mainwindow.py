@@ -59,8 +59,8 @@ class UmlFriMainWindow(QMainWindow):
         Application().event_dispatcher.register(ChangedCurrentTabEvent, self.__change_tab)
         Application().event_dispatcher.register(ClosedTabEvent, self.__close_tab)
         Application().event_dispatcher.register(ObjectChangedEvent, self.__object_changed)
-        Application().event_dispatcher.register(OpenSolutionEvent, self.__solution_name_changed)
-        Application().event_dispatcher.register(SaveSolutionEvent, self.__solution_name_changed)
+        Application().event_dispatcher.register(OpenSolutionEvent, self.__solution_file_changed)
+        Application().event_dispatcher.register(SaveSolutionEvent, self.__solution_file_changed)
     
     def __tab_changed(self, index):
         if index >= 0:
@@ -100,7 +100,7 @@ class UmlFriMainWindow(QMainWindow):
                 self.__tabs.setTabText(widget_id, widget.diagram.get_display_name())
                 return
     
-    def __solution_name_changed(self, event):
+    def __solution_file_changed(self, event):
         self.__reload_window_title()
     
     def createPopupMenu(self):

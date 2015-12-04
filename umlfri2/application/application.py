@@ -110,9 +110,9 @@ class Application(metaclass=MetaApplication):
         with self.__solution_storage_ref.open(mode='w') as storage:
             WholeSolutionSaver(storage, self.__ruler).save(self.__solution)
         
-        self.__event_dispatcher.dispatch(SaveSolutionEvent(self.__solution))
-        
         self.__commands.mark_unchanged()
+        
+        self.__event_dispatcher.dispatch(SaveSolutionEvent(self.__solution))
     
     @property
     def can_save_solution_as(self):
@@ -123,9 +123,9 @@ class Application(metaclass=MetaApplication):
             WholeSolutionSaver(storage, self.__ruler).save(self.__solution)
             self.__solution_storage_ref = storage.remember_reference()
         
-        self.__event_dispatcher.dispatch(SaveSolutionEvent(self.__solution))
-        
         self.__commands.mark_unchanged()
+        
+        self.__event_dispatcher.dispatch(SaveSolutionEvent(self.__solution))
 
     def open_solution(self, filename):
         with Storage.read_storage(filename) as storage:

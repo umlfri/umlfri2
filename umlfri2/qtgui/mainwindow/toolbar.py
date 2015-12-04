@@ -1,5 +1,8 @@
 from PySide.QtGui import QToolBar, QAction, QKeySequence, QIcon
 
+from umlfri2.application import Application
+from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent
+
 
 class MainToolBar(QToolBar):
     def __init__(self, main_window):
@@ -13,6 +16,9 @@ class MainToolBar(QToolBar):
         self.__save = self.__add_toolbar_item(QKeySequence.Save, "document-save", self.__save_action)
         
         self.reload_texts()
+        
+        Application().event_dispatcher.register(None, lambda event: self.__refresh_enable())
+        self.__refresh_enable()
     
     def __add_toolbar_item(self, shortcut, icon, action=None):
         ret = QAction(None)
@@ -33,6 +39,9 @@ class MainToolBar(QToolBar):
     
     def __save_action(self, checked=False):
         self.__main_window.save_solution()
+    
+    def __refresh_enable(self):
+        self.__save.setEnabled(Application().can_save_solution)
     
     def reload_texts(self):
         self.setWindowTitle(_("Toolbar"))
