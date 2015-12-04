@@ -7,11 +7,11 @@ from io import BytesIO
 
 import shutil
 
-LOCAL_PATH = os.path.dirname(__file__)
+TOOLS_PATH = os.path.dirname(__file__)
 
 
 def extract_theme():
-    out = os.path.join(LOCAL_PATH, "tango")
+    out = os.path.join(TOOLS_PATH, "..", "..", "data", "icons", "tango")
 
     if os.path.isdir(out):
         shutil.rmtree(out)

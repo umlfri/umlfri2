@@ -2,4 +2,4 @@ syntax: glob
 
 .idea
 **/__pycache__
-local/tango
+data/icons
