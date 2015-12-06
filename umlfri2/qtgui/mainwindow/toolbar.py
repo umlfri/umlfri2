@@ -88,6 +88,9 @@ class MainToolBar(QToolBar):
         self.__set_toolbar_item_text(self.__new, _("New"))
         self.__set_toolbar_item_text(self.__open, _("Open"))
         self.__set_toolbar_item_text(self.__save, _("Save"))
+        
+        self.__set_toolbar_item_text(self.__undo, _("Undo"))
+        self.__set_toolbar_item_text(self.__redo, _("Redo"))
     
     def __set_toolbar_item_text(self, item, text):
         item.setText(text)
