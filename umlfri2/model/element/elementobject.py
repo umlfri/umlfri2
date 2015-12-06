@@ -137,7 +137,7 @@ class ElementObject:
                 raise Exception
             self.__diagrams.append(obj)
     
-    def remove_child(self, obj):
+    def remove(self, obj):
         if obj.parent is not self:
             raise Exception
         if isinstance(obj, ElementObject):

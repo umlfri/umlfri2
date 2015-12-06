@@ -47,3 +47,17 @@ class Project:
         obj = ElementObject(self, type, save_id)
         self.__children.append(obj)
         return obj
+    
+    def add(self, obj):
+        if obj.parent is not self:
+            raise Exception
+        if obj in self.__children:
+            raise Exception
+        self.__children.append(obj)
+    
+    def remove(self, obj):
+        if obj.parent is not self:
+            raise Exception
+        if obj not in self.__children:
+            raise Exception
+        self.__children.remove(obj)

@@ -5,7 +5,7 @@ from PySide.QtGui import QTreeWidget, QTreeWidgetItem, QMenu
 from umlfri2.application import Application
 from umlfri2.application.commands.model import CreateElementCommand, CreateDiagramCommand
 from umlfri2.application.events.model import ElementCreatedEvent, ObjectChangedEvent, DiagramCreatedEvent, \
-    ProjectChangedEvent
+    ProjectChangedEvent, ElementDeletedEvent, DiagramDeletedEvent
 from umlfri2.application.events.solution import OpenProjectEvent, OpenSolutionEvent
 from umlfri2.model import Diagram, ElementObject, Project
 from umlfri2.qtgui.properties import PropertiesDialog, ProjectPropertiesDialog
@@ -54,6 +54,8 @@ class ProjectTree(QTreeWidget):
         
         Application().event_dispatcher.register(ElementCreatedEvent, self.__element_created)
         Application().event_dispatcher.register(DiagramCreatedEvent, self.__diagram_created)
+        Application().event_dispatcher.register(ElementDeletedEvent, self.__element_deleted)
+        Application().event_dispatcher.register(DiagramDeletedEvent, self.__diagram_deleted)
         Application().event_dispatcher.register(ObjectChangedEvent, self.__object_changed)
         Application().event_dispatcher.register(ProjectChangedEvent, self.__project_changed)
         Application().event_dispatcher.register(OpenProjectEvent, self.__project_open)
@@ -85,6 +87,16 @@ class ProjectTree(QTreeWidget):
             self.__reload_element(item, child_element)
         
         parent.addChild(item)
+    
+    def __element_deleted(self, event):
+        item = self.__get_item(event.element)
+        parent = item.parent()
+        parent.removeChild(item)
+    
+    def __diagram_deleted(self, event):
+        item = self.__get_item(event.diagram)
+        parent = item.parent()
+        parent.removeChild(item)
     
     def __element_created(self, event):
         parent_item = self.__get_item(event.element.parent)
