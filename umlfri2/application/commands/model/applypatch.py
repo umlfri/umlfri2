@@ -17,13 +17,13 @@ class ApplyPatchCommand(Command):
             name = "connection"
         
         change = self.__patch.get_lonely_change()
-        is_object_patch = isinstance(change, UflObjectPatch)
-        if change is not None and is_object_patch and isinstance(change, UflObjectPatch.AttributeChanged):
+        is_object_patch = isinstance(self.__patch, UflObjectPatch)
+        if change is not None and is_object_patch:
             change_desc = "property {0}".format(change.name)
         else:
             change_desc = "properties"
         
-        return "Changed {0} of {1}".format(name, change_desc)
+        return "Changed {0} of {1}".format(change_desc, name)
 
     def _do(self, ruler):
         if not self.__patch.has_changes():
