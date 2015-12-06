@@ -1,5 +1,5 @@
 from umlfri2.application.events.diagram.elementresizedmoved import ElementResizedMovedEvent
-from ..base import Command
+from ..base import Command, CommandNotDone
 
 
 class MoveSelectionCommand(Command):
@@ -20,6 +20,9 @@ class MoveSelectionCommand(Command):
         return "Selection in diagram '{0}' moved".format(self.__diagram_name)
 
     def _do(self, ruler):
+        if not self.__delta:
+            raise CommandNotDone
+        
         self.__element_positions = []
         for element in self.__elements:
             self.__element_positions.append((element, element.get_position(ruler)))

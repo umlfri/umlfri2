@@ -1,7 +1,7 @@
 from umlfri2.application.events.model import ObjectChangedEvent
 from umlfri2.model import ElementObject
 from umlfri2.ufl.objects.patch import UflObjectPatch
-from ..base import Command
+from ..base import Command, CommandNotDone
 
 
 class ApplyPatchCommand(Command):
@@ -26,6 +26,9 @@ class ApplyPatchCommand(Command):
         return "Changed {0} of {1}".format(name, change_desc)
 
     def _do(self, ruler):
+        if not self.__patch.has_changes():
+            raise CommandNotDone
+        
         self._redo(ruler)
 
     def _redo(self, ruler):
