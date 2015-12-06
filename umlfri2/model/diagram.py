@@ -74,7 +74,7 @@ class Diagram:
     
     def show(self, object):
         if isinstance(object, ElementObject):
-            visual = ElementVisual(object)
+            visual = ElementVisual(self, object)
             self.__elements.append(visual)
             return visual
         elif isinstance(object, ConnectionObject):

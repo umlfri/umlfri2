@@ -1,3 +1,4 @@
+from _weakref import ref
 from weakref import WeakSet
 
 from ..cache import ModelTemporaryDataCache
@@ -5,11 +6,13 @@ from umlfri2.types.geometry import Point, Rectangle, Size
 
 
 class ElementVisual:
-    def __init__(self, object):
+    def __init__(self, diagram, object):
         self.__cache = ModelTemporaryDataCache(self.__create_appearance_object)
         self.__cache.depend_on(object.cache)
         
         self.__cache.depend_on(self.__cache)
+        
+        self.__diagram = ref(diagram)
         
         self.__object = object
         self.__cached_appearance = None
@@ -36,6 +39,10 @@ class ElementVisual:
     @property
     def object(self):
         return self.__object
+    
+    @property
+    def diagram(self):
+        return self.__diagram()
     
     @property
     def connections(self):

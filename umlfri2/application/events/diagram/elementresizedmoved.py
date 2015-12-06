@@ -9,5 +9,10 @@ class ElementResizedMovedEvent(Event):
     def element(self):
         return self.__element
     
+    def get_chained(self):
+        from .diagramchanged import DiagramChangedEvent
+        
+        yield DiagramChangedEvent(self.__element.diagram)
+    
     def get_opposite(self):
         return self

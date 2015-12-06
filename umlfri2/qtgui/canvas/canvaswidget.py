@@ -4,6 +4,7 @@ from PySide.QtGui import QWidget, QPainter, QApplication
 from umlfri2.application import Application
 from umlfri2.application.commands.diagram import ShowElementCommand
 from umlfri2.application.drawingarea import DrawingAreaCursor
+from umlfri2.application.events.diagram import DiagramChangedEvent
 from umlfri2.application.events.model import ObjectChangedEvent
 from umlfri2.model import ElementObject
 from ..mainwindow.projecttree import ProjectMimeData
@@ -22,7 +23,8 @@ class CanvasWidget(QWidget):
         self.setAttribute(Qt.WA_OpaquePaintEvent)
         self.__old_cursor = None
         self.setAcceptDrops(True)
-        Application().event_dispatcher.register(ObjectChangedEvent, self.__object_changed)
+        Application().event_dispatcher.register(ObjectChangedEvent, self.__something_changed)
+        Application().event_dispatcher.register(DiagramChangedEvent, self.__something_changed)
     
     @property
     def diagram(self):
@@ -120,5 +122,5 @@ class CanvasWidget(QWidget):
         
         self.__old_cursor = self.__drawing_area.cursor
     
-    def __object_changed(self, event):
+    def __something_changed(self, event):
         self.update()

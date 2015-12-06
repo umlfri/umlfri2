@@ -1,3 +1,5 @@
+from functools import partial
+
 from PySide.QtGui import QToolBar, QAction, QKeySequence, QIcon, QMenu
 from umlfri2.application import Application
 
@@ -23,8 +25,10 @@ class MainToolBar(QToolBar):
         self.__undo_menu.aboutToShow.connect(self.__undo_menu_show)
         self.__redo_menu.aboutToShow.connect(self.__redo_menu_show)
         
-        self.__undo = self.__add_toolbar_item(QKeySequence.Undo, "edit-undo", self.__undo_action, self.__undo_menu)
-        self.__redo = self.__add_toolbar_item(QKeySequence.Redo, "edit-redo", self.__redo_action, self.__redo_menu)
+        self.__undo = self.__add_toolbar_item(QKeySequence.Undo, "edit-undo", partial(self.__undo_action, 1),
+                                              self.__undo_menu)
+        self.__redo = self.__add_toolbar_item(QKeySequence.Redo, "edit-redo", partial(self.__redo_action, 1),
+                                              self.__redo_menu)
         
         self.reload_texts()
         
@@ -53,23 +57,25 @@ class MainToolBar(QToolBar):
     def __save_action(self, checked=False):
         self.__main_window.save_solution()
     
-    def __undo_action(self, checked=False):
-        pass
+    def __undo_action(self, count, checked=False):
+        Application().commands.undo(count)
     
     def __undo_menu_show(self):
         self.__undo_menu.clear()
         
-        for cmd in Application().commands.get_undo_stack(UNDO_REDO_COUNT):
-            self.__undo_menu.addAction(cmd.description)
+        for no, cmd in enumerate(Application().commands.get_undo_stack(UNDO_REDO_COUNT)):
+            action = self.__undo_menu.addAction(cmd.description)
+            action.triggered.connect(partial(self.__undo_action, no + 1))
     
-    def __redo_action(self, checked=False):
-        pass
+    def __redo_action(self, count, checked=False):
+        Application().commands.redo(count)
     
     def __redo_menu_show(self):
         self.__redo_menu.clear()
         
-        for cmd in Application().commands.get_redo_stack(UNDO_REDO_COUNT):
-            self.__redo_menu.addAction(cmd.description)
+        for no, cmd in enumerate(Application().commands.get_redo_stack(UNDO_REDO_COUNT)):
+            action = self.__redo_menu.addAction(cmd.description)
+            action.triggered.connect(partial(self.__redo_action, no + 1))
     
     def __refresh_enable(self):
         self.__save.setEnabled(Application().can_save_solution)
