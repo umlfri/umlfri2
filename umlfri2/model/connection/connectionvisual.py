@@ -16,8 +16,8 @@ class ConnectionVisual:
         
         self.__diagram = ref(diagram)
         self.__object = object
-        self.__source = source
-        self.__destination = destination
+        self.__source = ref(source)
+        self.__destination = ref(destination)
         self.__cached_appearance = None
         self.__points = []
         self.__cached_points = ()
@@ -33,11 +33,19 @@ class ConnectionVisual:
     
     @property
     def source(self):
-        return self.__source
+        return self.__source()
     
     @property
     def destination(self):
-        return self.__destination
+        return self.__destination()
+    
+    def get_other_end(self, one_end):
+        if self.__source() is one_end:
+            return self.__destination()
+        elif self.__destination() is one_end:
+            return self.__source()
+        else:
+            return None
     
     @property
     def diagram(self):
@@ -47,9 +55,9 @@ class ConnectionVisual:
         self.__cache.ensure_valid(ruler=ruler)
         
         if element_centers:
-            yield self.__source.get_bounds(ruler).center
+            yield self.__source().get_bounds(ruler).center
             yield from self.__points
-            yield self.__destination.get_bounds(ruler).center
+            yield self.__destination().get_bounds(ruler).center
         elif source_and_end:
             yield from self.__cached_points
         else:
@@ -61,7 +69,7 @@ class ConnectionVisual:
     
     @property
     def is_identity(self):
-        return self.__source is self.__destination
+        return self.__source() is self.__destination()
     
     def get_labels(self):
         yield from self.__labels
@@ -144,8 +152,8 @@ class ConnectionVisual:
     def __create_appearance_object(self, ruler):
         self.__cached_appearance = self.__object.create_appearance_object(ruler)
 
-        source_bounds = self.__source.get_bounds(ruler)
-        destination_bounds = self.__destination.get_bounds(ruler)
+        source_bounds = self.__source().get_bounds(ruler)
+        destination_bounds = self.__destination().get_bounds(ruler)
         
         if self.__points:
             line1 = Line.from_point_point(source_bounds.center, self.__points[0])

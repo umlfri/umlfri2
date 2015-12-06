@@ -92,6 +92,48 @@ class Diagram:
                 element2.add_connection(visual)
                 self.__connections.append(visual)
                 return visual
+        else:
+            raise Exception
+    
+    def add(self, visual):
+        if visual.diagram is not self:
+            raise Exception
+        
+        if isinstance(visual, ElementVisual):
+            if visual in self.__elements:
+                raise Exception
+            self.__elements.append(visual)
+            for connection in visual.connections:
+                self.__connections.append(connection)
+                connection.get_other_end(visual).add_connection(connection)
+        elif isinstance(visual, ConnectionVisual):
+            if visual in self.__connections:
+                raise Exception
+            self.__connections.append(visual)
+            visual.source.add_connection(visual)
+            visual.destination.add_connection(visual)
+        else:
+            raise Exception
+    
+    def remove(self, visual):
+        if visual.diagram is not self:
+            raise Exception
+        
+        if isinstance(visual, ElementVisual):
+            if visual not in self.__elements:
+                raise Exception
+            self.__elements.remove(visual)
+            for connection in visual.connections:
+                self.__connections.remove(connection)
+                connection.get_other_end(visual).remove_connection(connection)
+        elif isinstance(visual, ConnectionVisual):
+            if visual not in self.__connections:
+                raise Exception
+            self.__connections.remove(visual)
+            visual.source.remove_connection(visual)
+            visual.destination.remove_connection(visual)
+        else:
+            raise Exception
     
     def draw(self, canvas, selection=None):
         context = Context().extend(self.__data, 'self')

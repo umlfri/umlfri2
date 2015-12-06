@@ -25,10 +25,12 @@ class AddDiagramConnectionCommand(Command):
             self.__connection_visual.add_point(ruler, None, point)
     
     def _redo(self, ruler):
-        pass # TODO
+        self.__source_element.reconnect(self.__connection_object)
+        self.__diagram.add(self.__connection_visual)
     
     def _undo(self, ruler):
-        pass # TODO
+        self.__source_element.disconnect(self.__connection_object)
+        self.__diagram.remove(self.__connection_visual)
     
     @property
     def connection_visual(self):

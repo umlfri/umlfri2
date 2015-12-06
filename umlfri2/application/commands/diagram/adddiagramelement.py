@@ -8,6 +8,7 @@ class AddDiagramElementCommand(Command):
         self.__diagram_name = diagram.get_display_name()
         self.__diagram = diagram
         self.__element_type = element_type
+        self.__parent = diagram.parent
         self.__point = point
         self.__element_visual = None
         self.__element_object = None
@@ -17,15 +18,17 @@ class AddDiagramElementCommand(Command):
         return "Adding element '{0}' to diagram '{1}'".format(self.__element_type.id, self.__diagram_name)
     
     def _do(self, ruler):
-        self.__element_object = self.__diagram.parent.create_child_element(self.__element_type)
+        self.__element_object = self.__parent.create_child_element(self.__element_type)
         self.__element_visual = self.__diagram.show(self.__element_object)
         self.__element_visual.move(ruler, self.__point)
     
     def _redo(self, ruler):
-        pass # TODO
+        self.__parent.add(self.__element_object)
+        self.__diagram.add(self.__element_visual)
     
     def _undo(self, ruler):
-        pass # TODO
+        self.__parent.remove(self.__element_object)
+        self.__diagram.remove(self.__element_visual)
     
     @property
     def element_visual(self):

@@ -23,6 +23,12 @@ class ElementVisual:
         
         self.__connections.add(connection)
     
+    def remove_connection(self, connection):
+        if connection.source != self and connection.destination != self:
+            raise Exception("Cannot remove connection not connected to the element")
+        
+        self.__connections.remove(connection)
+    
     @property
     def cache(self):
         return self.__cache

@@ -16,10 +16,10 @@ class CreateDiagramCommand(Command):
         self.__diagram = self.__parent.create_child_diagram(self.__diagram_type)
     
     def _redo(self, ruler):
-        pass # TODO
+        self.__parent.add(self.__diagram)
     
     def _undo(self, ruler):
-        pass # TODO
+        self.__parent.remove(self.__diagram)
     
     @property
     def diagram(self):

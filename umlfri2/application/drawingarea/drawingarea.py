@@ -94,7 +94,6 @@ class DrawingArea:
             self.__postprocess_action(point, shift_pressed)
     
     def get_object_at(self, point):
-        # TODO: refactor
         visual = self.__diagram.get_visual_at(self.__application.ruler, point)
         if visual is None:
             return None

@@ -80,6 +80,20 @@ class ElementObject:
         second_element.__connections.append(connection)
         return connection
     
+    def reconnect(self, connection):
+        if connection in self.__connections:
+            raise Exception
+        if not connection.is_connected_with(self):
+            raise Exception
+        self.__connections.append(connection)
+        connection.get_other_end(self).__connections.append(connection)
+    
+    def disconnect(self, connection):
+        if connection not in self.__connections:
+            raise Exception
+        self.__connections.remove(connection)
+        connection.get_other_end(self).__connections.remove(connection)
+    
     @property
     def project(self):
         if isinstance(self.__parent(), ElementObject):
@@ -110,6 +124,30 @@ class ElementObject:
         diagram = Diagram(self, type, save_id)
         self.__diagrams.append(diagram)
         return diagram
+    
+    def add(self, obj):
+        if obj.parent is not self:
+            raise Exception
+        if isinstance(obj, ElementObject):
+            if obj in self.__children:
+                raise Exception
+            self.__children.append(obj)
+        else:
+            if obj in self.__diagrams:
+                raise Exception
+            self.__diagrams.append(obj)
+    
+    def remove_child(self, obj):
+        if obj.parent is not self:
+            raise Exception
+        if isinstance(obj, ElementObject):
+            if obj not in self.__children:
+                raise Exception
+            self.__children.remove(obj)
+        else:
+            if obj not in self.__diagrams:
+                raise Exception
+            self.__diagrams.remove(obj)
     
     def apply_ufl_patch(self, patch):
         self.__data.apply_patch(patch)

@@ -21,10 +21,10 @@ class ShowElementCommand(Command):
         self.__element_visual.move(ruler, self.__point)
     
     def _redo(self, ruler):
-        pass # TODO
+        self.__diagram.add(self.__element_visual)
     
     def _undo(self, ruler):
-        pass # TODO
+        self.__diagram.remove(self.__element_visual)
     
     @property
     def element_visual(self):

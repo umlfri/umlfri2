@@ -37,6 +37,17 @@ class ConnectionObject:
     def destination(self):
         return self.__destination()
     
+    def get_other_end(self, element):
+        if self.__source() is element:
+            return self.__destination
+        elif self.__destination() is element:
+            return self.__source
+        else:
+            return None
+    
+    def is_connected_with(self, element):
+        return self.__source() is element or self.__destination() is element
+    
     @property
     def save_id(self):
         return self.__save_id
