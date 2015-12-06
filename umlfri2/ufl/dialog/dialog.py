@@ -1,3 +1,4 @@
+from .options import UflDialogOptions
 from ..objects.mutable import UflMutable
 from .tabs import *
 from umlfri2.ufl.dialog.widgets import *
@@ -5,11 +6,12 @@ from ..types import *
 
 
 class UflDialog:
-    def __init__(self, type):
+    def __init__(self, type, options=UflDialogOptions.standard):
         self.__type = type
         self.__tabs = []
         self.__original_object = None
         self.__mutable_object = None
+        self.__options = options
         if isinstance(self.__type, UflListType):
             self.__add_list_tab(None, None, self.__type)
         elif isinstance(self.__type, UflObjectType):
@@ -22,10 +24,13 @@ class UflDialog:
         self.__tabs.append(tab)
         
         for name, type in self.__type.attributes:
-            if isinstance(type, UflListType):
+            if self.__options.list_as_tab and isinstance(type, UflListType):
                 # TODO: translations
                 self.__add_list_tab(name, name, type)
-            elif isinstance(type, UflObjectType):
+            elif self.__options.multiline_as_tab and isinstance(type, UflStringType) and type.multiline:
+                # TODO: translations
+                self.__add_multiline_tab(name, name, type)
+            elif self.__options.object_as_tab and isinstance(type, UflObjectType):
                 # TODO: translations
                 self.__add_object_tab(name, name, type)
             else:
@@ -50,6 +55,13 @@ class UflDialog:
         for name, attr_type in type.attributes:
             # TODO: translations
             tab.add_widget(self.__make_widget(tab, name, name, attr_type))
+    
+    def __add_multiline_tab(self, id, name, type):
+        tab = UflDialogValueTab(id, name)
+        self.__tabs.append(tab)
+        
+        # TODO: translations
+        tab.add_widget(self.__make_widget(tab, None, None, type))
 
     def __make_widget(self, tab, id, label, type):
         if isinstance(type, UflBoolType):
@@ -63,7 +75,7 @@ class UflDialog:
         elif isinstance(type, UflFontType):
             return UflDialogFontWidget(tab, id, label)
         elif isinstance(type, (UflObjectType, UflListType)):
-            return UflDialogChildWidget(tab, id, label, UflDialog(type))
+            return UflDialogChildWidget(tab, id, label, UflDialog(type, self.__options))
         elif isinstance(type, UflStringType):
             if type.multiline:
                 return UflDialogTextAreaWidget(tab, id, label)
@@ -81,6 +93,8 @@ class UflDialog:
     def finish(self):
         for tab in self.__tabs:
             tab.finish()
+            if isinstance(tab, UflDialogValueTab):
+                self.__mutable_object.set_value(tab.id, tab.current_object)
     
     def make_patch(self):
         return self.__mutable_object.make_patch()

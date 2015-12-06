@@ -5,7 +5,7 @@ from umlfri2.application import Application
 from umlfri2.application.commands.model import ApplyPatchCommand
 from .listtab import ListPropertyTab
 from .objecttab import ObjectPropertyTab
-from umlfri2.ufl.dialog import UflDialogListTab, UflDialogObjectTab
+from umlfri2.ufl.dialog import UflDialogListTab, UflDialogObjectTab, UflDialogValueTab
 
 
 class PropertiesDialog(QDialog):
@@ -34,7 +34,7 @@ class PropertiesDialog(QDialog):
         tab = dialog.get_lonely_tab()
         if isinstance(tab, UflDialogListTab):
             layout.addWidget(ListPropertyTab(self, tab))
-        elif isinstance(tab, UflDialogObjectTab):
+        elif isinstance(tab, (UflDialogObjectTab, UflDialogValueTab)):
             layout.addWidget(ObjectPropertyTab(self, tab))
         else:
             tabs = QTabWidget()
@@ -43,7 +43,7 @@ class PropertiesDialog(QDialog):
             for tab in dialog.tabs:
                 if isinstance(tab, UflDialogListTab):
                     tabs.addTab(ListPropertyTab(self, tab), tab.name or _("General"))
-                elif isinstance(tab, UflDialogObjectTab):
+                elif isinstance(tab, (UflDialogObjectTab, UflDialogValueTab)):
                     tabs.addTab(ObjectPropertyTab(self, tab), tab.name or _("General"))
             layout.addWidget(tabs)
         

@@ -1,4 +1,4 @@
-from umlfri2.ufl.dialog.widgets.valued import UflDialogValuedWidget
+from ..widgets import UflDialogChildWidget, UflDialogValuedWidget
 from .tab import UflDialogTab
 
 
@@ -49,6 +49,8 @@ class UflDialogListTab(UflDialogTab):
                         self.__list.set_item(self.__current_index, widget.value)
                 else:
                     self.current_object.set_value(widget.id, widget.value)
+            elif isinstance(widget, UflDialogChildWidget):
+                widget.dialog.finish()
         
         if self.__is_new:
             self.__list.append(self.current_object)

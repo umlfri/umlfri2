@@ -105,7 +105,8 @@ class PropertyTab(QWidget):
                 self.__connect_action(qt_widget.textChanged, WidgetChanged(qt_widget, widget))
                 ret.addRow(widget.label, qt_widget)
             elif isinstance(widget, UflDialogTextAreaWidget):
-                ret.addRow(QLabel(widget.label))
+                if widget.label is not None:
+                    ret.addRow(QLabel(widget.label))
                 qt_widget = QTextEdit()
                 qt_widget.setTabChangesFocus(True)
                 self.__qt_widgets[widget.id] = qt_widget

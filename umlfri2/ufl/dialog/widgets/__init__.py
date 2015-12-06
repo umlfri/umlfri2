@@ -7,3 +7,4 @@ from .integer import UflDialogIntegerWidget
 from .select import UflDialogSelectWidget
 from .text import UflDialogTextWidget
 from .textarea import UflDialogTextAreaWidget
+from .valued import UflDialogValuedWidget
