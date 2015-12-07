@@ -27,6 +27,7 @@
                 <Value value="-"/>
                 <Value value="#"/>
                 <Value value="+"/>
+                <Value value="~"/>
             </Attribute>
             <Attribute id="role" type="str"/>
         </Attribute>
@@ -46,6 +47,7 @@
                 <Value value="-"/>
                 <Value value="#"/>
                 <Value value="+"/>
+                <Value value="~"/>
             </Attribute>
             <Attribute id="role" type="str"/>
         </Attribute>

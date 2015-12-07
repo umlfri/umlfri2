@@ -7,10 +7,11 @@
     <Attribute id="**/name" label="Name"/>
     <Attribute id="**/type" label="Type"/>
     <Attribute id="**/stereotype" label="Stereotype"/>
-    <Attribute id="**/scope" label="Scope"/>
-    <Attribute id="**/scope/+" label="Public"/>
-    <Attribute id="**/scope/-" label="Private"/>
-    <Attribute id="**/scope/#" label="Protected"/>
+    <Attribute id="**/visibility" label="Visibility"/>
+    <Attribute id="**/visibility/+" label="Public"/>
+    <Attribute id="**/visibility/-" label="Private"/>
+    <Attribute id="**/visibility/#" label="Protected"/>
+    <Attribute id="**/visibility/~" label="Package"/>
     <Attribute id="**/abstract" label="Abstract"/>
     <Attribute id="**/static" label="Static"/>
     <Attribute id="**/note" label="Note"/>
@@ -32,10 +33,6 @@
     <Attribute id="association/source" label="Source"/>
     <Attribute id="association/destination" label="Destination"/>
     <Attribute id="association/*/cardinality" label="Cardinality"/>
-    <Attribute id="association/*/visibility" label="Visibility"/>
     <Attribute id="association/*/visibility/unspecified" label=""/>
-    <Attribute id="association/*/visibility/+" label="Public"/>
-    <Attribute id="association/*/visibility/-" label="Private"/>
-    <Attribute id="association/*/visibility/#" label="Protected"/>
     <Attribute id="association/*/role" label="Role"/>
 </Translation>
