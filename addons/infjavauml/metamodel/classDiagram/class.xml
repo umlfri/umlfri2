@@ -22,7 +22,7 @@
             <Attribute id="stereotype" type="str"/>
             <Attribute id="scope" type="enum">
                 <Value value="-"/>
-                <Value value="*"/>
+                <Value value="#"/>
                 <Value value="+"/>
             </Attribute>
             <Attribute id="static" type="bool"/>
@@ -46,7 +46,7 @@
             <Attribute id="stereotype" type="str"/>
             <Attribute id="scope" type="enum" default="+">
                 <Value value="-"/>
-                <Value value="*"/>
+                <Value value="#"/>
                 <Value value="+"/>
             </Attribute>
             <Attribute id="static" type="bool"/>

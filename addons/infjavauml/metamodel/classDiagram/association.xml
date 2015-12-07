@@ -25,7 +25,7 @@
             <Attribute id="visibility" type="enum">
                 <Value value="unspecified"/>
                 <Value value="-"/>
-                <Value value="*"/>
+                <Value value="#"/>
                 <Value value="+"/>
             </Attribute>
             <Attribute id="role" type="str"/>
@@ -44,7 +44,7 @@
             <Attribute id="visibility" type="enum">
                 <Value value="unspecified"/>
                 <Value value="-"/>
-                <Value value="*"/>
+                <Value value="#"/>
                 <Value value="+"/>
             </Attribute>
             <Attribute id="role" type="str"/>

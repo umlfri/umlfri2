@@ -1,8 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Translation lang="en" xmlns="http://umlfri.org/v2/addon.xsd">
-    <Text id="class" text="Class"/>
-    <Text id="classDiagram" text="Class diagram"/>
-    <Text id="association" text="Association"/>
-    <Text id="**/name" text="Name"/>
-    <Text id="**/note" text="Note"/>
+    <Element id="class" label="Class"/>
+    <Diagram id="class_diagram" label="Class diagram"/>
+    <Connection id="association" label="Association"/>
+    
+    <Attribute id="**/name" label="Name"/>
+    <Attribute id="**/type" label="Type"/>
+    <Attribute id="**/stereotype" label="Stereotype"/>
+    <Attribute id="**/scope" label="Scope"/>
+    <Attribute id="**/scope/+" label="Public"/>
+    <Attribute id="**/scope/-" label="Private"/>
+    <Attribute id="**/scope/#" label="Protected"/>
+    <Attribute id="**/abstract" label="Abstract"/>
+    <Attribute id="**/static" label="Static"/>
+    <Attribute id="**/note" label="Note"/>
+    
+    <Attribute id="class/attributes" label="Attributes"/>
+    <Attribute id="class/operations" label="Operations"/>
+    
+    <Attribute id="class/attributes/default" label="Default value"/>
+    
+    <Attribute id="class/operations/rtype" label="Return type"/>
+    <Attribute id="class/operations/parameters" label="Parameters"/>
+    <Attribute id="class/attributes/parameters/default" label="Default value"/>
+    
+    <Attribute id="association/direction" label="Direction"/>
+    <Attribute id="association/direction/unspecified" label=""/>
+    <Attribute id="association/direction/toDestination" label="To destination"/>
+    <Attribute id="association/direction/toSource" label="To source"/>
+    <Attribute id="association/direction/bidirectional" label="Bidirectional"/>
+    <Attribute id="association/source" label="Source"/>
+    <Attribute id="association/destination" label="Destination"/>
+    <Attribute id="association/*/cardinality" label="Cardinality"/>
+    <Attribute id="association/*/visibility" label="Visibility"/>
+    <Attribute id="association/*/visibility/unspecified" label=""/>
+    <Attribute id="association/*/visibility/+" label="Public"/>
+    <Attribute id="association/*/visibility/-" label="Private"/>
+    <Attribute id="association/*/visibility/#" label="Protected"/>
+    <Attribute id="association/*/role" label="Role"/>
 </Translation>
