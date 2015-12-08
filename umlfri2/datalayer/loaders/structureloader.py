@@ -52,7 +52,7 @@ class UflStructureLoader:
             if is_list:
                 attr = UflListType(attr)
             
-            attributes[child.attrib["id"]] = attr
+            attributes[child.attrib["id"]] = UflObjectAttribute(child.attrib["id"], attr)
         return attributes
 
     def __load_possibilities(self, node):

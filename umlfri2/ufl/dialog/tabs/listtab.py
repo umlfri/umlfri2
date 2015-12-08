@@ -15,8 +15,8 @@ class UflDialogListTab(UflDialogTab):
         if self.__list_type.item_type.is_immutable:
             yield None
         else:
-            for name, type in self.__list_type.item_type.attributes:
-                yield name
+            for attr in self.__list_type.item_type.attributes:
+                yield attr.name
     
     @property
     def rows(self):
@@ -26,8 +26,8 @@ class UflDialogListTab(UflDialogTab):
         else:
             for object in self.__list:
                 row = []
-                for name, type in self.__list_type.item_type.attributes:
-                    row.append(str(object.get_value(name)))
+                for attr in self.__list_type.item_type.attributes:
+                    row.append(str(object.get_value(attr.name)))
                 yield row
     
     @property

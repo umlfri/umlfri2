@@ -33,24 +33,24 @@ class UflObjectType(UflType):
     
     @property
     def attributes(self):
-        yield from self.__attributes.items()
+        yield from self.__attributes.values()
     
-    def get_attribute_type(self, name):
+    def get_attribute(self, name):
         return self.__attributes[name]
     
     def contains_attribute(self, name):
         return name in self.__attributes
     
     def build_default(self, generator):
-        attr = {}
-        for name, type in self.__attributes.items():
+        ret = {}
+        for attr in self.__attributes.values():
             local_generator = None
             if generator:
-                local_generator = generator.for_name(name)
+                local_generator = generator.for_name(attr.name)
             
-            attr[name] = type.build_default(local_generator)
+            ret[attr.name] = attr.type.build_default(local_generator)
         
-        return UflObject(self, attr)
+        return UflObject(self, ret)
     
     def is_same_as(self, other):
         if not super().is_same_as(other):
@@ -60,7 +60,7 @@ class UflObjectType(UflType):
             return False
         
         for name, type in self.__attributes:
-            if not other.__attributes[name].is_same_as(type):
+            if not other.__attributes[name].type.is_same_as(type):
                 return False
         
         return True
@@ -70,8 +70,8 @@ class UflObjectType(UflType):
         return False
     
     def is_default_value(self, value):
-        for name, type in self.__attributes.items():
-            if not type.is_default_value(value.get_value(name)):
+        for attr in self.__attributes.values():
+            if not attr.type.is_default_value(value.get_value(attr.name)):
                 return False
         return True
     
@@ -81,4 +81,4 @@ class UflObjectType(UflType):
             attr.set_parent(self)
     
     def __str__(self):
-        return "Object[{0}]".format(", ".join("{0}: {1}".format(name, type) for name, type in self.__attributes.items()))
+        return "Object[{0}]".format(", ".join("{0}: {1}".format(attr.name, attr.type) for attr in self.__attributes.values()))

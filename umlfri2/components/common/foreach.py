@@ -27,7 +27,7 @@ class ForEachComponent(ControlComponent):
         if self.__item is not None:
             variables[self.__item] = item_type
         elif isinstance(item_type, UflObjectType):
-            variables.update(item_type.attributes)
+            variables.update({attr.name: attr.type for attr in item_type.attributes})
         else:
             raise Exception("You have to specify item name or use list of objects")
         

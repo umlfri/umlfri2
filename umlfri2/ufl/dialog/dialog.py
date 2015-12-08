@@ -23,28 +23,28 @@ class UflDialog:
         tab = UflDialogObjectTab(None, None)
         self.__tabs.append(tab)
         
-        for name, type in self.__type.attributes:
-            if self.__options.list_as_tab and isinstance(type, UflListType):
+        for attr in self.__type.attributes:
+            if self.__options.list_as_tab and isinstance(attr.type, UflListType):
                 # TODO: translations
-                self.__add_list_tab(name, name, type)
-            elif self.__options.multiline_as_tab and isinstance(type, UflStringType) and type.multiline:
+                self.__add_list_tab(attr.name, attr.name, attr.type)
+            elif self.__options.multiline_as_tab and isinstance(attr.type, UflStringType) and attr.type.multiline:
                 # TODO: translations
-                self.__add_multiline_tab(name, name, type)
-            elif self.__options.object_as_tab and isinstance(type, UflObjectType):
+                self.__add_multiline_tab(attr.name, attr.name, attr.type)
+            elif self.__options.object_as_tab and isinstance(attr.type, UflObjectType):
                 # TODO: translations
-                self.__add_object_tab(name, name, type)
+                self.__add_object_tab(attr.name, attr.name, attr.type)
             else:
                 # TODO: translations
-                tab.add_widget(self.__make_widget(tab, name, name, type))
+                tab.add_widget(self.__make_widget(tab, attr.name, attr.name, attr.type))
     
     def __add_list_tab(self, id, name, type):
         tab = UflDialogListTab(id, name, type)
         self.__tabs.append(tab)
         
         if isinstance(type.item_type, UflObjectType):
-            for name, attr_type in type.item_type.attributes:
+            for attr in type.item_type.attributes:
                 # TODO: translations
-                tab.add_widget(self.__make_widget(tab, name, name, attr_type))
+                tab.add_widget(self.__make_widget(tab, attr.name, attr.name, attr.type))
         else:
             tab.add_widget(self.__make_widget(tab, None, None, type))
     
@@ -52,9 +52,9 @@ class UflDialog:
         tab = UflDialogObjectTab(id, name)
         self.__tabs.append(tab)
         
-        for name, attr_type in type.attributes:
+        for attr in type.attributes:
             # TODO: translations
-            tab.add_widget(self.__make_widget(tab, name, name, attr_type))
+            tab.add_widget(self.__make_widget(tab, attr.name, attr.name, attr.type))
     
     def __add_multiline_tab(self, id, name, type):
         tab = UflDialogValueTab(id, name)

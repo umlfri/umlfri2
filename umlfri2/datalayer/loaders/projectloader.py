@@ -172,7 +172,7 @@ class ProjectLoader:
 
     def __load_ufl_attribute(self, child, ufl_object, ufl_type):
         id = child.attrib['id']
-        type = ufl_type.get_attribute_type(id)
+        type = ufl_type.get_attribute(id).type
         current_value = ufl_object.get_value(id)
         new_value = self.__load_ufl(type, child, current_value)
         if new_value is not None:

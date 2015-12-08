@@ -7,7 +7,7 @@ class UflMutableObject(UflMutable):
         self.__type = type
         self.__attributes = {}
         for name, value in attributes.items():
-            if self.__type.get_attribute_type(name).is_immutable:
+            if self.__type.get_attribute(name).type.is_immutable:
                 new_value = value
             else:
                 new_value = value.make_mutable()
@@ -25,7 +25,7 @@ class UflMutableObject(UflMutable):
         return self.__attributes[name][1]
     
     def set_value(self, name, value):
-        attribute_type = self.__type.get_attribute_type(name)
+        attribute_type = self.__type.get_attribute(name).type
         
         if attribute_type.is_immutable and  not attribute_type.is_valid_value(value):
             raise ValueError
@@ -37,7 +37,7 @@ class UflMutableObject(UflMutable):
         
         attributes = {}
         for name, (old_value, value) in self.__attributes.items():
-            if not self.__type.get_attribute_type(name).is_immutable:
+            if not self.__type.get_attribute(name).type.is_immutable:
                 value = value.make_immutable()
             attributes[name] = value
 
@@ -46,7 +46,7 @@ class UflMutableObject(UflMutable):
     def make_patch(self):
         changes = []
         for name, (old_value, value) in self.__attributes.items():
-            if self.__type.get_attribute_type(name).is_immutable:
+            if self.__type.get_attribute(name).type.is_immutable:
                 if old_value is not value:
                     changes.append(UflObjectPatch.AttributeChanged(name, old_value, value))
             else:

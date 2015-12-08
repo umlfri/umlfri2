@@ -106,12 +106,12 @@ class ProjectSaver:
             xml.attrib['value'] = str(value)
     
     def __save_ufl_object(self, xml, value, type):
-        for name, type in type.attributes:
-            attr_value = value.get_value(name)
-            if not type.is_default_value(attr_value):
+        for attr in type.attributes:
+            attr_value = value.get_value(attr.name)
+            if not attr.type.is_default_value(attr_value):
                 attr_xml = lxml.etree.Element('{{{0}}}Attribute'.format(MODEL_NAMESPACE))
-                attr_xml.attrib['id'] = name
-                self.__save_ufl_any(attr_xml, attr_value, type)
+                attr_xml.attrib['id'] = attr.name
+                self.__save_ufl_any(attr_xml, attr_value, attr.type)
                 xml.append(attr_xml)
     
     
