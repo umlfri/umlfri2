@@ -27,7 +27,7 @@ class Vector:
         return math.sqrt(self.__x**2 + self.__y**2)
     
     def __bool__(self):
-        return self.__x != 0 and self.__y != 0
+        return self.__x != 0 or self.__y != 0
     
     def __neg__(self):
         return Vector(-self.__x, -self.__y)
