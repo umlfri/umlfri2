@@ -7,6 +7,7 @@ class ElementType:
         self.__id = id
         self.__icon = icon
         self.__ufl_type = ufl_type
+        self.__ufl_type.set_parent(self)
         self.__display_name = display_name
         self.__appearance = appearance
     

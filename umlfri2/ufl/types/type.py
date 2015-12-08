@@ -6,6 +6,12 @@ class UflType:
     ALLOWED_DIRECT_ATTRIBUTES = {}
     ALLOWED_DIRECT_METHODS = {}
     
+    __parent = None
+    
+    @property
+    def parent(self):
+        return self.__parent
+    
     def build_default(self, generator):
         raise NotImplementedError
     
@@ -22,6 +28,11 @@ class UflType:
             return True
         
         return False
+    
+    def set_parent(self, parent):
+        if self.__parent is not None:
+            raise Exception
+        self.__parent = parent
     
     @property
     def is_immutable(self):

@@ -26,5 +26,9 @@ class UflListType(UflType):
     def is_immutable(self):
         return False
     
+    def set_parent(self, parent):
+        super().set_parent(parent)
+        self.__item_type.set_parent(self)
+    
     def __str__(self):
         return "List<{0}>".format(self.__item_type)

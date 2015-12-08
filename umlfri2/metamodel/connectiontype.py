@@ -7,6 +7,7 @@ class ConnectionType:
         self.__id = id
         self.__icon = icon
         self.__ufl_type = ufl_type
+        self.__ufl_type.set_parent(self)
         self.__appearance = appearance
         self.__labels = {label.id: label for label in labels}
     
