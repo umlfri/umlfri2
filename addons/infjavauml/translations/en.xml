@@ -1,38 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Translation lang="en" xmlns="http://umlfri.org/v2/addon.xsd">
     <Element id="class" label="Class"/>
+    <Element id="package" label="Package"/>
+    
     <Diagram id="class_diagram" label="Class diagram"/>
+    
     <Connection id="association" label="Association"/>
     
-    <Attribute id="**/name" label="Name"/>
-    <Attribute id="**/type" label="Type"/>
-    <Attribute id="**/stereotype" label="Stereotype"/>
-    <Attribute id="**/visibility" label="Visibility"/>
-    <Attribute id="**/visibility/+" label="Public"/>
-    <Attribute id="**/visibility/-" label="Private"/>
-    <Attribute id="**/visibility/#" label="Protected"/>
-    <Attribute id="**/visibility/~" label="Package"/>
-    <Attribute id="**/abstract" label="Abstract"/>
-    <Attribute id="**/static" label="Static"/>
-    <Attribute id="**/note" label="Note"/>
+    <Attribute path="**/name" label="Name"/>
+    <Attribute path="**/type" label="Type"/>
+    <Attribute path="**/stereotype" label="Stereotype"/>
+    <Attribute path="**/visibility" label="Visibility"/>
+    <Attribute path="**/visibility/+" label="Public"/>
+    <Attribute path="**/visibility/-" label="Private"/>
+    <Attribute path="**/visibility/#" label="Protected"/>
+    <Attribute path="**/visibility/~" label="Package"/>
+    <Attribute path="**/abstract" label="Abstract"/>
+    <Attribute path="**/static" label="Static"/>
+    <Attribute path="**/note" label="Note"/>
     
-    <Attribute id="class/attributes" label="Attributes"/>
-    <Attribute id="class/operations" label="Operations"/>
+    <Attribute path="class/attributes" label="Attributes"/>
+    <Attribute path="class/operations" label="Operations"/>
     
-    <Attribute id="class/attributes/default" label="Default value"/>
+    <Attribute path="class/attributes/default" label="Default value"/>
     
-    <Attribute id="class/operations/rtype" label="Return type"/>
-    <Attribute id="class/operations/parameters" label="Parameters"/>
-    <Attribute id="class/attributes/parameters/default" label="Default value"/>
+    <Attribute path="class/operations/rtype" label="Return type"/>
+    <Attribute path="class/operations/parameters" label="Parameters"/>
+    <Attribute path="class/attributes/parameters/default" label="Default value"/>
     
-    <Attribute id="association/direction" label="Direction"/>
-    <Attribute id="association/direction/unspecified" label=""/>
-    <Attribute id="association/direction/toDestination" label="To destination"/>
-    <Attribute id="association/direction/toSource" label="To source"/>
-    <Attribute id="association/direction/bidirectional" label="Bidirectional"/>
-    <Attribute id="association/source" label="Source"/>
-    <Attribute id="association/destination" label="Destination"/>
-    <Attribute id="association/*/cardinality" label="Cardinality"/>
-    <Attribute id="association/*/visibility/unspecified" label=""/>
-    <Attribute id="association/*/role" label="Role"/>
+    <Attribute path="association/direction" label="Direction"/>
+    <Attribute path="association/direction/unspecified" label=""/>
+    <Attribute path="association/direction/toDestination" label="To destination"/>
+    <Attribute path="association/direction/toSource" label="To source"/>
+    <Attribute path="association/direction/bidirectional" label="Bidirectional"/>
+    <Attribute path="association/source" label="Source"/>
+    <Attribute path="association/destination" label="Destination"/>
+    <Attribute path="association/*/cardinality" label="Cardinality"/>
+    <Attribute path="association/*/visibility/unspecified" label=""/>
+    <Attribute path="association/*/role" label="Role"/>
 </Translation>

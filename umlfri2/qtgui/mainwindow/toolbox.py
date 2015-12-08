@@ -40,10 +40,12 @@ class ToolBox(QWidget):
         self.__add_button(self.__arrow, _('Select'), None, tab)
         if diagram_type is not None:
             self.__add_separator()
+            
+            translation = diagram_type.metamodel.addon.get_translation(Application().language)
+            
             has_elements = False
             for element_type in diagram_type.element_types:
-                # TODO: translation
-                self.__add_button(image_loader.load_icon(element_type.icon), element_type.id,
+                self.__add_button(image_loader.load_icon(element_type.icon), translation.translate(element_type),
                                   (AddElementAction, element_type.id),
                                   tab)
                 has_elements = True
@@ -52,8 +54,7 @@ class ToolBox(QWidget):
                 self.__add_separator()
             
             for connection_type in diagram_type.connection_types:
-                # TODO: translation
-                self.__add_button(image_loader.load_icon(connection_type.icon), connection_type.id,
+                self.__add_button(image_loader.load_icon(connection_type.icon), translation.translate(connection_type),
                                   (AddConnectionAction, connection_type.id),
                                   tab)
         

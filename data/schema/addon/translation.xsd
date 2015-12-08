@@ -25,7 +25,7 @@
                 </xs:element>
                 <xs:element name="Attribute" minOccurs="0" maxOccurs="unbounded">
                     <xs:complexType>
-                        <xs:attribute name="id" type="xs:string"/>
+                        <xs:attribute name="path" type="xs:string"/>
                         <xs:attribute name="label" type="xs:string"/>
                     </xs:complexType>
                 </xs:element>

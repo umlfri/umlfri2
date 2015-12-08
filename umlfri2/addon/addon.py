@@ -1,3 +1,6 @@
+from .translation import POSIX_TRANSLATION
+
+
 class AddOn:
     def __init__(self, identifier, name, version, author, homepage, license, icon, description, config, translations, metamodel):
         self.__identifier = identifier
@@ -55,12 +58,14 @@ class AddOn:
         return self.__config
     
     @property
-    def translations(self):
-        return self.__translations
-    
-    @property
     def metamodel(self):
         return self.__metamodel
+    
+    def get_translation(self, language):
+        for translation in self.__translations:
+            if translation.language == language:
+                return translation
+        return POSIX_TRANSLATION
     
     def compile(self):
         self.__metamodel.compile()

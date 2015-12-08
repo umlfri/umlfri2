@@ -136,3 +136,8 @@ class Application(metaclass=MetaApplication):
         self.__commands.mark_unchanged()
         self.__event_dispatcher.dispatch(OpenSolutionEvent(self.__solution))
         self.tabs.close_all()
+    
+    @property
+    def language(self):
+        # TODO: correct language detection
+        return 'en'

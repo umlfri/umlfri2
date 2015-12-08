@@ -52,7 +52,7 @@ class AddOnInfoLoader:
             elif child.tag == "{{{0}}}Config".format(ADDON_NAMESPACE):
                 config = UflStructureLoader(child).load()
             elif child.tag == "{{{0}}}Translations".format(ADDON_NAMESPACE):
-                translations = None # TODO
+                translations = child.attrib["path"]
             elif child.tag == "{{{0}}}Metamodel".format(ADDON_NAMESPACE):
                 metamodel = child.attrib["path"]
             else:

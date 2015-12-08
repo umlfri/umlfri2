@@ -56,7 +56,8 @@ class DirectoryStorage(Storage):
     def get_all_files(self):
         for dirpath, dirs, files in os.walk(self.__path):
             for file in files:
-                yield os.path.join(dirpath, file)
+                path = os.path.relpath(os.path.join(dirpath, file), self.__path)
+                yield path
     
     def __fix_path(self, path):
         if path is None:

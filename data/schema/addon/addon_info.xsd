@@ -48,14 +48,7 @@
                 
                 <xs:element name="Translations">
                     <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="Translation">
-                                <xs:complexType>
-                                    <xs:attribute name="lang" type="xs:string"/>
-                                    <xs:attribute name="path" type="xs:string"/>
-                                </xs:complexType>
-                            </xs:element>
-                        </xs:sequence>
+                        <xs:attribute name="path" type="xs:string"/>
                     </xs:complexType>
                 </xs:element>
                 

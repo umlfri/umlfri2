@@ -153,20 +153,21 @@ class ProjectTree(QTreeWidget):
     
     def __create_element_menu(self, element):
         metamodel = element.project.metamodel
+        translation = metamodel.addon.get_translation(Application().language)
         
         menu = QMenu()
         
         sub_menu = menu.addMenu(_("Add diagram"))
         for diagram_type in metamodel.diagram_types:
             # TODO: translation
-            action = sub_menu.addAction(diagram_type.id)
+            action = sub_menu.addAction(translation.translate(diagram_type))
             action.setIcon(image_loader.load_icon(diagram_type.icon))
             action.triggered.connect(partial(self.__create_diagram_action, diagram_type, element))
         
         sub_menu = menu.addMenu(_("Add element"))
         for element_type in metamodel.element_types:
             # TODO: translation
-            action = sub_menu.addAction(element_type.id)
+            action = sub_menu.addAction(translation.translate(element_type))
             action.setIcon(image_loader.load_icon(element_type.icon))
             action.triggered.connect(partial(self.__create_element_action, element_type, element))
         
@@ -177,13 +178,14 @@ class ProjectTree(QTreeWidget):
     
     def __create_project_menu(self, project):
         metamodel = project.metamodel
+        translation = metamodel.addon.get_translation(Application().language)
         
         menu = QMenu()
         
         sub_menu = menu.addMenu(_("Add element"))
         for element_type in metamodel.element_types:
             # TODO: translation
-            action = sub_menu.addAction(element_type.id)
+            action = sub_menu.addAction(translation.translate(element_type))
             action.setIcon(image_loader.load_icon(element_type.icon))
             action.triggered.connect(partial(self.__create_element_action, element_type, project))
         
