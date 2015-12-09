@@ -63,10 +63,25 @@ class AddOn:
         return self.__metamodel
     
     def get_translation(self, language):
+        ret = self.__get_translation(language)
+        if ret is not None:
+            return ret
+
+        if '_' in language:
+            language, variation = language.split('_', 2)
+
+            ret = self.__get_translation(language)
+            if ret is not None:
+                return ret
+
+        return POSIX_TRANSLATION
+
+    def __get_translation(self, language):
         for translation in self.__translations:
             if translation.language == language:
                 return translation
-        return POSIX_TRANSLATION
-    
+
+        return None
+
     def compile(self):
         self.__metamodel.compile()

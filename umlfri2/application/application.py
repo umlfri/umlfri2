@@ -1,3 +1,7 @@
+import ctypes
+import locale
+import os
+
 from umlfri2.addon import AddOnManager
 from umlfri2.application.commands.solution import NewProjectCommand
 from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent
@@ -35,6 +39,26 @@ class Application(metaclass=MetaApplication):
         self.__solution = None
         self.__ruler = None
         self.__solution_storage_ref = None
+        self.__language = self.__find_out_language()
+
+    def __find_out_language(self):
+        for e in 'LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG':
+            if e in os.environ:
+                return os.environ[e]
+
+        if os.name == 'nt':
+            langid = ctypes.windll.kernel32.GetUserDefaultUILanguage()
+            return locale.windows_locale[langid]
+
+        lang, enc = locale.getlocale()
+        if lang is not None:
+            return lang
+
+        lang, enc = locale.getlocale()
+        if lang is not None:
+            return lang
+
+        return 'POSIX'
     
     def use_ruler(self, ruler):
         if self.__ruler is not None:
@@ -139,5 +163,4 @@ class Application(metaclass=MetaApplication):
     
     @property
     def language(self):
-        # TODO: correct language detection
-        return 'en'
+        return self.__language
