@@ -1,7 +1,7 @@
 from .type import UflType
 
 
-class UflEnumType(UflType):
+class UflListEnumType(UflType):
     def __init__(self, possibilities, default=None):
         self.__possibilities = tuple(possibilities)
         if default and default in self.__possibilities:
@@ -29,7 +29,7 @@ class UflEnumType(UflType):
         if not super().is_same_as(other):
             return False
         
-        return self.__possibilities == other.possibilities
+        return self.__possibilities == other.__possibilities
     
     @property
     def is_immutable(self):
@@ -37,6 +37,9 @@ class UflEnumType(UflType):
     
     def is_valid_value(self, value):
         return value in self.__possibilities
+    
+    def is_valid_item(self, item):
+        return item in self.__possibilities
     
     def is_default_value(self, value):
         return self.__default == value

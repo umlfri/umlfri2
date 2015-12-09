@@ -1,5 +1,4 @@
 from weakref import ref
-from umlfri2.ufl.types import UflTypedEnumType, UflNullableType, UflStringType, UflEnumType
 
 
 class Component:

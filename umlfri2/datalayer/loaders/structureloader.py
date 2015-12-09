@@ -39,7 +39,7 @@ class UflStructureLoader:
                 else:
                     attr = ufltype()
             elif type == "enum":
-                attr = UflEnumType(self.__load_possibilities(child) or (), child.attrib.get("default"))
+                attr = UflListEnumType(self.__load_possibilities(child) or (), child.attrib.get("default"))
             elif type == "object":
                 attr = UflObjectType(self.__load_object(child))
             elif type == "str":

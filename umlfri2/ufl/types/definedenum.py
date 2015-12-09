@@ -48,6 +48,9 @@ class UflDefinedEnumType(UflType):
     def is_valid_value(self, value):
         return isinstance(value, self.__type)
     
+    def is_valid_item(self, item):
+        return item in self.__possibilities
+    
     def is_default_value(self, value):
         return self.__default == value
     

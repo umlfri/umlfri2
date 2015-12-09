@@ -25,7 +25,7 @@ class UflCompilingVisitor(UflVisitor):
     def visit_enum(self, node):
         enum = self.__enums[node.enum]
         
-        if node.item not in enum.possibilities:
+        if not enum.is_valid_item(node.item):
             raise Exception("Unknown enum item {0}::{1}".format(node.enum, node.item))
         
         if isinstance(enum, UflTypedEnumType):
