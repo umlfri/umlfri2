@@ -26,7 +26,7 @@
     
     <Attribute path="class/operations/rtype" label="Return type"/>
     <Attribute path="class/operations/parameters" label="Parameters"/>
-    <Attribute path="class/attributes/parameters/default" label="Default value"/>
+    <Attribute path="class/operations/parameters/default" label="Default value"/>
     
     <Attribute path="association/direction" label="Direction"/>
     <Attribute path="association/direction/unspecified" label=""/>

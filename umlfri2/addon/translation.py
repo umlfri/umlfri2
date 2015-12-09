@@ -3,13 +3,14 @@ from umlfri2.ufl.types import UflObjectAttribute, UflObjectType, UflListType
 
 
 class AttributeTranslation:
-    def __init__(self):
+    def __init__(self, multi=False):
         self.__parents = {}
+        self.__multi = multi
         self.__label = None
     
     def add_parent(self, name):
         if name not in self.__parents:
-            self.__parents[name] = AttributeTranslation()
+            self.__parents[name] = AttributeTranslation(name == '**')
         return self.__parents[name]
     
     @property
@@ -27,14 +28,20 @@ class AttributeTranslation:
                     ret = self.__parents[id].translate(object.parent)
                     if ret is not None:
                         return ret
-            return None
+            if self.__multi:
+                return self.translate(object.parent)
+            else:
+                return None
         elif isinstance(object, (UflObjectType, UflListType)):
             return self.translate(object.parent)
         else:
-            for id in (object.name, '*', '**'):
+            for id in (object.id, '*', '**'):
                 if id in self.__parents:
                     return self.__parents[id].label
-            return None
+            if self.__multi:
+                return self.__label
+            else:
+                return None
 
 
 class Translation:
@@ -70,7 +77,11 @@ class Translation:
         elif isinstance(object, DiagramType):
             return self.__diagram_names.get(object.id, object.id)
         elif isinstance(object, UflObjectAttribute):
-            return self.__attribute_names.translate(object)
+            ret = self.__attribute_names.translate(object)
+            if ret is None:
+                return object.name
+            else:
+                return ret
 
 
 POSIX_TRANSLATION = Translation("POSIX", ())

@@ -181,7 +181,8 @@ class Diagram:
     def apply_ufl_patch(self, patch):
         self.__data.apply_patch(patch)
     
-    def create_ufl_dialog(self, options=UflDialogOptions.standard):
-        dialog = UflDialog(self.type.ufl_type, options)
+    def create_ufl_dialog(self, language, options=UflDialogOptions.standard):
+        translation = self.type.metamodel.addon.get_translation(language)
+        dialog = UflDialog(self.type.ufl_type, translation, options)
         dialog.associate(self.data)
         return dialog
