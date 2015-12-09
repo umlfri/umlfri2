@@ -50,16 +50,22 @@ class Selection:
         self.__selected.clear()
     
     def add_to_selection(self, visual):
+        if isinstance(visual, ConnectionVisual):
+            self.__selected.clear()
+        elif self.__selected and all(isinstance(sel, ConnectionVisual) for sel in self.__selected):
+            self.__selected.clear()
+        
         self.__selected.add(visual)
     
     def remove_from_selection(self, visual):
-        self.__selected.remove(visual)
+        if visual in self.__selected:
+            self.__selected.remove(visual)
     
     def toggle_select(self, visual):
         if visual in self.__selected:
-            self.__selected.remove(visual)
+            self.remove_from_selection(visual)
         else:
-            self.__selected.add(visual)
+            self.add_to_selection(visual)
     
     def select_in_area(self, ruler, area):
         self.__selected.clear()
