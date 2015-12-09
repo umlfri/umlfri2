@@ -97,22 +97,9 @@ class Rectangle:
         return point
     
     def is_overlapping(self, other):
-        if self.contains(other.top_left):
-            return True
-        if self.contains(other.top_right):
-            return True
-        if self.contains(other.bottom_left):
-            return True
-        if self.contains(other.bottom_right):
-            return True
-        if other.contains(self.top_left):
-            return True
-        if other.contains(self.top_right):
-            return True
-        if other.contains(self.bottom_left):
-            return True
-        if other.contains(self.bottom_right):
-            return True
+        if self.x1 <= other.x1 <= self.x2 or other.x1 <= self.x1 <= other.x2:
+            if self.y1 <= other.y1 <= self.y2 or other.y1 <= self.y1 <= other.y2:
+                return True
         return False
 
     @property
