@@ -29,6 +29,7 @@ class MetaApplication(type):
 
 class Application(metaclass=MetaApplication):
     VERSION = Version("2.0")
+    NAME = "UML .FRI"
 
     def __init__(self):
         self.__event_dispatcher = EventDispatcher()
