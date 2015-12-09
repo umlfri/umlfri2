@@ -36,7 +36,7 @@ class WidgetChanged:
         elif isinstance(self.__widget, UflDialogIntegerWidget):
             self.__widget.value = self.__qt_widget.value()
         elif isinstance(self.__widget, UflDialogSelectWidget):
-            self.__widget.value = self.__qt_widget.currentText()
+            self.__widget.value = self.__widget.get_value(self.__qt_widget.currentText())
         elif isinstance(self.__widget, UflDialogTextWidget):
             self.__widget.value = self.__qt_widget.text()
         elif isinstance(self.__widget, UflDialogTextAreaWidget):
