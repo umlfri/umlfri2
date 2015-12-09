@@ -36,6 +36,6 @@
     <Attribute path="association/source" label="Source"/>
     <Attribute path="association/destination" label="Destination"/>
     <Attribute path="association/*/cardinality" label="Cardinality"/>
-    <Attribute path="association/*/visibility/unspecified" label=""/>
+    <EnumItem path="association/*/visibility/unspecified" label=""/>
     <Attribute path="association/*/role" label="Role"/>
 </Translation>
