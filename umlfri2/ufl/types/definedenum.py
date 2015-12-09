@@ -1,25 +1,16 @@
-from .type import UflType
+from .enum import UflEnumType
 
 
-class UflDefinedEnumType(UflType):
+class UflDefinedEnumType(UflEnumType):
     def __init__(self, type, possibilities={}, default=None):
         self.__possibilities = possibilities.copy()
         self.__type = type
         
-        if default and default in self.__possibilities:
-            self.__default = self.__possibilities[default]
-        elif self.__possibilities:
-            self.__default = iter(self.__possibilities).__next__()
-        else:
-            self.__default = None
+        super().__init__(tuple(possibilities.keys()), default)
     
     @property
     def default(self):
-        return self.__default
-    
-    @property
-    def possibilities(self):
-        return self.__possibilities.keys()
+        return self.__possibilities[self.default_item]
     
     @property
     def name(self):
@@ -30,7 +21,7 @@ class UflDefinedEnumType(UflType):
         return self.__type
     
     def build_default(self, generator):
-        return self.__default
+        return self.default
     
     def parse(self, value):
         return self.__possibilities[value]
@@ -41,18 +32,11 @@ class UflDefinedEnumType(UflType):
         
         return self.__type == other.__type
     
-    @property
-    def is_immutable(self):
-        return True
-    
     def is_valid_value(self, value):
         return isinstance(value, self.__type)
     
-    def is_valid_item(self, item):
-        return item in self.__possibilities
-    
     def is_default_value(self, value):
-        return self.__default == value
+        return self.default == value
     
     def __str__(self):
         return 'DefinedEnum[{0}]'.format(self.name)
