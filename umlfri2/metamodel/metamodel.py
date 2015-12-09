@@ -1,12 +1,14 @@
+from collections import OrderedDict
 from weakref import ref
 
 
 class Metamodel:
     def __init__(self, diagrams, elements, connections, templates):
-        self.__diagrams = diagrams
-        self.__elements = elements
-        self.__connections = connections
-        self.__templates = templates
+        self.__diagrams = OrderedDict(item for item in sorted(diagrams.items()))
+        self.__elements = OrderedDict(item for item in sorted(elements.items()))
+        self.__connections = OrderedDict(item for item in sorted(connections.items()))
+        self.__templates = list(templates)
+        self.__templates.sort(key=lambda item: item.name)
         
         self.__addon = None
         self.__config_structure = None
