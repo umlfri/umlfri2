@@ -1,5 +1,6 @@
 from umlfri2.metamodel import DiagramType, ElementType, ConnectionType
-from umlfri2.ufl.types import UflObjectAttribute, UflObjectType, UflListType
+from umlfri2.ufl.types import UflObjectAttribute, UflObjectType, UflListType, UflEnumType
+from umlfri2.ufl.types.enum import UflEnumPossibility
 
 
 class AttributeTranslation:
@@ -32,8 +33,15 @@ class AttributeTranslation:
                 return self.translate(object.parent)
             else:
                 return None
-        elif isinstance(object, (UflObjectType, UflListType)):
+        elif isinstance(object, (UflObjectType, UflListType, UflEnumType)):
             return self.translate(object.parent)
+        elif isinstance(object, UflEnumPossibility):
+            if object.name in self.__parents:
+                ret = self.__parents[object.name].translate(object.enum)
+            else:
+                ret = None
+            if ret is not None:
+                return ret
         else:
             for id in (object.id, '*', '**'):
                 if id in self.__parents:
@@ -51,6 +59,7 @@ class Translation:
         self.__diagram_names = {}
         self.__connection_names = {}
         self.__attribute_names = AttributeTranslation()
+        self.__enum_item_names = AttributeTranslation()
         
         for type, path, label in translations:
             if type == 'element':
@@ -61,6 +70,13 @@ class Translation:
                 self.__connection_names[path] = label
             elif type == 'attribute':
                 child = self.__attribute_names
+                for part in reversed(path.split('/')):
+                    child = child.add_parent(part)
+                child.label = label
+            elif type == 'enumitem':
+                if path.endswith('*'):
+                    raise Exception
+                child = self.__enum_item_names
                 for part in reversed(path.split('/')):
                     child = child.add_parent(part)
                 child.label = label
@@ -82,6 +98,13 @@ class Translation:
                 return object.name
             else:
                 return ret
+        elif isinstance(object, UflEnumPossibility):
+            ret = self.__enum_item_names.translate(object)
+            if ret is None:
+                return object.name
+            else:
+                return ret
+        raise Exception
 
 
 POSIX_TRANSLATION = Translation("POSIX", ())

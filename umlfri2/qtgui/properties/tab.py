@@ -36,7 +36,7 @@ class WidgetChanged:
         elif isinstance(self.__widget, UflDialogIntegerWidget):
             self.__widget.value = self.__qt_widget.value()
         elif isinstance(self.__widget, UflDialogSelectWidget):
-            self.__widget.value = self.__widget.get_value(self.__qt_widget.currentText())
+            self.__widget.current_index = self.__qt_widget.currentIndex()
         elif isinstance(self.__widget, UflDialogTextWidget):
             self.__widget.value = self.__qt_widget.text()
         elif isinstance(self.__widget, UflDialogTextAreaWidget):
@@ -136,7 +136,7 @@ class PropertyTab(QWidget):
                     elif isinstance(widget, UflDialogIntegerWidget):
                         qt_widget.setValue(widget.value)
                     elif isinstance(widget, UflDialogSelectWidget):
-                        qt_widget.setCurrentIndex(qt_widget.findText(widget.value))
+                        qt_widget.setCurrentIndex(widget.current_index)
                     elif isinstance(widget, UflDialogTextWidget):
                         qt_widget.setText(widget.value)
                     elif isinstance(widget, UflDialogTextAreaWidget):

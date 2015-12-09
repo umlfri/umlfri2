@@ -29,6 +29,12 @@
                         <xs:attribute name="label" type="xs:string"/>
                     </xs:complexType>
                 </xs:element>
+                <xs:element name="EnumItem" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:attribute name="path" type="xs:string"/>
+                        <xs:attribute name="label" type="xs:string"/>
+                    </xs:complexType>
+                </xs:element>
             </xs:choice>
             <xs:attribute name="lang" type="xs:string" use="required"/>
         </xs:complexType>

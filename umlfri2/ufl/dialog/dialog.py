@@ -66,7 +66,10 @@ class UflDialog:
         elif isinstance(type, UflColorType):
             return UflDialogColorWidget(tab, id, label)
         elif isinstance(type, UflEnumType):
-            return UflDialogSelectWidget(tab, id, label, type)
+            items = []
+            for possibility in type.possibilities:
+                items.append((self.__translation.translate(possibility), possibility.value))
+            return UflDialogSelectWidget(tab, id, label, items)
         elif isinstance(type, UflFontType):
             return UflDialogFontWidget(tab, id, label)
         elif isinstance(type, UflFontType):

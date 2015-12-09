@@ -11,10 +11,10 @@
     <Attribute path="**/type" label="Type"/>
     <Attribute path="**/stereotype" label="Stereotype"/>
     <Attribute path="**/visibility" label="Visibility"/>
-    <Attribute path="**/visibility/+" label="Public"/>
-    <Attribute path="**/visibility/-" label="Private"/>
-    <Attribute path="**/visibility/#" label="Protected"/>
-    <Attribute path="**/visibility/~" label="Package"/>
+    <EnumItem path="**/visibility/+" label="Public"/>
+    <EnumItem path="**/visibility/-" label="Private"/>
+    <EnumItem path="**/visibility/#" label="Protected"/>
+    <EnumItem path="**/visibility/~" label="Package"/>
     <Attribute path="**/abstract" label="Abstract"/>
     <Attribute path="**/static" label="Static"/>
     <Attribute path="**/note" label="Note"/>
@@ -29,10 +29,10 @@
     <Attribute path="class/operations/parameters/default" label="Default value"/>
     
     <Attribute path="association/direction" label="Direction"/>
-    <Attribute path="association/direction/unspecified" label=""/>
-    <Attribute path="association/direction/toDestination" label="To destination"/>
-    <Attribute path="association/direction/toSource" label="To source"/>
-    <Attribute path="association/direction/bidirectional" label="Bidirectional"/>
+    <EnumItem path="association/direction/unspecified" label=""/>
+    <EnumItem path="association/direction/toDestination" label="To destination"/>
+    <EnumItem path="association/direction/toSource" label="To source"/>
+    <EnumItem path="association/direction/bidirectional" label="Bidirectional"/>
     <Attribute path="association/source" label="Source"/>
     <Attribute path="association/destination" label="Destination"/>
     <Attribute path="association/*/cardinality" label="Cardinality"/>

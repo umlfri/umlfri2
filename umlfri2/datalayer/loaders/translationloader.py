@@ -21,6 +21,8 @@ class TranslationLoader:
                 translations.append(('diagram', child.attrib["id"], child.attrib["label"]))
             elif child.tag == "{{{0}}}Attribute".format(ADDON_NAMESPACE):
                 translations.append(('attribute', child.attrib["path"], child.attrib["label"]))
+            elif child.tag == "{{{0}}}EnumItem".format(ADDON_NAMESPACE):
+                translations.append(('enumitem', child.attrib["path"], child.attrib["label"]))
             else:
                 raise Exception
         

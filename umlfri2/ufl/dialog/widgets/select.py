@@ -2,14 +2,22 @@ from .valued import UflDialogValuedWidget
 
 
 class UflDialogSelectWidget(UflDialogValuedWidget):
-    def __init__(self, tab, id, label, enum): 
+    def __init__(self, tab, id, label, items): 
         super().__init__(tab, id, label)
-        self.__enum = enum
+        self.__items = items
     
     @property
     def possibilities(self):
-        for possibility in self.__enum.possibilities:
-            yield possibility.name
+        for label, value in  self.__items:
+            yield label
     
-    def get_value(self, name):
-        return self.__enum.parse(name)
+    @property
+    def current_index(self):
+        for index, (label, value) in enumerate(self.__items):
+            if value == self.value:
+                return index
+        return 0
+    
+    @current_index.setter
+    def current_index(self, index):
+        self.value = self.__items[index][1]
