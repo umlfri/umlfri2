@@ -8,6 +8,7 @@ class ApplyPatchCommand(Command):
     def __init__(self, object, patch):
         self.__object = object
         self.__patch = patch
+        self.__visual_sizes = []
     
     @property
     def description(self):
@@ -29,13 +30,20 @@ class ApplyPatchCommand(Command):
         if not self.__patch.has_changes():
             raise CommandNotDone
         
-        self._redo(ruler)
+        if isinstance(self.__object, ElementObject):
+            for visual in self.__object.visuals:
+                self.__visual_sizes.append((visual, visual.get_size(ruler)))
+        
+        self.__object.apply_ufl_patch(self.__patch)
 
     def _redo(self, ruler):
         self.__object.apply_ufl_patch(self.__patch)
     
     def _undo(self, ruler):
         self.__object.apply_ufl_patch(self.__patch.make_reverse())
+        
+        for visual, size in self.__visual_sizes:
+            visual.resize(ruler, size)
     
     def get_updates(self):
         yield ObjectChangedEvent(self.__object, self.__patch)

@@ -76,6 +76,7 @@ class Diagram:
         if isinstance(object, ElementObject):
             visual = ElementVisual(self, object)
             self.__elements.append(visual)
+            object.add_visual(visual)
             return visual
         elif isinstance(object, ConnectionObject):
             element1 = None
@@ -103,6 +104,7 @@ class Diagram:
             if visual in self.__elements:
                 raise Exception
             self.__elements.append(visual)
+            visual.object.add_visual(visual)
             for connection in visual.connections:
                 self.__connections.append(connection)
                 connection.get_other_end(visual).add_connection(connection)
@@ -123,6 +125,7 @@ class Diagram:
             if visual not in self.__elements:
                 raise Exception
             self.__elements.remove(visual)
+            visual.object.remove_visual(visual)
             for connection in visual.connections:
                 self.__connections.remove(connection)
                 connection.get_other_end(visual).remove_connection(connection)

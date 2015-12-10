@@ -1,5 +1,5 @@
 from uuid import uuid4
-from weakref import ref
+from weakref import ref, WeakSet
 from umlfri2.components.base.context import Context
 from umlfri2.ufl.dialog import UflDialog, UflDialogOptions
 from ..cache import ModelTemporaryDataCache
@@ -40,11 +40,24 @@ class ElementObject:
         self.__connections = []
         self.__children = []
         self.__diagrams = []
+        self.__visuals = WeakSet()
         self.__cache = ModelTemporaryDataCache(None)
         if save_id is None:
             self.__save_id = uuid4()
         else:
             self.__save_id = save_id
+    
+    def add_visual(self, visual):
+        if visual.object is not self:
+            raise Exception
+        self.__visuals.add(visual)
+    
+    def remove_visual(self, visual):
+        self.__visuals.remove(visual)
+    
+    @property
+    def visuals(self):
+        yield from self.__visuals
     
     @property
     def cache(self):
