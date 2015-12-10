@@ -2,7 +2,7 @@ from weakref import ref
 
 from ..cache import ModelTemporaryDataCache
 from .connectionlabel import ConnectionLabel
-from umlfri2.types.geometry import Line
+from umlfri2.types.geometry import Line, Rectangle, Point
 
 
 class ConnectionVisual:
@@ -182,4 +182,31 @@ class ConnectionVisual:
         return object_bounds.get_nearest_point_to(point)
 
     def get_bounds(self, ruler):
-        return None # TODO
+        self.__cache.ensure_valid(ruler=ruler)
+        
+        x1 = y1 = float('inf')
+        x2 = y2 = -float('inf')
+        
+        for point in self.__cached_points:
+            if point.x < x1:
+                x1 = point.x
+            if point.x > x2:
+                x2 = point.x
+            if point.y < y1:
+                y1 = point.y
+            if point.y > y2:
+                y2 = point.y
+        
+        for label in self.__labels:
+            bounds = label.get_bounds(ruler)
+            
+            if bounds.x1 < x1:
+                x1 = bounds.x1
+            if bounds.x2 > x2:
+                x2 = bounds.x2
+            if bounds.y1 < y1:
+                y1 = bounds.y1
+            if bounds.y2 > y2:
+                y2 = bounds.y2
+        
+        return Rectangle.from_point_point(Point(x1, y1), Point(x2, y2))

@@ -118,3 +118,6 @@ class DrawingArea:
             self.__cursor = DrawingAreaCursor.arrow
         else:
             self.__cursor = action.cursor
+    
+    def get_size(self, ruler):
+        return self.__diagram.get_size(ruler)

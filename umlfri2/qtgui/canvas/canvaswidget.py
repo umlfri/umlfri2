@@ -1,4 +1,4 @@
-from PySide.QtCore import Qt
+from PySide.QtCore import Qt, QSize
 from PySide.QtGui import QWidget, QPainter, QApplication
 
 from umlfri2.application import Application
@@ -23,6 +23,7 @@ class CanvasWidget(QWidget):
         self.setAttribute(Qt.WA_OpaquePaintEvent)
         self.__old_cursor = None
         self.setAcceptDrops(True)
+        self.__update_size()
         Application().event_dispatcher.register(ObjectChangedEvent, self.__something_changed)
         Application().event_dispatcher.register(DiagramChangedEvent, self.__something_changed)
     
@@ -48,8 +49,7 @@ class CanvasWidget(QWidget):
             QApplication.keyboardModifiers() == Qt.ShiftModifier
         )
         
-        self.__update_cursor()
-        self.update()
+        self.__do_update()
     
     def mouseMoveEvent(self, event):
         pos = event.pos()
@@ -61,8 +61,7 @@ class CanvasWidget(QWidget):
             QApplication.keyboardModifiers() == Qt.ShiftModifier
         )
         
-        self.__update_cursor()
-        self.update()
+        self.__do_update()
     
     def mouseReleaseEvent(self, event):
         pos = event.pos()
@@ -74,8 +73,7 @@ class CanvasWidget(QWidget):
             QApplication.keyboardModifiers() == Qt.ShiftModifier
         )
         
-        self.__update_cursor()
-        self.update()
+        self.__do_update()
     
     def mouseDoubleClickEvent(self, event):
         pos = event.pos()
@@ -101,6 +99,15 @@ class CanvasWidget(QWidget):
             command = ShowElementCommand(self.diagram, element, point)
             Application().commands.execute(command)
     
+    def __do_update(self):
+        self.update()
+        self.__update_size()
+        self.__update_cursor()
+    
+    def __update_size(self):
+        size = self.__drawing_area.get_size(Application().ruler)
+        self.setMinimumSize(QSize(size.width, size.height))
+    
     def __update_cursor(self):
         if self.__old_cursor == self.__drawing_area.cursor:
             return
@@ -123,4 +130,5 @@ class CanvasWidget(QWidget):
         self.__old_cursor = self.__drawing_area.cursor
     
     def __something_changed(self, event):
-        self.update()
+        self.__do_update()
+

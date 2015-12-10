@@ -1,7 +1,7 @@
 import os.path
 
 from PySide.QtCore import Qt
-from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget, QMessageBox, QFileDialog, QIcon
+from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget, QMessageBox, QFileDialog, QIcon, QScrollArea
 from umlfri2.application import Application
 from umlfri2.application.events.model import ObjectChangedEvent
 from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent
@@ -15,7 +15,7 @@ from .propertieswidget import PropertiesWidget
 from .toolbox import ToolBox
 from ..base import image_loader
 from .projecttree import ProjectTree
-from ..canvas import CanvasWidget
+from ..canvas import ScrolledCanvasWidget
 
 
 class UmlFriMainWindow(QMainWindow):
@@ -70,8 +70,8 @@ class UmlFriMainWindow(QMainWindow):
         Application().tabs.close_tab(self.__tabs.widget(index).diagram)
     
     def __open_tab(self, event):
-        self.__tabs.addTab(CanvasWidget(self, event.tab.drawing_area), image_loader.load_icon(event.tab.icon),
-                           event.tab.name)
+        canvas = ScrolledCanvasWidget(self, event.tab.drawing_area)
+        self.__tabs.addTab(canvas, image_loader.load_icon(event.tab.icon), event.tab.name)
     
     def __change_tab(self, event):
         for widget_id in range(self.__tabs.count()):
