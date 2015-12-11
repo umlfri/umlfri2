@@ -183,7 +183,7 @@ class Diagram:
                 if visual.object is object:
                     return True
         elif isinstance(object, ConnectionVisual):
-            for visual in self.__elements:
+            for visual in self.__connections:
                 if visual is object:
                     return True
     
