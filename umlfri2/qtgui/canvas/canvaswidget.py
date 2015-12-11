@@ -24,6 +24,7 @@ class CanvasWidget(QWidget):
         self.__old_cursor = None
         self.setAcceptDrops(True)
         self.__update_size()
+        self.__mouse_down = False
         Application().event_dispatcher.register(ObjectChangedEvent, self.__something_changed)
         Application().event_dispatcher.register(DiagramChangedEvent, self.__something_changed)
     
@@ -43,13 +44,19 @@ class CanvasWidget(QWidget):
         pos = event.pos()
         point = Point(pos.x(), pos.y())
         
-        self.__drawing_area.mouse_down(
-            point,
-            QApplication.keyboardModifiers() == Qt.ControlModifier,
-            QApplication.keyboardModifiers() == Qt.ShiftModifier
-        )
-        
-        self.__do_update()
+        if event.button() == Qt.LeftButton:
+            self.__drawing_area.mouse_down(
+                point,
+                QApplication.keyboardModifiers() == Qt.ControlModifier,
+                QApplication.keyboardModifiers() == Qt.ShiftModifier
+            )
+            
+            self.__mouse_down = True
+            
+            self.__do_update()
+        else:
+            if self.__mouse_down:
+                self.mouseReleaseEvent(event)
     
     def mouseMoveEvent(self, event):
         pos = event.pos()
@@ -61,19 +68,25 @@ class CanvasWidget(QWidget):
             QApplication.keyboardModifiers() == Qt.ShiftModifier
         )
         
-        self.__do_update()
+        if self.__drawing_area.action_active:
+            self.__do_update()
+        else:
+            self.__update_cursor()
     
     def mouseReleaseEvent(self, event):
         pos = event.pos()
         point = Point(pos.x(), pos.y())
         
-        self.__drawing_area.mouse_up(
-            point,
-            QApplication.keyboardModifiers() == Qt.ControlModifier,
-            QApplication.keyboardModifiers() == Qt.ShiftModifier
-        )
-        
-        self.__do_update()
+        if self.__mouse_down:
+            self.__drawing_area.mouse_up(
+                point,
+                QApplication.keyboardModifiers() == Qt.ControlModifier,
+                QApplication.keyboardModifiers() == Qt.ShiftModifier
+            )
+            
+            self.__mouse_down = False
+            
+            self.__do_update()
     
     def mouseDoubleClickEvent(self, event):
         pos = event.pos()

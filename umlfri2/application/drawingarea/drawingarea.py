@@ -119,5 +119,9 @@ class DrawingArea:
         else:
             self.__cursor = action.cursor
     
+    @property
+    def action_active(self):
+        return self.__current_action is not None
+    
     def get_size(self, ruler):
         return self.__diagram.get_size(ruler)
