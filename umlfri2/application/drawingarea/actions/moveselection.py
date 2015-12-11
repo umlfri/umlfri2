@@ -1,4 +1,5 @@
 from umlfri2.application.commands.diagram import MoveSelectionCommand
+from umlfri2.types.geometry import Vector
 from ..drawingareacursor import DrawingAreaCursor
 from .action import Action
 
@@ -21,6 +22,10 @@ class MoveSelectionAction(Action):
     def mouse_move(self, drawing_area, application, point):
         vector = point - self.__old_point
         self.__box += vector
+        if self.__box.x1 < 0:
+            self.__box -= Vector(self.__box.x1, 0)
+        if self.__box.y1 < 0:
+            self.__box -= Vector(0, self.__box.y1)
         self.__old_point = point
     
     def mouse_up(self, drawing_area, application):

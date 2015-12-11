@@ -122,10 +122,15 @@ class Rectangle:
             y1, y2 = y2, y1
         
         return Rectangle(x1, y1, x2 - x1, y2 - y1)
-        
+    
     def __add__(self, other):
         if isinstance(other, Vector):
             return Rectangle.from_point_size(self.top_left + other, self.size)
+        return NotImplemented
+    
+    def __sub__(self, other):
+        if isinstance(other, Vector):
+            return Rectangle.from_point_size(self.top_left - other, self.size)
         return NotImplemented
     
     def __str__(self):

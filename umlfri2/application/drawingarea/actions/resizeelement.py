@@ -45,6 +45,8 @@ class ResizeElementAction(Action):
         
         if self.__horizontal == SelectionPointPosition.first:
             x1 += vector.x
+            if x1 < 0:
+                x1 = 0
             if x2 - x1 < min_size.width:
                 x1 = x2 - min_size.width
         elif self.__horizontal == SelectionPointPosition.last:
@@ -54,6 +56,8 @@ class ResizeElementAction(Action):
         
         if self.__vertical == SelectionPointPosition.first:
             y1 += vector.y
+            if y1 < 0:
+                y1 = 0
             if y2 - y1 < min_size.height:
                 y1 = y2 - min_size.height
         elif self.__vertical == SelectionPointPosition.last:
