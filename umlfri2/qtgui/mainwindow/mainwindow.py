@@ -1,20 +1,21 @@
 import os.path
 
 from PySide.QtCore import Qt
-from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget, QMessageBox, QFileDialog, QIcon, QScrollArea
+from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget, QMessageBox, QFileDialog, QIcon
+
 from umlfri2.application import Application
 from umlfri2.application.events.model import ObjectChangedEvent
 from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent
 from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent
+from umlfri2.constants.paths import GRAPHICS
 from umlfri2.model import Diagram
-from umlfri2.paths import GRAPHICS
-from .newproject import NewProjectDialog
-from .toolbar import MainToolBar
 from .menu import MainWindowMenu
+from .newproject import NewProjectDialog
+from .projecttree import ProjectTree
 from .propertieswidget import PropertiesWidget
+from .toolbar import MainToolBar
 from .toolbox import ToolBox
 from ..base import image_loader
-from .projecttree import ProjectTree
 from ..canvas import ScrolledCanvasWidget
 
 

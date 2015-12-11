@@ -1,6 +1,8 @@
-import lxml.etree
 import os.path
-from umlfri2.paths import XML_SCHEMAS
+
+import lxml.etree
+
+from umlfri2.constants.paths import XML_SCHEMAS
 from umlfri2.types.version import Version
 
 ADDON_NAMESPACE = 'http://umlfri.org/v2/addon.xsd'

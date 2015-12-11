@@ -1,12 +1,12 @@
 from PySide.QtCore import Qt, QSize
-from PySide.QtGui import QWidget, QPainter, QApplication
-
+from PySide.QtGui import QWidget, QPainter, QApplication, QMenu
 from umlfri2.application import Application
 from umlfri2.application.commands.diagram import ShowElementCommand
 from umlfri2.application.drawingarea import DrawingAreaCursor
 from umlfri2.application.events.diagram import DiagramChangedEvent
 from umlfri2.application.events.model import ObjectChangedEvent
 from umlfri2.model import ElementObject
+from .menu import CanvasContextMenu
 from ..mainwindow.projecttree import ProjectMimeData
 from ..properties import PropertiesDialog
 from .qtpaintercanvas import QTPainterCanvas
@@ -25,6 +25,7 @@ class CanvasWidget(QWidget):
         self.setAcceptDrops(True)
         self.__update_size()
         self.__mouse_down = False
+        
         Application().event_dispatcher.register(ObjectChangedEvent, self.__something_changed)
         Application().event_dispatcher.register(DiagramChangedEvent, self.__something_changed)
     
@@ -57,6 +58,8 @@ class CanvasWidget(QWidget):
         else:
             if self.__mouse_down:
                 self.mouseReleaseEvent(event)
+            
+            super().mousePressEvent(event)
     
     def mouseMoveEvent(self, event):
         pos = event.pos()
@@ -87,6 +90,8 @@ class CanvasWidget(QWidget):
             self.__mouse_down = False
             
             self.__do_update()
+        else:
+            super().mousePressEvent(event)
     
     def mouseDoubleClickEvent(self, event):
         pos = event.pos()
@@ -96,6 +101,16 @@ class CanvasWidget(QWidget):
             self.__drawing_area.set_action(None)
             self.unsetCursor()
             PropertiesDialog.open_for(self.__main_window, object)
+    
+    def contextMenuEvent(self, event):
+        pos = event.pos()
+        point = Point(pos.x(), pos.y())
+        if self.__drawing_area.selection.is_selection_at(Application().ruler, point):
+            self.__drawing_area.selection.select_at(Application().ruler, point)
+        
+        self.unsetCursor()
+        
+        CanvasContextMenu(self.__drawing_area).exec_(event.globalPos())
     
     def dragEnterEvent(self, event):
         mime_data = event.mimeData()

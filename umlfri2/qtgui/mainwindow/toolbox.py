@@ -1,14 +1,14 @@
 import os.path
 
 from PySide.QtCore import Qt
-from PySide.QtGui import QWidget, QVBoxLayout, QIcon, QFrame, QPushButton
+from PySide.QtGui import QWidget, QVBoxLayout, QIcon, QPushButton
 
 from umlfri2.application import Application
 from umlfri2.application.drawingarea.actions import AddElementAction, AddConnectionAction
 from umlfri2.application.events.tabs import ChangedCurrentTabEvent
-from umlfri2.paths import GRAPHICS
-from ..base.hlinewidget import HLineWidget
+from umlfri2.constants.paths import GRAPHICS
 from ..base import image_loader
+from ..base.hlinewidget import HLineWidget
 
 
 class ToolBox(QWidget):

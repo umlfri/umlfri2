@@ -67,6 +67,14 @@ class Selection:
         else:
             self.add_to_selection(visual)
     
+    def select_at(self, ruler, point):
+        object = self.__diagram.get_visual_at(ruler, point)
+        
+        self.deselect_all()
+        
+        if object is not None:
+            self.add_to_selection(object)
+    
     def select_in_area(self, ruler, area):
         self.__selected.clear()
         for element in self.__diagram.elements:
@@ -202,5 +210,22 @@ class Selection:
         
         return None
     
+    def is_selection_at(self, ruler, position):
+        visual = self.__diagram.get_visual_at(ruler, position)
+        
+        return visual not in self.__selected
+    
     def get_bounds(self, ruler):
         return Rectangle.combine_bounds(visual.get_bounds(ruler) for visual in self.__selected)
+    
+    @property
+    def is_diagram_selected(self):
+        return len(self.__selected) == 0
+    
+    @property
+    def is_connection_selected(self):
+        return any(isinstance(visual, ConnectionVisual) for visual in self.__selected)
+    
+    @property
+    def is_element_selected(self):
+        return any(isinstance(visual, ElementVisual) for visual in self.__selected)

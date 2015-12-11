@@ -6,15 +6,15 @@ from umlfri2.addon import AddOnManager
 from umlfri2.application.commands.solution import NewProjectCommand
 from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent
 from umlfri2.application.tablist import TabList
+from umlfri2.constants.paths import ADDONS
 from umlfri2.datalayer import Storage
 from umlfri2.datalayer.loaders import ProjectLoader, WholeSolutionLoader
 from umlfri2.datalayer.savers import WholeSolutionSaver
 from umlfri2.datalayer.storages import ZipStorage
 from umlfri2.model import Solution
-from umlfri2.paths import ADDONS
 from umlfri2.types.version import Version
-from .dispatcher import EventDispatcher
 from .commandprocessor import CommandProcessor
+from .dispatcher import EventDispatcher
 
 
 class MetaApplication(type):

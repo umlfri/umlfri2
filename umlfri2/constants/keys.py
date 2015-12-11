@@ -1,0 +1,1 @@
+DELETE_FROM_PROJECT = "Shift+Del"
