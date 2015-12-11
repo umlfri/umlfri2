@@ -1,3 +1,4 @@
+from .size import Size
 from .vector import Vector
 
 
@@ -16,6 +17,9 @@ class Point:
     
     def as_vector(self):
         return Vector(self.__x, self.__y)
+    
+    def as_size(self):
+        return Size(self.__x, self.__y)
     
     def round(self):
         return Point(int(round(self.__x)), int(round(self.__y)))

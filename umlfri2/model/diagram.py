@@ -2,7 +2,7 @@ from itertools import chain
 from uuid import uuid4
 from weakref import ref
 from umlfri2.components.base.context import Context
-from umlfri2.types.geometry import Size
+from umlfri2.types.geometry import Size, Rectangle
 from umlfri2.ufl.dialog import UflDialog, UflDialogOptions
 from .connection import ConnectionObject, ConnectionVisual
 from .element import ElementObject, ElementVisual
@@ -166,16 +166,8 @@ class Diagram:
         return None
     
     def get_size(self, ruler):
-        w = 0
-        h = 0
-        for element in chain(self.__elements, self.__connections):
-            bounds = element.get_bounds(ruler)
-            if bounds.x2 > w:
-                w = bounds.x2
-            if bounds.y2 > h:
-                h = bounds.y2
-        
-        return Size(w, h)
+        return Rectangle.combine_bounds(visual.get_bounds(ruler)
+                                        for visual in chain(self.__elements, self.__connections)).bottom_right.as_size()
     
     def contains(self, object):
         if isinstance(object, ElementObject):

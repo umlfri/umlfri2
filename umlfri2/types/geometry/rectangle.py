@@ -123,6 +123,31 @@ class Rectangle:
         
         return Rectangle(x1, y1, x2 - x1, y2 - y1)
     
+    @staticmethod
+    def combine_bounds(rectangles):
+        x1 = float('inf')
+        x2 = -float('inf')
+        y1 = float('inf')
+        y2 = -float('inf')
+        
+        found = False
+        
+        for rectangle in rectangles:
+            found = True
+            if rectangle.x1 < x1:
+                x1 = rectangle.x1
+            if rectangle.y1 < y1:
+                y1 = rectangle.y1
+            if rectangle.x2 > x2:
+                x2 = rectangle.x2
+            if rectangle.y2 > y2:
+                y2 = rectangle.y2
+        
+        if found:
+            return Rectangle(x1, y1, x2 - x1, y2 - y1)
+        else:
+            return Rectangle(0, 0, 0, 0)
+    
     def __add__(self, other):
         if isinstance(other, Vector):
             return Rectangle.from_point_size(self.top_left + other, self.size)
