@@ -67,7 +67,7 @@ class PropertyTab(QWidget):
                 self.__connect_action(qt_widget.stateChanged, WidgetChanged(qt_widget, widget))
                 ret.addRow("", qt_widget)
             elif isinstance(widget, UflDialogChildWidget):
-                qt_widget = QPushButton("Edit...")
+                qt_widget = QPushButton(_("Edit..."))
                 self.__qt_widgets[widget.id] = qt_widget
                 self.__connect_action(qt_widget.clicked, ShowDialogAction(self.__window, widget.dialog))
                 ret.addRow(widget.label, qt_widget)

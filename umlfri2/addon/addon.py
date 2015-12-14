@@ -66,14 +66,18 @@ class AddOn:
         ret = self.__get_translation(language)
         if ret is not None:
             return ret
-
+        
         if '_' in language:
             language, variation = language.split('_', 2)
-
+        
             ret = self.__get_translation(language)
             if ret is not None:
                 return ret
-
+        
+        ret = self.__get_translation('en')
+        if ret is not None:
+            return ret
+        
         return POSIX_TRANSLATION
 
     def __get_translation(self, language):

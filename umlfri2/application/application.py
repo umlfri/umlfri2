@@ -40,7 +40,7 @@ class Application(metaclass=MetaApplication):
         self.__solution = None
         self.__ruler = None
         self.__solution_storage_ref = None
-        self.__language = self.__find_out_language()
+        self.__language = self.__find_out_language().split('.', 1)[0]
 
     def __find_out_language(self):
         for e in 'LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG':
@@ -55,7 +55,7 @@ class Application(metaclass=MetaApplication):
         if lang is not None:
             return lang
 
-        lang, enc = locale.getlocale()
+        lang, enc = locale.getdefaultlocale()
         if lang is not None:
             return lang
 

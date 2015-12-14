@@ -115,10 +115,18 @@ class UmlFriMainWindow(QMainWindow):
 
     def __check_save(self, title):
         if Application().unsaved:
-            resp = QMessageBox.question(self, title, _("Do you want to save the project?"),
-                                        QMessageBox.Save | QMessageBox.Discard | QMessageBox.Cancel,
-                                        QMessageBox.Save)
-
+            message_box = QMessageBox(self)
+            message_box.setIcon(QMessageBox.Question)
+            message_box.setWindowTitle(title)
+            message_box.setText(_("The model has been modified."))
+            message_box.setInformativeText(_("Do you want to save the project?"))
+            message_box.setStandardButtons(QMessageBox.Save | QMessageBox.Discard | QMessageBox.Cancel)
+            message_box.setDefaultButton(QMessageBox.Save)
+            message_box.button(QMessageBox.Save).setText(_("Save"))
+            message_box.button(QMessageBox.Discard).setText(_("Close without saving"))
+            message_box.button(QMessageBox.Cancel).setText(_("Cancel"))
+            resp = message_box.exec_()
+            
             if resp == QMessageBox.Cancel:
                 return False
             elif resp == QMessageBox.Save:

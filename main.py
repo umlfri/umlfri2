@@ -7,7 +7,7 @@ import sys
 from PySide.QtGui import QApplication, QIcon
 
 from umlfri2.application import Application
-from umlfri2.constants.paths import NT_ICON_THEME_PATH, NT_ICON_THEME
+from umlfri2.constants.paths import NT_ICON_THEME_PATH, NT_ICON_THEME, LOCALE_DIR
 from umlfri2.qtgui import UmlFriMainWindow
 from umlfri2.qtgui.base.qtruler import QTRuler
 
@@ -23,7 +23,7 @@ if os.name == 'nt':
 
 app = QApplication(sys.argv)
 
-gettext.install('umlfri2')
+gettext.translation('umlfri2', localedir=LOCALE_DIR, languages=[Application().language], fallback=True).install()
 
 Application().use_ruler(QTRuler())
 

@@ -7,3 +7,4 @@ GRAPHICS = os.path.join(ROOT_DIR, 'data', 'graphics')
 ADDONS = os.path.join(ROOT_DIR, 'addons')
 NT_ICON_THEME_PATH = os.path.join(ROOT_DIR, 'data', 'icons')
 NT_ICON_THEME = 'oxygen'
+LOCALE_DIR = os.path.join(ROOT_DIR, 'data', 'locale')
