@@ -52,14 +52,14 @@ class ProjectTree(QTreeWidget):
         self.header().close()
         self.itemDoubleClicked.connect(self.__item_double_clicked)
         
-        Application().event_dispatcher.register(ElementCreatedEvent, self.__element_created)
-        Application().event_dispatcher.register(DiagramCreatedEvent, self.__diagram_created)
-        Application().event_dispatcher.register(ElementDeletedEvent, self.__element_deleted)
-        Application().event_dispatcher.register(DiagramDeletedEvent, self.__diagram_deleted)
-        Application().event_dispatcher.register(ObjectChangedEvent, self.__object_changed)
-        Application().event_dispatcher.register(ProjectChangedEvent, self.__project_changed)
-        Application().event_dispatcher.register(OpenProjectEvent, self.__project_open)
-        Application().event_dispatcher.register(OpenSolutionEvent, self.__solution_open)
+        Application().event_dispatcher.subscribe(ElementCreatedEvent, self.__element_created)
+        Application().event_dispatcher.subscribe(DiagramCreatedEvent, self.__diagram_created)
+        Application().event_dispatcher.subscribe(ElementDeletedEvent, self.__element_deleted)
+        Application().event_dispatcher.subscribe(DiagramDeletedEvent, self.__diagram_deleted)
+        Application().event_dispatcher.subscribe(ObjectChangedEvent, self.__object_changed)
+        Application().event_dispatcher.subscribe(ProjectChangedEvent, self.__project_changed)
+        Application().event_dispatcher.subscribe(OpenProjectEvent, self.__project_open)
+        Application().event_dispatcher.subscribe(OpenSolutionEvent, self.__solution_open)
     
     def reload(self):
         self.clear()

@@ -26,9 +26,9 @@ class CanvasWidget(QWidget):
         self.__update_size()
         self.__mouse_down = False
         
-        Application().event_dispatcher.register(ObjectChangedEvent, self.__something_changed)
-        Application().event_dispatcher.register(DiagramChangedEvent, self.__something_changed)
-        Application().event_dispatcher.register(SelectionChangedEvent, self.__something_changed)
+        Application().event_dispatcher.subscribe(ObjectChangedEvent, self.__something_changed)
+        Application().event_dispatcher.subscribe(DiagramChangedEvent, self.__something_changed)
+        Application().event_dispatcher.subscribe(SelectionChangedEvent, self.__something_changed)
     
     @property
     def diagram(self):

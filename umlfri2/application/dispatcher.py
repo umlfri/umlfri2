@@ -2,11 +2,8 @@ class EventDispatcher:
     def __init__(self):
         self.__events = {}
     
-    def register(self, event_type, function):
+    def subscribe(self, event_type, function):
         self.__events.setdefault(event_type, []).append(function)
-    
-    def deregister(self, event_type, function):
-        self.__events[event_type].remove(function)
     
     def dispatch(self, event):
         self.__dispatch_recursive(event)

@@ -32,7 +32,7 @@ class MainToolBar(QToolBar):
         
         self.reload_texts()
         
-        Application().event_dispatcher.register(None, lambda event: self.__refresh_enable())
+        Application().event_dispatcher.subscribe(None, lambda event: self.__refresh_enable())
         self.__refresh_enable()
     
     def __add_toolbar_item(self, shortcut, icon, action=None, menu=None):

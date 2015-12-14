@@ -22,7 +22,7 @@ class ToolBox(QWidget):
         self.__widgets = []
         self.set_diagram_type(None)
         
-        Application().event_dispatcher.register(ChangedCurrentTabEvent, self.__current_tab_changed)
+        Application().event_dispatcher.subscribe(ChangedCurrentTabEvent, self.__current_tab_changed)
     
     def __current_tab_changed(self, event):
         if event.tab is None:

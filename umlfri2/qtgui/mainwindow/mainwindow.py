@@ -56,12 +56,12 @@ class UmlFriMainWindow(QMainWindow):
         
         self.reload_texts()
         
-        Application().event_dispatcher.register(OpenTabEvent, self.__open_tab)
-        Application().event_dispatcher.register(ChangedCurrentTabEvent, self.__change_tab)
-        Application().event_dispatcher.register(ClosedTabEvent, self.__close_tab)
-        Application().event_dispatcher.register(ObjectChangedEvent, self.__object_changed)
-        Application().event_dispatcher.register(OpenSolutionEvent, self.__solution_file_changed)
-        Application().event_dispatcher.register(SaveSolutionEvent, self.__solution_file_changed)
+        Application().event_dispatcher.subscribe(OpenTabEvent, self.__open_tab)
+        Application().event_dispatcher.subscribe(ChangedCurrentTabEvent, self.__change_tab)
+        Application().event_dispatcher.subscribe(ClosedTabEvent, self.__close_tab)
+        Application().event_dispatcher.subscribe(ObjectChangedEvent, self.__object_changed)
+        Application().event_dispatcher.subscribe(OpenSolutionEvent, self.__solution_file_changed)
+        Application().event_dispatcher.subscribe(SaveSolutionEvent, self.__solution_file_changed)
     
     def __tab_changed(self, index):
         if index >= 0:
