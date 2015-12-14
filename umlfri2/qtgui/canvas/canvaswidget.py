@@ -1,5 +1,5 @@
-from PySide.QtCore import Qt, QSize
-from PySide.QtGui import QWidget, QPainter, QApplication, QMenu
+from PySide.QtCore import Qt, QSize, QPoint
+from PySide.QtGui import QWidget, QPainter, QApplication, QMenu, QContextMenuEvent
 from umlfri2.application import Application
 from umlfri2.application.commands.diagram import ShowElementCommand
 from umlfri2.application.drawingarea import DrawingAreaCursor
@@ -110,14 +110,20 @@ class CanvasWidget(QWidget):
         PropertiesDialog.open_for(self.__main_window, visual.object)
         
     def contextMenuEvent(self, event):
-        pos = event.pos()
-        point = Point(pos.x(), pos.y())
-        if self.__drawing_area.selection.is_selection_at(Application().ruler, point):
-            self.__drawing_area.selection.select_at(Application().ruler, point)
+        if event.reason() == QContextMenuEvent.Mouse:
+            pos = event.pos()
+            point = Point(pos.x(), pos.y())
+            if self.__drawing_area.selection.is_selection_at(Application().ruler, point):
+                self.__drawing_area.selection.select_at(Application().ruler, point)
+            
+            menu_pos = event.globalPos()
+        else:
+            point = self.__drawing_area.selection.get_bounds(Application().ruler).center
+            menu_pos = self.mapToGlobal(QPoint(point.x, point.y))
         
         self.unsetCursor()
         
-        CanvasContextMenu(self.__main_window, self.__drawing_area).exec_(event.globalPos())
+        CanvasContextMenu(self.__main_window, self.__drawing_area).exec_(menu_pos)
     
     def dragEnterEvent(self, event):
         mime_data = event.mimeData()
