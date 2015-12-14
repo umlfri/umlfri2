@@ -1,5 +1,4 @@
-from PySide.QtGui import QScrollArea
-
+from PySide.QtGui import QScrollArea, QFrame
 from .canvaswidget import CanvasWidget
 
 
@@ -11,6 +10,7 @@ class ScrolledCanvasWidget(QScrollArea):
         
         self.setWidget(self.__canvas)
         self.setWidgetResizable(True)
+        self.setFrameShape(QFrame.NoFrame)
     
     @property
     def diagram(self):
