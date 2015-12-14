@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Translation lang="sk" xmlns="http://umlfri.org/v2/addon.xsd">
+    <Element id="class" label="Trieda"/>
+    <Element id="package" label="Balíček"/>
+    
+    <Diagram id="class_diagram" label="Diagram tried"/>
+    
+    <Connection id="association" label="Asociácia"/>
+    
+    <Attribute path="**/name" label="Názov"/>
+    <Attribute path="**/type" label="Typ"/>
+    <Attribute path="**/stereotype" label="Stereotyp"/>
+    <Attribute path="**/visibility" label="Viditeľnosť"/>
+    <EnumItem path="**/visibility/+" label="Verejná"/>
+    <EnumItem path="**/visibility/-" label="Súkromná"/>
+    <EnumItem path="**/visibility/#" label="Chránená"/>
+    <EnumItem path="**/visibility/~" label="Balíček"/>
+    <Attribute path="**/note" label="Poznámka"/>
+    
+    <Attribute path="class/abstract" label="Abstraktná trieda"/>
+    <Attribute path="class/attributes" label="Atribúty"/>
+    <Attribute path="class/operations" label="Operácie"/>
+    
+    <Attribute path="class/attributes/default" label="Predvolená hodnota"/>
+    <Attribute path="class/attributes/static" label="Atribút triedy"/>
+    
+    <Attribute path="class/operations/rtype" label="Typ návratovej hodnoty"/>
+    <Attribute path="class/operations/parameters" label="Parametre"/>
+    <Attribute path="class/operations/parameters/default" label="Predvolená hodnota"/>
+    <Attribute path="class/operations/abstract" label="Abstraktná operácia"/>
+    <Attribute path="class/operations/static" label="Operácia triedy"/>
+    
+    <Attribute path="association/direction" label="Smer"/>
+    <EnumItem path="association/direction/unspecified" label=""/>
+    <EnumItem path="association/direction/toDestination" label="K cieľu"/>
+    <EnumItem path="association/direction/toSource" label="K zdroju"/>
+    <EnumItem path="association/direction/bidirectional" label="Obojsmerná"/>
+    <Attribute path="association/source" label="Zdroj"/>
+    <Attribute path="association/destination" label="Cieľ"/>
+    <Attribute path="association/*/cardinality" label="Násobnosť"/>
+    <EnumItem path="association/*/visibility/unspecified" label=""/>
+    <Attribute path="association/*/role" label="Roľa"/>
+</Translation>
