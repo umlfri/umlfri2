@@ -98,22 +98,29 @@ class Diagram:
         else:
             raise Exception
     
-    def add(self, visual):
+    def add(self, visual, z_order=None):
         if visual.diagram is not self:
             raise Exception
         
         if isinstance(visual, ElementVisual):
             if visual in self.__elements:
                 raise Exception
-            self.__elements.append(visual)
+            
+            if z_order is None:
+                self.__elements.append(visual)
+            else:
+                self.__elements.insert(z_order, visual)
+            
             visual.object.add_visual(visual)
-            for connection in visual.connections:
-                self.__connections.append(connection)
-                connection.get_other_end(visual).add_connection(connection)
         elif isinstance(visual, ConnectionVisual):
             if visual in self.__connections:
                 raise Exception
-            self.__connections.append(visual)
+            
+            if z_order is None:
+                self.__connections.append(visual)
+            else:
+                self.__connections.insert(z_order, visual)
+            
             visual.source.add_connection(visual)
             visual.destination.add_connection(visual)
         else:
@@ -126,17 +133,28 @@ class Diagram:
         if isinstance(visual, ElementVisual):
             if visual not in self.__elements:
                 raise Exception
+            for connection in visual.connections:
+                if connection in self.__connections:
+                    raise Exception
             self.__elements.remove(visual)
             visual.object.remove_visual(visual)
-            for connection in visual.connections:
-                self.__connections.remove(connection)
-                connection.get_other_end(visual).remove_connection(connection)
         elif isinstance(visual, ConnectionVisual):
             if visual not in self.__connections:
                 raise Exception
             self.__connections.remove(visual)
             visual.source.remove_connection(visual)
             visual.destination.remove_connection(visual)
+        else:
+            raise Exception
+    
+    def get_z_order(self, visual):
+        if visual.diagram is not self:
+            raise Exception
+        
+        if isinstance(visual, ElementVisual):
+            return self.__elements.index(visual)
+        elif isinstance(visual, ConnectionVisual):
+            return self.__connections.index(visual)
         else:
             raise Exception
     

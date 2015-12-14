@@ -6,3 +6,5 @@ from .adddiagramelement import AddDiagramElementCommand
 from .removeconnectionpoint import RemoveConnectionPointCommand
 from .addconnectionpoint import AddConnectionPointCommand
 from .showelement import ShowElementCommand
+from .hideconnection import HideConnectionCommand
+from .hideelements import HideElementsCommand
