@@ -18,41 +18,41 @@ class AddConnectionAction(Action):
     def path(self):
         return self.__path
     
-    def mouse_down(self, drawing_area, application, point):
+    def mouse_down(self, point):
         if self.__source_element is None:
-            element = drawing_area.diagram.get_visual_at(application.ruler, point)
+            element = self.drawing_area.diagram.get_visual_at(self.application.ruler, point)
             if isinstance(element, ElementVisual):
-                self.__first_point = element.get_bounds(application.ruler).center
+                self.__first_point = element.get_bounds(self.application.ruler).center
                 self.__build_path()
                 self.__source_element = element
             else:
                 self._finish()
         else:
-            element = drawing_area.diagram.get_visual_at(application.ruler, point)
+            element = self.drawing_area.diagram.get_visual_at(self.application.ruler, point)
             if self.__source_element is not element or self.__points: 
                 if isinstance(element, ElementVisual):
-                    type = drawing_area.diagram.parent.project.metamodel.get_connection_type(self.__type)
+                    type = self.drawing_area.diagram.parent.project.metamodel.get_connection_type(self.__type)
                     command = AddDiagramConnectionCommand(
-                        drawing_area.diagram,
+                        self.drawing_area.diagram,
                         type,
                         self.__source_element,
                         element,
                         self.__points
                     )
-                    application.commands.execute(command)
-                    drawing_area.selection.select(command.connection_visual)
+                    self.application.commands.execute(command)
+                    self.drawing_area.selection.select(command.connection_visual)
                     self._finish()
                 else:
                     self.__points.append(point)
                     self.__last_point = None
                     self.__build_path()
     
-    def mouse_move(self, drawing_area, application, point):
+    def mouse_move(self, point):
         if self.__source_element is not None:
             self.__last_point = point
             self.__build_path()
     
-    def mouse_up(self, drawing_area, application):
+    def mouse_up(self):
         pass
     
     def __build_path(self):

@@ -8,16 +8,16 @@ class AddElementAction(Action):
         self.__type = type
         self.__point = None
     
-    def mouse_down(self, drawing_area, application, point):
+    def mouse_down(self, point):
         self.__point = point
     
-    def mouse_up(self, drawing_area, application):
-        type = drawing_area.diagram.parent.project.metamodel.get_element_type(self.__type)
+    def mouse_up(self):
+        type = self.drawing_area.diagram.parent.project.metamodel.get_element_type(self.__type)
         command = AddDiagramElementCommand(
-            drawing_area.diagram,
+            self.drawing_area.diagram,
             type,
             self.__point
         )
-        application.commands.execute(command)
-        drawing_area.selection.select(command.element_visual)
+        self.application.commands.execute(command)
+        self.drawing_area.selection.select(command.element_visual)
         self._finish()

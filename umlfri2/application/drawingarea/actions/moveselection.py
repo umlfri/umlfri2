@@ -15,11 +15,11 @@ class MoveSelectionAction(Action):
     def box(self):
         return self.__box
     
-    def mouse_down(self, drawing_area, application, point):
-        self.__box = drawing_area.selection.get_bounds()
+    def mouse_down(self, point):
+        self.__box = self.drawing_area.selection.get_bounds()
         self.__old_point = point
     
-    def mouse_move(self, drawing_area, application, point):
+    def mouse_move(self, point):
         vector = point - self.__old_point
         self.__box += vector
         if self.__box.x1 < 0:
@@ -28,11 +28,11 @@ class MoveSelectionAction(Action):
             self.__box -= Vector(0, self.__box.y1)
         self.__old_point = point
     
-    def mouse_up(self, drawing_area, application):
-        old_bounds = drawing_area.selection.get_bounds()
+    def mouse_up(self):
+        old_bounds = self.drawing_area.selection.get_bounds()
         command = MoveSelectionCommand(
-            drawing_area.selection,
+            self.drawing_area.selection,
             self.__box.top_left - old_bounds.top_left
         )
-        application.commands.execute(command)
+        self.application.commands.execute(command)
         self._finish()

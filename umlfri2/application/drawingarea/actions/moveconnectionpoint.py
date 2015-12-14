@@ -19,25 +19,25 @@ class MoveConnectionPointAction(Action):
     def cursor(self):
         return DrawingAreaCursor.move
     
-    def mouse_down(self, drawing_area, application, point):
-        self.__points = list(self.__connection.get_points(application.ruler, element_centers=True))
+    def mouse_down(self, point):
+        self.__points = list(self.__connection.get_points(self.application.ruler, element_centers=True))
         self.__build_path()
         self.__old_point = point
     
-    def mouse_move(self, drawing_area, application, point):
+    def mouse_move(self, point):
         vector = point - self.__old_point
         self.__points[self.__index] += vector
         self.__build_path()
         self.__old_point = point
     
-    def mouse_up(self, drawing_area, application):
-        old_points = list(self.__connection.get_points(application.ruler, element_centers=True))
+    def mouse_up(self):
+        old_points = list(self.__connection.get_points(self.application.ruler, element_centers=True))
         command = MoveConnectionPointCommand(
             self.__connection,
             self.__index,
             self.__points[self.__index] - old_points[self.__index]
         )
-        application.commands.execute(command)
+        self.application.commands.execute(command)
         self._finish()
     
     def __build_path(self):

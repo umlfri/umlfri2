@@ -5,6 +5,8 @@ class Action:
     def __init__(self):
         self.__finished = False
         self.__callback = None
+        self.__application = None
+        self.__drawing_area = None
     
     def _finish(self):
         self.__finished = True
@@ -12,9 +14,21 @@ class Action:
         if self.__callback is not None:
             self.__callback()
     
+    def associate(self, application, drawing_area):
+        self.__application = application
+        self.__drawing_area = drawing_area
+    
     def after_finish(self, callback):
         self.__callback = callback
         return self
+    
+    @property
+    def application(self):
+        return self.__application
+    
+    @property
+    def drawing_area(self):
+        return self.__drawing_area
     
     @property
     def box(self):
@@ -32,11 +46,11 @@ class Action:
     def cursor(self):
         return DrawingAreaCursor.arrow
     
-    def mouse_down(self, drawing_area, application, point):
+    def mouse_down(self, point):
         pass
     
-    def mouse_move(self, drawing_area, application, point):
+    def mouse_move(self, point):
         pass
     
-    def mouse_up(self, drawing_area, application):
+    def mouse_up(self):
         self._finish()

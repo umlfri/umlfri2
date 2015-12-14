@@ -1,4 +1,3 @@
-from umlfri2.ufl.dialog import UflDialog
 from .drawingareacursor import DrawingAreaCursor
 from umlfri2.types.color import Colors
 from .actions import SelectManyAction
@@ -49,14 +48,14 @@ class DrawingArea:
     
     def mouse_down(self, point, control_pressed, shift_pressed):
         if self.__current_action is not None:
-            self.__current_action.mouse_down(self, self.__application, point)
+            self.__current_action.mouse_down(point)
             self.__postprocess_action(point, shift_pressed)
         else:
             action = self.__selection.get_action_at(point, shift_pressed)
             
             if action is not None:
-                self.__current_action = action
-                self.__current_action.mouse_down(self, self.__application, point)
+                self.set_action(action)
+                self.__current_action.mouse_down(point)
                 self.__postprocess_action(point, shift_pressed)
             else:
                 object = self.__diagram.get_visual_at(self.__application.ruler, point)
@@ -76,12 +75,13 @@ class DrawingArea:
 
     def mouse_move(self, point, control_pressed, shift_pressed):
         if self.__postponed_action is not None:
-            self.__current_action, postponed_point = self.__postponed_action
-            self.__current_action.mouse_down(self, self.__application, postponed_point)
+            action, postponed_point = self.__postponed_action
+            self.set_action(action)
+            self.__current_action.mouse_down(postponed_point)
             self.__postponed_action = None
         
         if self.__current_action is not None:
-            self.__current_action.mouse_move(self, self.__application, point)
+            self.__current_action.mouse_move(point)
             self.__postprocess_action(point, shift_pressed)
         else:
             self.__change_cursor(point, shift_pressed)
@@ -90,7 +90,7 @@ class DrawingArea:
         if self.__postponed_action is not None:
             self.__postponed_action = None
         elif self.__current_action is not None:
-            self.__current_action.mouse_up(self, self.__application)
+            self.__current_action.mouse_up()
             self.__postprocess_action(point, shift_pressed)
     
     def get_object_at(self, point):
@@ -102,7 +102,7 @@ class DrawingArea:
     
     def __postprocess_action(self, point, shift_pressed):
         if self.__current_action is not None and self.__current_action.finished:
-            self.__current_action = None
+            self.set_action(None)
             self.__change_cursor(point, shift_pressed)
 
     def __change_cursor(self, point, shift_pressed):
@@ -117,6 +117,7 @@ class DrawingArea:
         if action is None:
             self.__cursor = DrawingAreaCursor.arrow
         else:
+            action.associate(self.__application, self)
             self.__cursor = action.cursor
     
     @property

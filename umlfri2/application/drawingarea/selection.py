@@ -229,7 +229,7 @@ class Selection:
         return None
     
     def is_selection_at(self, position):
-        visual = self.__diagram.get_visual_at(position)
+        visual = self.__diagram.get_visual_at(self.__application.ruler, position)
         
         return visual not in self.__selected
     

@@ -19,20 +19,20 @@ class MoveConnectionLabelAction(Action):
     def box(self):
         return self.__box
     
-    def mouse_down(self, drawing_area, application, point):
-        self.__box = self.__connection.get_label(self.__id).get_bounds(application.ruler)
+    def mouse_down(self, point):
+        self.__box = self.__connection.get_label(self.__id).get_bounds(self.application.ruler)
         self.__old_point = point
     
-    def mouse_move(self, drawing_area, application, point):
+    def mouse_move(self, point):
         vector = point - self.__old_point
         self.__box += vector
         self.__old_point = point
     
-    def mouse_up(self, drawing_area, application):
-        old_bounds = self.__connection.get_label(self.__id).get_bounds(application.ruler)
+    def mouse_up(self):
+        old_bounds = self.__connection.get_label(self.__id).get_bounds(self.application.ruler)
         command = MoveConnectionLabelCommand(
             self.__connection.get_label(self.__id),
             self.__box.top_left - old_bounds.top_left
         )
-        application.commands.execute(command)
+        self.application.commands.execute(command)
         self._finish()

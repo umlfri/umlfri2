@@ -29,11 +29,11 @@ class ResizeElementAction(Action):
         else:
             return DrawingAreaCursor.anti_diagonal_resize
     
-    def mouse_down(self, drawing_area, application, point):
-        self.__box = drawing_area.selection.get_bounds()
+    def mouse_down(self, point):
+        self.__box = self.drawing_area.selection.get_bounds()
         self.__old_point = point
     
-    def mouse_move(self, drawing_area, application, point):
+    def mouse_move(self, point):
         x1 = self.__box.x1
         y1 = self.__box.y1
         x2 = self.__box.x2
@@ -70,10 +70,10 @@ class ResizeElementAction(Action):
         # TODO: don't move current point
         self.__old_point = point
     
-    def mouse_up(self, drawing_area, application):
+    def mouse_up(self):
         command = ResizeMoveElementCommand(
             self.__element,
             self.__box
         )
-        application.commands.execute(command)
+        self.application.commands.execute(command)
         self._finish()

@@ -21,22 +21,22 @@ class AddConnectionPointAction(Action):
     def cursor(self):
         return DrawingAreaCursor.cross
     
-    def mouse_down(self, drawing_area, application, point):
-        self.__points = list(self.__connection.get_points(application.ruler, element_centers=True))
+    def mouse_down(self, point):
+        self.__points = list(self.__connection.get_points(self.application.ruler, element_centers=True))
         self.__build_path()
     
-    def mouse_move(self, drawing_area, application, point):
+    def mouse_move(self, point):
         self.__point = point
         self.__build_path()
     
-    def mouse_up(self, drawing_area, application):
+    def mouse_up(self):
         if self.__point is not None:
             command = AddConnectionPointCommand(
                 self.__connection,
                 self.__index,
                 self.__point
             )
-            application.commands.execute(command)
+            self.application.commands.execute(command)
         self._finish()
     
     def __build_path(self):

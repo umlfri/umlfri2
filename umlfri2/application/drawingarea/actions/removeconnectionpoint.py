@@ -13,10 +13,10 @@ class RemoveConnectionPointAction(Action):
     def cursor(self):
         return DrawingAreaCursor.cross
     
-    def mouse_down(self, drawing_area, application, point):
+    def mouse_down(self, point):
         command = RemoveConnectionPointCommand(
             self.__connection,
             self.__index
         )
-        application.commands.execute(command)
+        self.application.commands.execute(command)
         self._finish()
