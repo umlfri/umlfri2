@@ -3,7 +3,7 @@ from PySide.QtGui import QWidget, QPainter, QApplication, QMenu
 from umlfri2.application import Application
 from umlfri2.application.commands.diagram import ShowElementCommand
 from umlfri2.application.drawingarea import DrawingAreaCursor
-from umlfri2.application.events.diagram import DiagramChangedEvent
+from umlfri2.application.events.diagram import DiagramChangedEvent, SelectionChangedEvent
 from umlfri2.application.events.model import ObjectChangedEvent
 from umlfri2.model import ElementObject
 from .menu import CanvasContextMenu
@@ -28,6 +28,7 @@ class CanvasWidget(QWidget):
         
         Application().event_dispatcher.register(ObjectChangedEvent, self.__something_changed)
         Application().event_dispatcher.register(DiagramChangedEvent, self.__something_changed)
+        Application().event_dispatcher.register(SelectionChangedEvent, self.__something_changed)
     
     @property
     def diagram(self):

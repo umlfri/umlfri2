@@ -1,3 +1,4 @@
+from umlfri2.application.events.diagram import SelectionChangedEvent
 from umlfri2.types.enums import LineStyle
 from .selectionpointposition import SelectionPointPosition
 from umlfri2.model.connection import ConnectionVisual
@@ -17,8 +18,9 @@ class Selection:
     
     LABEL_LINE_MINIMAL_DISTANCE = 10
     
-    def __init__(self, diagram):
+    def __init__(self, application, diagram):
         self.__selected = set()
+        self.__application = application
         self.__diagram = diagram
     
     @property
@@ -45,9 +47,19 @@ class Selection:
         self.__selected.clear()
         if visual is not None:
             self.__selected.add(visual)
-            
+        
+        self.__application.event_dispatcher.dispatch(SelectionChangedEvent(self.__diagram))
+    
+    def select_all(self):
+        self.__selected.clear()
+        self.__selected.update(self.__diagram.elements)
+        
+        self.__application.event_dispatcher.dispatch(SelectionChangedEvent(self.__diagram))
+    
     def deselect_all(self):
         self.__selected.clear()
+        
+        self.__application.event_dispatcher.dispatch(SelectionChangedEvent(self.__diagram))
     
     def add_to_selection(self, visual):
         if isinstance(visual, ConnectionVisual):
@@ -56,10 +68,14 @@ class Selection:
             self.__selected.clear()
         
         self.__selected.add(visual)
+        
+        self.__application.event_dispatcher.dispatch(SelectionChangedEvent(self.__diagram))
     
     def remove_from_selection(self, visual):
         if visual in self.__selected:
             self.__selected.remove(visual)
+        
+        self.__application.event_dispatcher.dispatch(SelectionChangedEvent(self.__diagram))
     
     def toggle_select(self, visual):
         if visual in self.__selected:
@@ -80,6 +96,8 @@ class Selection:
         for element in self.__diagram.elements:
             if element.get_bounds(ruler).is_overlapping(area):
                 self.__selected.add(element)
+        
+        self.__application.event_dispatcher.dispatch(SelectionChangedEvent(self.__diagram))
     
     def draw_for(self, canvas, visual):
         if visual not in self.__selected:
@@ -229,3 +247,7 @@ class Selection:
     @property
     def is_element_selected(self):
         return any(isinstance(visual, ElementVisual) for visual in self.__selected)
+    
+    @property
+    def is_empty(self):
+        return len(self.__selected) > 0

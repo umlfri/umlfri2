@@ -12,7 +12,7 @@ class DrawingArea:
     
     def __init__(self, application, diagram):
         self.__diagram = diagram
-        self.__selection = Selection(self.__diagram)
+        self.__selection = Selection(application, self.__diagram)
         self.__application = application
         self.__postponed_action = None
         self.__current_action = None

@@ -24,6 +24,9 @@ class MainWindowMenu(QMenuBar):
         self.__edit, edit_menu = self.__add_menu()
         self.__edit_undo = self.__add_menu_item(edit_menu, QKeySequence.Undo, "edit-undo", self.__edit_undo_action)
         self.__edit_redo = self.__add_menu_item(edit_menu, QKeySequence.Redo, "edit-redo", self.__edit_redo_action)
+        edit_menu.addSeparator()
+        self.__edit_select_all = self.__add_menu_item(edit_menu, QKeySequence.SelectAll, "edit-select-all",
+                                                      self.__edit_select_all_action)
         
         # VIEW MENU
         self.__view, view_menu = self.__add_menu()
@@ -65,6 +68,7 @@ class MainWindowMenu(QMenuBar):
         
         self.__edit_undo.setEnabled(Application().commands.can_undo)
         self.__edit_redo.setEnabled(Application().commands.can_redo)
+        self.__edit_select_all.setEnabled(Application().tabs.current_tab is not None)
     
     def __file_new_action(self, checked=False):
         self.__main_window.new_project()
@@ -87,6 +91,9 @@ class MainWindowMenu(QMenuBar):
     def __edit_redo_action(self, checked=False):
         Application().commands.redo()
     
+    def __edit_select_all_action(self, checked=False):
+        Application().tabs.current_tab.drawing_area.selection.select_all()
+    
     def reload_texts(self):
         self.__file.setText(_("&File"))
         self.__file_new.setText(_("&New"))
@@ -98,5 +105,6 @@ class MainWindowMenu(QMenuBar):
         self.__edit.setText(_("&Edit"))
         self.__edit_undo.setText(_("&Undo"))
         self.__edit_redo.setText(_("&Redo"))
+        self.__edit_select_all.setText(_("Select &all"))
         
         self.__view.setText(_("&View"))

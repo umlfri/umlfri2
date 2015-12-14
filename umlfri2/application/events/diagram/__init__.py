@@ -5,3 +5,4 @@ from .diagramchanged import DiagramChangedEvent
 from .elementshown import ElementShownEvent
 from .elementresizedmoved import ElementResizedMovedEvent
 from .elementhidden import ElementHiddenEvent
+from .selectionchanged import SelectionChangedEvent
