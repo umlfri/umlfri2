@@ -76,7 +76,7 @@ class NewProjectDialog(QDialog):
     
     def __selection_changed(self, current, previous):
         text = "<font size=+2><b>{0}</b></font><br>".format(current.template.addon.name)
-        text += "<i>Metamodel version: {0}</i><br>".format(current.template.addon.version)
+        text += "<i>{0}: {1}</i><br>".format(_("Metamodel version"), current.template.addon.version)
         text += "<p>" + html.escape(current.template.addon.description).replace('\n', '</p><p>') + "</p>"
         self.__description.setText(text)
     
