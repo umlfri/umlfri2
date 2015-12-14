@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-14 15:19+0100\n"
+"POT-Creation-Date: 2015-12-14 19:23+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,6 +41,9 @@ msgstr ""
 msgid "&Save"
 msgstr ""
 
+msgid "&Tools"
+msgstr ""
+
 msgid "&Undo"
 msgstr ""
 
@@ -60,6 +63,9 @@ msgid "Apply"
 msgstr ""
 
 msgid "Cancel"
+msgstr ""
+
+msgid "Change &language"
 msgstr ""
 
 msgid "Close without saving"
@@ -129,6 +135,9 @@ msgid "Select &all"
 msgstr ""
 
 msgid "Show diagram in tab"
+msgstr ""
+
+msgid "System language"
 msgstr ""
 
 msgid "The model has been modified."

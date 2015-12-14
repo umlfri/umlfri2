@@ -5,6 +5,7 @@ from PySide.QtGui import QWidget, QVBoxLayout, QIcon, QPushButton
 
 from umlfri2.application import Application
 from umlfri2.application.drawingarea.actions import AddElementAction, AddConnectionAction
+from umlfri2.application.events.application import LanguageChangedEvent
 from umlfri2.application.events.tabs import ChangedCurrentTabEvent
 from umlfri2.constants.paths import GRAPHICS
 from ..base import image_loader
@@ -20,9 +21,13 @@ class ToolBox(QWidget):
         self.setLayout(self.__vbox)
         
         self.__widgets = []
+        self.__current_diagram_type = None
         self.set_diagram_type(None)
         
         Application().event_dispatcher.subscribe(ChangedCurrentTabEvent, self.__current_tab_changed)
+        Application().event_dispatcher.subscribe(LanguageChangedEvent, lambda event: self.__reload_texts())
+        
+        self.__reload_texts()
     
     def __current_tab_changed(self, event):
         if event.tab is None:
@@ -35,6 +40,7 @@ class ToolBox(QWidget):
             self.__vbox.removeWidget(widget)
             widget.deleteLater()
         
+        self.__current_diagram_type = diagram_type
         self.__widgets = []
         
         self.__add_button(self.__arrow, _('Select'), None, tab)
@@ -93,5 +99,5 @@ class ToolBox(QWidget):
         
         tab.drawing_area.set_action(action)
     
-    def reload_texts(self):
-        pass
+    def __reload_texts(self):
+        self.set_diagram_type(self.__current_diagram_type)

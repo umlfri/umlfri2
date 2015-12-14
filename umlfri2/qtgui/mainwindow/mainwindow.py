@@ -4,6 +4,7 @@ from PySide.QtCore import Qt
 from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget, QMessageBox, QFileDialog, QIcon
 
 from umlfri2.application import Application
+from umlfri2.application.events.application import LanguageChangedEvent
 from umlfri2.application.events.model import ObjectChangedEvent
 from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent
 from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent
@@ -54,14 +55,15 @@ class UmlFriMainWindow(QMainWindow):
         self.__menu_bar = MainWindowMenu(self)
         self.setMenuBar(self.__menu_bar)
         
-        self.reload_texts()
-        
         Application().event_dispatcher.subscribe(OpenTabEvent, self.__open_tab)
         Application().event_dispatcher.subscribe(ChangedCurrentTabEvent, self.__change_tab)
         Application().event_dispatcher.subscribe(ClosedTabEvent, self.__close_tab)
         Application().event_dispatcher.subscribe(ObjectChangedEvent, self.__object_changed)
         Application().event_dispatcher.subscribe(OpenSolutionEvent, self.__solution_file_changed)
         Application().event_dispatcher.subscribe(SaveSolutionEvent, self.__solution_file_changed)
+        Application().event_dispatcher.subscribe(LanguageChangedEvent, lambda event: self.__reload_texts())
+        
+        self.__reload_texts()
     
     def __tab_changed(self, index):
         if index >= 0:
@@ -178,15 +180,9 @@ class UmlFriMainWindow(QMainWindow):
             title += " [{0}]".format(Application().solution_name)
         self.setWindowTitle(title)
     
-    def reload_texts(self):
+    def __reload_texts(self):
         self.__reload_window_title()
         
         self.__toolbox_dock.setWindowTitle(_("Tools"))
         self.__project_dock.setWindowTitle(_("Project"))
         self.__properties_dock.setWindowTitle(_("Properties"))
-        
-        self.__toolbox.reload_texts()
-        self.__project_tree.reload_texts()
-        self.__properties.reload_texts()
-        
-        self.__menu_bar.reload_texts()

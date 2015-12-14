@@ -4,6 +4,7 @@ from PySide.QtCore import Qt, QMimeData
 from PySide.QtGui import QTreeWidget, QTreeWidgetItem, QMenu
 from umlfri2.application import Application
 from umlfri2.application.commands.model import CreateElementCommand, CreateDiagramCommand
+from umlfri2.application.events.application import LanguageChangedEvent
 from umlfri2.application.events.model import ElementCreatedEvent, ObjectChangedEvent, DiagramCreatedEvent, \
     ProjectChangedEvent, ElementDeletedEvent, DiagramDeletedEvent
 from umlfri2.application.events.solution import OpenProjectEvent, OpenSolutionEvent
@@ -60,6 +61,9 @@ class ProjectTree(QTreeWidget):
         Application().event_dispatcher.subscribe(ProjectChangedEvent, self.__project_changed)
         Application().event_dispatcher.subscribe(OpenProjectEvent, self.__project_open)
         Application().event_dispatcher.subscribe(OpenSolutionEvent, self.__solution_open)
+        Application().event_dispatcher.subscribe(LanguageChangedEvent, lambda event: self.__reload_texts())
+        
+        self.__reload_texts()
     
     def reload(self):
         self.clear()
@@ -257,5 +261,5 @@ class ProjectTree(QTreeWidget):
         else:
             return None
     
-    def reload_texts(self):
+    def __reload_texts(self):
         pass

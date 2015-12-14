@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-14 15:19+0100\n"
-"PO-Revision-Date: 2015-12-14 15:20+0100\n"
+"POT-Creation-Date: 2015-12-14 19:23+0100\n"
+"PO-Revision-Date: 2015-12-14 19:24+0100\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -41,6 +41,9 @@ msgstr "&Znova"
 msgid "&Save"
 msgstr "&Uložiť"
 
+msgid "&Tools"
+msgstr "&Nástroje"
+
 msgid "&Undo"
 msgstr "&Späť"
 
@@ -61,6 +64,9 @@ msgstr "Použiť"
 
 msgid "Cancel"
 msgstr "Zrušiť"
+
+msgid "Change &language"
+msgstr "Zmeniť &jazyk"
 
 msgid "Close without saving"
 msgstr "Zatvoriť bez uloženia"
@@ -130,6 +136,9 @@ msgstr "Vybrať &všetko"
 
 msgid "Show diagram in tab"
 msgstr "Zobraziť diagram v záložke"
+
+msgid "System language"
+msgstr "Systémový jazyk"
 
 msgid "The model has been modified."
 msgstr "Model bol zmenený"

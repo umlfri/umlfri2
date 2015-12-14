@@ -2,7 +2,7 @@ from functools import partial
 
 from PySide.QtGui import QToolBar, QAction, QKeySequence, QIcon, QMenu
 from umlfri2.application import Application
-
+from umlfri2.application.events.application import LanguageChangedEvent
 
 UNDO_REDO_COUNT = 10
 
@@ -30,7 +30,9 @@ class MainToolBar(QToolBar):
         self.__redo = self.__add_toolbar_item(QKeySequence.Redo, "edit-redo", partial(self.__redo_action, 1),
                                               self.__redo_menu)
         
-        self.reload_texts()
+        Application().event_dispatcher.subscribe(LanguageChangedEvent, lambda event: self.__reload_texts())
+        
+        self.__reload_texts()
         
         Application().event_dispatcher.subscribe(None, lambda event: self.__refresh_enable())
         self.__refresh_enable()
@@ -83,7 +85,7 @@ class MainToolBar(QToolBar):
         self.__undo.setEnabled(Application().commands.can_undo)
         self.__redo.setEnabled(Application().commands.can_redo)
     
-    def reload_texts(self):
+    def __reload_texts(self):
         self.setWindowTitle(_("Toolbar"))
         self.__set_toolbar_item_text(self.__new, _("New"))
         self.__set_toolbar_item_text(self.__open, _("Open"))

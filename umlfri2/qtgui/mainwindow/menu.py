@@ -1,6 +1,10 @@
+from functools import partial
+
 from PySide.QtGui import QMenuBar, QAction, QMenu, QKeySequence, QIcon
 
 from umlfri2.application import Application
+from umlfri2.application.events.application.languagechanged import LanguageChangedEvent
+from umlfri2.constants.languages import AVAILABLE_LANGUAGES
 from .newproject import NewProjectDialog
 
 
@@ -28,6 +32,11 @@ class MainWindowMenu(QMenuBar):
         self.__edit_select_all = self.__add_menu_item(edit_menu, QKeySequence.SelectAll, "edit-select-all",
                                                       self.__edit_select_all_action)
         
+        self.__tools, tools_menu = self.__add_menu()
+        self.__tools_languages_menu = QMenu()
+        self.__tools_languages_menu.aboutToShow.connect(self.__tools_languages_menu_populate)
+        self.__tools_languages = self.__add_submenu_item(tools_menu, None, None, self.__tools_languages_menu)
+        
         # VIEW MENU
         self.__view, view_menu = self.__add_menu()
         
@@ -39,9 +48,10 @@ class MainWindowMenu(QMenuBar):
         for action in main_window.get_toolbar_actions():
             view_menu.addAction(action)
         
-        self.reload_texts()
-        
         Application().event_dispatcher.subscribe(None, lambda event: self.__refresh_enable())
+        Application().event_dispatcher.subscribe(LanguageChangedEvent, lambda event: self.__reload_texts())
+        
+        self.__reload_texts()
         self.__refresh_enable()
 
     def __add_menu(self):
@@ -59,6 +69,16 @@ class MainWindowMenu(QMenuBar):
             ret.setIcon(QIcon.fromTheme(icon))
         if action is not None:
             ret.triggered.connect(action)
+        menu.addAction(ret)
+        return ret
+    
+    def __add_submenu_item(self, menu, shortcut, icon, submenu):
+        ret = QAction(None)
+        if shortcut is not None:
+            ret.setShortcut(QKeySequence(shortcut))
+        if icon is not None:
+            ret.setIcon(QIcon.fromTheme(icon))
+        ret.setMenu(submenu)
         menu.addAction(ret)
         return ret
     
@@ -94,7 +114,27 @@ class MainWindowMenu(QMenuBar):
     def __edit_select_all_action(self, checked=False):
         Application().tabs.current_tab.drawing_area.selection.select_all()
     
-    def reload_texts(self):
+    def __tools_languages_menu_populate(self):
+        selected_language = Application().selected_language
+        
+        self.__tools_languages_menu.clear()
+        system_lang = self.__tools_languages_menu.addAction(_("System language"))
+        system_lang.triggered.connect(partial(self.__tools_languages_menu_activate, None))
+        system_lang.setCheckable(True)
+        system_lang.setChecked(selected_language is None)
+        
+        self.__tools_languages_menu.addSeparator()
+        
+        for lang_id, label in AVAILABLE_LANGUAGES:
+            language = self.__tools_languages_menu.addAction(label)
+            language.triggered.connect(partial(self.__tools_languages_menu_activate, lang_id))
+            language.setCheckable(True)
+            language.setChecked(selected_language == lang_id)
+    
+    def __tools_languages_menu_activate(self, lang_id, checked=False):
+        Application().change_language(lang_id)
+    
+    def __reload_texts(self):
         self.__file.setText(_("&File"))
         self.__file_new.setText(_("&New"))
         self.__file_open.setText(_("&Open"))
@@ -106,5 +146,8 @@ class MainWindowMenu(QMenuBar):
         self.__edit_undo.setText(_("&Undo"))
         self.__edit_redo.setText(_("&Redo"))
         self.__edit_select_all.setText(_("Select &all"))
+        
+        self.__tools.setText(_("&Tools"))
+        self.__tools_languages.setText(_("Change &language"))
         
         self.__view.setText(_("&View"))

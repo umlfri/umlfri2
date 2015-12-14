@@ -1,12 +1,14 @@
 import ctypes
+import gettext
 import locale
 import os
 
 from umlfri2.addon import AddOnManager
 from umlfri2.application.commands.solution import NewProjectCommand
+from umlfri2.application.events.application import LanguageChangedEvent
 from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent
 from umlfri2.application.tablist import TabList
-from umlfri2.constants.paths import ADDONS
+from umlfri2.constants.paths import ADDONS, LOCALE_DIR
 from umlfri2.datalayer import Storage
 from umlfri2.datalayer.loaders import ProjectLoader, WholeSolutionLoader
 from umlfri2.datalayer.savers import WholeSolutionSaver
@@ -40,7 +42,9 @@ class Application(metaclass=MetaApplication):
         self.__solution = None
         self.__ruler = None
         self.__solution_storage_ref = None
-        self.__language = self.__find_out_language().split('.', 1)[0]
+        self.__default_language = self.__find_out_language().split('.', 1)[0]
+        self.__language = None
+        self.change_language(None)
 
     def __find_out_language(self):
         for e in 'LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG':
@@ -162,6 +166,18 @@ class Application(metaclass=MetaApplication):
         self.__event_dispatcher.dispatch(OpenSolutionEvent(self.__solution))
         self.tabs.close_all()
     
+    def change_language(self, language):
+        self.__language = language
+        # install new language handler from gettext
+        gettext.translation('umlfri2', localedir=LOCALE_DIR, languages=[self.language], fallback=True).install()
+        self.__event_dispatcher.dispatch(LanguageChangedEvent(language))
+    
+    @property
+    def selected_language(self):
+        return self.__language
+    
     @property
     def language(self):
+        if self.__language is None:
+            return self.__default_language
         return self.__language

@@ -1,13 +1,12 @@
 #!/usr/bin/python3
 
-import gettext
 import os
 import sys
 
 from PySide.QtGui import QApplication, QIcon
 
 from umlfri2.application import Application
-from umlfri2.constants.paths import NT_ICON_THEME_PATH, NT_ICON_THEME, LOCALE_DIR
+from umlfri2.constants.paths import NT_ICON_THEME_PATH, NT_ICON_THEME
 from umlfri2.qtgui import UmlFriMainWindow
 from umlfri2.qtgui.base.qtruler import QTRuler
 
@@ -22,8 +21,6 @@ if os.name == 'nt':
     QIcon.setThemeName(NT_ICON_THEME)
 
 app = QApplication(sys.argv)
-
-gettext.translation('umlfri2', localedir=LOCALE_DIR, languages=[Application().language], fallback=True).install()
 
 Application().use_ruler(QTRuler())
 
