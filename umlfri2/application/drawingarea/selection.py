@@ -249,8 +249,8 @@ class Selection:
         return any(isinstance(visual, ElementVisual) for visual in self.__selected)
     
     @property
-    def is_empty(self):
-        return len(self.__selected) == 0
+    def size(self):
+        return len(self.__selected)
     
     def get_lonely_selected_visual(self):
         if len(self.__selected) != 1:

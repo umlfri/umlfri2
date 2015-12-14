@@ -117,7 +117,7 @@ class CanvasWidget(QWidget):
         
         self.unsetCursor()
         
-        CanvasContextMenu(self.__drawing_area).exec_(event.globalPos())
+        CanvasContextMenu(self.__main_window, self.__drawing_area).exec_(event.globalPos())
     
     def dragEnterEvent(self, event):
         mime_data = event.mimeData()
