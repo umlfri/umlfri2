@@ -97,12 +97,18 @@ class CanvasWidget(QWidget):
     def mouseDoubleClickEvent(self, event):
         pos = event.pos()
         point = Point(pos.x(), pos.y())
-        object = self.__drawing_area.get_object_at(point)
-        if object is not None:
-            self.__drawing_area.set_action(None)
-            self.unsetCursor()
-            PropertiesDialog.open_for(self.__main_window, object)
-    
+        
+        visual = self.__drawing_area.selection.get_lonely_selected_visual()
+        if visual is None:
+            return
+        
+        if not visual.is_at_position(Application().ruler, point):
+            return
+        
+        self.__drawing_area.set_action(None)
+        self.unsetCursor()
+        PropertiesDialog.open_for(self.__main_window, visual.object)
+        
     def contextMenuEvent(self, event):
         pos = event.pos()
         point = Point(pos.x(), pos.y())

@@ -250,4 +250,11 @@ class Selection:
     
     @property
     def is_empty(self):
-        return len(self.__selected) > 0
+        return len(self.__selected) == 0
+    
+    def get_lonely_selected_visual(self):
+        if len(self.__selected) != 1:
+            return None
+        
+        for visual in self.__selected:
+            return visual
