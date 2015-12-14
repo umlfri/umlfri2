@@ -83,18 +83,18 @@ class Selection:
         else:
             self.add_to_selection(visual)
     
-    def select_at(self, ruler, point):
-        object = self.__diagram.get_visual_at(ruler, point)
+    def select_at(self, point):
+        object = self.__diagram.get_visual_at(self.__application.ruler, point)
         
         self.deselect_all()
         
         if object is not None:
             self.add_to_selection(object)
     
-    def select_in_area(self, ruler, area):
+    def select_in_area(self, area):
         self.__selected.clear()
         for element in self.__diagram.elements:
-            if element.get_bounds(ruler).is_overlapping(area):
+            if element.get_bounds(self.__application.ruler).is_overlapping(area):
                 self.__selected.add(element)
         
         self.__application.event_dispatcher.dispatch(SelectionChangedEvent(self.__diagram))
@@ -107,7 +107,7 @@ class Selection:
             bounds = visual.get_bounds(canvas.get_ruler())
             
             if len(self.__selected) == 1:
-                for pos_x, pos_y in self.__get_selection_points_positions(canvas.get_ruler(), visual):
+                for pos_x, pos_y in self.__get_selection_points_positions(visual):
                     self.__draw_selection_point(canvas, bounds, pos_x, pos_y)
             
             canvas.draw_rectangle(bounds, fg=self.SELECTION_COLOR, line_width=self.SELECTION_SIZE)
@@ -141,8 +141,8 @@ class Selection:
                         canvas.draw_line(line_to_connection.first, intersect[0], fg=self.SELECTION_COLOR,
                                          line_width=self.SELECTION_SIZE, line_style=LineStyle.dot)
     
-    def __get_selection_points_positions(self, ruler, visual):
-        resizable_x, resizable_y = visual.is_resizable(ruler)
+    def __get_selection_points_positions(self, visual):
+        resizable_x, resizable_y = visual.is_resizable(self.__application.ruler)
         
         if resizable_x and resizable_y:
             yield SelectionPointPosition.first, SelectionPointPosition.first
@@ -174,8 +174,8 @@ class Selection:
         elif pos == SelectionPointPosition.last:
             return start + size - self.SELECTION_POINT_SIZE, start + size
     
-    def get_action_at(self, ruler, position, shift_pressed):
-        visual = self.__diagram.get_visual_at(ruler, position)
+    def get_action_at(self, position, shift_pressed):
+        visual = self.__diagram.get_visual_at(self.__application.ruler, position)
         
         if visual not in self.__selected:
             return None
@@ -187,8 +187,8 @@ class Selection:
                 return MoveSelectionAction()
         
         if isinstance(visual, ElementVisual):
-            bounds = visual.get_bounds(ruler)
-            for pos_x, pos_y in self.__get_selection_points_positions(ruler, visual):
+            bounds = visual.get_bounds(self.__application.ruler)
+            for pos_x, pos_y in self.__get_selection_points_positions(visual):
                 if self.__get_selection_point(bounds, pos_x, pos_y).contains(position):
                     if shift_pressed:
                         return None
@@ -200,7 +200,7 @@ class Selection:
                 return MoveSelectionAction()
         elif isinstance(visual, ConnectionVisual):
             found = None
-            for idx, point in enumerate(visual.get_points(ruler)):
+            for idx, point in enumerate(visual.get_points(self.__application.ruler)):
                 if idx > 0: # don't return it for first point
                     if (position - point).length < ConnectionVisual.MAXIMAL_CLICKABLE_DISTANCE:
                         found = idx
@@ -211,7 +211,7 @@ class Selection:
                             return MoveConnectionPointAction(visual, found)
             
             for label in visual.get_labels():
-                if label.get_bounds(ruler).contains(position):
+                if label.get_bounds(self.__application.ruler).contains(position):
                     if shift_pressed:
                         return None
                     else:
@@ -219,7 +219,7 @@ class Selection:
             
             if shift_pressed:
                 last = None
-                for idx, point in enumerate(visual.get_points(ruler)):
+                for idx, point in enumerate(visual.get_points(self.__application.ruler)):
                     if last is not None:
                         distance = Line.from_point_point(last, point).get_distance_to(position)
                         if distance < ConnectionVisual.MAXIMAL_CLICKABLE_DISTANCE:
@@ -228,13 +228,13 @@ class Selection:
         
         return None
     
-    def is_selection_at(self, ruler, position):
-        visual = self.__diagram.get_visual_at(ruler, position)
+    def is_selection_at(self, position):
+        visual = self.__diagram.get_visual_at(position)
         
         return visual not in self.__selected
     
-    def get_bounds(self, ruler):
-        return Rectangle.combine_bounds(visual.get_bounds(ruler) for visual in self.__selected)
+    def get_bounds(self):
+        return Rectangle.combine_bounds(visual.get_bounds(self.__application.ruler) for visual in self.__selected)
     
     @property
     def is_diagram_selected(self):

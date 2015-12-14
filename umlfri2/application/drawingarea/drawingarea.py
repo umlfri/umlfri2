@@ -52,7 +52,7 @@ class DrawingArea:
             self.__current_action.mouse_down(self, self.__application, point)
             self.__postprocess_action(point, shift_pressed)
         else:
-            action = self.__selection.get_action_at(self.__application.ruler, point, shift_pressed)
+            action = self.__selection.get_action_at(point, shift_pressed)
             
             if action is not None:
                 self.__current_action = action
@@ -66,7 +66,7 @@ class DrawingArea:
                         self.__selection.toggle_select(object)
                 else:
                     self.__selection.select(object)
-                    action = self.__selection.get_action_at(self.__application.ruler, point, shift_pressed)
+                    action = self.__selection.get_action_at(point, shift_pressed)
                     
                     if action is None:
                         action = SelectManyAction()
@@ -106,7 +106,7 @@ class DrawingArea:
             self.__change_cursor(point, shift_pressed)
 
     def __change_cursor(self, point, shift_pressed):
-        action = self.__selection.get_action_at(self.__application.ruler, point, shift_pressed)
+        action = self.__selection.get_action_at(point, shift_pressed)
         if action is None:
             self.__cursor = DrawingAreaCursor.arrow
         else:

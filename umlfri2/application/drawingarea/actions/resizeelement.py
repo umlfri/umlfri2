@@ -30,7 +30,7 @@ class ResizeElementAction(Action):
             return DrawingAreaCursor.anti_diagonal_resize
     
     def mouse_down(self, drawing_area, application, point):
-        self.__box = drawing_area.selection.get_bounds(application.ruler)
+        self.__box = drawing_area.selection.get_bounds()
         self.__old_point = point
     
     def mouse_move(self, drawing_area, application, point):
@@ -41,7 +41,7 @@ class ResizeElementAction(Action):
         
         vector = point - self.__old_point
         
-        min_size = self.__element.get_minimal_size(application.ruler)
+        min_size = self.__element.get_minimal_size()
         
         if self.__horizontal == SelectionPointPosition.first:
             x1 += vector.x

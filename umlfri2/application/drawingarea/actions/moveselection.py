@@ -16,7 +16,7 @@ class MoveSelectionAction(Action):
         return self.__box
     
     def mouse_down(self, drawing_area, application, point):
-        self.__box = drawing_area.selection.get_bounds(application.ruler)
+        self.__box = drawing_area.selection.get_bounds()
         self.__old_point = point
     
     def mouse_move(self, drawing_area, application, point):
@@ -29,7 +29,7 @@ class MoveSelectionAction(Action):
         self.__old_point = point
     
     def mouse_up(self, drawing_area, application):
-        old_bounds = drawing_area.selection.get_bounds(application.ruler)
+        old_bounds = drawing_area.selection.get_bounds()
         command = MoveSelectionCommand(
             drawing_area.selection,
             self.__box.top_left - old_bounds.top_left

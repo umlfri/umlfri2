@@ -113,12 +113,12 @@ class CanvasWidget(QWidget):
         if event.reason() == QContextMenuEvent.Mouse:
             pos = event.pos()
             point = Point(pos.x(), pos.y())
-            if self.__drawing_area.selection.is_selection_at(Application().ruler, point):
-                self.__drawing_area.selection.select_at(Application().ruler, point)
+            if self.__drawing_area.selection.is_selection_at(point):
+                self.__drawing_area.selection.select_at(point)
             
             menu_pos = event.globalPos()
         else:
-            point = self.__drawing_area.selection.get_bounds(Application().ruler).center
+            point = self.__drawing_area.selection.get_bounds().center
             menu_pos = self.mapToGlobal(QPoint(point.x, point.y))
         
         self.unsetCursor()
