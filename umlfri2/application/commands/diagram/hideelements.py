@@ -40,16 +40,16 @@ class HideElementsCommand(Command):
             z_order = self.__diagram.get_z_order(visual)
             self.__hidden_visual_descriptions.append(HiddenVisualDescription(type, z_order, visual))
         
-        self.__hidden_visual_descriptions.sort() # sort by type (elements should be first) and z_order
+        self.__hidden_visual_descriptions.sort(reverse=True) # sort by type (elements should be last) and z_order (desc)
         
         self._redo(ruler)
     
     def _redo(self, ruler):
-        for type, z_order, visual in reversed(self.__hidden_visual_descriptions):
+        for type, z_order, visual in self.__hidden_visual_descriptions:
             self.__diagram.remove(visual)
     
     def _undo(self, ruler):
-        for type, z_order, visual in self.__hidden_visual_descriptions:
+        for type, z_order, visual in reversed(self.__hidden_visual_descriptions):
             self.__diagram.add(visual, z_order=z_order)
     
     def get_updates(self):

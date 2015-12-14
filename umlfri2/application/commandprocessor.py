@@ -22,16 +22,20 @@ class CommandProcessor:
     
     def undo(self, count=1):
         for i in range(count):
+            if not self.__undo_stack:
+                return
             command = self.__undo_stack.pop()
             command.undo(self.__application.ruler)
             self.__redo_stack.append(command)
-            for event in command.get_updates():
+            for event in reversed(tuple(command.get_updates())):
                 opposite = event.get_opposite()
                 if opposite is not None:
                     self.__application.event_dispatcher.dispatch(opposite)
             
     def redo(self, count=1):
         for i in range(count):
+            if not self.__redo_stack:
+                return
             command = self.__redo_stack.pop()
             command.redo(self.__application.ruler)
             self.__undo_stack.append(command)
