@@ -30,6 +30,7 @@ class UmlFriMainWindow(QMainWindow):
         
         self.__tabs.setMovable(True)
         self.__tabs.setFocusPolicy(Qt.NoFocus)
+        self.__tabs.setDocumentMode(True)
         self.__tabs.currentChanged.connect(self.__tab_changed)
         self.__tabs.tabCloseRequested.connect(self.__tab_close_requested)
         
@@ -54,6 +55,8 @@ class UmlFriMainWindow(QMainWindow):
         
         self.__menu_bar = MainWindowMenu(self)
         self.setMenuBar(self.__menu_bar)
+        
+        self.setUnifiedTitleAndToolBarOnMac(True)
         
         Application().event_dispatcher.subscribe(OpenTabEvent, self.__open_tab)
         Application().event_dispatcher.subscribe(ChangedCurrentTabEvent, self.__change_tab)

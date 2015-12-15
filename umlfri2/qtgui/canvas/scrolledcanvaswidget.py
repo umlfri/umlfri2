@@ -10,7 +10,6 @@ class ScrolledCanvasWidget(QScrollArea):
         
         self.setWidget(self.__canvas)
         self.setWidgetResizable(True)
-        self.setFrameShape(QFrame.NoFrame)
     
     @property
     def diagram(self):
