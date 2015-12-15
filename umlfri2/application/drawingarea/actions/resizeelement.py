@@ -41,7 +41,7 @@ class ResizeElementAction(Action):
         
         vector = point - self.__old_point
         
-        min_size = self.__element.get_minimal_size()
+        min_size = self.__element.get_minimal_size(self.application.ruler)
         
         if self.__horizontal == SelectionPointPosition.first:
             x1 += vector.x
