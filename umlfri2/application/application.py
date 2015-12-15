@@ -32,7 +32,7 @@ class MetaApplication(type):
 class Application(metaclass=MetaApplication):
     VERSION = Version("2.0")
     NAME = "UML .FRI"
-
+    
     def __init__(self):
         self.__event_dispatcher = EventDispatcher()
         self.__commands = CommandProcessor(self)
@@ -45,24 +45,35 @@ class Application(metaclass=MetaApplication):
         self.__default_language = self.__find_out_language().split('.', 1)[0]
         self.__language = None
         self.change_language(None)
-
+    
     def __find_out_language(self):
         for e in 'LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG':
             if e in os.environ:
                 return os.environ[e]
-
+        
         if os.name == 'nt':
-            langid = ctypes.windll.kernel32.GetUserDefaultUILanguage()
-            return locale.windows_locale[langid]
-
-        lang, enc = locale.getlocale()
+            try:
+                langid = ctypes.windll.kernel32.GetUserDefaultUILanguage()
+                return locale.windows_locale[langid]
+            except:
+                pass
+        
+        try:
+            lang, enc = locale.getlocale()
+        except:
+            lang = None
+        
         if lang is not None:
             return lang
-
-        lang, enc = locale.getdefaultlocale()
+        
+        try:
+            lang, enc = locale.getdefaultlocale()
+        except:
+            lang = None
+        
         if lang is not None:
             return lang
-
+        
         return 'POSIX'
     
     def use_ruler(self, ruler):
