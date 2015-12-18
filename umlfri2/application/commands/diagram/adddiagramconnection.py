@@ -16,7 +16,7 @@ class AddDiagramConnectionCommand(Command):
     
     @property
     def description(self):
-        return "Adding element '{0}' to diagram '{1}'".format(self.__connection_type.id, self.__diagram_name)
+        return "Adding connection '{0}' to diagram '{1}'".format(self.__connection_type.id, self.__diagram_name)
     
     def _do(self, ruler):
         self.__connection_object = self.__source_element.connect_with(self.__connection_type, self.__destination_element)

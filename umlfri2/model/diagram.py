@@ -94,6 +94,7 @@ class Diagram:
                 element1.add_connection(visual)
                 element2.add_connection(visual)
                 self.__connections.append(visual)
+                object.add_visual(visual)
                 return visual
         else:
             raise Exception
@@ -123,6 +124,8 @@ class Diagram:
             
             visual.source.add_connection(visual)
             visual.destination.add_connection(visual)
+            
+            visual.object.add_visual(visual)
         else:
             raise Exception
     
@@ -137,6 +140,7 @@ class Diagram:
                 if connection in self.__connections:
                     raise Exception
             self.__elements.remove(visual)
+            
             visual.object.remove_visual(visual)
         elif isinstance(visual, ConnectionVisual):
             if visual not in self.__connections:
@@ -144,6 +148,8 @@ class Diagram:
             self.__connections.remove(visual)
             visual.source.remove_connection(visual)
             visual.destination.remove_connection(visual)
+            
+            visual.object.remove_visual(visual)
         else:
             raise Exception
     

@@ -1,5 +1,4 @@
-from umlfri2.application.events.diagram import ElementHiddenEvent, ConnectionHiddenEvent
-from umlfri2.model.element import ElementVisual
+from umlfri2.application.events.diagram import ConnectionHiddenEvent
 from ..base import Command
 
 

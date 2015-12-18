@@ -2,6 +2,7 @@ from PySide.QtGui import QMenu, QAction, QKeySequence, QIcon
 
 from umlfri2.application import Application
 from umlfri2.application.commands.diagram import HideConnectionCommand, HideElementsCommand
+from umlfri2.application.commands.model import DeleteConnectionCommand
 from umlfri2.constants.keys import DELETE_FROM_PROJECT
 from umlfri2.model.connection import ConnectionVisual
 from umlfri2.qtgui.properties import PropertiesDialog
@@ -19,10 +20,12 @@ class CanvasContextMenu(QMenu):
         many_selected = drawing_area.selection.size > 1
         
         self.__add_menu_item(None, _("Hide"), QKeySequence.Delete, not diagram, self.__hide_selection)
-        self.__add_menu_item("edit-delete", _("Delete"), DELETE_FROM_PROJECT, not diagram)
+        self.__add_menu_item("edit-delete", _("Delete"), DELETE_FROM_PROJECT, not diagram, self.__delete_selection)
         self.addSeparator()
         default = self.__add_menu_item(None, _("Properties..."), None, not many_selected, self.__edit_properties)
-        self.setDefaultAction(default)
+        
+        if not diagram:
+            self.setDefaultAction(default)
 
     def __add_menu_item(self, icon, label, shortcut, enabled=True, action=None):
         ret = QAction(label, self)
@@ -42,6 +45,12 @@ class CanvasContextMenu(QMenu):
             command = HideConnectionCommand(self.__drawing_area.diagram, self.__selected[0])
         else:
             command = HideElementsCommand(self.__drawing_area.diagram, self.__selected)
+        
+        Application().commands.execute(command)
+    
+    def __delete_selection(self, checked=False):
+        if isinstance(self.__selected[0], ConnectionVisual):
+            command = DeleteConnectionCommand(self.__selected[0].object)
         
         Application().commands.execute(command)
     

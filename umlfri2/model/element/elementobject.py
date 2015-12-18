@@ -93,6 +93,24 @@ class ElementObject:
         second_element.__connections.append(connection)
         return connection
     
+    def add_connection(self, connection):
+        if not connection.is_connected_with(self):
+            raise Exception
+        
+        if connection in self.__connections:
+            raise Exception
+        
+        self.__connections.append(connection)
+    
+    def remove_connection(self, connection):
+        if not connection.is_connected_with(self):
+            raise Exception
+        
+        if connection not in self.__connections:
+            raise Exception
+        
+        self.__connections.remove(connection)
+    
     def reconnect(self, connection):
         if connection in self.__connections:
             raise Exception
