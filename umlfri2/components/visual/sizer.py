@@ -20,7 +20,8 @@ class SizerObject(VisualObject):
             self.__child_size = child.get_minimal_size()
     
     def assign_bounds(self, bounds):
-        pass
+        if self.__child is not None:
+            self.__child.assign_bounds(bounds)
     
     def get_minimal_size(self):
         w = self.__child_size.width
@@ -93,7 +94,8 @@ class SizerComponent(VisualComponent):
     def _create_object(self, context, ruler):
         child_object = None
         for local, child in self._get_children(context):
-            child_object = child._create_object(local, ruler),
+            child_object = child._create_object(local, ruler)
+            break
         
         return SizerObject(
             child_object,
