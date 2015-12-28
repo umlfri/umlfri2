@@ -88,6 +88,14 @@
                         <xs:extension base="visual_component">
                             <xs:attribute name="fill" type="xs:string"/>
                             <xs:attribute name="border" type="xs:string"/>
+                            <xs:attribute name="topleft" type="xs:string"/>
+                            <xs:attribute name="topright" type="xs:string"/>
+                            <xs:attribute name="bottomleft" type="xs:string"/>
+                            <xs:attribute name="bottomright" type="xs:string"/>
+                            <xs:attribute name="left" type="xs:string"/>
+                            <xs:attribute name="right" type="xs:string"/>
+                            <xs:attribute name="top" type="xs:string"/>
+                            <xs:attribute name="bottom" type="xs:string"/>
                         </xs:extension>
                     </xs:complexContent>
                 </xs:complexType>

@@ -46,7 +46,7 @@ class MetamodelLoader:
         
         elements = {}
         for file, element in elementXMLs:
-            loaded = ElementTypeLoader(self.__addon_storage, element).load()
+            loaded = ElementTypeLoader(self.__addon_storage, element, definitions).load()
             elements[loaded.id] = loaded
         
         diagrams = {}

@@ -20,6 +20,7 @@
                         <xs:attribute name="path" type="xs:string"/>
                         <xs:attribute name="start" type="point"/>
                         <xs:attribute name="end" type="point"/>
+                        <xs:attribute name="center" type="point"/>
                         <xs:attribute name="corner">
                             <xs:simpleType>
                                 <xs:restriction base="xs:string">
@@ -38,6 +39,7 @@
                         <xs:attribute name="path" type="xs:string"/>
                         <xs:attribute name="start" type="point"/>
                         <xs:attribute name="end" type="point"/>
+                        <xs:attribute name="center" type="point"/>
                         <xs:attribute name="side">
                             <xs:simpleType>
                                 <xs:restriction base="xs:string">

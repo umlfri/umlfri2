@@ -7,9 +7,10 @@ from umlfri2.metamodel import ElementType
 
 
 class ElementTypeLoader:
-    def __init__(self, storage, xmlroot):
+    def __init__(self, storage, xmlroot, definitions):
         self.__storage = storage
         self.__xmlroot = xmlroot
+        self.__defintions = definitions
         if not ADDON_SCHEMA.validate(xmlroot):
             raise Exception("Cannot load element type: {0}".format(ADDON_SCHEMA.error_log.last_error))
     
@@ -31,7 +32,7 @@ class ElementTypeLoader:
             elif child.tag == "{{{0}}}DisplayName".format(ADDON_NAMESPACE):
                 display_name = TextContainerComponent(ComponentLoader(child, 'text').load())
             elif child.tag == "{{{0}}}Appearance".format(ADDON_NAMESPACE):
-                appearance = ComponentLoader(child, 'visual').load()[0]
+                appearance = ComponentLoader(child, 'visual', self.__defintions).load()[0]
             else:
                 raise Exception
         

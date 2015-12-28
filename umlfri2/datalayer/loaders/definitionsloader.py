@@ -1,5 +1,6 @@
 import math
 
+from umlfri2.components.visual.rectangle import CornerDefinition, SideDefinition
 from ..constants import ADDON_NAMESPACE, ADDON_SCHEMA
 from umlfri2.components.connectionline.arrow import ArrowDefinition
 from umlfri2.types.geometry import PathBuilder, Point
@@ -27,6 +28,26 @@ class DefinitionsLoader:
                     self.__parse_rotation(child.attrib["rotation"])
                 )
                 definitions["ArrowDefinition"][definition.id] = definition
+            elif child.tag == "{{{0}}}CornerDefinition".format(ADDON_NAMESPACE):
+                definition = CornerDefinition(
+                    child.attrib["id"],
+                    PathBuilder().from_string(child.attrib["path"]).build(),
+                    Point.parse(child.attrib["start"]),
+                    Point.parse(child.attrib["end"]),
+                    Point.parse(child.attrib["center"]),
+                    child.attrib["corner"]
+                )
+                definitions["CornerDefinition"][definition.id] = definition
+            elif child.tag == "{{{0}}}SideDefinition".format(ADDON_NAMESPACE):
+                definition = SideDefinition(
+                    child.attrib["id"],
+                    PathBuilder().from_string(child.attrib["path"]).build(),
+                    Point.parse(child.attrib["start"]),
+                    Point.parse(child.attrib["end"]),
+                    Point.parse(child.attrib["center"]),
+                    child.attrib["side"]
+                )
+                definitions["SideDefinition"][definition.id] = definition
         
         return definitions
 

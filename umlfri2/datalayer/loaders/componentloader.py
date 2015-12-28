@@ -52,8 +52,9 @@ class ComponentLoader:
                         type = component.ATTRIBUTES[attrname]
                         is_children_param = False
                     
-                    if isinstance(type, UflDefinedEnumType) and type.name in self.__definitions:
-                        type = UflDefinedEnumType(type.type, self.__definitions[type.name])
+                    if isinstance(type, UflDefinedEnumType):
+                        if type.name in self.__definitions:
+                            type = UflDefinedEnumType(type.type, self.__definitions[type.name])
                     
                     if attrvalue.startswith("##"):
                         value = ConstantExpression(type.parse(attrvalue[1:]), type)
