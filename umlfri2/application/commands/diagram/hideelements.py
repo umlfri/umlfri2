@@ -1,16 +1,10 @@
 from collections import namedtuple
 
 from umlfri2.application.events.diagram import ElementHiddenEvent, ConnectionHiddenEvent
-from umlfri2.model.element import ElementVisual
 from ..base import Command
 
 
-HiddenVisualDescription = namedtuple('HiddenVisualDescription', ('type', 'z_order', 'visual'))
-
-
-class VisualType:
-    element = 1
-    connection = 2
+HiddenVisualDescription = namedtuple('HiddenVisualDescription', ('z_order', 'visual'))
 
 
 class HideElementsCommand(Command):
@@ -18,43 +12,51 @@ class HideElementsCommand(Command):
         self.__diagram_name = diagram.get_display_name()
         self.__diagram = diagram
         self.__elements = elements
-        self.__hidden_visual_descriptions = []
+        self.__element_visual_descriptions = []
+        self.__connection_visual_descriptions = []
     
     @property
     def description(self):
         return "Hiding selected elements from diagram {0}".format(self.__diagram_name)
     
     def _do(self, ruler):
-        visuals = set()
+        elements = set()
+        connections = set()
         for element in self.__elements:
-            visuals.add(element)
+            elements.add(element)
             for connection in element.connections:
-                visuals.add(connection)
+                connections.add(connection)
         
-        for visual in visuals:
-            if isinstance(visual, ElementVisual):
-                type = VisualType.element
-            else:
-                type = VisualType.connection
-            
+        for visual in elements:
             z_order = self.__diagram.get_z_order(visual)
-            self.__hidden_visual_descriptions.append(HiddenVisualDescription(type, z_order, visual))
+            self.__element_visual_descriptions.append(HiddenVisualDescription(z_order, visual))
         
-        self.__hidden_visual_descriptions.sort(reverse=True) # sort by type (elements should be last) and z_order (desc)
+        for visual in connections:
+            z_order = self.__diagram.get_z_order(visual)
+            self.__connection_visual_descriptions.append(HiddenVisualDescription(z_order, visual))
+        
+        self.__element_visual_descriptions.sort(reverse=True) # sort by z_order (desc)
+        self.__connection_visual_descriptions.sort(reverse=True) # sort by z_order (desc)
         
         self._redo(ruler)
     
     def _redo(self, ruler):
-        for type, z_order, visual in self.__hidden_visual_descriptions:
+        for z_order, visual in self.__connection_visual_descriptions:
+            self.__diagram.remove(visual)
+        
+        for z_order, visual in self.__element_visual_descriptions:
             self.__diagram.remove(visual)
     
     def _undo(self, ruler):
-        for type, z_order, visual in reversed(self.__hidden_visual_descriptions):
+        for z_order, visual in reversed(self.__element_visual_descriptions):
+            self.__diagram.add(visual, z_order=z_order)
+        
+        for z_order, visual in reversed(self.__connection_visual_descriptions):
             self.__diagram.add(visual, z_order=z_order)
     
     def get_updates(self):
-        for type, z_order, visual in self.__hidden_visual_descriptions:
-            if type == VisualType.element:
-                yield ElementHiddenEvent(visual)
-            else:
-                yield ConnectionHiddenEvent(visual)
+        for z_order, visual in self.__element_visual_descriptions:
+            yield ElementHiddenEvent(visual)
+        
+        for z_order, visual in self.__connection_visual_descriptions:
+            yield ConnectionHiddenEvent(visual)
