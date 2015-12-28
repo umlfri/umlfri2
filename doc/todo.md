@@ -1,0 +1,22 @@
+- [ ] drag and drop in project tree
+- [ ] properties widget at bottom right
+- [ ] clipboard
+- [ ] zoom
+- [ ] "Show in project tree" content menu item
+- [ ] reversing a connection
+- [ ] z-order
+- [ ] alignment
+- [ ] application preferences window - move language there
+- [ ] persisting application preferences (appdirs module)
+- [ ] plugin system
+- [ ] diamond visual object
+- [ ] ellipse visual object
+- [ ] icon visual object
+- [ ] accessing project tree from ufl
+- [ ] rendering package content in "Package" element visual
+- [ ] canvas visual object
+- [ ] copy as image
+- [ ] export image
+- [ ] addon management
+- [ ] printing
+- [ ] fullscreen
