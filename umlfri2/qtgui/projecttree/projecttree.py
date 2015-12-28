@@ -47,12 +47,15 @@ class ProjectTree(QTreeWidget):
             self.__reload_element(item, element)
         item.setExpanded(True)
         self.addTopLevelItem(item)
+        item.refresh()
 
     def __reload_element(self, parent, element, index=None):
         item = ProjectTreeItem(None, element)
         
         for child_diagram in element.diagrams:
-            item.addChild(ProjectTreeItem(item, child_diagram))
+            child_item = ProjectTreeItem(item, child_diagram)
+            item.addChild(child_item)
+            child_item.refresh()
         
         for child_element in element.children:
             self.__reload_element(item, child_element)
@@ -64,6 +67,8 @@ class ProjectTree(QTreeWidget):
                 for diagram in element.parent.diagrams:
                     index += 1
             parent.insertChild(index, item)
+        
+        item.refresh()
     
     def __element_deleted(self, event):
         if event.indirect:
@@ -115,11 +120,11 @@ class ProjectTree(QTreeWidget):
     def __object_changed(self, event):
         if isinstance(event.object, (ElementObject, Diagram)):
             item = self.__get_item(event.object)
-            item.setText(0, event.object.get_display_name())
+            item.refresh()
     
     def __project_changed(self, event):
         item = self.__get_item(event.project)
-        item.setText(0, event.project.name)
+        item.refresh()
     
     def __item_double_clicked(self, item, column):
         if isinstance(item, ProjectTreeItem):
