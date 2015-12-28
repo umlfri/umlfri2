@@ -2,6 +2,7 @@
 <Translation lang="en" xmlns="http://umlfri.org/v2/addon.xsd">
     <Element id="class" label="Class"/>
     <Element id="package" label="Package"/>
+    <Element id="note" label="Note"/>
     
     <Diagram id="class_diagram" label="Class diagram"/>
     

@@ -2,6 +2,7 @@
 <Translation lang="sk" xmlns="http://umlfri.org/v2/addon.xsd">
     <Element id="class" label="Trieda"/>
     <Element id="package" label="Balíček"/>
+    <Element id="note" label="Poznámka"/>
     
     <Diagram id="class_diagram" label="Diagram tried"/>
     

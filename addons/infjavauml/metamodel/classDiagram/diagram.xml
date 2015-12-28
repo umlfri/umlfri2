@@ -18,6 +18,7 @@
     <Elements>
         <Element id="class"/>
         <Element id="package"/>
+        <Element id="note"/>
     </Elements>
 
     <Connections>

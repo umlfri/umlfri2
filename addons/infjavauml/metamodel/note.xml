@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ElementType id="note" xmlns="http://umlfri.org/v2/addon.xsd">
+    <Icon path="icons/note.png" />
+    
+    <Structure>
+        <Attribute id="stereotype" type="str"/>
+        <Attribute id="note" type="text"/>
+    </Structure>
+
+    <DisplayName />
+    
+    <Appearance>
+        <Shadow padding="5" color="#cfg.element.shadow">
+            <Rectangle fill="#cfg.element.fill" border="#cfg.element.line">
+                <Sizer minwidth="50">
+                    <Padding padding="5">
+                        <VBox>
+                            <If condition="#self.stereotype">
+                                <Sizer minheight="30">
+                                    <TextBox font="#cfg.element.textfont" color="#cfg.element.text">
+                                        <Text text="&#171;"/>
+                                        <Text text="#self.stereotype"/>
+                                        <Text text="&#187;"/>
+                                    </TextBox>
+                                </Sizer>
+                            </If>
+                            <TextBox text="#self.note" font="#cfg.element.textfont" color="#cfg.element.text"/>
+                        </VBox>
+                    </Padding>
+                </Sizer>
+            </Rectangle>
+        </Shadow>
+    </Appearance>
+</ElementType>
