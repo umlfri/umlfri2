@@ -33,6 +33,17 @@ class ProjectTreeElementMenu(QMenu):
         
         self.addSeparator()
         
+        diagrams = [visual.diagram for visual in element.visuals]
+        action = self.addAction(_("Show in diagram"))
+        if len(diagrams) == 0:
+            action.setEnabled(False)
+        sub_menu = QMenu()
+        action.setMenu(sub_menu)
+        for diagram in diagrams:
+            action = sub_menu.addAction(diagram.get_display_name())
+            action.setIcon(image_loader.load_icon(diagram.type.icon))
+            action.triggered.connect(partial(self.__show_in_diagram, diagram))
+        
         action = self.addAction(_("Delete"))
         action.setIcon(QIcon.fromTheme("edit-delete"))
         action.setShortcut(QKeySequence(DELETE_FROM_PROJECT))
@@ -50,6 +61,10 @@ class ProjectTreeElementMenu(QMenu):
         command = CreateDiagramCommand(self.__element, element_type)
         Application().commands.execute(command)
         Application().tabs.select_tab(command.diagram)
+    
+    def __show_in_diagram(self, diagram, checked=False):
+        tab = Application().tabs.select_tab(diagram)
+        tab.drawing_area.selection.select(diagram.get_visual_for(self.__element))
     
     def __delete_element_action(self, checked=False):
         command = DeleteElementsCommand([self.__element])

@@ -178,6 +178,12 @@ class Diagram:
             if selection is not None:
                 selection.draw_for(canvas, connection)
     
+    def get_visual_for(self, object):
+        for visual in chain(self.__elements, self.__connections):
+            if visual.object is object:
+                return visual
+        return None
+    
     def get_visual_at(self, ruler, position):
         for connection in reversed(self.__connections):
             if connection.is_at_position(ruler, position):

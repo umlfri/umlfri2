@@ -20,13 +20,14 @@ class TabList:
                 if self.__current_tab is not tab:
                     self.__current_tab = tab
                     self.__application.event_dispatcher.dispatch(ChangedCurrentTabEvent(tab))
-                break
+                return tab
         else:
             tab = Tab(self.__application, diagram)
             self.__tabs.append(tab)
             self.__current_tab = tab
             self.__application.event_dispatcher.dispatch(OpenTabEvent(tab))
             self.__application.event_dispatcher.dispatch(ChangedCurrentTabEvent(tab))
+            return tab
     
     def close_tab(self, diagram):
         for tab_id, tab in enumerate(self.__tabs):
