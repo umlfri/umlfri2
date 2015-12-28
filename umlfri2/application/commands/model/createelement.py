@@ -16,10 +16,10 @@ class CreateElementCommand(Command):
         self.__element_object = self.__parent.create_child_element(self.__element_type)
     
     def _redo(self, ruler):
-        self.__parent.add(self.__element_object)
+        self.__parent.add_child(self.__element_object)
     
     def _undo(self, ruler):
-        self.__parent.remove(self.__element_object)
+        self.__parent.remove_child(self.__element_object)
     
     @property
     def element_object(self):

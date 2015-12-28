@@ -156,19 +156,31 @@ class ElementObject:
         self.__diagrams.append(diagram)
         return diagram
     
-    def add(self, obj):
+    def get_child_index(self, obj):
+        if isinstance(obj, ElementObject):
+            return self.__children.index(obj)
+        else:
+            return self.__diagrams.index(obj)
+    
+    def add_child(self, obj, index=None):
         if obj.parent is not self:
             raise Exception
         if isinstance(obj, ElementObject):
             if obj in self.__children:
                 raise Exception
-            self.__children.append(obj)
+            if index is None:
+                self.__children.append(obj)
+            else:
+                self.__children.insert(index, obj)
         else:
             if obj in self.__diagrams:
                 raise Exception
-            self.__diagrams.append(obj)
+            if index is None:
+                self.__diagrams.append(obj)
+            else:
+                self.__diagrams.insert(index, obj)
     
-    def remove(self, obj):
+    def remove_child(self, obj):
         if obj.parent is not self:
             raise Exception
         if isinstance(obj, ElementObject):
@@ -176,9 +188,16 @@ class ElementObject:
                 raise Exception
             self.__children.remove(obj)
         else:
+            self.__check_unconnected()
             if obj not in self.__diagrams:
                 raise Exception
             self.__diagrams.remove(obj)
+    
+    def __check_unconnected(self):
+        if self.__connections:
+            raise Exception
+        for child in self.__children:
+            child.__check_unconnected()
     
     def apply_ufl_patch(self, patch):
         self.__data.apply_patch(patch)

@@ -7,15 +7,15 @@ class DeleteConnectionCommand(Command):
     def __init__(self, connection):
         self.__connection = connection
         self.__hide_commands = []
-        
-        for visual in connection.visuals:
-            self.__hide_commands.append(HideConnectionCommand(visual.diagram, visual))
     
     @property
     def description(self):
         return "Connection deleted from the project"
     
     def _do(self, ruler):
+        for visual in self.__connection.visuals:
+            self.__hide_commands.append(HideConnectionCommand(visual.diagram, visual))
+        
         self.__connection.source.remove_connection(self.__connection)
         self.__connection.destination.remove_connection(self.__connection)
         

@@ -1,13 +1,14 @@
 from functools import partial
 
 from PySide.QtCore import Qt, QMimeData
-from PySide.QtGui import QTreeWidget, QTreeWidgetItem, QMenu
+from PySide.QtGui import QTreeWidget, QTreeWidgetItem, QMenu, QIcon, QKeySequence
 from umlfri2.application import Application
-from umlfri2.application.commands.model import CreateElementCommand, CreateDiagramCommand
+from umlfri2.application.commands.model import CreateElementCommand, CreateDiagramCommand, DeleteElementsCommand
 from umlfri2.application.events.application import LanguageChangedEvent
 from umlfri2.application.events.model import ElementCreatedEvent, ObjectChangedEvent, DiagramCreatedEvent, \
     ProjectChangedEvent, ElementDeletedEvent, DiagramDeletedEvent
 from umlfri2.application.events.solution import OpenProjectEvent, OpenSolutionEvent
+from umlfri2.constants.keys import DELETE_FROM_PROJECT
 from umlfri2.model import Diagram, ElementObject, Project
 from umlfri2.qtgui.properties import PropertiesDialog, ProjectPropertiesDialog
 from ..base import image_loader
@@ -81,8 +82,8 @@ class ProjectTree(QTreeWidget):
         item.setExpanded(True)
         self.addTopLevelItem(item)
 
-    def __reload_element(self, parent, element):
-        item = ProjectTreeItem(parent, element)
+    def __reload_element(self, parent, element, index=None):
+        item = ProjectTreeItem(None, element)
         
         for child_diagram in element.diagrams:
             item.addChild(ProjectTreeItem(item, child_diagram))
@@ -90,7 +91,12 @@ class ProjectTree(QTreeWidget):
         for child_element in element.children:
             self.__reload_element(item, child_element)
         
-        parent.addChild(item)
+        if index is None:
+            parent.addChild(item)
+        else:
+            for diagram in element.parent.diagrams:
+                index += 1
+            parent.insertChild(index, item)
     
     def __element_deleted(self, event):
         item = self.__get_item(event.element)
@@ -105,7 +111,7 @@ class ProjectTree(QTreeWidget):
     def __element_created(self, event):
         parent_item = self.__get_item(event.element.parent)
         
-        self.__reload_element(parent_item, event.element)
+        self.__reload_element(parent_item, event.element, event.index)
         
         parent_item.setExpanded(True)
     
@@ -174,6 +180,13 @@ class ProjectTree(QTreeWidget):
             action.triggered.connect(partial(self.__create_element_action, element_type, element))
         
         menu.addSeparator()
+        
+        action = menu.addAction(_("Delete"))
+        action.setIcon(QIcon.fromTheme("edit-delete"))
+        action.setShortcut(QKeySequence(DELETE_FROM_PROJECT))
+        action.triggered.connect(partial(self.__delete_element_action, element))
+        menu.addSeparator()
+        
         menu.addAction(_("Properties...")).triggered.connect(partial(self.__open_properties_action, element))
         
         return menu
@@ -218,6 +231,10 @@ class ProjectTree(QTreeWidget):
     
     def __create_element_action(self, element_type, parent, checked=False):
         command = CreateElementCommand(parent, element_type)
+        Application().commands.execute(command)
+    
+    def __delete_element_action(self, element, checked=False):
+        command = DeleteElementsCommand([element])
         Application().commands.execute(command)
     
     def __create_diagram_action(self, element_type, parent, checked=False):

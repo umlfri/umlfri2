@@ -23,11 +23,11 @@ class AddDiagramElementCommand(Command):
         self.__element_visual.move(ruler, self.__point)
     
     def _redo(self, ruler):
-        self.__parent.add(self.__element_object)
+        self.__parent.add_child(self.__element_object)
         self.__diagram.add(self.__element_visual)
     
     def _undo(self, ruler):
-        self.__parent.remove(self.__element_object)
+        self.__parent.remove_child(self.__element_object)
         self.__diagram.remove(self.__element_visual)
     
     @property

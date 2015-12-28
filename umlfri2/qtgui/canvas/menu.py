@@ -2,7 +2,7 @@ from PySide.QtGui import QMenu, QAction, QKeySequence, QIcon
 
 from umlfri2.application import Application
 from umlfri2.application.commands.diagram import HideConnectionCommand, HideElementsCommand
-from umlfri2.application.commands.model import DeleteConnectionCommand
+from umlfri2.application.commands.model import DeleteConnectionCommand, DeleteElementsCommand
 from umlfri2.constants.keys import DELETE_FROM_PROJECT
 from umlfri2.model.connection import ConnectionVisual
 from umlfri2.qtgui.properties import PropertiesDialog
@@ -51,6 +51,8 @@ class CanvasContextMenu(QMenu):
     def __delete_selection(self, checked=False):
         if isinstance(self.__selected[0], ConnectionVisual):
             command = DeleteConnectionCommand(self.__selected[0].object)
+        else:
+            command = DeleteElementsCommand(tuple(element.object for element in self.__selected))
         
         Application().commands.execute(command)
     
