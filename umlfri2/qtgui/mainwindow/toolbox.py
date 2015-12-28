@@ -21,8 +21,8 @@ class ToolBox(QWidget):
         self.setLayout(self.__vbox)
         
         self.__widgets = []
-        self.__current_diagram_type = None
-        self.set_diagram_type(None)
+        self.__current_tab = None
+        self.__fill(None)
         
         Application().event_dispatcher.subscribe(ChangedCurrentTabEvent, self.__current_tab_changed)
         Application().event_dispatcher.subscribe(LanguageChangedEvent, lambda event: self.__reload_texts())
@@ -30,22 +30,21 @@ class ToolBox(QWidget):
         self.__reload_texts()
     
     def __current_tab_changed(self, event):
-        if event.tab is None:
-            self.set_diagram_type(None)
-        else:
-            self.set_diagram_type(event.tab.diagram_type, event.tab)
+        self.__fill(event.tab)
     
-    def set_diagram_type(self, diagram_type, tab=None):
+    def __fill(self, tab):
         for widget in self.__widgets:
             self.__vbox.removeWidget(widget)
             widget.deleteLater()
         
-        self.__current_diagram_type = diagram_type
+        self.__current_tab = tab
         self.__widgets = []
         
         self.__add_button(self.__arrow, _('Select'), None, tab)
-        if diagram_type is not None:
+        if tab is not None:
             self.__add_separator()
+            
+            diagram_type = tab.diagram_type
             
             translation = diagram_type.metamodel.addon.get_translation(Application().language)
             
@@ -100,4 +99,4 @@ class ToolBox(QWidget):
         tab.drawing_area.set_action(action)
     
     def __reload_texts(self):
-        self.set_diagram_type(self.__current_diagram_type)
+        self.__fill(self.__current_tab)
