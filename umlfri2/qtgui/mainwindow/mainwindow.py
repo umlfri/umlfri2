@@ -12,7 +12,7 @@ from umlfri2.constants.paths import GRAPHICS
 from umlfri2.model import Diagram
 from .menu import MainWindowMenu
 from .newproject import NewProjectDialog
-from .projecttree import ProjectTree
+from ..projecttree import ProjectTree
 from .propertieswidget import PropertiesWidget
 from .toolbar import MainToolBar
 from .toolbox import ToolBox

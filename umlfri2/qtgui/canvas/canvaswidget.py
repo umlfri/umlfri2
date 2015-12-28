@@ -1,16 +1,17 @@
 from PySide.QtCore import Qt, QSize, QPoint
-from PySide.QtGui import QWidget, QPainter, QApplication, QMenu, QContextMenuEvent
+from PySide.QtGui import QWidget, QPainter, QApplication, QContextMenuEvent
+
 from umlfri2.application import Application
 from umlfri2.application.commands.diagram import ShowElementCommand
 from umlfri2.application.drawingarea import DrawingAreaCursor
 from umlfri2.application.events.diagram import DiagramChangedEvent, SelectionChangedEvent
 from umlfri2.application.events.model import ObjectChangedEvent
 from umlfri2.model import ElementObject
-from .menu import CanvasContextMenu
-from ..mainwindow.projecttree import ProjectMimeData
-from ..properties import PropertiesDialog
-from .qtpaintercanvas import QTPainterCanvas
 from umlfri2.types.geometry import Point
+from .menu import CanvasContextMenu
+from ..projecttree import ProjectMimeData
+from .qtpaintercanvas import QTPainterCanvas
+from ..properties import PropertiesDialog
 
 
 class CanvasWidget(QWidget):

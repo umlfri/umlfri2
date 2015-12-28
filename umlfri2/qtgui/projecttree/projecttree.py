@@ -1,46 +1,15 @@
-from functools import partial
-
-from PySide.QtCore import Qt, QMimeData
-from PySide.QtGui import QTreeWidget, QTreeWidgetItem, QMenu, QIcon, QKeySequence
+from PySide.QtCore import Qt
+from PySide.QtGui import QTreeWidget
 from umlfri2.application import Application
-from umlfri2.application.commands.model import CreateElementCommand, CreateDiagramCommand, DeleteElementsCommand
-from umlfri2.application.events.application import LanguageChangedEvent
 from umlfri2.application.events.model import ElementCreatedEvent, ObjectChangedEvent, DiagramCreatedEvent, \
     ProjectChangedEvent, ElementDeletedEvent, DiagramDeletedEvent
 from umlfri2.application.events.solution import OpenProjectEvent, OpenSolutionEvent
-from umlfri2.constants.keys import DELETE_FROM_PROJECT
 from umlfri2.model import Diagram, ElementObject, Project
-from umlfri2.qtgui.properties import PropertiesDialog, ProjectPropertiesDialog
-from ..base import image_loader
-
-
-class ProjectMimeData(QMimeData):
-    def __init__(self, model_object):
-        super().__init__()
-        self.__model_object = model_object
-    
-    @property
-    def model_object(self):
-        return self.__model_object
-
-
-class ProjectTreeItem(QTreeWidgetItem):
-    def __init__(self, parent, model_object): 
-        super().__init__(parent)
-        self.__model_object = model_object
-        
-        if isinstance(model_object, Project):
-            self.setText(0, model_object.name)
-            self.setIcon(0, image_loader.load_icon(model_object.metamodel.addon.icon))
-            self.setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable)
-        else:
-            self.setText(0, model_object.get_display_name())
-            self.setIcon(0, image_loader.load_icon(model_object.type.icon))
-            self.setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsDragEnabled)
-    
-    @property
-    def model_object(self):
-        return self.__model_object
+from .mimedata import ProjectMimeData
+from .treeitem import ProjectTreeItem
+from .diagrammenu import ProjectTreeDiagramMenu
+from .projectmenu import ProjectTreeProjectMenu
+from .elementmenu import ProjectTreeElementMenu
 
 
 class ProjectTree(QTreeWidget):
@@ -62,9 +31,6 @@ class ProjectTree(QTreeWidget):
         Application().event_dispatcher.subscribe(ProjectChangedEvent, self.__project_changed)
         Application().event_dispatcher.subscribe(OpenProjectEvent, self.__project_open)
         Application().event_dispatcher.subscribe(OpenSolutionEvent, self.__solution_open)
-        Application().event_dispatcher.subscribe(LanguageChangedEvent, lambda event: self.__reload_texts())
-        
-        self.__reload_texts()
     
     def reload(self):
         self.clear()
@@ -150,97 +116,16 @@ class ProjectTree(QTreeWidget):
         if item is not None:
             if isinstance(item, ProjectTreeItem):
                 if isinstance(item.model_object, ElementObject):
-                    menu = self.__create_element_menu(item.model_object)
+                    menu = ProjectTreeElementMenu(self.__main_window, item.model_object)
                 elif isinstance(item.model_object, Project):
-                    menu = self.__create_project_menu(item.model_object)
+                    menu = ProjectTreeProjectMenu(self.__main_window, item.model_object)
                 elif isinstance(item.model_object, Diagram):
-                    menu = self.__create_diagram_menu(item.model_object)
+                    menu = ProjectTreeDiagramMenu(self.__main_window, item.model_object)
                 else:
                     menu = None
                 
                 if menu is not None:
                     menu.exec_(self.viewport().mapToGlobal(position))
-    
-    def __create_element_menu(self, element):
-        metamodel = element.project.metamodel
-        translation = metamodel.addon.get_translation(Application().language)
-        
-        menu = QMenu()
-        
-        sub_menu = menu.addMenu(_("Add diagram"))
-        for diagram_type in metamodel.diagram_types:
-            action = sub_menu.addAction(translation.translate(diagram_type))
-            action.setIcon(image_loader.load_icon(diagram_type.icon))
-            action.triggered.connect(partial(self.__create_diagram_action, diagram_type, element))
-        
-        sub_menu = menu.addMenu(_("Add element"))
-        for element_type in metamodel.element_types:
-            action = sub_menu.addAction(translation.translate(element_type))
-            action.setIcon(image_loader.load_icon(element_type.icon))
-            action.triggered.connect(partial(self.__create_element_action, element_type, element))
-        
-        menu.addSeparator()
-        
-        action = menu.addAction(_("Delete"))
-        action.setIcon(QIcon.fromTheme("edit-delete"))
-        action.setShortcut(QKeySequence(DELETE_FROM_PROJECT))
-        action.triggered.connect(partial(self.__delete_element_action, element))
-        menu.addSeparator()
-        
-        menu.addAction(_("Properties...")).triggered.connect(partial(self.__open_properties_action, element))
-        
-        return menu
-    
-    def __create_project_menu(self, project):
-        metamodel = project.metamodel
-        translation = metamodel.addon.get_translation(Application().language)
-        
-        menu = QMenu()
-        
-        sub_menu = menu.addMenu(_("Add element"))
-        for element_type in metamodel.element_types:
-            action = sub_menu.addAction(translation.translate(element_type))
-            action.setIcon(image_loader.load_icon(element_type.icon))
-            action.triggered.connect(partial(self.__create_element_action, element_type, project))
-        
-        menu.addSeparator()
-        menu.addAction(_("Properties...")).triggered.connect(partial(self.__open_project_properties_action, project))
-        
-        return menu
-    
-    def __create_diagram_menu(self, diagram):
-        menu = QMenu()
-        
-        show = menu.addAction(_("Show diagram in tab"))
-        show.triggered.connect(partial(self.__show_diagram_action, diagram))
-        menu.setDefaultAction(show)
-        
-        menu.addSeparator()
-        menu.addAction(_("Properties...")).triggered.connect(partial(self.__open_properties_action, diagram))
-        
-        return menu
-    
-    def __show_diagram_action(self, diagram, checked=False):
-        Application().tabs.select_tab(diagram)
-    
-    def __open_properties_action(self, object, checked=False):
-        PropertiesDialog.open_for(self.__main_window, object)
-    
-    def __open_project_properties_action(self, project, checked=False):
-        ProjectPropertiesDialog.open_for(self.__main_window, project)
-    
-    def __create_element_action(self, element_type, parent, checked=False):
-        command = CreateElementCommand(parent, element_type)
-        Application().commands.execute(command)
-    
-    def __delete_element_action(self, element, checked=False):
-        command = DeleteElementsCommand([element])
-        Application().commands.execute(command)
-    
-    def __create_diagram_action(self, element_type, parent, checked=False):
-        command = CreateDiagramCommand(parent, element_type)
-        Application().commands.execute(command)
-        Application().tabs.select_tab(command.diagram)
     
     def __solution_open(self, event):
         self.reload()
@@ -277,6 +162,3 @@ class ProjectTree(QTreeWidget):
             return ret
         else:
             return None
-    
-    def __reload_texts(self):
-        pass
