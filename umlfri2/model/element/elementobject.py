@@ -188,16 +188,9 @@ class ElementObject:
                 raise Exception
             self.__children.remove(obj)
         else:
-            self.__check_unconnected()
             if obj not in self.__diagrams:
                 raise Exception
             self.__diagrams.remove(obj)
-    
-    def __check_unconnected(self):
-        if self.__connections:
-            raise Exception
-        for child in self.__children:
-            child.__check_unconnected()
     
     def apply_ufl_patch(self, patch):
         self.__data.apply_patch(patch)

@@ -1,3 +1,4 @@
+from .events.model import DiagramDeletedEvent
 from .events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent
 from .tab import Tab
 
@@ -7,6 +8,11 @@ class TabList:
         self.__tabs = []
         self.__application = application
         self.__current_tab = None
+        
+        application.event_dispatcher.subscribe(DiagramDeletedEvent, self.__diagram_deleted)
+    
+    def __diagram_deleted(self, event):
+        self.close_tab(event.diagram)
     
     def select_tab(self, diagram):
         for tab in self.__tabs:

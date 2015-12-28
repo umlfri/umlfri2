@@ -60,21 +60,31 @@ class ProjectTree(QTreeWidget):
         if index is None:
             parent.addChild(item)
         else:
-            for diagram in element.parent.diagrams:
-                index += 1
+            if isinstance(element.parent, ElementObject):
+                for diagram in element.parent.diagrams:
+                    index += 1
             parent.insertChild(index, item)
     
     def __element_deleted(self, event):
+        if event.indirect:
+            return
+        
         item = self.__get_item(event.element)
         parent = item.parent()
         parent.removeChild(item)
     
     def __diagram_deleted(self, event):
+        if event.indirect:
+            return
+        
         item = self.__get_item(event.diagram)
         parent = item.parent()
         parent.removeChild(item)
     
     def __element_created(self, event):
+        if event.indirect:
+            return
+        
         parent_item = self.__get_item(event.element.parent)
         
         self.__reload_element(parent_item, event.element, event.index)
@@ -82,17 +92,23 @@ class ProjectTree(QTreeWidget):
         parent_item.setExpanded(True)
     
     def __diagram_created(self, event):
+        if event.indirect:
+            return
+        
         parent_item = self.__get_item(event.diagram.parent)
         
-        for item_id in range(parent_item.childCount()):
-            item = parent_item.child(item_id)
-            
-            if isinstance(item, ProjectTreeItem):
-                if isinstance(item.model_object, ElementObject):
-                    parent_item.insertChild(item_id, ProjectTreeItem(None, event.diagram))
-                    break
+        if event.index is not None:
+            parent_item.insertChild(event.index, ProjectTreeItem(None, event.diagram))
         else:
-            parent_item.addChild(ProjectTreeItem(parent_item, event.diagram))
+            for item_id in range(parent_item.childCount()):
+                item = parent_item.child(item_id)
+                
+                if isinstance(item, ProjectTreeItem):
+                    if isinstance(item.model_object, ElementObject):
+                        parent_item.insertChild(item_id, ProjectTreeItem(None, event.diagram))
+                        break
+            else:
+                parent_item.addChild(ProjectTreeItem(parent_item, event.diagram))
         
         parent_item.setExpanded(True)
     

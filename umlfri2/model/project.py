@@ -48,14 +48,21 @@ class Project:
         self.__children.append(obj)
         return obj
     
-    def add(self, obj):
+    def get_child_index(self, obj):
+        return self.__children.index(obj)
+    
+    def add_child(self, obj, index=None):
         if obj.parent is not self:
             raise Exception
         if obj in self.__children:
             raise Exception
-        self.__children.append(obj)
+        
+        if index is None:
+            self.__children.append(obj)
+        else:
+            self.__children.insert(index, obj)
     
-    def remove(self, obj):
+    def remove_child(self, obj):
         if obj.parent is not self:
             raise Exception
         if obj not in self.__children:

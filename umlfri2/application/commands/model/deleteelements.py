@@ -1,11 +1,12 @@
 from collections import namedtuple
 
-from umlfri2.application.events.model import ConnectionDeletedEvent, ElementDeletedEvent
+from umlfri2.application.events.model import ConnectionDeletedEvent, ElementDeletedEvent, DiagramDeletedEvent
 from ..diagram import HideElementsCommand, HideConnectionCommand
 from ..base import Command
 
 
 DeletedElementDescription = namedtuple('DeletedElementDescription', ('index', 'element'))
+DeletedDiagramDescription = namedtuple('DeletedDiagramDescription', ('index', 'diagram'))
 
 
 class DeleteElementsCommand(Command):
@@ -13,6 +14,7 @@ class DeleteElementsCommand(Command):
         self.__all_elements = elements
         self.__elements = []
         self.__connections = set()
+        self.__diagrams = []
         self.__hide_commands = []
     
     @property
@@ -25,6 +27,8 @@ class DeleteElementsCommand(Command):
                 index = element.parent.get_child_index(element)
                 self.__elements.append(DeletedElementDescription(index, element))
                 self.__connections.update(element.connections)
+                for index, diagram in enumerate(element.diagrams):
+                    self.__diagrams.append(DeletedDiagramDescription(index, diagram))
                 self.__add_hide_recursion(element)
         
         for index, element in self.__elements:
@@ -80,7 +84,10 @@ class DeleteElementsCommand(Command):
             yield ElementDeletedEvent(element, index)
         
         for connection in self.__connections:
-            yield ConnectionDeletedEvent(connection)
+            yield ConnectionDeletedEvent(connection, indirect=True)
+        
+        for index, diagram in self.__diagrams:
+            yield DiagramDeletedEvent(diagram, index, indirect=True)
         
         for hide_command in self.__hide_commands:
             yield from hide_command.get_updates()
