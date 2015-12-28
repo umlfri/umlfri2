@@ -29,11 +29,14 @@ class DefinitionsLoader:
                 )
                 definitions["ArrowDefinition"][definition.id] = definition
             elif child.tag == "{{{0}}}CornerDefinition".format(ADDON_NAMESPACE):
+                ornament = None
+                if "ornament" in child.attrib:
+                    ornament = PathBuilder().from_string(child.attrib["ornament"]).build()
+                
                 definition = CornerDefinition(
                     child.attrib["id"],
                     PathBuilder().from_string(child.attrib["path"]).build(),
-                    Point.parse(child.attrib["start"]),
-                    Point.parse(child.attrib["end"]),
+                    ornament,
                     Point.parse(child.attrib["center"]),
                     child.attrib["corner"]
                 )
@@ -42,8 +45,6 @@ class DefinitionsLoader:
                 definition = SideDefinition(
                     child.attrib["id"],
                     PathBuilder().from_string(child.attrib["path"]).build(),
-                    Point.parse(child.attrib["start"]),
-                    Point.parse(child.attrib["end"]),
                     Point.parse(child.attrib["center"]),
                     child.attrib["side"]
                 )

@@ -70,6 +70,13 @@ class PathSegment:
         return self.__starting_point
     
     @property
+    def final_point(self):
+        if self.__commands:
+            return self.__commands[-1].final_point
+        else:
+            return None
+    
+    @property
     def commands(self):
         return self.__commands
     
@@ -122,9 +129,7 @@ class PathBuilder:
         self.__last = Point(0, 0)
     
     def build(self):
-        if self.__origin and self.__commands:
-            self.__segments.append(PathSegment(self.__origin, self.__commands))
-            self.__commands = []
+        self.__finish_segment()
         
         return Path(self.__segments)
 
@@ -138,22 +143,31 @@ class PathBuilder:
             self.__last = ret
             yield ret
     
-    def move_to(self, point):
+    def __finish_segment(self, closed=False):
         if self.__origin and self.__commands:
-            self.__segments.append(PathSegment(self.__origin, self.__commands))
+            self.__segments.append(PathSegment(self.__origin, self.__commands, closed))
             self.__commands = []
+    
+    def move_to(self, point):
+        self.__finish_segment()
         
         point, = self.__recalculate(point)
         
         self.__origin = point
         
         return self
-            
+
     def line_to(self, point):
         point, = self.__recalculate(point)
         self.__commands.append(PathLineTo(point))
         
         return self
+    
+    def move_or_line_to(self, point):
+        if self.__origin is None:
+            self.move_to(point)
+        else:
+            self.line_to(point)
     
     def cubic_to(self, control1, control2, point):
         control1, control2, point = self.__recalculate(control1, control2, point)
@@ -163,11 +177,20 @@ class PathBuilder:
         return self
     
     def close(self):
-        if self.__origin and self.__commands:
-            self.__segments.append(PathSegment(self.__origin, self.__commands, True))
-            self.__commands = []
+        self.__finish_segment(True)
         
         self.__last = self.__origin
+        
+        return self
+    
+    def from_path(self, path, join_moves=False):
+        if join_moves:
+            for segment in path.segments:
+                self.move_or_line_to(segment.starting_point)
+                self.__commands.extend(segment.commands)
+        else:
+            self.__finish_segment(False)
+            self.__segments.extend(path.segments)
         
         return self
     

@@ -1,25 +1,112 @@
+import math
+
 from umlfri2.components.expressions import NoneExpression, ConstantExpression
 from umlfri2.ufl.types import UflColorType, UflDefinedEnumType
 from .visualcomponent import VisualComponent, VisualObject
-from umlfri2.types.geometry import Rectangle, Point, Vector
+from umlfri2.types.geometry import Rectangle, Transformation, PathBuilder
 
 
 class CornerDefinition:
-    def __init__(self, id, path, start, end, center, corner):
+    def __init__(self, id, path, ornament, center, corner):
         self.__id = id
+        
+        if corner == 'top left':
+            rotation = 0
+        elif corner == 'top right':
+            rotation = math.pi / 2
+        elif corner == 'bottom right':
+            rotation = math.pi
+        else:
+            rotation = -math.pi / 2
+        
+        if len(path.segments) > 1:
+            raise Exception("Corner path can have only one segment (corner '{0}')".format(id))
+        
+        transformation = Transformation.make_translate(-center.as_vector()) * Transformation.make_rotation(-rotation)
+        
+        self.__path = path.transform(transformation)
+        if ornament is None:
+            self.__ornament = None
+        else:
+            self.__ornament = ornament.transform(transformation)
     
     @property
     def id(self):
         return self.__id
+    
+    @property
+    def path(self):
+        return self.__path
+    
+    @property
+    def ornament(self):
+        return self.__ornament
 
 
 class SideDefinition:
-    def __init__(self, id, path, start, end, center, side):
+    def __init__(self, id, path, center, side):
         self.__id = id
     
     @property
     def id(self):
         return self.__id
+
+
+class RoundedRectangleObject(VisualObject):
+    def __init__(self, child, fill, border, corners):
+        self.__child = child
+        self.__fill = fill
+        self.__border = border
+        self.__path = None
+        self.__ornaments_path = None
+        self.__corners = corners
+        
+        self.__child_size = child.get_minimal_size()
+    
+    def assign_bounds(self, bounds):
+        corners = [
+            (bounds.top_left, 0, self.__corners[0]),
+            (bounds.top_right, -math.pi / 2, self.__corners[1]),
+            (bounds.bottom_right, math.pi, self.__corners[2]),
+            (bounds.bottom_left, math.pi / 2, self.__corners[3])
+        ]
+        
+        path = PathBuilder()
+        ornaments = PathBuilder()
+        
+        for point, rotation, corner in corners:
+            if corner is None:
+                path.move_or_line_to(point)
+            else:
+                transformation = Transformation.make_translate(point) * Transformation.make_rotation(rotation)
+                path.from_path(corner.path.transform(transformation), True)
+                if corner.ornament is not None:
+                    ornaments.from_path(corner.ornament.transform(transformation))
+        
+        path.close()
+        
+        self.__path = path.build()
+        self.__ornaments_path = ornaments.build()
+        
+        self.__child.assign_bounds(bounds)
+    
+    def get_minimal_size(self):
+        return self.__child_size
+    
+    def draw(self, canvas, shadow):
+        if shadow:
+            canvas.draw_path(
+                self.__path.transform(Transformation.make_translate(shadow.shift)),
+                None,
+                shadow.color
+            )
+        else:
+            canvas.draw_path(self.__path, self.__border, self.__fill)
+            canvas.draw_path(self.__ornaments_path, self.__border, None)
+            self.__child.draw(canvas, None)
+    
+    def is_resizable(self):
+        return self.__child.is_resizable()
 
 
 class RectangleObject(VisualObject):
@@ -90,22 +177,33 @@ class RectangleComponent(VisualComponent):
         if bottom and (bottomleft or bottomright):
             raise Exception
         
-        self.__topleft = topleft
-        self.__topright = topright
-        self.__bottomleft = bottomleft
-        self.__bottomright = bottomright
-        self.__left = left
-        self.__right = right
-        self.__top = top
-        self.__bottom = bottom
+        if topleft or topright or bottomleft or bottomright:
+            self.__corners = (topleft or NoneExpression, topright or NoneExpression,
+                              bottomright or NoneExpression, bottomleft or NoneExpression)
+        else:
+            self.__corners = None
+        
+        if top or right or bottom or left:
+            self.__sides = (left or NoneExpression, top or NoneExpression,
+                            right or NoneExpression, bottom or NoneExpression)
+        else:
+            self.__sides = None
     
     def _create_object(self, context, ruler):
         for local, child in self._get_children(context):
-            return RectangleObject(
-                child._create_object(local, ruler),
-                self.__fill(context),
-                self.__border(context)
-            )
+            if self.__corners or self.__sides:
+                return RoundedRectangleObject(
+                    child._create_object(local, ruler),
+                    self.__fill(context),
+                    self.__border(context),
+                    [corner(context) for corner in self.__corners]
+                )
+            else:
+                return RectangleObject(
+                    child._create_object(local, ruler),
+                    self.__fill(context),
+                    self.__border(context)
+                )
     
     def compile(self, variables):
         self._compile_expressions(
