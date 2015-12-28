@@ -14,7 +14,7 @@ class ProjectTreeDiagramMenu(QMenu):
         
         self.__main_window = main_window
         
-        show = self.addAction(_("Show diagram in tab"))
+        show = self.addAction(_("Show diagram"))
         show.triggered.connect(partial(self.__show_diagram_action, diagram))
         self.setDefaultAction(show)
         
