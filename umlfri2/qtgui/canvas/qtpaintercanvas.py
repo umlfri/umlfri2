@@ -95,7 +95,13 @@ class QTPainterCanvas(Canvas):
         self.__set_pen(fg)
         x = pos.x
         y = pos.y + metrics.ascent()
-        self.__painter.drawText(QPoint(x, y), text)
+        if '\n' in text:
+            height = metrics.height()
+            for line in text.split('\n'):
+                self.__painter.drawText(QPoint(x, y), line)
+                y += height
+        else:
+            self.__painter.drawText(QPoint(x, y), text)
     
     def draw_icon(self, pos, filename):
         pass
