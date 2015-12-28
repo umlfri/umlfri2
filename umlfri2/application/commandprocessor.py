@@ -18,7 +18,6 @@ class CommandProcessor:
             del self.__undo_stack[:-MAX_STACK_SIZE]
             
             self.__application.event_dispatcher.dispatch_all(command.get_updates())
-            self.__application.event_dispatcher.dispatch_all(command.get_actions())
     
     def undo(self, count=1):
         for i in range(count):

@@ -84,7 +84,3 @@ class DeleteElementsCommand(Command):
         
         for hide_command in self.__hide_commands:
             yield from hide_command.get_updates()
-    
-    def get_actions(self):
-        for hide_command in self.__hide_commands:
-            yield from hide_command.get_actions()

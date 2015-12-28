@@ -61,6 +61,3 @@ class Command:
     
     def get_updates(self):
         return []
-    
-    def get_actions(self):
-        return []
