@@ -13,6 +13,7 @@ class ProjectTreeProjectMenu(QMenu):
         super().__init__()
         
         self.__main_window = main_window
+        self.__project = project
         
         metamodel = project.metamodel
         translation = metamodel.addon.get_translation(Application().language)
@@ -21,14 +22,15 @@ class ProjectTreeProjectMenu(QMenu):
         for element_type in metamodel.element_types:
             action = sub_menu.addAction(translation.translate(element_type))
             action.setIcon(image_loader.load_icon(element_type.icon))
-            action.triggered.connect(partial(self.__create_element_action, element_type, project))
+            action.triggered.connect(partial(self.__create_element_action, element_type))
         
         self.addSeparator()
-        self.addAction(_("Properties...")).triggered.connect(partial(self.__open_project_properties_action, project))
+        
+        self.addAction(_("Properties...")).triggered.connect(self.__open_project_properties_action)
     
-    def __create_element_action(self, element_type, parent, checked=False):
-        command = CreateElementCommand(parent, element_type)
+    def __create_element_action(self, element_type, checked=False):
+        command = CreateElementCommand(self.__project, element_type)
         Application().commands.execute(command)
     
-    def __open_project_properties_action(self, project, checked=False):
-        ProjectPropertiesDialog.open_for(self.__main_window, project)
+    def __open_project_properties_action(self, checked=False):
+        ProjectPropertiesDialog.open_for(self.__main_window, self.__project)

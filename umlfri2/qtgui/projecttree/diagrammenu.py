@@ -13,26 +13,26 @@ class ProjectTreeDiagramMenu(QMenu):
         super().__init__()
         
         self.__main_window = main_window
+        self.__diagram = diagram
         
         show = self.addAction(_("Show diagram"))
-        show.triggered.connect(partial(self.__show_diagram_action, diagram))
+        show.triggered.connect(self.__show_diagram_action)
         self.setDefaultAction(show)
         
-        self.addSeparator()
         action = self.addAction(_("Delete"))
         action.setIcon(QIcon.fromTheme("edit-delete"))
         action.setShortcut(QKeySequence(DELETE_FROM_PROJECT))
-        action.triggered.connect(partial(self.__delete_diagram_action, diagram))
+        action.triggered.connect(self.__delete_diagram_action)
         
         self.addSeparator()
-        self.addAction(_("Properties...")).triggered.connect(partial(self.__open_properties_action, diagram))
+        self.addAction(_("Properties...")).triggered.connect(self.__open_properties_action)
     
-    def __show_diagram_action(self, diagram, checked=False):
-        Application().tabs.select_tab(diagram)
+    def __show_diagram_action(self, checked=False):
+        Application().tabs.select_tab(self.__diagram)
     
-    def __delete_diagram_action(self, diagram, checked=False):
-        command = DeleteDiagramCommand(diagram)
+    def __delete_diagram_action(self, checked=False):
+        command = DeleteDiagramCommand(self.__diagram)
         Application().commands.execute(command)
     
-    def __open_properties_action(self, object, checked=False):
-        PropertiesDialog.open_for(self.__main_window, object)
+    def __open_properties_action(self, checked=False):
+        PropertiesDialog.open_for(self.__main_window, self.__diagram)
