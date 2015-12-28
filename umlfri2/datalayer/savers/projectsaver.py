@@ -50,7 +50,7 @@ class ProjectSaver:
         for child in element.children:
             xml.append(self.__element_to_xml(child))
         
-        for connection in element.connections:
+        for connection in sorted(element.connections, key=lambda connection: connection.save_id):
             if connection.source is element:
                 xml.append(self.__connection_to_xml(connection))
         
