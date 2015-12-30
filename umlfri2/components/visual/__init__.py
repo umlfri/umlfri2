@@ -1,4 +1,5 @@
 from .align import AlignComponent
+from .ellipse import EllipseComponent
 from .empty import EmptyComponent
 from .hbox import HBoxComponent
 from .line import LineComponent
@@ -13,6 +14,7 @@ from .vbox import VBoxComponent
 
 VISUAL_COMPONENTS = {
     'Align': AlignComponent,
+    'Ellipse': EllipseComponent,
     'Empty': EmptyComponent,
     'HBox': HBoxComponent,
     'Line': LineComponent,
