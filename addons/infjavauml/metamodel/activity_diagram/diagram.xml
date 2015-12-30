@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DiagramType id="activity_diagram" xmlns="http://umlfri.org/v2/addon.xsd">
+    <Icon path="icons/activity_diagram.png"/>
+
+    <Structure>
+        <Attribute id="name" type="str">
+            <Template>
+                <Text text="#parent"/>
+            </Template>
+        </Attribute>
+        <Attribute id="note" type="text"/>
+    </Structure>
+
+    <DisplayName>
+        <Text text="#self.name"/>
+    </DisplayName>
+
+    <Elements>
+        <Element id="activity"/>
+        <Element id="package"/>
+        <Element id="note"/>
+    </Elements>
+    
+    <Connections>
+        <Connection id="activity_control_flow"/>
+    </Connections>
+
+    <Appearance>
+        <Background color="#cfg.background"/>
+    </Appearance>
+</DiagramType>

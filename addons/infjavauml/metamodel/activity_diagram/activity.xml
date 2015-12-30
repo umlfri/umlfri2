@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ElementType id="activity" xmlns="http://umlfri.org/v2/addon.xsd">
+    <Icon path="icons/activity.png" />
+    
+    <Structure>
+        <Attribute id="name" type="str">
+            <Template>
+                <Text text="Activity"/>
+                <Text text="#no"/>
+            </Template>
+        </Attribute>
+        <Attribute id="stereotype" type="str"/>
+        <Attribute id="note" type="text"/>
+    </Structure>
+
+    <DisplayName>
+        <Text text="#self.name"/>
+    </DisplayName>
+    
+    <Appearance>
+        <Shadow padding="5" color="#cfg.element.shadow">
+            <Rectangle fill="#cfg.element.fill" border="#cfg.element.line" left="rounded" right="rounded">
+                <Padding padding="5">
+                    <Align vertical="center">
+                        <VBox>
+                            <If condition="#self.stereotype">
+                                <Align horizontal="center">
+                                    <TextBox font="#cfg.element.textfont" color="#cfg.element.text">
+                                        <Text text="&#171;"/>
+                                        <Text text="#self.stereotype"/>
+                                        <Text text="&#187;"/>
+                                    </TextBox>
+                                </Align>
+                            </If>
+                            <Align horizontal="center">
+                                <TextBox text="#self.name" font="#cfg.element.textfont" color="#cfg.element.text"/>
+                            </Align>
+                        </VBox>
+                    </Align>
+                </Padding>
+            </Rectangle>
+        </Shadow>
+    </Appearance>
+</ElementType>

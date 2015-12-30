@@ -16,6 +16,7 @@
             <Attribute id="name" value="Test diagram"/>
             <Element id="82878a5a-8f90-11e5-b00e-88ae1da9fec3" x="500" y="50" width="200" height="200"/>
         </Diagram>
+        <Diagram id="7bcb4c92-dddb-4535-94c3-8b0199f634f0" type="activity_diagram"/>
         <Element id="9f9751fc-8f90-11e5-b00e-88ae1da9fec3" type="class">
             <Attribute id="attributes">
                 <Item/>
