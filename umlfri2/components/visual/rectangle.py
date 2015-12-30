@@ -1,6 +1,7 @@
 import math
 
 from umlfri2.components.expressions import NoneExpression, ConstantExpression
+from umlfri2.types.threestate import Maybe
 from umlfri2.ufl.types import UflColorType, UflDefinedEnumType, UflNullableType
 from .visualcomponent import VisualComponent, VisualObject
 from umlfri2.types.geometry import Rectangle, Transformation, PathBuilder, Size
@@ -165,7 +166,14 @@ class RoundedRectangleObject(VisualObject):
         if self.__child is None:
             return False, False
         else:
-            return self.__child.is_resizable()
+            res_x, res_y = self.__child.is_resizable()
+            
+            if res_x is Maybe:
+                res_x = True
+            if res_y is Maybe:
+                res_y = True
+            
+            return res_x, res_y
 
 
 class RectangleObject(VisualObject):
@@ -183,7 +191,8 @@ class RectangleObject(VisualObject):
     def assign_bounds(self, bounds):
         self.__rectangle = bounds
         
-        self.__child.assign_bounds(bounds)
+        if self.__child is not None:
+            self.__child.assign_bounds(bounds)
     
     def get_minimal_size(self):
         return self.__child_size
@@ -200,10 +209,21 @@ class RectangleObject(VisualObject):
             )
         else:
             canvas.draw_rectangle(self.__rectangle, self.__border, self.__fill)
-            self.__child.draw(canvas, None)
+            if self.__child is not None:
+                self.__child.draw(canvas, None)
     
     def is_resizable(self):
-        return self.__child.is_resizable()
+        if self.__child is None:
+            return False, False
+        else:
+            res_x, res_y = self.__child.is_resizable()
+            
+            if res_x is Maybe:
+                res_x = True
+            if res_y is Maybe:
+                res_y = True
+            
+            return res_x, res_y
 
 
 class RectangleComponent(VisualComponent):

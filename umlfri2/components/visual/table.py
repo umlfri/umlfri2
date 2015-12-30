@@ -1,3 +1,4 @@
+from umlfri2.types.threestate import Maybe
 from ..base.helpercomponent import HelperComponent
 from umlfri2.types.geometry import Size, Rectangle
 from .visualcomponent import VisualComponent, VisualObject
@@ -43,7 +44,7 @@ class TableObject(VisualObject):
                 child.draw(canvas, shadow)
     
     def is_resizable(self):
-        return True, True
+        return Maybe, Maybe
 
 
 class TableRow(HelperComponent):

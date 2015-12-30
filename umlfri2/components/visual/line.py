@@ -1,4 +1,5 @@
 from umlfri2.types.enums import LineOrientation
+from umlfri2.types.threestate import Maybe
 from ..expressions import ConstantExpression
 from .hbox import HBoxComponent
 from umlfri2.types.color import Colors
@@ -40,7 +41,10 @@ class LineObject(VisualObject):
             canvas.draw_line(self.__point1, self.__point2, self.__color)
     
     def is_resizable(self):
-        return self.__orientation == LineOrientation.horizontal, self.__orientation == LineOrientation.vertical
+        if self.__orientation == LineOrientation.horizontal:
+            return Maybe, False
+        else:
+            return False, Maybe
 
 
 class LineComponent(VisualComponent):

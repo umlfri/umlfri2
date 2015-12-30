@@ -1,5 +1,6 @@
 from umlfri2.components.expressions import ConstantExpression
 from umlfri2.types.geometry import Rectangle, Size
+from umlfri2.types.threestate import Maybe
 from umlfri2.ufl.types import UflColorType
 from .visualcomponent import VisualObject, VisualComponent
 
@@ -44,7 +45,14 @@ class EllipseObject(VisualObject):
         if self.__child is None:
             return False, False
         else:
-            return self.__child.is_resizable()
+            res_x, res_y = self.__child.is_resizable()
+            
+            if res_x is Maybe:
+                res_x = True
+            if res_y is Maybe:
+                res_y = True
+            
+            return res_x, res_y
 
 
 class EllipseComponent(VisualComponent):

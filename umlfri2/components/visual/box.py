@@ -1,8 +1,10 @@
 from collections import namedtuple
-from umlfri2.types.geometry import Size, Rectangle
-from umlfri2.ufl.types import UflBoolType
-from .visualcomponent import VisualComponent, VisualObject
 
+from umlfri2.types.geometry import Size, Rectangle
+from umlfri2.types.threestate import Maybe
+from umlfri2.ufl.types import UflBoolType
+from .empty import EmptyObject
+from .visualcomponent import VisualComponent, VisualObject
 
 BoxChild = namedtuple('BoxChild', ["child", "expand"])
 
@@ -25,8 +27,11 @@ class BoxObject(VisualObject):
     def _get_size_component(self, size):
         raise NotImplementedError
     
-    def _get_default_resizable(self):
+    def _get_default_resizable(self, has_expandable):
         raise NotImplementedError
+
+    def _combine_resizable(self, ret_x, ret_y, child_x, child_y):
+        raise NotImplemented
     
     def assign_bounds(self, bounds):
         position = bounds.top_left
@@ -75,16 +80,20 @@ class BoxObject(VisualObject):
             child.child.draw(canvas, shadow)
     
     def is_resizable(self):
-        ret_x, ret_y = True, True
-        def_x, def_y = self._get_default_resizable()
+        has_expandable = False
+        for child in self.__children:
+            if child.expand:
+                has_expandable = True
+                break
+        
+        ret_x, ret_y = self._get_default_resizable(has_expandable)
         
         for child in self.__children:
             child_x, child_y = child.child.is_resizable()
             
-            ret_x = ret_x and child_x
-            ret_y = ret_y and child_y
+            ret_x, ret_y = self._combine_resizable(ret_x, ret_y, child_x, child_y)
         
-        return def_x or ret_x, def_y or ret_y
+        return ret_x, ret_y
 
 
 class BoxComponent(VisualComponent):
@@ -103,7 +112,10 @@ class BoxComponent(VisualComponent):
                 for local, child in self._get_children(context)
         ]
         
-        return self.__object_type(children)
+        if children:
+            return self.__object_type(children)
+        else:
+            return EmptyObject()
     
     def compile(self, variables):
         self._compile_children(variables)

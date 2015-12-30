@@ -1,4 +1,5 @@
 from umlfri2.types.enums import HorizontalAlignment, VerticalAlignment
+from umlfri2.types.threestate import Maybe
 from ..expressions import NoneExpression
 from umlfri2.types.geometry import Rectangle
 from umlfri2.ufl.types import UflTypedEnumType, UflNullableType
@@ -51,9 +52,9 @@ class AlignObject(VisualObject):
         resizable_x, resizable_y = self.__child.is_resizable()
         
         if self.__horizontal is not None:
-            resizable_x = True
+            resizable_x = Maybe
         if self.__vertical is not None:
-            resizable_y = True
+            resizable_y = Maybe
         
         return resizable_x, resizable_y
 

@@ -13,7 +13,7 @@ class EmptyObject(VisualObject):
         pass
     
     def is_resizable(self):
-        return True, True
+        return False, False
 
 
 class EmptyComponent(VisualComponent):

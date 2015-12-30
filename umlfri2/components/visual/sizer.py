@@ -1,3 +1,4 @@
+from umlfri2.types.threestate import Maybe
 from ..expressions import NoneExpression
 from umlfri2.types.geometry import Size
 from umlfri2.ufl.types import UflIntegerType, UflNullableType
@@ -51,8 +52,8 @@ class SizerObject(VisualObject):
     
     def is_resizable(self):
         if self.__child is None:
-            resizable_x = True
-            resizable_y = True
+            resizable_x = Maybe
+            resizable_y = Maybe
         else:
             resizable_x, resizable_y = self.__child.is_resizable()
         

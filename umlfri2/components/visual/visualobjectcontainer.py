@@ -1,4 +1,5 @@
 from umlfri2.types.geometry import Rectangle, Point
+from umlfri2.types.threestate import Maybe
 
 
 class VisualObjectContainer:
@@ -30,7 +31,14 @@ class VisualObjectContainer:
         return self.__object.get_minimal_size()
     
     def is_resizable(self):
-        return self.__object.is_resizable()
+        res_x, res_y = self.__object.is_resizable()
+        
+        if res_x is Maybe:
+            res_x = False
+        if res_y is Maybe:
+            res_y = False
+        
+        return res_x, res_y
     
     def draw(self, canvas):
         self.__object.draw(canvas, None)

@@ -1,6 +1,7 @@
 from .empty import EmptyObject
 from .visualcomponent import VisualComponent
 
+
 class SimpleComponent(VisualComponent):
     def _create_object(self, context, ruler):
         for local, child in self._get_children(context):
