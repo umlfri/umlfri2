@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Translation lang="sk" xmlns="http://umlfri.org/v2/addon.xsd">
     <Element id="activity" label="Aktivita"/>
+    <Element id="initial_activity" label="Začiatok"/>
+    <Element id="final_activity" label="Koniec"/>
+    <Element id="decision" label="Vetvenie"/>
+    <Element id="merge" label="Spojenie"/>
     <Element id="class" label="Trieda"/>
     <Element id="package" label="Balíček"/>
     <Element id="note" label="Poznámka"/>

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Translation lang="en" xmlns="http://umlfri.org/v2/addon.xsd">
     <Element id="activity" label="Activity"/>
+    <Element id="initial_activity" label="Initial"/>
+    <Element id="final_activity" label="Final"/>
+    <Element id="decision" label="Decision"/>
+    <Element id="merge" label="Merge"/>
     <Element id="class" label="Class"/>
     <Element id="package" label="Package"/>
     <Element id="note" label="Note"/>
