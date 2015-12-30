@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ElementType id="final_activity" xmlns="http://umlfri.org/v2/addon.xsd">
+    <Icon path="icons/final.png" />
+    
+    <Structure>
+        <Attribute id="name" type="str"/>
+        <Attribute id="note" type="text"/>
+    </Structure>
+
+    <DisplayName>
+        <Text text="#self.name"/>
+    </DisplayName>
+    
+    <Appearance>
+        <VBox>
+            <Align horizontal="center">
+                <Sizer width="20" height="20">
+                    <Ellipse fill="#cfg.element.fill" border="#cfg.element.line">
+                        <Padding padding="5">
+                            <Ellipse fill="#cfg.element.line"/>
+                        </Padding>
+                    </Ellipse>
+                </Sizer>
+            </Align>
+            <If condition="#self.name">
+                <Align horizontal="center">
+                    <Rectangle fill="#cfg.background">
+                        <TextBox text="#self.name" font="#cfg.element.textfont" color="#cfg.element.text"/>
+                    </Rectangle>
+                </Align>
+            </If>
+        </VBox>
+    </Appearance>
+</ElementType>
