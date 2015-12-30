@@ -14,6 +14,8 @@
     
     <Connection id="association" label="Association"/>
     <Connection id="composition" label="Composition"/>
+    <Connection id="generalisation" label="Generalisation"/>
+    <Connection id="implementation" label="Implementation"/>
     <Connection id="activity_control_flow" label="Control flow"/>
     <Connection id="note_link" label="Note link"/>
     

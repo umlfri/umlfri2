@@ -24,6 +24,7 @@
     <Connections>
         <Connection id="association"/>
         <Connection id="composition"/>
+        <Connection id="implementation"/>
         <Connection id="generalisation"/>
         <Connection id="note_link"/>
     </Connections>
