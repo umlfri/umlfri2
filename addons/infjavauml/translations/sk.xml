@@ -10,10 +10,12 @@
     <Element id="note" label="Poznámka"/>
     
     <Diagram id="class_diagram" label="Diagram tried"/>
+    <Diagram id="activity_diagram" label="Diagram aktivít"/>
     
     <Connection id="association" label="Asociácia"/>
-    <Diagram id="activity_diagram" label="Diagram aktivít"/>
+    <Connection id="composition" label="Kompozícia"/>
     <Connection id="activity_control_flow" label="Tok riadenia"/>
+    <Connection id="note_link" label="Poznámkové spojenie"/>
     
     <Attribute path="**/name" label="Názov"/>
     <Attribute path="**/type" label="Typ"/>
@@ -48,6 +50,9 @@
     <Attribute path="association/*/cardinality" label="Násobnosť"/>
     <EnumItem path="association/*/visibility/unspecified" label=""/>
     <Attribute path="association/*/role" label="Roľa"/>
+    
+    <Attribute path="composition/cardinality" label="Násobnosť"/>
+    <Attribute path="composition/role" label="Roľa"/>
     
     <Attribute path="activity_control_flow/guard" label="Podmienka"/>
 </Translation>

@@ -23,6 +23,7 @@
 
     <Connections>
         <Connection id="association"/>
+        <Connection id="composition"/>
         <Connection id="note_link"/>
     </Connections>
 

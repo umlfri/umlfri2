@@ -13,7 +13,9 @@
     <Diagram id="activity_diagram" label="Activity diagram"/>
     
     <Connection id="association" label="Association"/>
+    <Connection id="composition" label="Composition"/>
     <Connection id="activity_control_flow" label="Control flow"/>
+    <Connection id="note_link" label="Note link"/>
     
     <Attribute path="**/name" label="Name"/>
     <Attribute path="**/type" label="Type"/>
@@ -46,6 +48,9 @@
     <Attribute path="association/*/cardinality" label="Cardinality"/>
     <EnumItem path="association/*/visibility/unspecified" label=""/>
     <Attribute path="association/*/role" label="Role"/>
+    
+    <Attribute path="composition/cardinality" label="Cardinality"/>
+    <Attribute path="composition/role" label="Role"/>
     
     <Attribute path="activity_control_flow/guard" label="Guard"/>
 </Translation>

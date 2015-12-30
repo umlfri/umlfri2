@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ConnectionType id="composition" xmlns="http://umlfri.org/v2/addon.xsd">
+    <Icon path="icons/composition.png"/>
+
+    <Structure>
+        <Attribute id="name" type="str"/>
+        <Attribute id="stereotype" type="str"/>
+        <Attribute id="cardinality" type="str">
+            <Value value=""/>
+            <Value value="*"/>
+            <Value value="0"/>
+            <Value value="0"/>
+            <Value value="0..1"/>
+            <Value value="1"/>
+            <Value value="1.."/>
+            <Value value="1..*"/>
+        </Attribute>
+        <Attribute id="visibility" type="enum" default="-">
+            <Value value="unspecified"/>
+            <Value value="-"/>
+            <Value value="#"/>
+            <Value value="+"/>
+            <Value value="~"/>
+        </Attribute>
+        <Attribute id="role" type="str"/>
+        <Attribute id="note" type="text"/>
+    </Structure>
+
+    <Appearance>
+        <Line style="solid" color="#cfg.connection.line"/>
+
+        <Arrow position="100%" style="diamond" color="#cfg.connection.arrow" fill="#cfg.connection.arrow"/>
+
+        <Label position="50%" id="name">
+            <VBox>
+                <If condition="#self.stereotype">
+                    <Align horizontal="center">
+                        <Rectangle fill="#cfg.background">
+                            <TextBox font="#cfg.connection.textfont" color="#cfg.connection.text">
+                                <Text text="&#171;"/>
+                                <Text text="#self.stereotype"/>
+                                <Text text="&#187;"/>
+                            </TextBox>
+                        </Rectangle>
+                    </Align>
+                </If>
+
+                <If condition="#self.name">
+                    <Align horizontal="center">
+                        <Rectangle fill="#cfg.background">
+                            <TextBox text="#self.name" font="#cfg.connection.headingfont"
+                                     color="#cfg.connection.heading"/>
+                        </Rectangle>
+                    </Align>
+                </If>
+            </VBox>
+        </Label>
+
+        <Label position="0%" id="cardinality">
+            <If condition="#self.cardinality">
+                <Rectangle fill="#cfg.background">
+                    <TextBox text="#self.cardinality" font="#cfg.connection.textfont"
+                             color="#cfg.connection.text"/>
+                </Rectangle>
+            </If>
+        </Label>
+
+        <Label position="10%" id="role">
+            <If condition="#self.role">
+                <Rectangle fill="#cfg.background">
+                    <TextBox font="#cfg.connection.textfont" color="#cfg.connection.text">
+                        <If condition="#self.visibility != 'unspecified'">
+                            <Text text="#self.visibility"/>
+                        </If>
+                        <Text text="#self.role"/>
+                    </TextBox>
+                </Rectangle>
+            </If>
+        </Label>
+    </Appearance>
+</ConnectionType>

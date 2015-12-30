@@ -22,7 +22,7 @@
                 <Value value="1.."/>
                 <Value value="1..*"/>
             </Attribute>
-            <Attribute id="visibility" type="enum">
+            <Attribute id="visibility" type="enum" default="-">
                 <Value value="unspecified"/>
                 <Value value="-"/>
                 <Value value="#"/>
@@ -42,7 +42,7 @@
                 <Value value="1.."/>
                 <Value value="1..*"/>
             </Attribute>
-            <Attribute id="visibility" type="enum">
+            <Attribute id="visibility" type="enum" default="-">
                 <Value value="unspecified"/>
                 <Value value="-"/>
                 <Value value="#"/>
