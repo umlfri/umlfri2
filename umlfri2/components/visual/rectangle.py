@@ -101,7 +101,10 @@ class RoundedRectangleObject(VisualObject):
         self.__corners = corners
         self.__sides = sides
         
-        self.__child_size = child.get_minimal_size()
+        if child is None:
+            self.__child_size = Size(0, 0)
+        else:
+            self.__child_size = child.get_minimal_size()
     
     def assign_bounds(self, bounds):
         corner_and_side_positions = [
@@ -139,7 +142,8 @@ class RoundedRectangleObject(VisualObject):
         self.__path = path.build()
         self.__ornaments_path = ornaments.build()
         
-        self.__child.assign_bounds(bounds)
+        if self.__child is not None:
+            self.__child.assign_bounds(bounds)
     
     def get_minimal_size(self):
         return self.__child_size
@@ -154,10 +158,14 @@ class RoundedRectangleObject(VisualObject):
         else:
             canvas.draw_path(self.__path, self.__border, self.__fill)
             canvas.draw_path(self.__ornaments_path, self.__border, None)
-            self.__child.draw(canvas, None)
+            if self.__child is not None:
+                self.__child.draw(canvas, None)
     
     def is_resizable(self):
-        return self.__child.is_resizable()
+        if self.__child is None:
+            return False, False
+        else:
+            return self.__child.is_resizable()
 
 
 class RectangleObject(VisualObject):
@@ -167,7 +175,10 @@ class RectangleObject(VisualObject):
         self.__border = border
         self.__rectangle = None
         
-        self.__child_size = child.get_minimal_size()
+        if child is None:
+            self.__child_size = Size(0, 0)
+        else:
+            self.__child_size = child.get_minimal_size()
     
     def assign_bounds(self, bounds):
         self.__rectangle = bounds
@@ -240,31 +251,35 @@ class RectangleComponent(VisualComponent):
             self.__sides = None
     
     def _create_object(self, context, ruler):
+        found_child = None
         for local, child in self._get_children(context):
-            if self.__corners or self.__sides:
-                if self.__corners:
-                    corners = [corner(context) for corner in self.__corners]
-                else:
-                    corners = (None, None, None, None)
-                
-                if self.__sides:
-                    sides = [side(context) for side in self.__sides]
-                else:
-                    sides = (None, None, None, None)
-                
-                return RoundedRectangleObject(
-                    child._create_object(local, ruler),
-                    self.__fill(context),
-                    self.__border(context),
-                    corners,
-                    sides
-                )
+            found_child = child._create_object(local, ruler)
+            break
+        
+        if self.__corners or self.__sides:
+            if self.__corners:
+                corners = [corner(context) for corner in self.__corners]
             else:
-                return RectangleObject(
-                    child._create_object(local, ruler),
-                    self.__fill(context),
-                    self.__border(context)
-                )
+                corners = (None, None, None, None)
+            
+            if self.__sides:
+                sides = [side(context) for side in self.__sides]
+            else:
+                sides = (None, None, None, None)
+            
+            return RoundedRectangleObject(
+                found_child,
+                self.__fill(context),
+                self.__border(context),
+                corners,
+                sides
+            )
+        else:
+            return RectangleObject(
+                found_child,
+                self.__fill(context),
+                self.__border(context)
+            )
     
     def compile(self, variables):
         attrs = {}
