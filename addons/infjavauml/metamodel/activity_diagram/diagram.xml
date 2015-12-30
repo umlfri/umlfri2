@@ -27,6 +27,7 @@
     
     <Connections>
         <Connection id="activity_control_flow"/>
+        <Connection id="note_link"/>
     </Connections>
 
     <Appearance>

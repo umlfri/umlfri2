@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ConnectionType id="note_link" xmlns="http://umlfri.org/v2/addon.xsd">
+    <Icon path="icons/note_link.png"/>
+
+    <Structure />
+
+    <Appearance>
+        <Line style="dot" color="#cfg.connection.line"/>
+    </Appearance>
+</ConnectionType>
