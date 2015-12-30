@@ -20,12 +20,9 @@ class UflNullableType(UflType):
             return True
         
         if not super().is_same_as(other):
-            return False
+            return self.__inner_type.is_same_as(other)
         
         if self.__inner_type.is_same_as(other.__inner_type):
-            return True
-        
-        if self.__inner_type.is_same_as(other):
             return True
         
         return False
