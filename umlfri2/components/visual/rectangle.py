@@ -209,23 +209,22 @@ class RectangleComponent(VisualComponent):
         'bottom': UflDefinedEnumType(SideDefinition)
     }
     
-    # TODO: rounded rectangle
     def __init__(self, children, fill=None, border=None, topleft=None, topright=None, bottomleft=None, bottomright=None,
                  left=None, right=None, top=None, bottom=None):
         super().__init__(children)
         self.__fill = fill or ConstantExpression(None, UflColorType())
         self.__border = border or ConstantExpression(None, UflColorType())
         
-        if left and (topleft or bottomleft):
+        if left and (topleft or bottomleft or top or bottom):
             raise Exception
         
-        if right and (topright or bottomright):
+        if right and (topright or bottomright or top or bottom):
             raise Exception
         
-        if top and (topleft or topright):
+        if top and (topleft or topright or left or right):
             raise Exception
         
-        if bottom and (bottomleft or bottomright):
+        if bottom and (bottomleft or bottomright or left or right):
             raise Exception
         
         if topleft or topright or bottomleft or bottomright:
