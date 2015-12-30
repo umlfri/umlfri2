@@ -24,16 +24,32 @@ class Rectangle:
         return Point(self.__x, self.__y)
     
     @property
+    def top_center(self):
+        return Point(self.__x + self.__width // 2, self.__y)
+    
+    @property
     def top_right(self):
         return Point(self.__x + self.__width, self.__y)
+    
+    @property
+    def right_center(self):
+        return Point(self.__x + self.__width, self.__y + self.__height // 2)
     
     @property
     def bottom_left(self):
         return Point(self.__x, self.__y + self.__height)
     
     @property
+    def bottom_center(self):
+        return Point(self.__x + self.__width // 2, self.__y + self.__height)
+    
+    @property
     def bottom_right(self):
         return Point(self.__x + self.__width, self.__y + self.__height)
+    
+    @property
+    def left_center(self):
+        return Point(self.__x, self.__y + self.__height // 2)
     
     @property
     def center(self):

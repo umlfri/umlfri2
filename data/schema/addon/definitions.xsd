@@ -36,9 +36,10 @@
                     <xs:complexType>
                         <xs:attribute name="id" type="xs:string"/>
                         <xs:attribute name="path" type="xs:string"/>
-                        <xs:attribute name="start" type="point"/>
-                        <xs:attribute name="end" type="point"/>
+                        <xs:attribute name="ornament" type="xs:string"/>
                         <xs:attribute name="center" type="point"/>
+                        <xs:attribute name="width" type="xs:integer"/>
+                        <xs:attribute name="height" type="xs:integer"/>
                         <xs:attribute name="side">
                             <xs:simpleType>
                                 <xs:restriction base="xs:string">

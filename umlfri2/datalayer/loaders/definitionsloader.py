@@ -3,7 +3,7 @@ import math
 from umlfri2.components.visual.rectangle import CornerDefinition, SideDefinition
 from ..constants import ADDON_NAMESPACE, ADDON_SCHEMA
 from umlfri2.components.connectionline.arrow import ArrowDefinition
-from umlfri2.types.geometry import PathBuilder, Point
+from umlfri2.types.geometry import PathBuilder, Point, Size
 
 
 class DefinitionsLoader:
@@ -42,10 +42,16 @@ class DefinitionsLoader:
                 )
                 definitions["CornerDefinition"][definition.id] = definition
             elif child.tag == "{{{0}}}SideDefinition".format(ADDON_NAMESPACE):
+                ornament = None
+                if "ornament" in child.attrib:
+                    ornament = PathBuilder().from_string(child.attrib["ornament"]).build()
+                
                 definition = SideDefinition(
                     child.attrib["id"],
                     PathBuilder().from_string(child.attrib["path"]).build(),
+                    ornament,
                     Point.parse(child.attrib["center"]),
+                    Size(int(child.attrib["width"]), int(child.attrib["height"])),
                     child.attrib["side"]
                 )
                 definitions["SideDefinition"][definition.id] = definition

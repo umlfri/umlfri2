@@ -7,5 +7,5 @@
     <CornerDefinition id="rounded" path="M 0,10 C 0,4.46 4.46,0 10,0" center="0,0" corner="top left" />
     <CornerDefinition id="note" path="M 0,10 L 10,0" ornament="M 0,10 L 10,10 L 10,0" center="0,0" corner="top left" />
     
-    <SideDefinition id="rounded" path="M 10,0 C 4.46,0 0,2.23 0,5 C 0,7.77 4.46,10 10,10" start="10,0" end="10,10" center="0,0" side="left" />
+    <SideDefinition id="rounded" path="M 10,10 C 4.46,10 0,7.77 0,5 C 0,2.23 4.46,0 10,0" center="0,5" width="10" height="10" side="left" />
 </Definitions>

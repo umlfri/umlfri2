@@ -72,10 +72,10 @@ class Transformation:
     @staticmethod
     def make_scale2(scale, center=Point(0, 0)):
         return Transformation(
-            scale.x, 0,
-            0, scale.y,
-            center.x - scale.x*center.x,
-            center.y - scale.y*center.y
+            scale.width, 0,
+            0, scale.height,
+            center.x - scale.width*center.x,
+            center.y - scale.height*center.y
         )
     
     @staticmethod
