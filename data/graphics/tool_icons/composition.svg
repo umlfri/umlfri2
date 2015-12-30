@@ -26,7 +26,7 @@
      inkscape:pageshadow="2"
      inkscape:window-width="640"
      inkscape:window-height="480"
-     id="namedview3011"
+     id="namedview2998"
      showgrid="false"
      inkscape:zoom="10"
      inkscape:cx="12"
@@ -37,83 +37,14 @@
      inkscape:current-layer="svg2" />
   <defs
      id="defs4">
-    <marker
-       refX="0"
-       refY="0"
-       orient="auto"
-       id="Arrow2Send"
-       style="overflow:visible">
-      <path
-         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
-         transform="matrix(-0.3,0,0,-0.3,0.69,0)"
-         id="path3795"
-         style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round" />
-    </marker>
-    <marker
-       refX="0"
-       refY="0"
-       orient="auto"
-       id="Arrow2Mend"
-       style="overflow:visible">
-      <path
-         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
-         transform="scale(-0.6,-0.6)"
-         id="path3789"
-         style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round" />
-    </marker>
-    <marker
-       refX="0"
-       refY="0"
-       orient="auto"
-       id="Arrow1Lend"
-       style="overflow:visible">
-      <path
-         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
-         transform="matrix(-0.8,0,0,-0.8,-10,0)"
-         id="path3765"
-         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt" />
-    </marker>
-    <inkscape:path-effect
-       effect="skeletal"
-       id="path-effect3411" />
-    <filter
-       color-interpolation-filters="sRGB"
-       id="filter4181">
-      <feFlood
-         id="feFlood4183"
-         result="flood"
-         flood-color="rgb(0,0,0)"
-         flood-opacity="0.8" />
-      <feComposite
-         in2="SourceGraphic"
-         operator="in"
-         in="flood"
-         result="composite1"
-         id="feComposite4185" />
-      <feGaussianBlur
-         id="feGaussianBlur4187"
-         result="blur"
-         stdDeviation="1" />
-      <feOffset
-         id="feOffset4189"
-         result="offset"
-         dy="1"
-         dx="1" />
-      <feComposite
-         in2="offset"
-         operator="over"
-         in="SourceGraphic"
-         result="composite2"
-         id="feComposite4191" />
-    </filter>
     <filter
        color-interpolation-filters="sRGB"
        id="filter3983">
       <feFlood
-         id="feFlood3985"
-         result="flood"
+         flood-opacity="0.8"
          flood-color="rgb(0,0,0)"
-         flood-opacity="0.8" />
+         result="flood"
+         id="feFlood3985" />
       <feComposite
          in2="SourceGraphic"
          operator="in"
@@ -121,14 +52,14 @@
          result="composite1"
          id="feComposite3987" />
       <feGaussianBlur
-         id="feGaussianBlur3989"
+         stdDeviation="1"
          result="blur"
-         stdDeviation="1" />
+         id="feGaussianBlur3989" />
       <feOffset
-         id="feOffset3991"
-         result="offset"
+         dx="1"
          dy="1"
-         dx="1" />
+         result="offset"
+         id="feOffset3991" />
       <feComposite
          in2="offset"
          operator="over"
@@ -159,7 +90,7 @@
        id="path3409"
        style="fill:none;stroke:#000000;stroke-opacity:1;marker-end:none" />
     <path
-       d="M 20.565581,3.5048607 19.486944,7.5834981 15.408307,8.6621364 16.486944,4.5834982 z"
+       d="M 20.565581,3.5048607 18.817668,10.114223 12.208307,11.862137 13.95622,5.2527743 z"
        id="rect3976"
        style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none" />
   </g>

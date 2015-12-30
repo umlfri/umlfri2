@@ -26,85 +26,46 @@
      inkscape:pageshadow="2"
      inkscape:window-width="640"
      inkscape:window-height="480"
-     id="namedview20"
+     id="namedview3011"
      showgrid="false"
-     inkscape:zoom="9.8333333"
+     inkscape:zoom="10"
      inkscape:cx="12"
-     inkscape:cy="11.79661"
+     inkscape:cy="12"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="0"
      inkscape:current-layer="svg2" />
   <defs
      id="defs4">
-    <marker
-       refX="0"
-       refY="0"
-       orient="auto"
-       id="Arrow2Send"
-       style="overflow:visible">
-      <path
-         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
-         transform="matrix(-0.3,0,0,-0.3,0.69,0)"
-         id="path3795"
-         style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round" />
-    </marker>
-    <marker
-       refX="0"
-       refY="0"
-       orient="auto"
-       id="Arrow2Mend"
-       style="overflow:visible">
-      <path
-         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
-         transform="scale(-0.6,-0.6)"
-         id="path3789"
-         style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round" />
-    </marker>
-    <marker
-       refX="0"
-       refY="0"
-       orient="auto"
-       id="Arrow1Lend"
-       style="overflow:visible">
-      <path
-         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
-         transform="matrix(-0.8,0,0,-0.8,-10,0)"
-         id="path3765"
-         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt" />
-    </marker>
-    <inkscape:path-effect
-       effect="skeletal"
-       id="path-effect3411" />
     <filter
        color-interpolation-filters="sRGB"
-       id="filter4181">
+       id="filter3984">
       <feFlood
-         flood-opacity="0.8"
-         flood-color="rgb(0,0,0)"
+         id="feFlood3986"
          result="flood"
-         id="feFlood4183" />
+         flood-color="rgb(0,0,0)"
+         flood-opacity="0.8" />
       <feComposite
          in2="SourceGraphic"
          operator="in"
          in="flood"
          result="composite1"
-         id="feComposite4185" />
+         id="feComposite3988" />
       <feGaussianBlur
-         stdDeviation="1"
+         id="feGaussianBlur3990"
          result="blur"
-         id="feGaussianBlur4187" />
+         stdDeviation="1" />
       <feOffset
-         dx="1"
-         dy="1"
+         id="feOffset3992"
          result="offset"
-         id="feOffset4189" />
+         dy="1"
+         dx="1" />
       <feComposite
          in2="offset"
          operator="over"
          in="SourceGraphic"
          result="composite2"
-         id="feComposite4191" />
+         id="feComposite3994" />
     </filter>
   </defs>
   <metadata
@@ -120,9 +81,17 @@
     </rdf:RDF>
   </metadata>
   <g
-     id="layer1" />
-  <path
-     d="m 4.5,19.5 15,-15"
-     id="path3409"
-     style="fill:none;stroke:#000000;stroke-opacity:1;marker-end:url(#Arrow2Mend);filter:url(#filter4181)" />
+     id="g3979"
+     style="filter:url(#filter3984)">
+    <g
+       id="layer1" />
+    <path
+       d="m 4.5,19.5 15,-15"
+       id="path3409"
+       style="fill:none;stroke:#000000;stroke-opacity:1;marker-end:none" />
+    <path
+       d="m 12,5 8,-1 -1,8"
+       id="rect3004"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dashoffset:0" />
+  </g>
 </svg>
