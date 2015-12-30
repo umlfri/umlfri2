@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-28 12:10+0100\n"
-"PO-Revision-Date: 2015-12-28 12:10+0100\n"
+"POT-Creation-Date: 2015-12-30 16:58+0100\n"
+"PO-Revision-Date: 2015-12-30 16:59+0100\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -140,6 +140,9 @@ msgstr "Vybrať &všetko"
 msgid "Show diagram"
 msgstr "Zobraziť diagram"
 
+msgid "Show in diagram"
+msgstr "Zobraziť v diagrame"
+
 msgid "System language"
 msgstr "Systémový jazyk"
 
@@ -163,3 +166,6 @@ msgstr "Späť"
 
 msgid "Value"
 msgstr "Hodnota"
+
+msgid "unsaved"
+msgstr "neuložený"

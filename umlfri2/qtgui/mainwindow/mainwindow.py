@@ -4,7 +4,7 @@ from PySide.QtCore import Qt
 from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget, QMessageBox, QFileDialog, QIcon
 
 from umlfri2.application import Application
-from umlfri2.application.events.application import LanguageChangedEvent
+from umlfri2.application.events.application import LanguageChangedEvent, ChangeStatusChangedEvent
 from umlfri2.application.events.model import ObjectChangedEvent
 from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent
 from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent
@@ -64,6 +64,7 @@ class UmlFriMainWindow(QMainWindow):
         Application().event_dispatcher.subscribe(ObjectChangedEvent, self.__object_changed)
         Application().event_dispatcher.subscribe(OpenSolutionEvent, self.__solution_file_changed)
         Application().event_dispatcher.subscribe(SaveSolutionEvent, self.__solution_file_changed)
+        Application().event_dispatcher.subscribe(ChangeStatusChangedEvent, self.__change_status_changed)
         Application().event_dispatcher.subscribe(LanguageChangedEvent, lambda event: self.__reload_texts())
         
         self.__reload_texts()
@@ -105,6 +106,9 @@ class UmlFriMainWindow(QMainWindow):
             if widget.diagram is event.object:
                 self.__tabs.setTabText(widget_id, widget.diagram.get_display_name())
                 return
+    
+    def __change_status_changed(self, event):
+        self.__reload_window_title()
     
     def __solution_file_changed(self, event):
         self.__reload_window_title()
@@ -181,6 +185,12 @@ class UmlFriMainWindow(QMainWindow):
         title = _("UML .FRI 2")
         if Application().solution_name is not None:
             title += " [{0}]".format(Application().solution_name)
+        elif Application().solution is not None:
+            title += " [{0}]".format(_("unsaved"))
+        
+        if Application().commands.changed:
+            title += "*"
+        
         self.setWindowTitle(title)
     
     def __reload_texts(self):

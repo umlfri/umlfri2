@@ -1,3 +1,5 @@
+from .events.application import ChangeStatusChangedEvent
+
 MAX_STACK_SIZE = 100
 
 
@@ -9,6 +11,8 @@ class CommandProcessor:
         self.__unchanged_command = None
     
     def execute(self, command):
+        changed = self.changed
+        
         command.do(self.__application.ruler)
         
         if not command.has_error:
@@ -18,8 +22,14 @@ class CommandProcessor:
             del self.__undo_stack[:-MAX_STACK_SIZE]
             
             self.__application.event_dispatcher.dispatch_all(command.get_updates())
+        
+        new_changed = self.changed
+        if new_changed != changed:
+            self.__application.event_dispatcher.dispatch(ChangeStatusChangedEvent(new_changed))
     
     def undo(self, count=1):
+        changed = self.changed
+        
         for i in range(count):
             if not self.__undo_stack:
                 return
@@ -30,8 +40,14 @@ class CommandProcessor:
                 opposite = event.get_opposite()
                 if opposite is not None:
                     self.__application.event_dispatcher.dispatch(opposite)
+        
+        new_changed = self.changed
+        if new_changed != changed:
+            self.__application.event_dispatcher.dispatch(ChangeStatusChangedEvent(new_changed))
             
     def redo(self, count=1):
+        changed = self.changed
+        
         for i in range(count):
             if not self.__redo_stack:
                 return
@@ -39,6 +55,10 @@ class CommandProcessor:
             command.redo(self.__application.ruler)
             self.__undo_stack.append(command)
             self.__application.event_dispatcher.dispatch_all(command.get_updates())
+        
+        new_changed = self.changed
+        if new_changed != changed:
+            self.__application.event_dispatcher.dispatch(ChangeStatusChangedEvent(new_changed))
     
     def clear_buffers(self):
         self.__undo_stack = []

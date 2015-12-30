@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-28 12:10+0100\n"
+"POT-Creation-Date: 2015-12-30 16:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -140,6 +140,9 @@ msgstr ""
 msgid "Show diagram"
 msgstr ""
 
+msgid "Show in diagram"
+msgstr ""
+
 msgid "System language"
 msgstr ""
 
@@ -162,4 +165,7 @@ msgid "Undo"
 msgstr ""
 
 msgid "Value"
+msgstr ""
+
+msgid "unsaved"
 msgstr ""
