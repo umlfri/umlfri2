@@ -9,8 +9,8 @@
 - [ ] application preferences window - move language there
 - [ ] persisting application preferences (appdirs module)
 - [ ] plugin system
-- [ ] diamond visual object
-- [ ] ellipse visual object
+- [x] diamond visual object
+- [x] ellipse visual object
 - [ ] icon visual object
 - [ ] accessing project tree from ufl
 - [ ] rendering package content in "Package" element visual

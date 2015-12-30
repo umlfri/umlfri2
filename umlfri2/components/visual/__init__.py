@@ -1,4 +1,5 @@
 from .align import AlignComponent
+from .diamond import DiamondComponent
 from .ellipse import EllipseComponent
 from .empty import EmptyComponent
 from .hbox import HBoxComponent
@@ -14,6 +15,7 @@ from .vbox import VBoxComponent
 
 VISUAL_COMPONENTS = {
     'Align': AlignComponent,
+    'Diamond': DiamondComponent,
     'Ellipse': EllipseComponent,
     'Empty': EmptyComponent,
     'HBox': HBoxComponent,
