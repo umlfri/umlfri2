@@ -1,7 +1,7 @@
 import math
 
 from umlfri2.components.expressions import NoneExpression, ConstantExpression
-from umlfri2.ufl.types import UflColorType, UflDefinedEnumType
+from umlfri2.ufl.types import UflColorType, UflDefinedEnumType, UflNullableType
 from .visualcomponent import VisualComponent, VisualObject
 from umlfri2.types.geometry import Rectangle, Transformation, PathBuilder, Size
 
@@ -199,14 +199,14 @@ class RectangleComponent(VisualComponent):
     ATTRIBUTES = {
         'fill': UflColorType(),
         'border': UflColorType(),
-        'topleft': UflDefinedEnumType(CornerDefinition),
-        'topright': UflDefinedEnumType(CornerDefinition),
-        'bottomleft': UflDefinedEnumType(CornerDefinition),
-        'bottomright': UflDefinedEnumType(CornerDefinition),
-        'left': UflDefinedEnumType(SideDefinition),
-        'right': UflDefinedEnumType(SideDefinition),
-        'top': UflDefinedEnumType(SideDefinition),
-        'bottom': UflDefinedEnumType(SideDefinition)
+        'topleft': UflNullableType(UflDefinedEnumType(CornerDefinition)),
+        'topright': UflNullableType(UflDefinedEnumType(CornerDefinition)),
+        'bottomleft': UflNullableType(UflDefinedEnumType(CornerDefinition)),
+        'bottomright': UflNullableType(UflDefinedEnumType(CornerDefinition)),
+        'left': UflNullableType(UflDefinedEnumType(SideDefinition)),
+        'right': UflNullableType(UflDefinedEnumType(SideDefinition)),
+        'top': UflNullableType(UflDefinedEnumType(SideDefinition)),
+        'bottom': UflNullableType(UflDefinedEnumType(SideDefinition))
     }
     
     def __init__(self, children, fill=None, border=None, topleft=None, topright=None, bottomleft=None, bottomright=None,
@@ -267,10 +267,29 @@ class RectangleComponent(VisualComponent):
                 )
     
     def compile(self, variables):
+        attrs = {}
+        
+        if self.__corners:
+            attrs.update(
+                topleft=self.__corners[0],
+                topright=self.__corners[1],
+                bottomright=self.__corners[2],
+                bottomleft=self.__corners[3],
+            )
+        
+        if self.__sides:
+            attrs.update(
+                left=self.__sides[0],
+                top=self.__sides[1],
+                right=self.__sides[2],
+                bottom=self.__sides[3],
+            )
+        
         self._compile_expressions(
             variables,
             fill=self.__fill,
             border=self.__border,
+            **attrs
         )
         
         self._compile_children(variables)

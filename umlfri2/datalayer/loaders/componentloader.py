@@ -6,8 +6,7 @@ from umlfri2.components.connectionline import CONNECTION_LINE_COMPONENTS
 from umlfri2.components.expressions import UflExpression, ConstantExpression
 from umlfri2.components.text import TEXT_COMPONENTS
 from umlfri2.components.visual import VISUAL_COMPONENTS, TABLE_COMPONENTS
-from umlfri2.ufl.types import UflDefinedEnumType
-
+from umlfri2.ufl.types import UflDefinedEnumType, UflNullableType
 
 ChildAttribute = namedtuple('ChildAttribute', ["name", "type", "values"])
 
@@ -55,6 +54,10 @@ class ComponentLoader:
                     if isinstance(type, UflDefinedEnumType):
                         if type.name in self.__definitions:
                             type = UflDefinedEnumType(type.type, self.__definitions[type.name])
+                    elif isinstance(type, UflNullableType) and isinstance(type.inner_type, UflDefinedEnumType):
+                        if type.inner_type.name in self.__definitions:
+                            definition = self.__definitions[type.inner_type.name]
+                            type = UflNullableType(UflDefinedEnumType(type.inner_type.type, definition))
                     
                     if attrvalue.startswith("##"):
                         value = ConstantExpression(type.parse(attrvalue[1:]), type)
