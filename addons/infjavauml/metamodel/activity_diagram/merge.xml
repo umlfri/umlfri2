@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ElementType id="merge" xmlns="http://umlfri.org/v2/addon.xsd">
+    <Icon path="icons/decision.png" />
+    
+    <Structure>
+        <Attribute id="note" type="text"/>
+    </Structure>
+
+    <DisplayName>
+        <Text text="Merge"/>
+    </DisplayName>
+    
+    <Appearance>
+        <Shadow padding="5" color="#cfg.element.shadow">
+            <Diamond fill="#cfg.element.fill" border="#cfg.element.line">
+                <Sizer minwidth="50" minheight="25"/>
+            </Diamond>
+        </Shadow>
+    </Appearance>
+</ElementType>

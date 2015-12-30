@@ -19,6 +19,8 @@
         <Element id="initial_activity"/>
         <Element id="final_activity"/>
         <Element id="activity"/>
+        <Element id="decision"/>
+        <Element id="merge"/>
         <Element id="package"/>
         <Element id="note"/>
     </Elements>
