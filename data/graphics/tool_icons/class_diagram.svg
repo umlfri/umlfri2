@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   width="24"
+   height="24"
+   id="svg2"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="class_diagram.svg">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="640"
+     inkscape:window-height="480"
+     id="namedview3024"
+     showgrid="false"
+     inkscape:zoom="10"
+     inkscape:cx="12"
+     inkscape:cy="12"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg2" />
+  <defs
+     id="defs4">
+    <filter
+       color-interpolation-filters="sRGB"
+       id="filter3156">
+      <feFlood
+         id="feFlood3158"
+         result="flood"
+         flood-color="rgb(0,0,0)"
+         flood-opacity="0.8" />
+      <feComposite
+         in2="SourceGraphic"
+         operator="in"
+         in="flood"
+         result="composite1"
+         id="feComposite3160" />
+      <feGaussianBlur
+         id="feGaussianBlur3162"
+         result="blur"
+         stdDeviation="1" />
+      <feOffset
+         id="feOffset3164"
+         result="offset"
+         dy="1"
+         dx="1" />
+      <feComposite
+         in2="offset"
+         operator="over"
+         in="SourceGraphic"
+         result="composite2"
+         id="feComposite3166" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       id="filter3168">
+      <feFlood
+         id="feFlood3170"
+         result="flood"
+         flood-color="rgb(0,0,0)"
+         flood-opacity="0.8" />
+      <feComposite
+         in2="SourceGraphic"
+         operator="in"
+         in="flood"
+         result="composite1"
+         id="feComposite3172" />
+      <feGaussianBlur
+         id="feGaussianBlur3174"
+         result="blur"
+         stdDeviation="1" />
+      <feOffset
+         id="feOffset3176"
+         result="offset"
+         dy="1"
+         dx="1" />
+      <feComposite
+         in2="offset"
+         operator="over"
+         in="SourceGraphic"
+         result="composite2"
+         id="feComposite3178" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       id="filter3180">
+      <feFlood
+         id="feFlood3182"
+         result="flood"
+         flood-color="rgb(0,0,0)"
+         flood-opacity="0.8" />
+      <feComposite
+         in2="SourceGraphic"
+         operator="in"
+         in="flood"
+         result="composite1"
+         id="feComposite3184" />
+      <feGaussianBlur
+         id="feGaussianBlur3186"
+         result="blur"
+         stdDeviation="1" />
+      <feOffset
+         id="feOffset3188"
+         result="offset"
+         dy="1"
+         dx="1" />
+      <feComposite
+         in2="offset"
+         operator="over"
+         in="SourceGraphic"
+         result="composite2"
+         id="feComposite3190" />
+    </filter>
+  </defs>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1" />
+  <g
+     transform="translate(11,2)"
+     id="g3110"
+     style="filter:url(#filter3168)">
+    <rect
+       width="6"
+       height="7"
+       x="3.5"
+       y="2.5"
+       id="rect3066"
+       style="fill:#ffffff;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    <rect
+       width="7"
+       height="2"
+       x="3"
+       y="1"
+       id="rect3068"
+       style="fill:#000000;stroke:none" />
+    <path
+       d="m 4.5,4.5000001 4,0"
+       id="path3979"
+       style="fill:none;stroke:#aaaaaa;stroke-width:0.99999982;stroke-opacity:1" />
+    <path
+       d="m 4.5,6.5000001 4,0"
+       id="path3108"
+       style="fill:none;stroke:#aaaaaa;stroke-width:0.99999982;stroke-opacity:1" />
+  </g>
+  <g
+     transform="translate(3,13)"
+     id="g3116"
+     style="filter:url(#filter3156)">
+    <rect
+       width="6"
+       height="7"
+       x="3.5"
+       y="2.5"
+       id="rect3118"
+       style="fill:#ffffff;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    <rect
+       width="7"
+       height="2"
+       x="3"
+       y="1"
+       id="rect3120"
+       style="fill:#000000;stroke:none" />
+    <path
+       d="m 4.5,4.5000001 4,0"
+       id="path3122"
+       style="fill:none;stroke:#aaaaaa;stroke-width:0.99999982;stroke-opacity:1" />
+    <path
+       d="m 4.5,6.5000001 4,0"
+       id="path3124"
+       style="fill:none;stroke:#aaaaaa;stroke-width:0.99999982;stroke-opacity:1" />
+  </g>
+  <g
+     id="g3126"
+     style="filter:url(#filter3180)">
+    <rect
+       width="6"
+       height="7"
+       x="3.5"
+       y="2.5"
+       id="rect3128"
+       style="fill:#ffffff;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    <rect
+       width="7"
+       height="2"
+       x="3"
+       y="1"
+       id="rect3130"
+       style="fill:#000000;stroke:none" />
+    <path
+       d="m 4.5,4.5000001 4,0"
+       id="path3132"
+       style="fill:none;stroke:#aaaaaa;stroke-width:0.99999982;stroke-opacity:1" />
+    <path
+       d="m 4.5,6.5000001 4,0"
+       id="path3134"
+       style="fill:none;stroke:#aaaaaa;stroke-width:0.99999982;stroke-opacity:1" />
+  </g>
+  <path
+     d="m 9.5999997,6.5000001 4.8000003,0"
+     id="path3134-4"
+     style="fill:none;stroke:#000000;stroke-width:0.99999982;stroke-opacity:1" />
+  <path
+     d="m 12.517242,17.5 4.982758,0 0,-6"
+     id="path3154"
+     style="fill:none;stroke:#000000;stroke-width:0.99999982;stroke-opacity:1" />
+</svg>
