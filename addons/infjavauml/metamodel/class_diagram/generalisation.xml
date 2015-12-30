@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ConnectionType id="generalisation" xmlns="http://umlfri.org/v2/addon.xsd">
+    <Icon path="icons/generalisation.png"/>
+
+    <Structure />
+
+    <Appearance>
+        <Line style="solid" color="#cfg.connection.line"/>
+        <Arrow position="100%" style="triangle" color="#cfg.connection.arrow" fill="#cfg.connection.fill"/>
+    </Appearance>
+</ConnectionType>
