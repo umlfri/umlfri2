@@ -78,8 +78,14 @@ class ConnectionObject:
         self.__data.apply_patch(patch)
         self.__cache.refresh()
     
+    @property
+    def has_ufl_dialog(self):
+        return self.__type.ufl_type.has_attributes
+    
     def create_ufl_dialog(self, language, options=UflDialogOptions.standard):
-        translation = self.type.metamodel.addon.get_translation(language)
-        dialog = UflDialog(self.type.ufl_type, translation, options)
-        dialog.associate(self.data)
+        if not self.__type.ufl_type.has_attributes:
+            raise Exception
+        translation = self.__type.metamodel.addon.get_translation(language)
+        dialog = UflDialog(self.__type.ufl_type, translation, options)
+        dialog.associate(self.__data)
         return dialog

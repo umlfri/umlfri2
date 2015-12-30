@@ -35,6 +35,10 @@ class UflObjectType(UflType):
     def attributes(self):
         yield from self.__attributes.values()
     
+    @property
+    def has_attributes(self):
+        return len(self.__attributes) > 0
+    
     def get_attribute(self, name):
         return self.__attributes[name]
     

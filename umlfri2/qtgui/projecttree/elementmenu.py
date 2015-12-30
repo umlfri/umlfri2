@@ -51,7 +51,11 @@ class ProjectTreeElementMenu(QMenu):
         
         self.addSeparator()
         
-        self.addAction(_("Properties...")).triggered.connect(self.__open_properties_action)
+        action = self.addAction(_("Properties..."))
+        if self.__element.has_ufl_dialog:
+            action.triggered.connect(self.__open_properties_action)
+        else:
+            action.setEnabled(False)
     
     def __create_element_action(self, element_type, checked=False):
         command = CreateElementCommand(self.__element, element_type)

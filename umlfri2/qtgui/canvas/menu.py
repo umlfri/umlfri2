@@ -16,13 +16,21 @@ class CanvasContextMenu(QMenu):
         self.__drawing_area = drawing_area
         self.__selected = tuple(self.__drawing_area.selection.selected_visuals)
         
+        if len(self.__selected) > 1:
+            self.__selected_object = None
+        elif self.__selected:
+            self.__selected_object = self.__selected[0].object
+        else:
+            self.__selected_object = self.__drawing_area.diagram
+        
         diagram = drawing_area.selection.is_diagram_selected
-        many_selected = drawing_area.selection.size > 1
         
         self.__add_menu_item(None, _("Hide"), QKeySequence.Delete, not diagram, self.__hide_selection)
         self.__add_menu_item("edit-delete", _("Delete"), DELETE_FROM_PROJECT, not diagram, self.__delete_selection)
         self.addSeparator()
-        default = self.__add_menu_item(None, _("Properties..."), None, not many_selected, self.__edit_properties)
+        default = self.__add_menu_item(None, _("Properties..."), None,
+                                       self.__selected_object and self.__selected_object.has_ufl_dialog,
+                                       self.__edit_properties)
         
         if not diagram:
             self.setDefaultAction(default)
@@ -57,7 +65,4 @@ class CanvasContextMenu(QMenu):
         Application().commands.execute(command)
     
     def __edit_properties(self, checked=False):
-        if self.__selected:
-            PropertiesDialog.open_for(self.__main_window, self.__selected[0].object)
-        else:
-            PropertiesDialog.open_for(self.__main_window, self.__drawing_area.diagram)
+        PropertiesDialog.open_for(self.__main_window, self.__selected_object)

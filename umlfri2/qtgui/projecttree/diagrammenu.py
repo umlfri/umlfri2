@@ -25,7 +25,11 @@ class ProjectTreeDiagramMenu(QMenu):
         action.triggered.connect(self.__delete_diagram_action)
         
         self.addSeparator()
-        self.addAction(_("Properties...")).triggered.connect(self.__open_properties_action)
+        action = self.addAction(_("Properties..."))
+        if self.__diagram.has_ufl_dialog:
+            action.triggered.connect(self.__open_properties_action)
+        else:
+            action.setEnabled(False)
     
     def __show_diagram_action(self, checked=False):
         Application().tabs.select_tab(self.__diagram)

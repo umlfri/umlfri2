@@ -106,6 +106,9 @@ class CanvasWidget(QWidget):
         if not visual.is_at_position(Application().ruler, point):
             return
         
+        if not visual.object.has_ufl_dialog:
+            return
+        
         self.__drawing_area.set_action(None)
         self.unsetCursor()
         PropertiesDialog.open_for(self.__main_window, visual.object)
