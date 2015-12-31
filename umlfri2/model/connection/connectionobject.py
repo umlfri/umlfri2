@@ -51,6 +51,12 @@ class ConnectionObject:
     def destination(self):
         return self.__destination()
     
+    def reverse(self):
+        self.__source, self.__destination = self.__destination, self.__source
+        for visual in self.__visuals:
+            visual._reverse()
+        self.__cache.invalidate()
+    
     def get_other_end(self, element):
         if self.__source() is element:
             return self.__destination

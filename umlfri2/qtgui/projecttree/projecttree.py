@@ -1,7 +1,7 @@
 from PySide.QtCore import Qt
 from PySide.QtGui import QTreeWidget
 from umlfri2.application import Application
-from umlfri2.application.events.model import ElementCreatedEvent, ObjectChangedEvent, DiagramCreatedEvent, \
+from umlfri2.application.events.model import ElementCreatedEvent, ObjectDataChangedEvent, DiagramCreatedEvent, \
     ProjectChangedEvent, ElementDeletedEvent, DiagramDeletedEvent
 from umlfri2.application.events.solution import OpenProjectEvent, OpenSolutionEvent
 from umlfri2.model import Diagram, ElementObject, Project
@@ -27,7 +27,7 @@ class ProjectTree(QTreeWidget):
         Application().event_dispatcher.subscribe(DiagramCreatedEvent, self.__diagram_created)
         Application().event_dispatcher.subscribe(ElementDeletedEvent, self.__element_deleted)
         Application().event_dispatcher.subscribe(DiagramDeletedEvent, self.__diagram_deleted)
-        Application().event_dispatcher.subscribe(ObjectChangedEvent, self.__object_changed)
+        Application().event_dispatcher.subscribe(ObjectDataChangedEvent, self.__object_changed)
         Application().event_dispatcher.subscribe(ProjectChangedEvent, self.__project_changed)
         Application().event_dispatcher.subscribe(OpenProjectEvent, self.__project_open)
         Application().event_dispatcher.subscribe(OpenSolutionEvent, self.__solution_open)

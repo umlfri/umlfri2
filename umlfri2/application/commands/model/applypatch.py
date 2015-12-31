@@ -1,4 +1,4 @@
-from umlfri2.application.events.model import ObjectChangedEvent
+from umlfri2.application.events.model import ObjectDataChangedEvent
 from umlfri2.model import ElementObject
 from umlfri2.ufl.objects.patch import UflObjectPatch
 from ..base import Command, CommandNotDone
@@ -46,4 +46,4 @@ class ApplyPatchCommand(Command):
             visual.resize(ruler, size)
     
     def get_updates(self):
-        yield ObjectChangedEvent(self.__object, self.__patch)
+        yield ObjectDataChangedEvent(self.__object, self.__patch)

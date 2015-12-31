@@ -39,6 +39,10 @@ class ConnectionVisual:
     def destination(self):
         return self.__destination()
     
+    def _reverse(self):
+        self.__source, self.__destination = self.__destination, self.__source
+        self.__cache.invalidate()
+    
     def get_other_end(self, one_end):
         if self.__source() is one_end:
             return self.__destination()

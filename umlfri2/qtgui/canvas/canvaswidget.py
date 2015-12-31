@@ -5,7 +5,7 @@ from umlfri2.application import Application
 from umlfri2.application.commands.diagram import ShowElementCommand
 from umlfri2.application.drawingarea import DrawingAreaCursor
 from umlfri2.application.events.diagram import DiagramChangedEvent, SelectionChangedEvent
-from umlfri2.application.events.model import ObjectChangedEvent
+from umlfri2.application.events.model import ObjectDataChangedEvent, ConnectionChangedEvent
 from umlfri2.model import ElementObject
 from umlfri2.types.geometry import Point
 from .menu import CanvasContextMenu
@@ -27,9 +27,10 @@ class CanvasWidget(QWidget):
         self.__update_size()
         self.__mouse_down = False
         
-        Application().event_dispatcher.subscribe(ObjectChangedEvent, self.__something_changed)
+        Application().event_dispatcher.subscribe(ObjectDataChangedEvent, self.__something_changed)
         Application().event_dispatcher.subscribe(DiagramChangedEvent, self.__something_changed)
         Application().event_dispatcher.subscribe(SelectionChangedEvent, self.__something_changed)
+        Application().event_dispatcher.subscribe(ConnectionChangedEvent, self.__something_changed)
     
     @property
     def diagram(self):

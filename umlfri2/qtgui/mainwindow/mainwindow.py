@@ -5,7 +5,7 @@ from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget, QMessageBox, QFil
 
 from umlfri2.application import Application
 from umlfri2.application.events.application import LanguageChangedEvent, ChangeStatusChangedEvent
-from umlfri2.application.events.model import ObjectChangedEvent
+from umlfri2.application.events.model import ObjectDataChangedEvent
 from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent
 from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent
 from umlfri2.constants.paths import GRAPHICS
@@ -61,7 +61,7 @@ class UmlFriMainWindow(QMainWindow):
         Application().event_dispatcher.subscribe(OpenTabEvent, self.__open_tab)
         Application().event_dispatcher.subscribe(ChangedCurrentTabEvent, self.__change_tab)
         Application().event_dispatcher.subscribe(ClosedTabEvent, self.__close_tab)
-        Application().event_dispatcher.subscribe(ObjectChangedEvent, self.__object_changed)
+        Application().event_dispatcher.subscribe(ObjectDataChangedEvent, self.__object_changed)
         Application().event_dispatcher.subscribe(OpenSolutionEvent, self.__solution_file_changed)
         Application().event_dispatcher.subscribe(SaveSolutionEvent, self.__solution_file_changed)
         Application().event_dispatcher.subscribe(ChangeStatusChangedEvent, self.__change_status_changed)

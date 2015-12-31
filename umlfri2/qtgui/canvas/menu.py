@@ -2,7 +2,7 @@ from PySide.QtGui import QMenu, QAction, QKeySequence, QIcon
 
 from umlfri2.application import Application
 from umlfri2.application.commands.diagram import HideConnectionCommand, HideElementsCommand
-from umlfri2.application.commands.model import DeleteConnectionCommand, DeleteElementsCommand
+from umlfri2.application.commands.model import DeleteConnectionCommand, DeleteElementsCommand, ReverseConnectionCommand
 from umlfri2.constants.keys import DELETE_FROM_PROJECT
 from umlfri2.model.connection import ConnectionVisual
 from umlfri2.qtgui.properties import PropertiesDialog
@@ -24,10 +24,12 @@ class CanvasContextMenu(QMenu):
             self.__selected_object = self.__drawing_area.diagram
         
         diagram = drawing_area.selection.is_diagram_selected
+        connection = drawing_area.selection.is_connection_selected
         
         self.__add_menu_item(None, _("Hide"), QKeySequence.Delete, not diagram, self.__hide_selection)
         self.__add_menu_item("edit-delete", _("Delete"), DELETE_FROM_PROJECT, not diagram, self.__delete_selection)
         self.addSeparator()
+        self.__add_menu_item(None, _("Reverse connection"), None, connection, self.__reverse_connection)
         default = self.__add_menu_item(None, _("Properties..."), None,
                                        self.__selected_object and self.__selected_object.has_ufl_dialog,
                                        self.__edit_properties)
@@ -61,6 +63,11 @@ class CanvasContextMenu(QMenu):
             command = DeleteConnectionCommand(self.__selected[0].object)
         else:
             command = DeleteElementsCommand(tuple(element.object for element in self.__selected))
+        
+        Application().commands.execute(command)
+    
+    def __reverse_connection(self, checked=False):
+        command = ReverseConnectionCommand(self.__selected_object)
         
         Application().commands.execute(command)
     
