@@ -1,15 +1,13 @@
 from functools import partial
 
-from PySide.QtGui import QMenu, QIcon, QKeySequence
-
 from umlfri2.application import Application
 from umlfri2.application.commands.model import CreateElementCommand, CreateDiagramCommand, DeleteElementsCommand
 from umlfri2.constants.keys import DELETE_FROM_PROJECT
-from umlfri2.qtgui.base import image_loader
-from umlfri2.qtgui.properties import PropertiesDialog
+from ..base.contextmenu import ContextMenu
+from ..properties import PropertiesDialog
 
 
-class ProjectTreeElementMenu(QMenu):
+class ProjectTreeElementMenu(ContextMenu):
     def __init__(self, main_window, element): 
         super().__init__()
         
@@ -17,45 +15,31 @@ class ProjectTreeElementMenu(QMenu):
         self.__element = element
         
         metamodel = element.project.metamodel
-        translation = metamodel.addon.get_translation(Application().language)
         
-        sub_menu = self.addMenu(_("Add diagram"))
+        sub_menu = self._add_sub_menu_item(_("Add diagram"))
         for diagram_type in metamodel.diagram_types:
-            action = sub_menu.addAction(translation.translate(diagram_type))
-            action.setIcon(image_loader.load_icon(diagram_type.icon))
-            action.triggered.connect(partial(self.__create_diagram_action, diagram_type))
+            self._add_type_menu_item(diagram_type, self.__create_diagram_action, sub_menu)
         
-        sub_menu = self.addMenu(_("Add element"))
+        sub_menu = self._add_sub_menu_item(_("Add element"))
         for element_type in metamodel.element_types:
-            action = sub_menu.addAction(translation.translate(element_type))
-            action.setIcon(image_loader.load_icon(element_type.icon))
-            action.triggered.connect(partial(self.__create_element_action, element_type))
+            self._add_type_menu_item(element_type, self.__create_element_action, sub_menu)
         
         self.addSeparator()
         
         diagrams = [visual.diagram for visual in element.visuals]
-        action = self.addAction(_("Show in diagram"))
-        if len(diagrams) == 0:
-            action.setEnabled(False)
-        sub_menu = QMenu()
-        action.setMenu(sub_menu)
+        sub_menu = self._add_sub_menu_item(_("Show in diagram"), len(diagrams) > 0)
         for diagram in diagrams:
-            action = sub_menu.addAction(diagram.get_display_name())
-            action.setIcon(image_loader.load_icon(diagram.type.icon))
-            action.triggered.connect(partial(self.__show_in_diagram, diagram))
+            self._add_menu_item(None, diagram.get_display_name(), None,
+                                partial(self.__show_in_diagram, diagram), sub_menu)
         
-        action = self.addAction(_("Delete"))
-        action.setIcon(QIcon.fromTheme("edit-delete"))
-        action.setShortcut(QKeySequence(DELETE_FROM_PROJECT))
-        action.triggered.connect(self.__delete_element_action)
+        self._add_menu_item("edit-delete", _("Delete"), DELETE_FROM_PROJECT, self.__delete_element_action)
         
         self.addSeparator()
         
-        action = self.addAction(_("Properties..."))
         if self.__element.has_ufl_dialog:
-            action.triggered.connect(self.__open_properties_action)
+            self._add_menu_item(None, _("Properties..."), None, self.__open_properties_action)
         else:
-            action.setEnabled(False)
+            self._add_menu_item(None, _("Properties..."), None)
     
     def __create_element_action(self, element_type, checked=False):
         command = CreateElementCommand(self.__element, element_type)

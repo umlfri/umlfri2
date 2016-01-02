@@ -34,10 +34,18 @@ class Selection:
                 yield visual
     
     @property
-    def selected_connections(self):
+    def selected_connection(self):
         for visual in self.__selected:
             if isinstance(visual, ConnectionVisual):
-                yield visual
+                return visual
+        return None
+    
+    @property
+    def selected_diagram(self):
+        if self.__selected:
+            return None
+        else:
+            return self.__diagram
     
     @property
     def diagram(self):

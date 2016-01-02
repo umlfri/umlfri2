@@ -8,7 +8,9 @@ from umlfri2.application.events.diagram import DiagramChangedEvent, SelectionCha
 from umlfri2.application.events.model import ObjectDataChangedEvent, ConnectionChangedEvent
 from umlfri2.model import ElementObject
 from umlfri2.types.geometry import Point
-from .menu import CanvasContextMenu
+from .connectionmenu import CanvasConnectionMenu
+from .elementmenu import CanvasElementMenu
+from .diagrammenu import CanvasDiagramMenu
 from ..projecttree import ProjectMimeData
 from .qtpaintercanvas import QTPainterCanvas
 from ..properties import PropertiesDialog
@@ -128,7 +130,19 @@ class CanvasWidget(QWidget):
         
         self.unsetCursor()
         
-        CanvasContextMenu(self.__main_window, self.__drawing_area).exec_(menu_pos)
+        if self.__drawing_area.selection.is_element_selected:
+            menu = CanvasElementMenu(self.__main_window, self.__drawing_area,
+                                     self.__drawing_area.selection.selected_elements)
+        elif self.__drawing_area.selection.is_connection_selected:
+            menu = CanvasConnectionMenu(self.__main_window, self.__drawing_area,
+                                        self.__drawing_area.selection.selected_connection)
+        elif self.__drawing_area.selection.is_diagram_selected:
+            menu = CanvasDiagramMenu(self.__main_window, self.__drawing_area,
+                                     self.__drawing_area.selection.selected_diagram)
+        else:
+            raise Exception
+        
+        menu.exec_(menu_pos)
     
     def dragEnterEvent(self, event):
         mime_data = event.mimeData()

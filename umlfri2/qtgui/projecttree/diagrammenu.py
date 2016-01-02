@@ -1,35 +1,27 @@
-from functools import partial
-
-from PySide.QtGui import QMenu, QIcon, QKeySequence
-
 from umlfri2.application import Application
 from umlfri2.application.commands.model import DeleteDiagramCommand
 from umlfri2.constants.keys import DELETE_FROM_PROJECT
-from umlfri2.qtgui.properties import PropertiesDialog
+from ..base.contextmenu import ContextMenu
+from ..properties import PropertiesDialog
 
 
-class ProjectTreeDiagramMenu(QMenu):
+class ProjectTreeDiagramMenu(ContextMenu):
     def __init__(self, main_window, diagram): 
         super().__init__()
         
         self.__main_window = main_window
         self.__diagram = diagram
         
-        show = self.addAction(_("Show diagram"))
-        show.triggered.connect(self.__show_diagram_action)
+        show = self._add_menu_item(None, _("Show diagram"), None, self.__show_diagram_action)
         self.setDefaultAction(show)
         
-        action = self.addAction(_("Delete"))
-        action.setIcon(QIcon.fromTheme("edit-delete"))
-        action.setShortcut(QKeySequence(DELETE_FROM_PROJECT))
-        action.triggered.connect(self.__delete_diagram_action)
+        self._add_menu_item("edit-delete", _("Delete"), DELETE_FROM_PROJECT, self.__delete_diagram_action)
         
         self.addSeparator()
-        action = self.addAction(_("Properties..."))
         if self.__diagram.has_ufl_dialog:
-            action.triggered.connect(self.__open_properties_action)
+            self._add_menu_item(None, _("Properties..."), None, self.__open_properties_action)
         else:
-            action.setEnabled(False)
+            self._add_menu_item(None, _("Properties..."), None)
     
     def __show_diagram_action(self, checked=False):
         Application().tabs.select_tab(self.__diagram)
