@@ -11,9 +11,9 @@
 - [ ] plugin system
 - [x] diamond visual object
 - [x] ellipse visual object
-- [ ] icon visual object
-- [ ] accessing project tree from ufl
-- [ ] rendering package content in "Package" element visual
+- [x] icon visual object
+- [x] accessing project tree from ufl
+- [x] rendering package content in "Package" element visual
 - [ ] canvas visual object
 - [ ] copy as image
 - [ ] export image
