@@ -4,6 +4,7 @@ from .color import UflColorType
 from .definedenum import UflDefinedEnumType
 from .enum import UflEnumType, UflEnumPossibility
 from .font import UflFontType
+from .image import UflImageType
 from .integer import UflIntegerType
 from .list import UflListType
 from .nullable import UflNullableType

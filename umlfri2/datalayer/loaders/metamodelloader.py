@@ -16,13 +16,15 @@ class MetamodelLoader:
         self.__addon_info = addon_info
     
     def load(self):
+        parser = lxml.etree.XMLParser(remove_comments=True)
+        
         elementXMLs = []
         connectionXMLs = []
         diagramXMLs = []
         templateXMLs = []
         definitionXMLs = None # TODO: multiple definition files
         for file in self.__storage.get_all_files():
-            xml = lxml.etree.parse(self.__storage.open(file)).getroot()
+            xml = lxml.etree.parse(self.__storage.open(file), parser=parser).getroot()
             if xml.tag == "{{{0}}}ElementType".format(ADDON_NAMESPACE):
                 elementXMLs.append((file, xml))
             elif xml.tag == "{{{0}}}ConnectionType".format(ADDON_NAMESPACE):

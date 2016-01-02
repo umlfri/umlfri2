@@ -2,6 +2,7 @@ from PySide.QtCore import Qt, QPoint
 from PySide.QtGui import QPainter, QPen, QBrush, QColor, QFont, QFontMetrics, QPainterPath
 
 from umlfri2.components.visual.canvas import Canvas
+from ..base import image_loader
 from umlfri2.types.enums import LineStyle
 from ..base.qtruler import QTRuler
 from umlfri2.types.font import FontStyle
@@ -103,8 +104,9 @@ class QTPainterCanvas(Canvas):
         else:
             self.__painter.drawText(QPoint(x, y), text)
     
-    def draw_icon(self, pos, filename):
-        pass
+    def draw_image(self, pos, image):
+        pixmap = image_loader.load(image)
+        self.__painter.drawPixmap(pos.x, pos.y, pixmap)
     
     def clear(self, color=None):
         if color is None:

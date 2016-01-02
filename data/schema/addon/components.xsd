@@ -83,6 +83,11 @@
                 <xs:complexType />
             </xs:element>
             <xs:element name="HBox" type="visual_component"/>
+            <xs:element name="Image">
+                <xs:complexType>
+                    <xs:attribute name="image" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
             <xs:element name="Line">
                 <xs:complexType>
                     <xs:attribute name="orientation" type="xs:string"/>

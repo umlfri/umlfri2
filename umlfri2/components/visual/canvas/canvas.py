@@ -23,7 +23,7 @@ class Canvas(metaclass=abc.ABCMeta):
         pass
     
     @abc.abstractmethod
-    def draw_icon(self, pos, filename):
+    def draw_image(self, pos, image):
         pass
     
     @abc.abstractmethod

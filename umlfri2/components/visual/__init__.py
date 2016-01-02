@@ -3,6 +3,7 @@ from .diamond import DiamondComponent
 from .ellipse import EllipseComponent
 from .empty import EmptyComponent
 from .hbox import HBoxComponent
+from .image import ImageComponent
 from .line import LineComponent
 from .padding import PaddingComponent
 from .rectangle import RectangleComponent
@@ -19,6 +20,7 @@ VISUAL_COMPONENTS = {
     'Ellipse': EllipseComponent,
     'Empty': EmptyComponent,
     'HBox': HBoxComponent,
+    'Image': ImageComponent,
     'Line': LineComponent,
     'Padding': PaddingComponent,
     'Rectangle': RectangleComponent,
