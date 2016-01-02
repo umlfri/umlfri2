@@ -150,6 +150,10 @@ class UmlFriMainWindow(QMainWindow):
         yield self.__project_dock.toggleViewAction()
         yield self.__properties_dock.toggleViewAction()
     
+    @property
+    def project_tree(self):
+        return self.__project_tree
+    
     def new_project(self):
         dialog = NewProjectDialog.open_dialog(self)
         if dialog:

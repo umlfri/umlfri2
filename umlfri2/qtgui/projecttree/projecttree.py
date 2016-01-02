@@ -185,3 +185,13 @@ class ProjectTree(QTreeWidget):
             return ret
         else:
             return None
+    
+    def select(self, element):
+        item = self.__get_item(element)
+        
+        parent = item.parent()
+        while parent is not None:
+            parent.setExpanded(True)
+            parent = parent.parent()
+        
+        self.setCurrentItem(item)

@@ -2,8 +2,8 @@
 - [ ] properties widget at bottom right
 - [ ] clipboard
 - [ ] zoom
-- [ ] "Show in project tree" content menu item
-- [ ] reversing a connection
+- [x] "Show in project tree" content menu item
+- [x] reversing a connection
 - [ ] z-order
 - [ ] alignment
 - [ ] application preferences window - move language there
