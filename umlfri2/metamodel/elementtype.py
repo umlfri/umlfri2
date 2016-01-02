@@ -1,5 +1,7 @@
 from weakref import ref
 
+from umlfri2.components.base.context import Context
+
 
 class ElementType:
     def __init__(self, id, icon, ufl_type, display_name, appearance):
@@ -36,10 +38,14 @@ class ElementType:
         self.__appearance.compile(variables)
         self.__display_name.compile(variables)
     
-    def create_appearance_object(self, context, ruler):
-        context = context.extend(self.__metamodel().addon.config, 'cfg')
+    def create_appearance_object(self, element, ruler):
+        context = Context()\
+            .extend(element.data, 'self')\
+            .extend(self.__metamodel().addon.config, 'cfg')
         return self.__appearance.create_visual_object(context, ruler)
     
-    def get_display_name(self, context):
-        context = context.extend(self.__metamodel().addon.config, 'cfg')
+    def get_display_name(self, element):
+        context = Context()\
+            .extend(element.data, 'self')\
+            .extend(self.__metamodel().addon.config, 'cfg')
         return self.__display_name.get_text(context)

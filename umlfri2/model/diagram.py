@@ -1,8 +1,7 @@
 from itertools import chain
 from uuid import uuid4
 from weakref import ref
-from umlfri2.components.base.context import Context
-from umlfri2.types.geometry import Size, Rectangle
+from umlfri2.types.geometry import Rectangle
 from umlfri2.ufl.dialog import UflDialog, UflDialogOptions
 from .connection import ConnectionObject, ConnectionVisual
 from .element import ElementObject, ElementVisual
@@ -71,8 +70,7 @@ class Diagram:
         return self.__save_id
     
     def get_display_name(self):
-        context = Context().extend(self.__data, 'self')
-        return self.__type.get_display_name(context)
+        return self.__type.get_display_name(self)
     
     def show(self, object):
         if isinstance(object, ElementObject):
@@ -165,8 +163,7 @@ class Diagram:
             raise Exception
     
     def draw(self, canvas, selection=None):
-        context = Context().extend(self.__data, 'self')
-        canvas.clear(self.__type.get_background_color(context))
+        canvas.clear(self.__type.get_background_color(self))
         
         for element in self.__elements:
             element.draw(canvas)

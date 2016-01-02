@@ -1,5 +1,7 @@
 from weakref import ref
 
+from umlfri2.components.base.context import Context
+
 
 class ConnectionTypeLabel:
     def __init__(self, position, id, appearance):
@@ -31,6 +33,8 @@ class ConnectionTypeLabel:
         
         self.__appearance.compile(variables)
     
-    def create_appearance_object(self, context, ruler):
-        context = context.extend(self.__connection_type().metamodel.addon.config, 'cfg')
+    def create_appearance_object(self, connection, ruler):
+        context = Context()\
+            .extend(connection.data, 'self')\
+            .extend(self.__connection_type().metamodel.addon.config, 'cfg')
         return self.__appearance.create_visual_object(context, ruler)

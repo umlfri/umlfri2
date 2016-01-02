@@ -1,7 +1,6 @@
 from _weakrefset import WeakSet
 from uuid import uuid4
 from weakref import ref
-from umlfri2.components.base.context import Context
 from umlfri2.model.cache import ModelTemporaryDataCache
 from umlfri2.ufl.dialog import UflDialog, UflDialogOptions
 
@@ -73,12 +72,10 @@ class ConnectionObject:
         return self.__save_id
     
     def create_appearance_object(self, ruler):
-        context = Context().extend(self.__data, 'self')
-        return self.__type.create_appearance_object(context, ruler)
+        return self.__type.create_appearance_object(self, ruler)
     
     def create_label_object(self, id, ruler):
-        context = Context().extend(self.__data, 'self')
-        return self.__type.get_label(id).create_appearance_object(context, ruler)
+        return self.__type.get_label(id).create_appearance_object(self, ruler)
     
     def apply_ufl_patch(self, patch):
         self.__data.apply_patch(patch)

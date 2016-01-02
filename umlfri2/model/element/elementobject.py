@@ -1,6 +1,5 @@
 from uuid import uuid4
 from weakref import ref, WeakSet
-from umlfri2.components.base.context import Context
 from umlfri2.ufl.dialog import UflDialog, UflDialogOptions
 from ..cache import ModelTemporaryDataCache
 from ..connection.connectionobject import ConnectionObject
@@ -80,12 +79,10 @@ class ElementObject:
         yield from self.__connections
     
     def get_display_name(self):
-        context = Context().extend(self.__data, 'self')
-        return self.__type.get_display_name(context)
+        return self.__type.get_display_name(self)
     
     def create_appearance_object(self, ruler):
-        context = Context().extend(self.__data, 'self')
-        return self.__type.create_appearance_object(context, ruler)
+        return self.__type.create_appearance_object(self, ruler)
     
     def connect_with(self, connection_type, second_element, save_id=None):
         connection = ConnectionObject(connection_type, self, second_element, save_id)
