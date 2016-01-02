@@ -33,5 +33,3 @@ TABLE_COMPONENTS = {
     'Row': TableRow,
     'Column': TableColumn,
 }
-
-# TODO: components to create: diamond, ellipse, icon, proportional, canvas

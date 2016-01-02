@@ -109,7 +109,6 @@ class ElementVisual:
     def is_resizable(self, ruler):
         self.__cache.ensure_valid(ruler=ruler)
         
-        # TODO: 3-state resizable indication
         return self.__cached_appearance.is_resizable()
 
     def __create_appearance_object(self, ruler):
