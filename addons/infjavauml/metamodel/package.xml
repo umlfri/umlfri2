@@ -43,7 +43,22 @@
                     </Padding>
                 </HBox>
                 <Rectangle fill="#cfg.element.fill" border="#cfg.element.line" vbox-expand="true">
-                    <Sizer minwidth="60" minheight="60" />
+                    <Sizer minwidth="60" minheight="60">
+                        <Padding padding="5">
+                            <Table>
+                                <ForEach src="#node.children" item="child">
+                                    <Row>
+                                        <Image image="#child.icon"/>
+                                        <Align vertical="center">
+                                            <Padding left="5">
+                                                <TextBox text="#child.label" font="#cfg.element.textfont" color="#cfg.element.text"/>
+                                            </Padding>
+                                        </Align>
+                                    </Row>
+                                </ForEach>
+                            </Table>
+                        </Padding>
+                    </Sizer>
                 </Rectangle>
             </VBox>
         </Shadow>
