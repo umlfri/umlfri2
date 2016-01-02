@@ -42,18 +42,18 @@ class ProjectTree(QTreeWidget):
             self.__reload_project(project)
 
     def __reload_project(self, project):
-        item = ProjectTreeItem(self, project)
+        item = ProjectTreeItem(project)
         for element in project.children:
             self.__reload_element(item, element)
-        item.setExpanded(True)
         self.addTopLevelItem(item)
+        item.setExpanded(True)
         item.refresh()
 
     def __reload_element(self, parent, element, index=None):
-        item = ProjectTreeItem(None, element)
+        item = ProjectTreeItem(element)
         
         for child_diagram in element.diagrams:
-            child_item = ProjectTreeItem(item, child_diagram)
+            child_item = ProjectTreeItem(child_diagram)
             item.addChild(child_item)
             child_item.refresh()
         
@@ -101,20 +101,22 @@ class ProjectTree(QTreeWidget):
             return
         
         parent_item = self.__get_item(event.diagram.parent)
+        child_item = ProjectTreeItem(event.diagram)
         
         if event.index is not None:
-            parent_item.insertChild(event.index, ProjectTreeItem(None, event.diagram))
+            parent_item.insertChild(event.index, child_item)
         else:
             for item_id in range(parent_item.childCount()):
                 item = parent_item.child(item_id)
                 
                 if isinstance(item, ProjectTreeItem):
                     if isinstance(item.model_object, ElementObject):
-                        parent_item.insertChild(item_id, ProjectTreeItem(None, event.diagram))
+                        parent_item.insertChild(item_id, child_item)
                         break
             else:
-                parent_item.addChild(ProjectTreeItem(parent_item, event.diagram))
+                parent_item.addChild(child_item)
         
+        child_item.refresh()
         parent_item.setExpanded(True)
     
     def __object_changed(self, event):

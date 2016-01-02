@@ -6,8 +6,8 @@ from umlfri2.qtgui.base import image_loader
 
 
 class ProjectTreeItem(QTreeWidgetItem):
-    def __init__(self, parent, model_object): 
-        super().__init__(parent)
+    def __init__(self, model_object): 
+        super().__init__(None)
         self.__model_object = model_object
         
         if isinstance(model_object, Project):
