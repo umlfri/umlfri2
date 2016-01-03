@@ -84,6 +84,8 @@ class QTPainterCanvas(Canvas):
         self.__painter.drawRect(rectangle.x1, rectangle.y1, rectangle.width, rectangle.height)
     
     def draw_text(self, pos, text, font, fg):
+        if not text:
+            return
         qfont = QFont(font.family)
         qfont.setPixelSize(font.size)
         qfont.setBold(FontStyle.bold in font.style)
