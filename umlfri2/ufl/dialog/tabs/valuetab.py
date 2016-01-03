@@ -13,6 +13,12 @@ class UflDialogValueTab(UflDialogTab):
             raise Exception("There already is a widget on this tab")
         super().add_widget(widget)
     
+    @property
+    def widget(self):
+        for widget in self.widgets:
+            return widget
+        return None
+    
     def finish(self):
         for widget in self.widgets:
             if isinstance(widget, UflDialogValuedWidget):

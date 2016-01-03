@@ -4,8 +4,11 @@ from umlfri2.application import Application
 from umlfri2.application.events.application import LanguageChangedEvent, ItemSelectedEvent
 from umlfri2.application.events.model import ObjectDataChangedEvent, ProjectChangedEvent
 from umlfri2.model import Project
+from umlfri2.ufl.dialog import UflDialogOptions, UflDialogObjectTab, UflDialogValueTab
 from .emptytab import EmptyTab
+from .objecttab import ObjectTab
 from .projecttab import ProjectTab
+from .texttab import TextTab
 
 
 class PropertiesWidget(QTabWidget):
@@ -39,7 +42,12 @@ class PropertiesWidget(QTabWidget):
         elif isinstance(item, Project):
             self.addTab(ProjectTab(item), None)
         else:
-            self.addTab(EmptyTab(), None)
+            dialog = item.create_ufl_dialog(Application().language, UflDialogOptions.list)
+            for tab in dialog.tabs:
+                if isinstance(tab, UflDialogObjectTab):
+                    self.addTab(ObjectTab(tab, dialog), None)
+                elif isinstance(tab, UflDialogValueTab):
+                    self.addTab(TextTab(tab, dialog), None)
         
         self.__reload_texts()
     

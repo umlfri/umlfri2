@@ -24,6 +24,10 @@ class UflDialogTab:
             widget.associate(ufl_object)
     
     @property
+    def widget_count(self):
+        return len(self.__widgets)
+    
+    @property
     def widgets(self):
         yield from self.__widgets
     
