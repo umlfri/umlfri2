@@ -10,14 +10,14 @@ from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionE
 from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent
 from umlfri2.constants.paths import GRAPHICS
 from umlfri2.model import Diagram
+from ..properties import PropertiesWidget
 from .menu import MainWindowMenu
 from .newproject import NewProjectDialog
-from ..projecttree import ProjectTree
-from .propertieswidget import PropertiesWidget
 from .toolbar import MainToolBar
 from .toolbox import ToolBox
 from ..base import image_loader
 from ..canvas import ScrolledCanvasWidget
+from ..projecttree import ProjectTree
 
 
 class UmlFriMainWindow(QMainWindow):
