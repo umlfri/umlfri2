@@ -1,4 +1,3 @@
-from PySide.QtCore import Qt
 from PySide.QtGui import QTableWidget, QTableWidgetItem
 
 
@@ -11,6 +10,8 @@ class TableTab(QTableWidget):
         self.setSelectionBehavior(QTableWidget.SelectRows)
         self.horizontalHeader().setStretchLastSection(True)
         self.horizontalHeader().setHighlightSections(False)
+        self.setAlternatingRowColors(True)
+        self.setShowGrid(False)
     
     def reload_texts(self):
         self.setHorizontalHeaderLabels([_("Name"), _("Value")])
