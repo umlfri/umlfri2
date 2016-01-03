@@ -20,7 +20,7 @@ class PropertiesWidget(QTabWidget):
         self.setTabPosition(QTabWidget.South)
         
         Application().event_dispatcher.subscribe(LanguageChangedEvent, lambda event: self.__reload_texts())
-        Application().event_dispatcher.subscribe(ItemSelectedEvent, lambda event: self.select_item(event.item))
+        Application().event_dispatcher.subscribe(ItemSelectedEvent, lambda event: self.__select_item(event.item))
         Application().event_dispatcher.subscribe(ObjectDataChangedEvent,
                                                  lambda event: self.__item_changed(event.object))
         Application().event_dispatcher.subscribe(ProjectChangedEvent,
@@ -29,11 +29,11 @@ class PropertiesWidget(QTabWidget):
         Application().event_dispatcher.subscribe(ChangedCurrentTabEvent, self.__tab_changed)
         
         self.__item = None
-        self.select_item(None)
+        self.__select_item(None)
     
     def __item_changed(self, item):
         if item is self.__item:
-            self.select_item(item)
+            self.__select_item(item)
     
     def __selection_changed(self, event):
         if event.diagram is Application().tabs.current_tab.drawing_area.diagram:
@@ -45,15 +45,17 @@ class PropertiesWidget(QTabWidget):
     
     def __select_selection(self, selection):
         if selection.is_diagram_selected:
-            self.select_item(selection.selected_diagram)
+            self.__select_item(selection.selected_diagram)
         elif selection.is_connection_selected:
-            self.select_item(selection.selected_connection.object)
+            self.__select_item(selection.selected_connection.object)
         else:
             elements = list(selection.selected_elements)
             if len(elements) == 1:
-                self.select_item(elements[0].object)
+                self.__select_item(elements[0].object)
+            else:
+                self.__select_item(None)
     
-    def select_item(self, item):
+    def __select_item(self, item):
         self.__item = item
         
         for no in range(self.count()):
