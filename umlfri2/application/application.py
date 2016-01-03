@@ -5,7 +5,7 @@ import os
 
 from umlfri2.addon import AddOnManager
 from umlfri2.application.commands.solution import NewProjectCommand
-from umlfri2.application.events.application import LanguageChangedEvent
+from umlfri2.application.events.application import LanguageChangedEvent, ItemSelectedEvent
 from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent
 from umlfri2.application.tablist import TabList
 from umlfri2.constants.paths import ADDONS, LOCALE_DIR
@@ -45,6 +45,7 @@ class Application(metaclass=MetaApplication):
         self.__default_language = self.__find_out_language().split('.', 1)[0]
         self.__language = None
         self.change_language(None)
+        self.__selected_item = None
     
     def __find_out_language(self):
         for e in 'LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG':
@@ -176,12 +177,22 @@ class Application(metaclass=MetaApplication):
         self.__commands.mark_unchanged()
         self.__event_dispatcher.dispatch(OpenSolutionEvent(self.__solution))
         self.tabs.close_all()
+        self.select_item(None)
     
     def change_language(self, language):
         self.__language = language
         # install new language handler from gettext
         gettext.translation('umlfri2', localedir=LOCALE_DIR, languages=[self.language], fallback=True).install()
         self.__event_dispatcher.dispatch(LanguageChangedEvent(language))
+    
+    @property
+    def selected_item(self):
+        return self.__selected_item
+    
+    def select_item(self, element):
+        if self.__selected_item is not element:
+            self.__selected_item = element
+            self.__event_dispatcher.dispatch(ItemSelectedEvent(element))
     
     @property
     def selected_language(self):

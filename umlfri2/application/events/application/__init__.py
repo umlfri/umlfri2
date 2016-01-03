@@ -1,2 +1,3 @@
 from .changestatuschanged import ChangeStatusChangedEvent
+from .elementselected import ItemSelectedEvent
 from .languagechanged import LanguageChangedEvent

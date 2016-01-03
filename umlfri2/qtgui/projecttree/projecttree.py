@@ -1,6 +1,7 @@
 from PySide.QtCore import Qt
 from PySide.QtGui import QTreeWidget
 from umlfri2.application import Application
+from umlfri2.application.events.application import ItemSelectedEvent
 from umlfri2.application.events.model import ElementCreatedEvent, ObjectDataChangedEvent, DiagramCreatedEvent, \
     ProjectChangedEvent, ElementDeletedEvent, DiagramDeletedEvent
 from umlfri2.application.events.solution import OpenProjectEvent, OpenSolutionEvent
@@ -21,6 +22,7 @@ class ProjectTree(QTreeWidget):
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self.__show_tree_menu)
         self.header().close()
+        self.itemSelectionChanged.connect(self.__item_selected)
         self.itemDoubleClicked.connect(self.__item_double_clicked)
         
         Application().event_dispatcher.subscribe(ElementCreatedEvent, self.__element_created)
@@ -31,6 +33,7 @@ class ProjectTree(QTreeWidget):
         Application().event_dispatcher.subscribe(ProjectChangedEvent, self.__project_changed)
         Application().event_dispatcher.subscribe(OpenProjectEvent, self.__project_open)
         Application().event_dispatcher.subscribe(OpenSolutionEvent, self.__solution_open)
+        Application().event_dispatcher.subscribe(ItemSelectedEvent, self.__element_selected)
     
     def reload(self):
         self.clear()
@@ -128,10 +131,33 @@ class ProjectTree(QTreeWidget):
         item = self.__get_item(event.project)
         item.refresh()
     
+    def __element_selected(self, event):
+        if event.item is None:
+            self.setCurrentItem(None)
+        else:
+            item = self.__get_item(event.item)
+            
+            if self.currentItem() is item:
+                return
+            
+            parent = item.parent()
+            while parent is not None:
+                parent.setExpanded(True)
+                parent = parent.parent()
+            
+            self.setCurrentItem(item)
+    
     def __item_double_clicked(self, item, column):
         if isinstance(item, ProjectTreeItem):
             if isinstance(item.model_object, Diagram):
                 Application().tabs.select_tab(item.model_object)
+    
+    def __item_selected(self):
+        item = self.currentItem()
+        if isinstance(item, ProjectTreeItem):
+            Application().select_item(item.model_object)
+        else:
+            Application().select_item(None)
     
     def __show_tree_menu(self, position):
         item = self.itemAt(position)
@@ -185,13 +211,3 @@ class ProjectTree(QTreeWidget):
             return ret
         else:
             return None
-    
-    def select(self, element):
-        item = self.__get_item(element)
-        
-        parent = item.parent()
-        while parent is not None:
-            parent.setExpanded(True)
-            parent = parent.parent()
-        
-        self.setCurrentItem(item)

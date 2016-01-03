@@ -44,7 +44,7 @@ class CanvasElementMenu(ContextMenu):
         Application().commands.execute(command)
     
     def __show_in_project(self, checked=False):
-        self.__main_window.project_tree.select(self.__elements[0].object)
+        Application().select_item(self.__elements[0].object)
     
     def __edit_properties(self, checked=False):
         PropertiesDialog.open_for(self.__main_window, self.__elements[0].object)
