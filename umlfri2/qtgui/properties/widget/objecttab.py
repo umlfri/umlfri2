@@ -1,6 +1,8 @@
 from PySide.QtCore import Qt
-from PySide.QtGui import QTableWidgetItem, QCheckBox, QPushButton, QComboBox, QSpinBox, QLineEdit
+from PySide.QtGui import QTableWidgetItem
 
+from .selectionchangingwidgets import QSelectionChangingCheckBox, QSelectionChangingPushButton,\
+    QSelectionChangingComboBox, QSelectionChangingSpinBox, QSelectionChangingLineEdit
 from umlfri2.ufl.dialog import *
 from .tabletab import TableTab
 
@@ -17,30 +19,30 @@ class ObjectTab(TableTab):
         
         for no, widget in enumerate(tab.widgets):
             if isinstance(widget, UflDialogCheckWidget):
-                qt_widget = QCheckBox()
+                qt_widget = QSelectionChangingCheckBox(self, no)
                 qt_widget.setChecked(widget.value)
             elif isinstance(widget, UflDialogChildWidget):
-                qt_widget = QPushButton(_("Edit..."))
+                qt_widget = QSelectionChangingPushButton(self, no, _("Edit..."))
             elif isinstance(widget, UflDialogColorWidget):
-                qt_widget = QPushButton() # TODO: color selection widget
+                qt_widget = QSelectionChangingPushButton(self, no, "?") # TODO: color selection widget
             elif isinstance(widget, UflDialogComboWidget):
-                qt_widget = QComboBox()
+                qt_widget = QSelectionChangingComboBox(self, no)
                 qt_widget.setEditable(True)
                 for item in widget.possibilities:
                     qt_widget.addItem(item)
                 qt_widget.setEditText(widget.value)
             elif isinstance(widget, UflDialogFontWidget):
-                qt_widget = QPushButton() # TODO: font selection widget
+                qt_widget = QSelectionChangingPushButton(self, no, "?") # TODO: font selection widget
             elif isinstance(widget, UflDialogIntegerWidget):
-                qt_widget = QSpinBox()
+                qt_widget = QSelectionChangingSpinBox(self, no)
                 qt_widget.setValue(widget.value)
             elif isinstance(widget, UflDialogSelectWidget):
-                qt_widget = QComboBox()
+                qt_widget = QSelectionChangingComboBox(self, no)
                 for item in widget.possibilities:
                     qt_widget.addItem(item)
                 qt_widget.setCurrentIndex(widget.current_index)
             elif isinstance(widget, UflDialogTextWidget):
-                qt_widget = QLineEdit()
+                qt_widget = QSelectionChangingLineEdit(self, no)
                 qt_widget.setText(widget.value)
             else:
                 raise Exception()
