@@ -1,5 +1,5 @@
 from PySide.QtGui import QVBoxLayout, QTreeWidget, QHBoxLayout, QPushButton, QIcon, QTreeWidgetItem
-from ..base.hlinewidget import HLineWidget
+from umlfri2.qtgui.base.hlinewidget import HLineWidget
 from .tab import PropertyTab
 
 

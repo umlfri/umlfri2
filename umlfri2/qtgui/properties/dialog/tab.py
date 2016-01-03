@@ -1,5 +1,4 @@
-from PySide.QtGui import QWidget, QFormLayout, QCheckBox, QPushButton, QComboBox, QSpinBox, QLineEdit, QGroupBox, \
-    QVBoxLayout, QTextEdit, QLabel, QSizePolicy
+from PySide.QtGui import QWidget, QFormLayout, QCheckBox, QPushButton, QComboBox, QSpinBox, QLineEdit, QTextEdit, QLabel
 from umlfri2.ufl.dialog import *
 
 
