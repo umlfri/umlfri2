@@ -2,7 +2,9 @@ from PySide.QtGui import QTableWidget, QTabWidget
 
 from umlfri2.application import Application
 from umlfri2.application.events.application import LanguageChangedEvent, ItemSelectedEvent
+from umlfri2.application.events.diagram import SelectionChangedEvent
 from umlfri2.application.events.model import ObjectDataChangedEvent, ProjectChangedEvent
+from umlfri2.application.events.tabs import ChangedCurrentTabEvent
 from umlfri2.model import Project
 from umlfri2.ufl.dialog import UflDialogOptions, UflDialogObjectTab, UflDialogValueTab
 from .emptytab import EmptyTab
@@ -23,6 +25,8 @@ class PropertiesWidget(QTabWidget):
                                                  lambda event: self.__item_changed(event.object))
         Application().event_dispatcher.subscribe(ProjectChangedEvent,
                                                  lambda event: self.__item_changed(event.project))
+        Application().event_dispatcher.subscribe(SelectionChangedEvent, self.__selection_changed)
+        Application().event_dispatcher.subscribe(ChangedCurrentTabEvent, self.__tab_changed)
         
         self.__item = None
         self.select_item(None)
@@ -31,23 +35,41 @@ class PropertiesWidget(QTabWidget):
         if item is self.__item:
             self.select_item(item)
     
+    def __selection_changed(self, event):
+        if event.diagram is Application().tabs.current_tab.drawing_area.diagram:
+            self.__select_selection(event.selection)
+    
+    def __tab_changed(self, event):
+        if event.tab is not None:
+            self.__select_selection(event.tab.drawing_area.selection)
+    
+    def __select_selection(self, selection):
+        if selection.is_diagram_selected:
+            self.select_item(selection.selected_diagram)
+        elif selection.is_connection_selected:
+            self.select_item(selection.selected_connection.object)
+        else:
+            elements = list(selection.selected_elements)
+            if len(elements) == 1:
+                self.select_item(elements[0].object)
+    
     def select_item(self, item):
         self.__item = item
         
         for no in range(self.count()):
             self.removeTab(0)
         
-        if item is None:
-            self.addTab(EmptyTab(), None)
-        elif isinstance(item, Project):
+        if isinstance(item, Project):
             self.addTab(ProjectTab(item), None)
-        else:
+        elif item is not None and item.has_ufl_dialog:
             dialog = item.create_ufl_dialog(Application().language, UflDialogOptions.list)
             for tab in dialog.tabs:
                 if isinstance(tab, UflDialogObjectTab):
                     self.addTab(ObjectTab(tab, dialog), None)
                 elif isinstance(tab, UflDialogValueTab):
                     self.addTab(TextTab(tab, dialog), None)
+        else:
+            self.addTab(EmptyTab(), None)
         
         self.__reload_texts()
     

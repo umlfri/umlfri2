@@ -56,18 +56,18 @@ class Selection:
         if visual is not None:
             self.__selected.add(visual)
         
-        self.__application.event_dispatcher.dispatch(SelectionChangedEvent(self.__diagram))
+        self.__application.event_dispatcher.dispatch(SelectionChangedEvent(self.__diagram, self))
     
     def select_all(self):
         self.__selected.clear()
         self.__selected.update(self.__diagram.elements)
         
-        self.__application.event_dispatcher.dispatch(SelectionChangedEvent(self.__diagram))
+        self.__application.event_dispatcher.dispatch(SelectionChangedEvent(self.__diagram, self))
     
     def deselect_all(self):
         self.__selected.clear()
         
-        self.__application.event_dispatcher.dispatch(SelectionChangedEvent(self.__diagram))
+        self.__application.event_dispatcher.dispatch(SelectionChangedEvent(self.__diagram, self))
     
     def add_to_selection(self, visual):
         if isinstance(visual, ConnectionVisual):
@@ -77,13 +77,13 @@ class Selection:
         
         self.__selected.add(visual)
         
-        self.__application.event_dispatcher.dispatch(SelectionChangedEvent(self.__diagram))
+        self.__application.event_dispatcher.dispatch(SelectionChangedEvent(self.__diagram, self))
     
     def remove_from_selection(self, visual):
         if visual in self.__selected:
             self.__selected.remove(visual)
         
-        self.__application.event_dispatcher.dispatch(SelectionChangedEvent(self.__diagram))
+        self.__application.event_dispatcher.dispatch(SelectionChangedEvent(self.__diagram, self))
     
     def toggle_select(self, visual):
         if visual in self.__selected:
@@ -105,7 +105,7 @@ class Selection:
             if element.get_bounds(self.__application.ruler).is_overlapping(area):
                 self.__selected.add(element)
         
-        self.__application.event_dispatcher.dispatch(SelectionChangedEvent(self.__diagram))
+        self.__application.event_dispatcher.dispatch(SelectionChangedEvent(self.__diagram, self))
     
     def draw_for(self, canvas, visual):
         if visual not in self.__selected:
