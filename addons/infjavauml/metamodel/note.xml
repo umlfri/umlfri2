@@ -13,7 +13,7 @@
             <Rectangle fill="#cfg.element.fill" border="#cfg.element.line" topright="note">
                 <Sizer minwidth="50">
                     <Padding padding="5">
-                        <Align horizontal="left">
+                        <Align horizontal="left" vertical="top">
                             <TextBox text="#self.note" font="#cfg.element.textfont" color="#cfg.element.text"/>
                         </Align>
                     </Padding>
