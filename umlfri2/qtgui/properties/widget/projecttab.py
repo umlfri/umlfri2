@@ -3,6 +3,7 @@ from PySide.QtGui import QTableWidgetItem
 
 from umlfri2.application import Application
 from umlfri2.application.commands.model import ChangeProjectNameCommand
+from umlfri2.qtgui.properties.widget.selectionchangingwidgets import QSelectionChangingLineEdit
 from .tabletab import TableTab
 
 
@@ -13,20 +14,18 @@ class ProjectTab(TableTab):
         super().__init__()
         
         self.setRowCount(1)
-        self.itemChanged.connect(self.__item_changed)
+        
+        self.__name_widget = QSelectionChangingLineEdit(self, 0)
+        self.__name_widget.lostFocus.connect(self.__name_changed)
+        self.__name_widget.returnPressed.connect(self.__name_changed)
+        
+        self.setCellWidget(0, 1, self.__name_widget)
         
         self.__project = project
     
-    def __item_changed(self, item):
-        if self.__project is None:
-            return
-        
-        if item.column() != 1:
-            return
-        
-        if item.row() == 0:
-            command = ChangeProjectNameCommand(self.__project, item.text())
-            Application().commands.execute(command)
+    def __name_changed(self, value=None):
+        command = ChangeProjectNameCommand(self.__project, self.__name_widget.text())
+        Application().commands.execute(command)
     
     def reload_texts(self):
         super().reload_texts()
@@ -36,7 +35,7 @@ class ProjectTab(TableTab):
         self.setItem(0, 0, name)
     
     def reload_data(self):
-        self.setItem(0, 1, QTableWidgetItem(_(self.__project.name)))
+        self.__name_widget.setText(self.__project.name)
     
     @property
     def label(self):
