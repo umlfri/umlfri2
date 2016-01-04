@@ -1,13 +1,16 @@
 class UflDialogTab:
-    def __init__(self, id, name):
+    def __init__(self, attr):
         self.__widgets = []
-        self.__name = name
+        self.__name = None
         self.__ufl_object = None
-        self.__id = id
+        self.__attr = attr
     
     @property
     def id(self):
-        return self.__id
+        if self.__attr is None:
+            return None
+        else:
+            return self.__attr.name
     
     @property
     def name(self):
@@ -39,3 +42,10 @@ class UflDialogTab:
     
     def finish(self):
         raise NotImplementedError
+    
+    def translate(self, translation):
+        if self.__attr is not None:
+            self.__name = translation.translate(self.__attr)
+        
+        for widget in self.__widgets:
+            widget.translate(translation)

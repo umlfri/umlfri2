@@ -6,83 +6,76 @@ from ..types import *
 
 
 class UflDialog:
-    def __init__(self, type, translation, options=UflDialogOptions.standard):
+    def __init__(self, type, options=UflDialogOptions.standard):
         self.__type = type
-        self.__translation = translation
         self.__tabs = []
         self.__original_object = None
         self.__mutable_object = None
         self.__options = options
         if isinstance(self.__type, UflListType):
-            self.__add_list_tab(None, None, self.__type)
+            self.__add_list_tab(None, self.__type)
         elif isinstance(self.__type, UflObjectType):
             self.__add_tabs()
         else:
             raise ValueError("UflDialog can be constructed using list or object type only")
     
     def __add_tabs(self):
-        tab = UflDialogObjectTab(None, None)
+        tab = UflDialogObjectTab(None)
         self.__tabs.append(tab)
         
         for attr in self.__type.attributes:
-            tab_label = self.__translation.translate(attr)
             if self.__options.list_as_tab and isinstance(attr.type, UflListType):
-                self.__add_list_tab(attr.name, tab_label, attr.type)
+                self.__add_list_tab(attr, attr.type)
             elif self.__options.multiline_as_tab and isinstance(attr.type, UflStringType) and attr.type.multiline:
-                self.__add_multiline_tab(attr.name, tab_label, attr.type)
+                self.__add_multiline_tab(attr, attr.type)
             elif self.__options.object_as_tab and isinstance(attr.type, UflObjectType):
-                self.__add_object_tab(attr.name, tab_label, attr.type)
+                self.__add_object_tab(attr, attr.type)
             else:
-                tab.add_widget(self.__make_widget(tab, attr.name, tab_label, attr.type))
+                tab.add_widget(self.__make_widget(tab, attr, attr.type))
     
-    def __add_list_tab(self, id, name, type):
-        tab = UflDialogListTab(id, name, type)
+    def __add_list_tab(self, attr, type):
+        tab = UflDialogListTab(attr, type)
         self.__tabs.append(tab)
         
         if isinstance(type.item_type, UflObjectType):
             for attr in type.item_type.attributes:
-                label = self.__translation.translate(attr)
-                tab.add_widget(self.__make_widget(tab, attr.name, label, attr.type))
+                tab.add_widget(self.__make_widget(tab, attr, attr.type))
         else:
-            tab.add_widget(self.__make_widget(tab, None, None, type))
+            tab.add_widget(self.__make_widget(tab, None, type))
     
-    def __add_object_tab(self, id, name, type):
-        tab = UflDialogObjectTab(id, name)
+    def __add_object_tab(self, attr, type):
+        tab = UflDialogObjectTab(attr)
         self.__tabs.append(tab)
         
         for attr in type.attributes:
-            label = self.__translation.translate(attr)
-            tab.add_widget(self.__make_widget(tab, attr.name, label, attr.type))
+            tab.add_widget(self.__make_widget(tab, attr, attr.type))
     
-    def __add_multiline_tab(self, id, name, type):
-        tab = UflDialogValueTab(id, name)
+    def __add_multiline_tab(self, attr, type):
+        tab = UflDialogValueTab(attr)
         self.__tabs.append(tab)
         
-        tab.add_widget(self.__make_widget(tab, None, None, type))
+        tab.add_widget(self.__make_widget(tab, None, type))
 
-    def __make_widget(self, tab, id, label, type):
+    def __make_widget(self, tab, attr, type):
         if isinstance(type, UflBoolType):
-            return UflDialogCheckWidget(tab, id, label)
+            return UflDialogCheckWidget(tab, attr)
         elif isinstance(type, UflColorType):
-            return UflDialogColorWidget(tab, id, label)
+            return UflDialogColorWidget(tab, attr)
         elif isinstance(type, UflEnumType):
-            items = []
-            for possibility in type.possibilities:
-                items.append((self.__translation.translate(possibility), possibility.value))
-            return UflDialogSelectWidget(tab, id, label, items)
+            return UflDialogSelectWidget(tab, attr)
         elif isinstance(type, UflFontType):
-            return UflDialogFontWidget(tab, id, label)
+            return UflDialogFontWidget(tab, attr)
         elif isinstance(type, UflFontType):
-            return UflDialogFontWidget(tab, id, label)
+            return UflDialogFontWidget(tab, attr)
         elif isinstance(type, (UflObjectType, UflListType)):
-            return UflDialogChildWidget(tab, id, label, UflDialog(type, self.__translation, self.__options))
+            return UflDialogChildWidget(tab, attr, UflDialog(type, self.__options))
         elif isinstance(type, UflStringType):
             if type.multiline:
-                return UflDialogTextAreaWidget(tab, id, label)
+                return UflDialogTextAreaWidget(tab, attr)
             elif type.possibilities:
-                return UflDialogComboWidget(tab, id, label, type.possibilities)
+                return UflDialogComboWidget(tab, attr)
             else:
-                return UflDialogTextWidget(tab, id, label)
+                return UflDialogTextWidget(tab, attr)
         else:
             raise ValueError
     
@@ -130,6 +123,10 @@ class UflDialog:
                     tab.associate(ufl_object)
                 else:
                     tab.associate(ufl_object.get_value(tab.id))
+    
+    def translate(self, translation):
+        for tab in self.__tabs:
+            tab.translate(translation)
     
     def reset(self):
         if self.__original_object is None:

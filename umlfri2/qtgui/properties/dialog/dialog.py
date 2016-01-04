@@ -62,7 +62,8 @@ class PropertiesDialog(QDialog):
     
     @staticmethod
     def open_for(main_window, object):
-        dialog = object.create_ufl_dialog(Application().language)
+        dialog = object.create_ufl_dialog()
+        dialog.translate(object.type.metamodel.addon.get_translation(Application().language))
         qt_dialog = PropertiesDialog(main_window, dialog, object)
         qt_dialog.setModal(True)
         if qt_dialog.exec_() == PropertiesDialog.Accepted:

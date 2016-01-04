@@ -22,9 +22,9 @@ class ObjectTab(TableTab):
                 qt_widget = QSelectionChangingCheckBox(self, no)
                 qt_widget.setChecked(widget.value)
             elif isinstance(widget, UflDialogChildWidget):
-                qt_widget = QSelectionChangingPushButton(self, no, _("Edit..."))
+                qt_widget = QSelectionChangingPushButton(self, no)
             elif isinstance(widget, UflDialogColorWidget):
-                qt_widget = QSelectionChangingPushButton(self, no, "?") # TODO: color selection widget
+                qt_widget = QSelectionChangingPushButton(self, no) # TODO: color selection widget
             elif isinstance(widget, UflDialogComboWidget):
                 qt_widget = QSelectionChangingComboBox(self, no)
                 qt_widget.setEditable(True)
@@ -32,7 +32,7 @@ class ObjectTab(TableTab):
                     qt_widget.addItem(item)
                 qt_widget.setEditText(widget.value)
             elif isinstance(widget, UflDialogFontWidget):
-                qt_widget = QSelectionChangingPushButton(self, no, "?") # TODO: font selection widget
+                qt_widget = QSelectionChangingPushButton(self, no) # TODO: font selection widget
             elif isinstance(widget, UflDialogIntegerWidget):
                 qt_widget = QSelectionChangingSpinBox(self, no)
                 qt_widget.setValue(widget.value)
@@ -66,6 +66,9 @@ class ObjectTab(TableTab):
             label = QTableWidgetItem(widget.label)
             label.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
             self.setItem(no, 0, label)
+            
+            if isinstance(widget, UflDialogChildWidget):
+                self.cellWidget(no, 1).setText(_("Edit..."))
     
     @property
     def label(self):

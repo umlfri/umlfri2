@@ -29,6 +29,7 @@ class PropertiesWidget(QTabWidget):
         Application().event_dispatcher.subscribe(ChangedCurrentTabEvent, self.__tab_changed)
         
         self.__item = None
+        self.__dialog = None
         self.__select_item(None)
     
     def __item_changed(self, item):
@@ -63,19 +64,23 @@ class PropertiesWidget(QTabWidget):
         
         if isinstance(item, Project):
             self.addTab(ProjectTab(item), None)
+            self.__dialog = None
         elif item is not None and item.has_ufl_dialog:
-            dialog = item.create_ufl_dialog(Application().language, UflDialogOptions.list)
-            for tab in dialog.tabs:
+            self.__dialog = item.create_ufl_dialog(UflDialogOptions.list)
+            for tab in self.__dialog.tabs:
                 if isinstance(tab, UflDialogObjectTab):
-                    self.addTab(ObjectTab(tab, dialog), None)
+                    self.addTab(ObjectTab(tab, self.__dialog), None)
                 elif isinstance(tab, UflDialogValueTab):
-                    self.addTab(TextTab(tab, dialog), None)
+                    self.addTab(TextTab(tab, self.__dialog), None)
         else:
             self.addTab(EmptyTab(), None)
+            self.__dialog = None
         
         self.__reload_texts()
     
     def __reload_texts(self):
+        if self.__dialog is not None:
+            self.__dialog.translate(self.__item.type.metamodel.addon.get_translation(Application().language))
         for no in range(self.count()):
             self.setTabText(no, self.widget(no).label)
             self.widget(no).reload_texts()

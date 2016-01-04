@@ -3,8 +3,8 @@ from .tab import UflDialogTab
 
 
 class UflDialogListTab(UflDialogTab):
-    def __init__(self, id, name, list_type): 
-        super().__init__(id, name)
+    def __init__(self, attr, list_type): 
+        super().__init__(attr)
         self.__list_type = list_type
         self.__list = None
         self.__current_index = None

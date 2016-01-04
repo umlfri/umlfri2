@@ -14,8 +14,8 @@ class QSelectionChangingCheckBox(QCheckBox):
 
 
 class QSelectionChangingPushButton(QPushButton):
-    def __init__(self, table, row, text):
-        super().__init__(text)
+    def __init__(self, table, row):
+        super().__init__()
         self.__table = table
         self.__row = row
     

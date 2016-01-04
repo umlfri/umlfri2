@@ -2,9 +2,10 @@ from .valued import UflDialogValuedWidget
 
 
 class UflDialogSelectWidget(UflDialogValuedWidget):
-    def __init__(self, tab, id, label, items): 
-        super().__init__(tab, id, label)
-        self.__items = items
+    def __init__(self, tab, attr): 
+        super().__init__(tab, attr)
+        
+        self.__items = tuple((None, possibility.value) for possibility in attr.type.possibilities)
     
     @property
     def possibilities(self):
@@ -21,3 +22,9 @@ class UflDialogSelectWidget(UflDialogValuedWidget):
     @current_index.setter
     def current_index(self, index):
         self.value = self.__items[index][1]
+    
+    def translate(self, translation):
+        super().translate(translation)
+        
+        self.__items = tuple((translation.translate(possibility), possibility.value)
+                             for possibility in self.attribute.type.possibilities)

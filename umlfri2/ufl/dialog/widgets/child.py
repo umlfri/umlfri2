@@ -2,8 +2,8 @@ from .widget import UflDialogWidget
 
 
 class UflDialogChildWidget(UflDialogWidget):
-    def __init__(self, tab, id, label, dialog): 
-        super().__init__(tab, id, label)
+    def __init__(self, tab, attr, dialog): 
+        super().__init__(tab, attr)
         self.__dialog = dialog
     
     @property
@@ -17,4 +17,8 @@ class UflDialogChildWidget(UflDialogWidget):
             self.__dialog.associate(ufl_object)
         else:
             self.__dialog.associate(ufl_object.get_value(self.id))
-
+    
+    def translate(self, translation):
+        super().translate(translation)
+        
+        self.__dialog.translate(translation)

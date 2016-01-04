@@ -197,10 +197,9 @@ class ElementObject:
     def has_ufl_dialog(self):
         return self.__type.ufl_type.has_attributes
     
-    def create_ufl_dialog(self, language, options=UflDialogOptions.standard):
+    def create_ufl_dialog(self, options=UflDialogOptions.standard):
         if not self.__type.ufl_type.has_attributes:
             raise Exception
-        translation = self.__type.metamodel.addon.get_translation(language)
-        dialog = UflDialog(self.__type.ufl_type, translation, options)
+        dialog = UflDialog(self.__type.ufl_type, options)
         dialog.associate(self.__data)
         return dialog
