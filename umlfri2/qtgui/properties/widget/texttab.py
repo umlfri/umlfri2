@@ -6,8 +6,6 @@ class TextTab(QTextEdit):
         
         self.setTabChangesFocus(True)
         
-        self.setPlainText(tab.widget.value)
-        
         self.__tab = tab
         self.__dialog = dialog
     
@@ -17,6 +15,9 @@ class TextTab(QTextEdit):
             return _("General")
         else:
             return self.__tab.name
+    
+    def reload_data(self):
+        self.setPlainText(self.__tab.widget.value)
     
     def reload_texts(self):
         pass

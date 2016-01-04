@@ -15,8 +15,6 @@ class ProjectTab(TableTab):
         self.setRowCount(1)
         self.itemChanged.connect(self.__item_changed)
         
-        self.setItem(0, 1, QTableWidgetItem(_(project.name)))
-        
         self.__project = project
     
     def __item_changed(self, item):
@@ -36,6 +34,9 @@ class ProjectTab(TableTab):
         name = QTableWidgetItem(_("Name"))
         name.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
         self.setItem(0, 0, name)
+    
+    def reload_data(self):
+        self.setItem(0, 1, QTableWidgetItem(_(self.__project.name)))
     
     @property
     def label(self):

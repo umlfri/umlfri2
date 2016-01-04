@@ -37,7 +37,9 @@ class PropertiesWidget(QTabWidget):
     
     def __item_changed(self, item):
         if item is self.__item:
-            self.__select_item(item)
+            if self.__dialog is not None:
+                self.__dialog.refresh()
+            self.__reload_data()
     
     def __selection_changed(self, event):
         if event.diagram is Application().tabs.current_tab.drawing_area.diagram:
@@ -79,6 +81,7 @@ class PropertiesWidget(QTabWidget):
             self.addTab(EmptyTab(), None)
             self.__dialog = None
         
+        self.__reload_data()
         self.__reload_texts()
     
     def apply(self):
@@ -86,6 +89,10 @@ class PropertiesWidget(QTabWidget):
         command = ApplyPatchCommand(self.__item, self.__dialog.make_patch())
         Application().commands.execute(command)
         self.__dialog.reset()
+    
+    def __reload_data(self):
+        for no in range(self.count()):
+            self.widget(no).reload_data()
     
     def __reload_texts(self):
         if self.__dialog is not None:

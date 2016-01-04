@@ -127,6 +127,9 @@ class UflDialog:
                 else:
                     tab.associate(ufl_object.get_value(tab.id))
     
+    def refresh(self):
+        self.associate(self.__original_object)
+    
     def translate(self, translation):
         for tab in self.__tabs:
             tab.translate(translation)

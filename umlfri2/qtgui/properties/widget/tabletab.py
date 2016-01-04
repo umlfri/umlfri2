@@ -16,6 +16,9 @@ class TableTab(QTableWidget):
     def reload_texts(self):
         self.setHorizontalHeaderLabels([_("Name"), _("Value")])
     
+    def reload_data(self):
+        pass
+    
     @property
     def label(self):
         raise Exception

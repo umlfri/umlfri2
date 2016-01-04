@@ -25,7 +25,6 @@ class ObjectTab(TableTab):
         for no, widget in enumerate(tab.widgets):
             if isinstance(widget, UflDialogCheckWidget):
                 qt_widget = QSelectionChangingCheckBox(self, no)
-                qt_widget.setChecked(widget.value)
                 qt_widget.stateChanged.connect(partial(self.__state_changed, widget))
             elif isinstance(widget, UflDialogChildWidget):
                 qt_widget = QSelectionChangingPushButton(self, no)
@@ -37,24 +36,20 @@ class ObjectTab(TableTab):
                 qt_widget.setEditable(True)
                 for item in widget.possibilities:
                     qt_widget.addItem(item)
-                qt_widget.setEditText(widget.value)
                 qt_widget.currentIndexChanged[str].connect(partial(self.__value_changed, widget))
                 qt_widget.lostFocus.connect(partial(self.__value_changed, widget))
             elif isinstance(widget, UflDialogFontWidget):
                 qt_widget = QSelectionChangingPushButton(self, no) # TODO: font selection widget
             elif isinstance(widget, UflDialogIntegerWidget):
                 qt_widget = QSelectionChangingSpinBox(self, no)
-                qt_widget.setValue(widget.value)
                 qt_widget.valueChanged[int].connect(partial(self.__value_changed, widget))
             elif isinstance(widget, UflDialogSelectWidget):
                 qt_widget = QSelectionChangingComboBox(self, no)
                 for item in widget.possibilities:
                     qt_widget.addItem(item)
-                qt_widget.setCurrentIndex(widget.current_index)
                 qt_widget.currentIndexChanged[int].connect(partial(self.__index_changed, widget))
             elif isinstance(widget, UflDialogTextWidget):
                 qt_widget = QSelectionChangingLineEdit(self, no)
-                qt_widget.setText(widget.value)
                 qt_widget.lostFocus.connect(partial(self.__value_changed, widget))
                 qt_widget.returnPressed.connect(partial(self.__value_accepted, widget, qt_widget))
             else:
@@ -87,6 +82,28 @@ class ObjectTab(TableTab):
     def __value_accepted(self, widget, qt_widget):
         widget.value = qt_widget.text()
         self.__widget.apply()
+    
+    def reload_data(self):
+        for no, widget in enumerate(self.__tab.widgets):
+            qt_widget = self.cellWidget(no, 1)
+            if isinstance(widget, UflDialogCheckWidget):
+                qt_widget.setChecked(widget.value)
+            elif isinstance(widget, UflDialogChildWidget):
+                pass
+            elif isinstance(widget, UflDialogColorWidget):
+                pass
+            elif isinstance(widget, UflDialogComboWidget):
+                qt_widget.setEditText(widget.value)
+            elif isinstance(widget, UflDialogFontWidget):
+                pass
+            elif isinstance(widget, UflDialogIntegerWidget):
+                qt_widget.setValue(widget.value)
+            elif isinstance(widget, UflDialogSelectWidget):
+                qt_widget.setCurrentIndex(widget.current_index)
+            elif isinstance(widget, UflDialogTextWidget):
+                qt_widget.setText(widget.value)
+            else:
+                raise Exception()
     
     def reload_texts(self):
         super().reload_texts()
