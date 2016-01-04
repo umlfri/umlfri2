@@ -49,6 +49,18 @@ class Diagram:
     def parent(self):
         return self.__parent()
     
+    def change_parent(self, new_parent, new_index):
+        if self.project is not new_parent.project:
+            raise Exception
+        
+        self.__parent().remove_child(self)
+        self.__parent = ref(new_parent)
+        self.__parent().add_child(self, new_index)
+    
+    @property
+    def project(self):
+        return self.__parent().project
+    
     @property
     def type(self):
         return self.__type

@@ -1,4 +1,4 @@
-- [ ] drag and drop in project tree
+- [x] drag and drop in project tree
 - [x] properties widget at bottom right
 - [ ] clipboard
 - [ ] zoom

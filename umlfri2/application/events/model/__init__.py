@@ -5,5 +5,6 @@ from .diagramcreated import DiagramCreatedEvent
 from .diagramdeleted import DiagramDeletedEvent
 from .elementcreated import ElementCreatedEvent
 from .elementdeleted import ElementDeletedEvent
+from .nodemoved import NodeMovedEvent
 from .objectdatachanged import ObjectDataChangedEvent
 from .projectchanged import ProjectChangedEvent

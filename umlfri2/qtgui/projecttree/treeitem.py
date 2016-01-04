@@ -29,3 +29,9 @@ class ProjectTreeItem(QTreeWidgetItem):
         
         self.setText(0, name)
         self.setHidden(name is None)
+    
+    def set_drop_enabled(self, enabled):
+        if enabled:
+            self.setFlags(self.flags() | Qt.ItemIsDropEnabled)
+        else:
+            self.setFlags(self.flags() & ~Qt.ItemIsDropEnabled)

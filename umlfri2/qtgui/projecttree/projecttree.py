@@ -1,9 +1,10 @@
 from PySide.QtCore import Qt
 from PySide.QtGui import QTreeWidget
 from umlfri2.application import Application
+from umlfri2.application.commands.model.movenode import MoveNodeCommand
 from umlfri2.application.events.application import ItemSelectedEvent
 from umlfri2.application.events.model import ElementCreatedEvent, ObjectDataChangedEvent, DiagramCreatedEvent, \
-    ProjectChangedEvent, ElementDeletedEvent, DiagramDeletedEvent
+    ProjectChangedEvent, ElementDeletedEvent, DiagramDeletedEvent, NodeMovedEvent
 from umlfri2.application.events.solution import OpenProjectEvent, OpenSolutionEvent
 from umlfri2.model import Diagram, ElementObject, Project
 from .mimedata import ProjectMimeData
@@ -24,6 +25,8 @@ class ProjectTree(QTreeWidget):
         self.header().close()
         self.itemSelectionChanged.connect(self.__item_selected)
         self.itemDoubleClicked.connect(self.__item_double_clicked)
+        self.setDragDropMode(QTreeWidget.DragDrop)
+        self.invisibleRootItem().setFlags(0)
         
         Application().event_dispatcher.subscribe(ElementCreatedEvent, self.__element_created)
         Application().event_dispatcher.subscribe(DiagramCreatedEvent, self.__diagram_created)
@@ -34,6 +37,7 @@ class ProjectTree(QTreeWidget):
         Application().event_dispatcher.subscribe(OpenProjectEvent, self.__project_open)
         Application().event_dispatcher.subscribe(OpenSolutionEvent, self.__solution_open)
         Application().event_dispatcher.subscribe(ItemSelectedEvent, self.__element_selected)
+        Application().event_dispatcher.subscribe(NodeMovedEvent, self.__node_moved)
     
     def reload(self):
         self.clear()
@@ -73,6 +77,24 @@ class ProjectTree(QTreeWidget):
         
         item.refresh()
     
+    def __reload_diagram(self, parent, diagram, index=None):
+        child_item = ProjectTreeItem(diagram)
+        
+        if index is not None:
+            parent.insertChild(index, child_item)
+        else:
+            for item_id in range(parent.childCount()):
+                item = parent.child(item_id)
+                
+                if isinstance(item, ProjectTreeItem):
+                    if isinstance(item.model_object, ElementObject):
+                        parent.insertChild(item_id, child_item)
+                        break
+            else:
+                parent.addChild(child_item)
+        
+        child_item.refresh()
+    
     def __element_deleted(self, event):
         if event.indirect:
             return
@@ -104,22 +126,9 @@ class ProjectTree(QTreeWidget):
             return
         
         parent_item = self.__get_item(event.diagram.parent)
-        child_item = ProjectTreeItem(event.diagram)
         
-        if event.index is not None:
-            parent_item.insertChild(event.index, child_item)
-        else:
-            for item_id in range(parent_item.childCount()):
-                item = parent_item.child(item_id)
-                
-                if isinstance(item, ProjectTreeItem):
-                    if isinstance(item.model_object, ElementObject):
-                        parent_item.insertChild(item_id, child_item)
-                        break
-            else:
-                parent_item.addChild(child_item)
+        self.__reload_diagram(parent_item, event.diagram, event.index)
         
-        child_item.refresh()
         parent_item.setExpanded(True)
     
     def __object_changed(self, event):
@@ -146,6 +155,25 @@ class ProjectTree(QTreeWidget):
                 parent = parent.parent()
             
             self.setCurrentItem(item)
+    
+    def __node_moved(self, event):
+        old_parent_item = self.__get_item(event.old_parent)
+        parent_item = self.__get_item(event.new_parent)
+        
+        for item_id in range(old_parent_item.childCount()):
+            item = old_parent_item.child(item_id)
+            if isinstance(item, ProjectTreeItem) and item.model_object is event.node:
+                old_parent_item.removeChild(item)
+                break
+        else:
+            raise Exception
+        
+        old_parent_item.removeChild(item)
+        
+        if isinstance(event.node, ElementObject):
+            self.__reload_element(parent_item, event.node, event.new_index)
+        else:
+            self.__reload_diagram(parent_item, event.node, event.new_index)
     
     def __item_double_clicked(self, item, column):
         if isinstance(item, ProjectTreeItem):
@@ -205,9 +233,51 @@ class ProjectTree(QTreeWidget):
             ret = super().mimeData([items[0]])
             formats = ret.formats()
             data = ret.data(formats[0])
-            ret = ProjectMimeData(items[0].model_object)
+            object = items[0].model_object
+            
+            ret = ProjectMimeData(object)
             self.__mime_data_temp = ret # QT does not keep the reference!
             ret.setData(formats[0], data)
+            
+            enable_for_project = isinstance(object, ElementObject)
+            
+            self.__enable_drop_for(self.invisibleRootItem(), self.__get_item(object.project), False, enable_for_project)
+            
             return ret
         else:
             return None
+    
+    def __enable_drop_for(self, node, enabled_node, enabled, enable_for_project):
+        if isinstance(node, ProjectTreeItem):
+            if isinstance(node.model_object, Project) and enable_for_project:
+                node.set_drop_enabled(enabled)
+            elif isinstance(node.model_object, ElementObject):
+                node.set_drop_enabled(enabled)
+            else:
+                node.set_drop_enabled(False)
+        
+        for item_id in range(node.childCount()):
+            child = node.child(item_id)
+            
+            if child is enabled_node:
+                self.__enable_drop_for(child, enabled_node, True, enable_for_project)
+            else:
+                self.__enable_drop_for(child, enabled_node, enabled, enable_for_project)
+    
+    def dropMimeData(self, parent, index, data, action):
+        if not isinstance(parent, ProjectTreeItem):
+            return False
+        
+        if not isinstance(data, ProjectMimeData):
+            return False
+        
+        if isinstance(data.model_object, ElementObject) and isinstance(parent.model_object, ElementObject):
+            for diagram in parent.model_object.diagrams:
+                index -= 1
+            if index < 0:
+                index = 0
+        
+        command = MoveNodeCommand(data.model_object, parent.model_object, index)
+        Application().commands.execute(command)
+        
+        return True
