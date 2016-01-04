@@ -1,6 +1,9 @@
+from functools import partial
+
 from PySide.QtCore import Qt
 from PySide.QtGui import QTableWidgetItem
 
+from ..dialog import PropertiesDialog
 from .selectionchangingwidgets import QSelectionChangingCheckBox, QSelectionChangingPushButton,\
     QSelectionChangingComboBox, QSelectionChangingSpinBox, QSelectionChangingLineEdit
 from umlfri2.ufl.dialog import *
@@ -10,8 +13,10 @@ from .tabletab import TableTab
 class ObjectTab(TableTab):
     __tab = None
     
-    def __init__(self, tab, dialog):
+    def __init__(self, main_window, tab, dialog):
         super().__init__()
+        
+        self.__main_window = main_window
         
         self.setRowCount(tab.widget_count)
         self.itemChanged.connect(self.__item_changed)
@@ -23,6 +28,7 @@ class ObjectTab(TableTab):
                 qt_widget.setChecked(widget.value)
             elif isinstance(widget, UflDialogChildWidget):
                 qt_widget = QSelectionChangingPushButton(self, no)
+                qt_widget.clicked.connect(partial(self.__show_dialog, widget.dialog))
             elif isinstance(widget, UflDialogColorWidget):
                 qt_widget = QSelectionChangingPushButton(self, no) # TODO: color selection widget
             elif isinstance(widget, UflDialogComboWidget):
@@ -58,6 +64,9 @@ class ObjectTab(TableTab):
         widget = self.cellWidget(row, 1)
         if widget is not None:
             widget.setFocus()
+    
+    def __show_dialog(self, dialog, checked=False):
+        PropertiesDialog(self.__main_window, dialog, None).exec_()
     
     def reload_texts(self):
         super().reload_texts()

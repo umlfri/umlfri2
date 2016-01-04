@@ -47,7 +47,7 @@ class UmlFriMainWindow(QMainWindow):
         
         self.__properties_dock = QDockWidget()
         self.addDockWidget(Qt.RightDockWidgetArea, self.__properties_dock)
-        self.__properties = PropertiesWidget()
+        self.__properties = PropertiesWidget(self)
         self.__properties_dock.setWidget(self.__properties)
         
         self.__tool_bar = MainToolBar(self)

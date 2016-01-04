@@ -14,8 +14,10 @@ from .texttab import TextTab
 
 
 class PropertiesWidget(QTabWidget):
-    def __init__(self):
+    def __init__(self, main_window):
         super().__init__()
+        
+        self.__main_window = main_window
         
         self.setTabPosition(QTabWidget.South)
         
@@ -69,7 +71,7 @@ class PropertiesWidget(QTabWidget):
             self.__dialog = item.create_ufl_dialog(UflDialogOptions.list)
             for tab in self.__dialog.tabs:
                 if isinstance(tab, UflDialogObjectTab):
-                    self.addTab(ObjectTab(tab, self.__dialog), None)
+                    self.addTab(ObjectTab(self.__main_window, tab, self.__dialog), None)
                 elif isinstance(tab, UflDialogValueTab):
                     self.addTab(TextTab(tab, self.__dialog), None)
         else:
