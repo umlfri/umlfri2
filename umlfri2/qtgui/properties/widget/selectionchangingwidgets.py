@@ -1,3 +1,4 @@
+from PySide.QtCore import Signal
 from PySide.QtGui import QCheckBox, QPushButton, QComboBox, QSpinBox, QLineEdit
 
 
@@ -26,6 +27,8 @@ class QSelectionChangingPushButton(QPushButton):
 
 
 class QSelectionChangingComboBox(QComboBox):
+    lostFocus = Signal(str)
+    
     def __init__(self, table, row):
         super().__init__()
         self.__table = table
@@ -35,6 +38,11 @@ class QSelectionChangingComboBox(QComboBox):
         super().focusInEvent(event)
         
         self.__table.setCurrentCell(self.__row, 1)
+    
+    def focusOutEvent(self, event):
+        super().focusOutEvent(event)
+        
+        self.lostFocus.emit(self.currentText())
 
 
 class QSelectionChangingSpinBox(QSpinBox):
@@ -50,6 +58,8 @@ class QSelectionChangingSpinBox(QSpinBox):
 
 
 class QSelectionChangingLineEdit(QLineEdit):
+    lostFocus = Signal(str)
+    
     def __init__(self, table, row):
         super().__init__()
         self.__table = table
@@ -59,3 +69,8 @@ class QSelectionChangingLineEdit(QLineEdit):
         super().focusInEvent(event)
         
         self.__table.setCurrentCell(self.__row, 1)
+    
+    def focusOutEvent(self, event):
+        super().focusOutEvent(event)
+        
+        self.lostFocus.emit(self.text())

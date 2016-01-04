@@ -1,6 +1,7 @@
 from PySide.QtGui import QTableWidget, QTabWidget
 
 from umlfri2.application import Application
+from umlfri2.application.commands.model import ApplyPatchCommand
 from umlfri2.application.events.application import LanguageChangedEvent, ItemSelectedEvent
 from umlfri2.application.events.diagram import SelectionChangedEvent
 from umlfri2.application.events.model import ObjectDataChangedEvent, ProjectChangedEvent
@@ -71,7 +72,7 @@ class PropertiesWidget(QTabWidget):
             self.__dialog = item.create_ufl_dialog(UflDialogOptions.list)
             for tab in self.__dialog.tabs:
                 if isinstance(tab, UflDialogObjectTab):
-                    self.addTab(ObjectTab(self.__main_window, tab, self.__dialog), None)
+                    self.addTab(ObjectTab(self.__main_window, self, tab), None)
                 elif isinstance(tab, UflDialogValueTab):
                     self.addTab(TextTab(tab, self.__dialog), None)
         else:
@@ -79,6 +80,12 @@ class PropertiesWidget(QTabWidget):
             self.__dialog = None
         
         self.__reload_texts()
+    
+    def apply(self):
+        self.__dialog.finish()
+        command = ApplyPatchCommand(self.__item, self.__dialog.make_patch())
+        Application().commands.execute(command)
+        self.__dialog.reset()
     
     def __reload_texts(self):
         if self.__dialog is not None:
