@@ -76,8 +76,12 @@ class ObjectTab(TableTab):
             label.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
             self.setItem(no, 0, label)
             
+            qt_widget = self.cellWidget(no, 1)
             if isinstance(widget, UflDialogChildWidget):
-                self.cellWidget(no, 1).setText(_("Edit..."))
+                qt_widget.setText(_("Edit..."))
+            elif isinstance(widget, UflDialogSelectWidget):
+                for no, possibility in enumerate(widget.possibilities):
+                    qt_widget.setItemText(no, possibility)
     
     @property
     def label(self):
