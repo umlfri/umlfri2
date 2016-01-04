@@ -58,9 +58,9 @@ class ConnectionObject:
     
     def get_other_end(self, element):
         if self.__source() is element:
-            return self.__destination
+            return self.__destination()
         elif self.__destination() is element:
-            return self.__source
+            return self.__source()
         else:
             return None
     
