@@ -32,6 +32,9 @@ class UflDialog:
                 self.__add_object_tab(attr, attr.type)
             else:
                 tab.add_widget(self.__make_widget(tab, attr, attr.type))
+        
+        if self.__tabs[0].widget_count == 0:
+            del self.__tabs[0]
     
     def __add_list_tab(self, attr, type):
         tab = UflDialogListTab(attr, type)

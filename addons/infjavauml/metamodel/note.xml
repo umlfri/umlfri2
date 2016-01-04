@@ -3,7 +3,6 @@
     <Icon path="icons/note.png" />
     
     <Structure>
-        <Attribute id="stereotype" type="str"/>
         <Attribute id="note" type="text"/>
     </Structure>
 
@@ -15,18 +14,7 @@
                 <Sizer minwidth="50">
                     <Padding padding="5">
                         <Align horizontal="left">
-                            <VBox>
-                                <If condition="#self.stereotype">
-                                    <Sizer minheight="30">
-                                        <TextBox font="#cfg.element.textfont" color="#cfg.element.text">
-                                            <Text text="&#171;"/>
-                                            <Text text="#self.stereotype"/>
-                                            <Text text="&#187;"/>
-                                        </TextBox>
-                                    </Sizer>
-                                </If>
-                                <TextBox text="#self.note" font="#cfg.element.textfont" color="#cfg.element.text"/>
-                            </VBox>
+                            <TextBox text="#self.note" font="#cfg.element.textfont" color="#cfg.element.text"/>
                         </Align>
                     </Padding>
                 </Sizer>
