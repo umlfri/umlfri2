@@ -76,7 +76,7 @@ class PropertiesWidget(QTabWidget):
                 if isinstance(tab, UflDialogObjectTab):
                     self.addTab(ObjectTab(self.__main_window, self, tab), None)
                 elif isinstance(tab, UflDialogValueTab):
-                    self.addTab(TextTab(tab, self.__dialog), None)
+                    self.addTab(TextTab(self, tab), None)
         else:
             self.addTab(EmptyTab(), None)
             self.__dialog = None

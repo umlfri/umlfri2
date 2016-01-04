@@ -1,5 +1,5 @@
 - [ ] drag and drop in project tree
-- [ ] properties widget at bottom right
+- [x] properties widget at bottom right
 - [ ] clipboard
 - [ ] zoom
 - [x] "Show in project tree" content menu item
