@@ -117,6 +117,15 @@ class CanvasWidget(QWidget):
         self.__drawing_area.set_action(None)
         self.unsetCursor()
         PropertiesDialog.open_for(self.__main_window, visual.object)
+    
+    def wheelEvent(self, event):
+        if event.orientation() == Qt.Vertical and event.modifiers() == Qt.ControlModifier:
+            if event.delta() > 0:
+                self.__drawing_area.zoom_in()
+            else:
+                self.__drawing_area.zoom_out()
+        else:
+            super().wheelEvent(event)
         
     def contextMenuEvent(self, event):
         if event.reason() == QContextMenuEvent.Mouse:
