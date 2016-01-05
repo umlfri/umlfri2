@@ -64,11 +64,19 @@ class CommandProcessor:
         self.__undo_stack = []
         self.__redo_stack = []
     
+    @property
+    def undo_stack_size(self):
+        return len(self.__undo_stack)
+    
     def get_undo_stack(self, count=None):
         if count is None:
             yield from reversed(self.__undo_stack)
         else:
             yield from reversed(self.__undo_stack[-count:])
+    
+    @property
+    def redo_stack_size(self):
+        return len(self.__redo_stack)
     
     def get_redo_stack(self, count=None):
         if count is None:

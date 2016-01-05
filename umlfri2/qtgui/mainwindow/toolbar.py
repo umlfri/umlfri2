@@ -68,6 +68,9 @@ class MainToolBar(QToolBar):
         for no, cmd in enumerate(Application().commands.get_undo_stack(UNDO_REDO_COUNT)):
             action = self.__undo_menu.addAction(cmd.description)
             action.triggered.connect(partial(self.__undo_action, no + 1))
+        
+        if Application().commands.undo_stack_size > UNDO_REDO_COUNT:
+            self.__undo_menu.addAction("...").setEnabled(False)
     
     def __redo_action(self, count, checked=False):
         Application().commands.redo(count)
@@ -78,6 +81,9 @@ class MainToolBar(QToolBar):
         for no, cmd in enumerate(Application().commands.get_redo_stack(UNDO_REDO_COUNT)):
             action = self.__redo_menu.addAction(cmd.description)
             action.triggered.connect(partial(self.__redo_action, no + 1))
+        
+        if Application().commands.redo_stack_size > UNDO_REDO_COUNT:
+            self.__redo_menu.addAction("...").setEnabled(False)
     
     def __refresh_enable(self):
         self.__save.setEnabled(Application().can_save_solution)
