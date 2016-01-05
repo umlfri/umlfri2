@@ -36,6 +36,10 @@ class Project:
         return self.__metamodel
     
     @property
+    def children_count(self):
+        return len(self.__children)
+    
+    @property
     def children(self):
         yield from self.__children
     

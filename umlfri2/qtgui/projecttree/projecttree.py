@@ -71,8 +71,7 @@ class ProjectTree(QTreeWidget):
             parent.addChild(item)
         else:
             if isinstance(element.parent, ElementObject):
-                for diagram in element.parent.diagrams:
-                    index += 1
+                index += element.parent.diagram_count
             parent.insertChild(index, item)
         
         item.refresh()
@@ -238,16 +237,20 @@ class ProjectTree(QTreeWidget):
             ret = ProjectMimeData(object)
             self.__mime_data_temp = ret # QT does not keep the reference!
             ret.setData(formats[0], data)
-            
-            enable_for_project = isinstance(object, ElementObject)
-            
-            self.__enable_drop_for(self.invisibleRootItem(), self.__get_item(object.project), False, enable_for_project)
+
+            self.__enable_drop_for(
+                self.invisibleRootItem(),
+                self.__get_item(object.project),
+                self.__get_item(object),
+                False,
+                isinstance(object, ElementObject)
+            )
             
             return ret
         else:
             return None
     
-    def __enable_drop_for(self, node, enabled_node, enabled, enable_for_project):
+    def __enable_drop_for(self, node, enabled_node, disabled_node, enabled, enable_for_project):
         if isinstance(node, ProjectTreeItem):
             if isinstance(node.model_object, Project) and enable_for_project:
                 node.set_drop_enabled(enabled)
@@ -260,9 +263,11 @@ class ProjectTree(QTreeWidget):
             child = node.child(item_id)
             
             if child is enabled_node:
-                self.__enable_drop_for(child, enabled_node, True, enable_for_project)
+                self.__enable_drop_for(child, enabled_node, disabled_node, True, enable_for_project)
+            elif child is disabled_node:
+                self.__enable_drop_for(child, enabled_node, disabled_node, False, enable_for_project)
             else:
-                self.__enable_drop_for(child, enabled_node, enabled, enable_for_project)
+                self.__enable_drop_for(child, enabled_node, disabled_node, enabled, enable_for_project)
     
     def dropMimeData(self, parent, index, data, action):
         if not isinstance(parent, ProjectTreeItem):
@@ -272,10 +277,19 @@ class ProjectTree(QTreeWidget):
             return False
         
         if isinstance(data.model_object, ElementObject) and isinstance(parent.model_object, ElementObject):
-            for diagram in parent.model_object.diagrams:
+            index -= parent.model_object.diagram_count
+        
+        if data.model_object.parent is parent.model_object:
+            if parent.model_object.get_child_index(data.model_object) < index:
                 index -= 1
-            if index < 0:
-                index = 0
+    
+        if index < 0:
+            index = 0
+        
+        if isinstance(data.model_object, ElementObject) and index >= parent.model_object.children_count:
+            index = parent.model_object.children_count - 1
+        elif isinstance(data.model_object, Diagram) and index >= parent.model_object.diagram_count:
+            index = parent.model_object.diagram_count - 1
         
         command = MoveNodeCommand(data.model_object, parent.model_object, index)
         Application().commands.execute(command)

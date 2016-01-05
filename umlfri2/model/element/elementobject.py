@@ -138,8 +138,16 @@ class ElementObject:
             return self.__parent()
     
     @property
+    def children_count(self):
+        return len(self.__children)
+    
+    @property
     def children(self):
         yield from self.__children
+    
+    @property
+    def diagram_count(self):
+        return len(self.__diagrams)
     
     @property
     def diagrams(self):
