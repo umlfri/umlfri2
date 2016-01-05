@@ -1,4 +1,4 @@
-from PySide.QtCore import Qt, QPoint
+from PySide.QtCore import Qt, QPoint, QRect
 from PySide.QtGui import QPainter, QPen, QBrush, QColor, QFont, QFontMetrics, QPainterPath
 
 from umlfri2.components.visual.canvas import Canvas
@@ -25,6 +25,7 @@ class QTPainterCanvas(Canvas):
         
         self.__painter = painter
         self.__ruler = QTRuler()
+        self.__zoom = 1
 
     def __convert_color(self, color):
         return QColor.fromRgba(color.argb)
@@ -53,6 +54,7 @@ class QTPainterCanvas(Canvas):
     def set_zoom(self, zoom):
         if zoom != 1:
             self.__painter.scale(zoom, zoom)
+            self.__zoom = zoom
         
     def draw_ellipse(self, rectangle, fg=None, bg=None, line_width=None, line_style=None):
         self.__set_brush(bg)
@@ -119,7 +121,8 @@ class QTPainterCanvas(Canvas):
             self.__painter.setBackground(QColor(255, 255, 255))
         else:
             self.__painter.setBackground(self.__convert_color(color))
-        self.__painter.eraseRect(self.__painter.viewport())
+        size = self.__painter.viewport()
+        self.__painter.eraseRect(QRect(0, 0, size.width() / self.__zoom, size.height() / self.__zoom))
     
     def get_ruler(self):
         return self.__ruler
