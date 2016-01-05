@@ -1,12 +1,14 @@
 from PySide.QtCore import Qt, QSize, QPoint
-from PySide.QtGui import QWidget, QPainter, QApplication, QContextMenuEvent
-
+from PySide.QtGui import QWidget, QPainter, QApplication, QContextMenuEvent, QShortcut, QKeySequence
 from umlfri2.application import Application
-from umlfri2.application.commands.diagram import ShowElementCommand
+from umlfri2.application.commands.diagram import ShowElementCommand, ChangeZOrderCommand, ZOrderDirection, \
+    HideElementsCommand, HideConnectionCommand
+from umlfri2.application.commands.model import DeleteElementsCommand, DeleteConnectionCommand
 from umlfri2.application.drawingarea import DrawingAreaCursor
 from umlfri2.application.events.application import ZoomChangedEvent
 from umlfri2.application.events.diagram import DiagramChangedEvent, SelectionChangedEvent
 from umlfri2.application.events.model import ObjectDataChangedEvent, ConnectionChangedEvent
+from umlfri2.constants.keys import DELETE_FROM_PROJECT, Z_ORDER_RAISE, Z_ORDER_LOWER, Z_ORDER_TO_BOTTOM, Z_ORDER_TO_TOP
 from umlfri2.model import ElementObject
 from umlfri2.types.geometry import Point
 from .connectionmenu import CanvasConnectionMenu
@@ -35,6 +37,13 @@ class CanvasWidget(QWidget):
         Application().event_dispatcher.subscribe(SelectionChangedEvent, self.__something_changed)
         Application().event_dispatcher.subscribe(ConnectionChangedEvent, self.__something_changed)
         Application().event_dispatcher.subscribe(ZoomChangedEvent, self.__something_changed)
+        
+        QShortcut(QKeySequence(QKeySequence.Delete), self).activated.connect(self.__hide_object)
+        QShortcut(QKeySequence(DELETE_FROM_PROJECT), self).activated.connect(self.__delete_object)
+        QShortcut(QKeySequence(Z_ORDER_RAISE), self).activated.connect(self.__z_order_back)
+        QShortcut(QKeySequence(Z_ORDER_LOWER), self).activated.connect(self.__z_order_forward)
+        QShortcut(QKeySequence(Z_ORDER_TO_BOTTOM), self).activated.connect(self.__z_order_bottom)
+        QShortcut(QKeySequence(Z_ORDER_TO_TOP), self).activated.connect(self.__z_order_top)
     
     @property
     def diagram(self):
@@ -168,6 +177,50 @@ class CanvasWidget(QWidget):
             point = Point(pos.x(), pos.y())
             element = mime_data.model_object
             command = ShowElementCommand(self.diagram, element, point)
+            Application().commands.execute(command)
+    
+    def __hide_object(self):
+        if self.__drawing_area.selection.selected_elements:
+            command = HideElementsCommand(self.__drawing_area.diagram, self.__drawing_area.selection.selected_elements)
+            Application().commands.execute(command)
+        elif self.__drawing_area.selection.selected_connection:
+            command = HideConnectionCommand(self.__drawing_area.diagram,
+                                            self.__drawing_area.selection.selected_connection)
+            Application().commands.execute(command)
+    
+    def __delete_object(self):
+        if self.__drawing_area.selection.selected_elements:
+            command = DeleteElementsCommand(
+                tuple(element.object for element in self.__drawing_area.selection.selected_elements)
+            )
+            Application().commands.execute(command)
+        elif self.__drawing_area.selection.selected_connection:
+            command = DeleteConnectionCommand(self.__drawing_area.selection.selected_connection)
+            
+            Application().commands.execute(command)
+    
+    def __z_order_back(self):
+        if self.__drawing_area.selection.is_element_selected:
+            command = ChangeZOrderCommand(self.__drawing_area.diagram, self.__drawing_area.selection.selected_elements,
+                                          ZOrderDirection.bellow)
+            Application().commands.execute(command)
+    
+    def __z_order_forward(self):
+        if self.__drawing_area.selection.is_element_selected:
+            command = ChangeZOrderCommand(self.__drawing_area.diagram, self.__drawing_area.selection.selected_elements,
+                                          ZOrderDirection.above)
+            Application().commands.execute(command)
+    
+    def __z_order_bottom(self):
+        if self.__drawing_area.selection.is_element_selected:
+            command = ChangeZOrderCommand(self.__drawing_area.diagram, self.__drawing_area.selection.selected_elements,
+                                          ZOrderDirection.bottom)
+            Application().commands.execute(command)
+    
+    def __z_order_top(self):
+        if self.__drawing_area.selection.is_element_selected:
+            command = ChangeZOrderCommand(self.__drawing_area.diagram, self.__drawing_area.selection.selected_elements,
+                                          ZOrderDirection.top)
             Application().commands.execute(command)
     
     def __do_update(self):

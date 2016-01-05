@@ -3,7 +3,7 @@ from PySide.QtGui import QKeySequence
 from umlfri2.application import Application
 from umlfri2.application.commands.diagram import HideElementsCommand, ChangeZOrderCommand, ZOrderDirection
 from umlfri2.application.commands.model import DeleteElementsCommand
-from umlfri2.constants.keys import DELETE_FROM_PROJECT
+from umlfri2.constants.keys import DELETE_FROM_PROJECT, Z_ORDER_RAISE, Z_ORDER_LOWER, Z_ORDER_TO_BOTTOM, Z_ORDER_TO_TOP
 from ..base.contextmenu import ContextMenu
 from ..properties import PropertiesDialog
 
@@ -38,24 +38,24 @@ class CanvasElementMenu(ContextMenu):
             z_order_menu = self._add_sub_menu_item(_("Z-Order"))
             
             if something_below:
-                self._add_menu_item("go-down", _("Raise"), "PgDown", self.__z_order_back, z_order_menu)
+                self._add_menu_item("go-down", _("Raise"), Z_ORDER_RAISE, self.__z_order_back, z_order_menu)
             else:
-                self._add_menu_item("go-down", _("Raise"), "PgDown", None, z_order_menu)
+                self._add_menu_item("go-down", _("Raise"), Z_ORDER_RAISE, None, z_order_menu)
             
             if something_above:
-                self._add_menu_item("go-up", _("Lower"), "PgUp", self.__z_order_forward, z_order_menu)
+                self._add_menu_item("go-up", _("Lower"), Z_ORDER_LOWER, self.__z_order_forward, z_order_menu)
             else:
-                self._add_menu_item("go-up", _("Lower"), "PgUp", None, z_order_menu)
+                self._add_menu_item("go-up", _("Lower"), Z_ORDER_LOWER, None, z_order_menu)
             
             if something_below:
-                self._add_menu_item("go-bottom", _("Lower to Bottom"), "End", self.__z_order_bottom, z_order_menu)
+                self._add_menu_item("go-bottom", _("Lower to Bottom"), Z_ORDER_TO_BOTTOM, self.__z_order_bottom, z_order_menu)
             else:
-                self._add_menu_item("go-bottom", _("Lower to Bottom"), "End", None, z_order_menu)
+                self._add_menu_item("go-bottom", _("Lower to Bottom"), Z_ORDER_TO_BOTTOM, None, z_order_menu)
             
             if something_above:
-                self._add_menu_item("go-top", _("Raise to Top"), "Home", self.__z_order_top, z_order_menu)
+                self._add_menu_item("go-top", _("Raise to Top"), Z_ORDER_TO_TOP, self.__z_order_top, z_order_menu)
             else:
-                self._add_menu_item("go-top", _("Raise to Top"), "Home", None, z_order_menu)
+                self._add_menu_item("go-top", _("Raise to Top"), Z_ORDER_TO_TOP, None, z_order_menu)
         else:
             self._add_sub_menu_item(_("Z-order"), False)
             

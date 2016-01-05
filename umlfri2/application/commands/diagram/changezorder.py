@@ -1,5 +1,5 @@
 from umlfri2.application.events.diagram import ElementResizedMovedEvent
-from ..base import Command
+from ..base import Command, CommandNotDone
 
 
 class ZOrderDirection:
@@ -12,7 +12,7 @@ class ZOrderDirection:
 class ChangeZOrderCommand(Command):
     def __init__(self, diagram, elements, direction):
         self.__diagram = diagram
-        self.__elements = elements
+        self.__elements = tuple(elements)
         self.__direction = direction
         self.__new_z_indices = None
         self.__old_z_indices = None
@@ -36,6 +36,13 @@ class ChangeZOrderCommand(Command):
         
         self.__old_z_indices.sort()
         
+        if self.__direction in (ZOrderDirection.above, ZOrderDirection.top):
+            if not any(self.__diagram.get_visual_above(ruler, element) is not None for element in self.__elements):
+                raise CommandNotDone
+        else:
+            if not any(self.__diagram.get_visual_below(ruler, element) is not None for element in self.__elements):
+                raise CommandNotDone
+        
         if self.__direction == ZOrderDirection.bottom:
             base = 0
         elif self.__direction == ZOrderDirection.top:
@@ -51,9 +58,10 @@ class ChangeZOrderCommand(Command):
             base = float('inf')
             for element in self.__elements:
                 below_element = self.__diagram.get_visual_below(ruler, element)
-                below_z_order = self.__diagram.get_z_order(below_element)
-                if below_z_order < base:
-                    base = below_z_order
+                if below_element is not None:
+                    below_z_order = self.__diagram.get_z_order(below_element)
+                    if below_z_order < base:
+                        base = below_z_order
         
         self.__new_z_indices = []
         for no, (z_order, element) in enumerate(self.__old_z_indices):
