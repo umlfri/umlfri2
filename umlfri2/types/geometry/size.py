@@ -20,6 +20,9 @@ class Size:
     def rotate(self):
         return Vector(self.__height, self.__width)
     
+    def __mul__(self, other):
+        return Size(self.__width * other, self.__height * other)
+    
     def __str__(self):
         return "{0},{1}".format(self.__width, self.__height)
     

@@ -3,6 +3,10 @@ import abc
 
 class Canvas(metaclass=abc.ABCMeta):
     @abc.abstractmethod
+    def set_zoom(self, zoom):
+        pass
+    
+    @abc.abstractmethod
     def draw_ellipse(self, rectangle, fg=None, bg=None, line_width=None, line_style=None):
         pass
     

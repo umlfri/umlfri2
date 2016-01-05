@@ -1,3 +1,4 @@
+from umlfri2.types.geometry import Point
 from .drawingareacursor import DrawingAreaCursor
 from umlfri2.types.color import Colors
 from .actions import SelectManyAction
@@ -16,6 +17,7 @@ class DrawingArea:
         self.__postponed_action = None
         self.__current_action = None
         self.__cursor = DrawingAreaCursor.arrow
+        self.__zoom = 1
     
     @property
     def diagram(self):
@@ -30,6 +32,7 @@ class DrawingArea:
         return self.__selection
     
     def draw(self, canvas):
+        canvas.set_zoom(self.__zoom)
         self.__diagram.draw(canvas, self.__selection)
         if self.__current_action is not None:
             if self.__current_action.box is not None:
@@ -47,6 +50,8 @@ class DrawingArea:
                 )
     
     def mouse_down(self, point, control_pressed, shift_pressed):
+        point = self.__transform_position(point)
+        
         if self.__current_action is not None:
             self.__current_action.mouse_down(point)
             self.__postprocess_action(point, shift_pressed)
@@ -74,6 +79,8 @@ class DrawingArea:
             self.__change_cursor(point, shift_pressed)
 
     def mouse_move(self, point, control_pressed, shift_pressed):
+        point = self.__transform_position(point)
+        
         if self.__postponed_action is not None:
             action, postponed_point = self.__postponed_action
             self.set_action(action)
@@ -87,6 +94,8 @@ class DrawingArea:
             self.__change_cursor(point, shift_pressed)
     
     def mouse_up(self, point, control_pressed, shift_pressed):
+        point = self.__transform_position(point)
+        
         if self.__postponed_action is not None:
             self.__postponed_action = None
         elif self.__current_action is not None:
@@ -94,6 +103,8 @@ class DrawingArea:
             self.__postprocess_action(point, shift_pressed)
     
     def get_object_at(self, point):
+        point = self.__transform_position(point)
+        
         visual = self.__diagram.get_visual_at(self.__application.ruler, point)
         if visual is None:
             return None
@@ -129,4 +140,16 @@ class DrawingArea:
         return self.__current_action is not None
     
     def get_size(self, ruler):
-        return self.__diagram.get_size(ruler)
+        return self.__diagram.get_size(ruler) * self.__zoom
+    
+    def __transform_position(self, position):
+        return Point(int(round(position.x / self.__zoom)), int(round(position.y / self.__zoom)))
+    
+    def zoom_in(self):
+        self.__zoom *= .8
+    
+    def zoom_out(self):
+        self.__zoom *= 1.25
+    
+    def zoom_normal(self):
+        self.__zoom = 1

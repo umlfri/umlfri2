@@ -49,6 +49,10 @@ class QTPainterCanvas(Canvas):
     
     def __set_brush(self, color=None):
         self.__painter.setBrush(self.__create_brush(color))
+    
+    def set_zoom(self, zoom):
+        if zoom != 1:
+            self.__painter.scale(zoom, zoom)
         
     def draw_ellipse(self, rectangle, fg=None, bg=None, line_width=None, line_style=None):
         self.__set_brush(bg)
