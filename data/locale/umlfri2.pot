@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-05 13:07+0100\n"
+"POT-Creation-Date: 2016-01-05 13:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -63,6 +63,12 @@ msgid "Application exit"
 msgstr ""
 
 msgid "Apply"
+msgstr ""
+
+msgid "Bring forward"
+msgstr ""
+
+msgid "Bring to top"
 msgstr ""
 
 msgid "Cancel"
@@ -155,6 +161,12 @@ msgstr ""
 msgid "Select &all"
 msgstr ""
 
+msgid "Send back"
+msgstr ""
+
+msgid "Send to bottom"
+msgstr ""
+
 msgid "Show diagram"
 msgstr ""
 
@@ -186,6 +198,9 @@ msgid "Undo"
 msgstr ""
 
 msgid "Value"
+msgstr ""
+
+msgid "Z-order"
 msgstr ""
 
 msgid "unsaved"

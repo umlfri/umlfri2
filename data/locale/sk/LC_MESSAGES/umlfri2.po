@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-05 13:07+0100\n"
-"PO-Revision-Date: 2016-01-05 13:09+0100\n"
+"POT-Creation-Date: 2016-01-05 13:31+0100\n"
+"PO-Revision-Date: 2016-01-05 13:33+0100\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -64,6 +64,12 @@ msgstr "Ukončenie aplikácie"
 
 msgid "Apply"
 msgstr "Použiť"
+
+msgid "Bring forward"
+msgstr "O jeden dopredu"
+
+msgid "Bring to top"
+msgstr "Presunúť dopredu"
 
 msgid "Cancel"
 msgstr "Zrušiť"
@@ -155,6 +161,12 @@ msgstr "Vybrať"
 msgid "Select &all"
 msgstr "Vybrať &všetko"
 
+msgid "Send back"
+msgstr "O jeden dozadu"
+
+msgid "Send to bottom"
+msgstr "Presunúť dozadu"
+
 msgid "Show diagram"
 msgstr "Zobraziť diagram"
 
@@ -187,6 +199,9 @@ msgstr "Späť"
 
 msgid "Value"
 msgstr "Hodnota"
+
+msgid "Z-order"
+msgstr "Poradie"
 
 msgid "unsaved"
 msgstr "neuložený"
