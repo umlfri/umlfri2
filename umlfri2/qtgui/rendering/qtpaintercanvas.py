@@ -2,9 +2,9 @@ from PySide.QtCore import Qt, QPoint
 from PySide.QtGui import QPainter, QPen, QBrush, QColor, QFont, QFontMetrics, QPainterPath
 
 from umlfri2.components.visual.canvas import Canvas
-from ..base import image_loader
+from umlfri2.qtgui.base import image_loader
+from umlfri2.qtgui.rendering.qtruler import QTRuler
 from umlfri2.types.enums import LineStyle
-from ..base.qtruler import QTRuler
 from umlfri2.types.font import FontStyle
 from umlfri2.types.geometry import PathLineTo, PathCubicTo
 

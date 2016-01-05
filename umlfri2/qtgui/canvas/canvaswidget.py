@@ -9,11 +9,11 @@ from umlfri2.application.events.model import ObjectDataChangedEvent, ConnectionC
 from umlfri2.model import ElementObject
 from umlfri2.types.geometry import Point
 from .connectionmenu import CanvasConnectionMenu
-from .elementmenu import CanvasElementMenu
 from .diagrammenu import CanvasDiagramMenu
+from .elementmenu import CanvasElementMenu
 from ..projecttree import ProjectMimeData
-from .qtpaintercanvas import QTPainterCanvas
 from ..properties import PropertiesDialog
+from ..rendering import QTPainterCanvas
 
 
 class CanvasWidget(QWidget):

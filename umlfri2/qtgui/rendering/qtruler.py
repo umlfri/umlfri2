@@ -1,6 +1,6 @@
 from PySide.QtGui import QFont, QFontMetrics
 from umlfri2.components.visual.canvas import Ruler
-from . import image_loader
+from umlfri2.qtgui.base import image_loader
 from umlfri2.types.font import FontStyle
 from umlfri2.types.geometry import Size
 

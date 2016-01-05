@@ -8,7 +8,7 @@ from PySide.QtGui import QApplication, QIcon
 from umlfri2.application import Application
 from umlfri2.constants.paths import NT_ICON_THEME_PATH, NT_ICON_THEME
 from umlfri2.qtgui import UmlFriMainWindow
-from umlfri2.qtgui.base.qtruler import QTRuler
+from umlfri2.qtgui.rendering import QTRuler
 
 if os.name == 'nt':
     import ctypes
