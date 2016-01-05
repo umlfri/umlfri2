@@ -1,4 +1,5 @@
 from umlfri2.application.commands.diagram import MoveConnectionLabelCommand
+from umlfri2.types.geometry import Vector
 from ..drawingareacursor import DrawingAreaCursor
 from .action import Action
 
@@ -10,6 +11,7 @@ class MoveConnectionLabelAction(Action):
         super().__init__()
         self.__connection = connection
         self.__id = id
+        self.__old_point = None
     
     @property
     def cursor(self):
@@ -26,6 +28,10 @@ class MoveConnectionLabelAction(Action):
     def mouse_move(self, point):
         vector = point - self.__old_point
         self.__box += vector
+        if self.__box.x1 < 0:
+            self.__box -= Vector(self.__box.x1, 0)
+        if self.__box.y1 < 0:
+            self.__box -= Vector(0, self.__box.y1)
         self.__old_point = point
     
     def mouse_up(self):

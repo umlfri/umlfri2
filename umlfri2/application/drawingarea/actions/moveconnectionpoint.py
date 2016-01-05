@@ -1,5 +1,5 @@
 from umlfri2.application.commands.diagram import MoveConnectionPointCommand
-from umlfri2.types.geometry import PathBuilder
+from umlfri2.types.geometry import PathBuilder, Point
 from ..drawingareacursor import DrawingAreaCursor
 from .action import Action
 
@@ -22,13 +22,17 @@ class MoveConnectionPointAction(Action):
     def mouse_down(self, point):
         self.__points = list(self.__connection.get_points(self.application.ruler, element_centers=True))
         self.__build_path()
-        self.__old_point = point
     
     def mouse_move(self, point):
-        vector = point - self.__old_point
-        self.__points[self.__index] += vector
+        x, y = point.x, point.y
+        
+        if x < 0:
+            x = 0
+        if y < 0:
+            y = 0
+        
+        self.__points[self.__index] = Point(x, y)
         self.__build_path()
-        self.__old_point = point
     
     def mouse_up(self):
         old_points = list(self.__connection.get_points(self.application.ruler, element_centers=True))

@@ -1,5 +1,5 @@
 from umlfri2.application.commands.diagram import AddConnectionPointCommand
-from umlfri2.types.geometry import PathBuilder
+from umlfri2.types.geometry import PathBuilder, Point
 from ..drawingareacursor import DrawingAreaCursor
 from .action import Action
 
@@ -26,7 +26,14 @@ class AddConnectionPointAction(Action):
         self.__build_path()
     
     def mouse_move(self, point):
-        self.__point = point
+        x, y = point.x, point.y
+        
+        if x < 0:
+            x = 0
+        if y < 0:
+            y = 0
+        
+        self.__point = Point(x, y)
         self.__build_path()
     
     def mouse_up(self):

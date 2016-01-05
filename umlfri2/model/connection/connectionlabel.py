@@ -2,7 +2,7 @@ import math
 from weakref import ref
 
 from ..cache import ModelTemporaryDataCache
-from umlfri2.types.geometry import Vector, Rectangle, Line
+from umlfri2.types.geometry import Vector, Rectangle, Line, Point
 
 
 class ConnectionLabel:
@@ -145,4 +145,11 @@ class ConnectionLabel:
                    + vector_to_label\
                    - self.__cached_appearance.size.as_vector() / 2
         
-        self.__cached_appearance.move(position.round())
+        x, y = round(position.x), round(position.y)
+        
+        if x < 0:
+            x = 0
+        if y < 0:
+            y = 0
+        
+        self.__cached_appearance.move(Point(x, y))
