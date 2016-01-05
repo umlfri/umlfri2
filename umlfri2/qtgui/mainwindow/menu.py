@@ -4,7 +4,7 @@ from functools import partial
 from PySide.QtGui import QMenuBar, QAction, QMenu, QKeySequence, QIcon, QFileDialog
 from umlfri2.application import Application
 from umlfri2.application.events.application.languagechanged import LanguageChangedEvent
-from umlfri2.constants.keys import FULL_SCREEN
+from umlfri2.constants.keys import FULL_SCREEN, ZOOM_ORIGINAL
 from umlfri2.constants.languages import AVAILABLE_LANGUAGES
 from umlfri2.qtgui.fullscreen import FullScreenDiagram
 from umlfri2.qtgui.rendering import ImageExport
@@ -51,7 +51,7 @@ class MainWindowMenu(QMenuBar):
                                                    self.__view_zoom_in_action)
         self.__view_zoom_out = self.__add_menu_item(view_menu, QKeySequence.ZoomOut, "zoom-out",
                                                        self.__view_zoom_out_action)
-        self.__view_zoom_original = self.__add_menu_item(view_menu, None, "zoom-original",
+        self.__view_zoom_original = self.__add_menu_item(view_menu, ZOOM_ORIGINAL, "zoom-original",
                                                             self.__view_zoom_original_action)
         
         view_menu.addSeparator()

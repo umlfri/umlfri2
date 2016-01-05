@@ -1,2 +1,3 @@
 DELETE_FROM_PROJECT = "Shift+Del"
 FULL_SCREEN = "Alt+Return"
+ZOOM_ORIGINAL = "Ctrl+0"
