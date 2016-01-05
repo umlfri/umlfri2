@@ -47,6 +47,15 @@ class MainWindowMenu(QMenuBar):
         # VIEW MENU
         self.__view, view_menu = self.__add_menu()
         
+        self.__view_zoom_in = self.__add_menu_item(view_menu, QKeySequence.ZoomIn, "zoom-in",
+                                                   self.__view_zoom_in_action)
+        self.__view_zoom_out = self.__add_menu_item(view_menu, QKeySequence.ZoomOut, "zoom-out",
+                                                       self.__view_zoom_out_action)
+        self.__view_zoom_original = self.__add_menu_item(view_menu, None, "zoom-original",
+                                                            self.__view_zoom_original_action)
+        
+        view_menu.addSeparator()
+        
         for action in main_window.get_dock_actions():
             view_menu.addAction(action)
         
@@ -90,14 +99,25 @@ class MainWindowMenu(QMenuBar):
         return ret
     
     def __refresh_enable(self):
+        tab = Application().tabs.current_tab
+        
         self.__file_save.setEnabled(Application().can_save_solution)
         self.__file_save_as.setEnabled(Application().can_save_solution_as)
         
         self.__edit_undo.setEnabled(Application().commands.can_undo)
         self.__edit_redo.setEnabled(Application().commands.can_redo)
-        self.__edit_select_all.setEnabled(Application().tabs.current_tab is not None)
+        self.__edit_select_all.setEnabled(tab is not None)
         
-        self.__diagram.setEnabled(Application().tabs.current_tab is not None)
+        self.__diagram.setEnabled(tab is not None)
+        
+        if tab is None:
+            self.__view_zoom_in.setEnabled(False)
+            self.__view_zoom_out.setEnabled(False)
+            self.__view_zoom_original.setEnabled(False)
+        else:
+            self.__view_zoom_in.setEnabled(tab.drawing_area.can_zoom_in)
+            self.__view_zoom_out.setEnabled(tab.drawing_area.can_zoom_out)
+            self.__view_zoom_original.setEnabled(tab.drawing_area.can_zoom_original)
     
     def __file_new_action(self, checked=False):
         self.__main_window.new_project()
@@ -174,6 +194,15 @@ class MainWindowMenu(QMenuBar):
     def __tools_languages_menu_activate(self, lang_id, checked=False):
         Application().change_language(lang_id)
     
+    def __view_zoom_in_action(self, checked=False):
+        Application().tabs.current_tab.drawing_area.zoom_in()
+    
+    def __view_zoom_out_action(self, checked=False):
+        Application().tabs.current_tab.drawing_area.zoom_out()
+    
+    def __view_zoom_original_action(self, checked=False):
+        Application().tabs.current_tab.drawing_area.zoom_original()
+    
     def __reload_texts(self):
         self.__file.setText(_("&File"))
         self.__file_new.setText(_("&New"))
@@ -195,3 +224,6 @@ class MainWindowMenu(QMenuBar):
         self.__tools_languages.setText(_("Change &language"))
         
         self.__view.setText(_("&View"))
+        self.__view_zoom_in.setText(_("Zoom in"))
+        self.__view_zoom_out.setText(_("Zoom out"))
+        self.__view_zoom_original.setText(_("Zoom original"))

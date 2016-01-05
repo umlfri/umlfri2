@@ -1,3 +1,4 @@
+from umlfri2.application.events.application import ZoomChangedEvent
 from umlfri2.types.geometry import Point
 from .drawingareacursor import DrawingAreaCursor
 from umlfri2.types.color import Colors
@@ -10,6 +11,10 @@ class DrawingArea:
     SELECTION_RECTANGLE_BORDER = Colors.blue
     SELECTION_RECTANGLE_WIDTH = 3
     
+    ZOOM_FACTOR = 1.25
+    ZOOM_MIN = -3
+    ZOOM_MAX = 6
+    
     def __init__(self, application, diagram):
         self.__diagram = diagram
         self.__selection = Selection(application, self.__diagram)
@@ -17,7 +22,7 @@ class DrawingArea:
         self.__postponed_action = None
         self.__current_action = None
         self.__cursor = DrawingAreaCursor.arrow
-        self.__zoom = 1
+        self.__zoom = 0
     
     @property
     def diagram(self):
@@ -32,7 +37,7 @@ class DrawingArea:
         return self.__selection
     
     def draw(self, canvas):
-        canvas.set_zoom(self.__zoom)
+        canvas.set_zoom(self.ZOOM_FACTOR**self.__zoom)
         self.__diagram.draw(canvas, self.__selection)
         if self.__current_action is not None:
             if self.__current_action.box is not None:
@@ -140,16 +145,39 @@ class DrawingArea:
         return self.__current_action is not None
     
     def get_size(self, ruler):
-        return self.__diagram.get_size(ruler) * self.__zoom
+        zoom = self.ZOOM_FACTOR**self.__zoom
+        return self.__diagram.get_size(ruler) * zoom
     
     def __transform_position(self, position):
-        return Point(int(round(position.x / self.__zoom)), int(round(position.y / self.__zoom)))
+        zoom = self.ZOOM_FACTOR**self.__zoom
+        return Point(int(round(position.x / zoom)), int(round(position.y / zoom)))
+    
+    @property
+    def can_zoom_in(self):
+        return self.__zoom < self.ZOOM_MAX
     
     def zoom_in(self):
-        self.__zoom *= .8
+        self.__zoom += 1
+        if self.__zoom > self.ZOOM_MAX:
+            self.__zoom = self.ZOOM_MAX
+        
+        self.__application.event_dispatcher.dispatch(ZoomChangedEvent(self))
+    
+    @property
+    def can_zoom_out(self):
+        return self.__zoom > self.ZOOM_MIN
     
     def zoom_out(self):
-        self.__zoom *= 1.25
+        self.__zoom -= 1
+        if self.__zoom < self.ZOOM_MIN:
+            self.__zoom = self.ZOOM_MIN
+        
+        self.__application.event_dispatcher.dispatch(ZoomChangedEvent(self))
     
-    def zoom_normal(self):
-        self.__zoom = 1
+    @property
+    def can_zoom_original(self):
+        return self.__zoom != 0
+    
+    def zoom_original(self):
+        self.__zoom = 0
+        self.__application.event_dispatcher.dispatch(ZoomChangedEvent(self))

@@ -1,7 +1,7 @@
 - [x] drag and drop in project tree
 - [x] properties widget at bottom right
 - [ ] clipboard
-- [ ] zoom
+- [x] zoom
 - [x] "Show in project tree" content menu item
 - [x] reversing a connection
 - [x] z-order

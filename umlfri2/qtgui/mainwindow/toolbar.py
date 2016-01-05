@@ -30,6 +30,11 @@ class MainToolBar(QToolBar):
         self.__redo = self.__add_toolbar_item(QKeySequence.Redo, "edit-redo", partial(self.__redo_action, 1),
                                               self.__redo_menu)
         
+        self.addSeparator()
+        
+        self.__zoom_in = self.__add_toolbar_item(QKeySequence.ZoomIn, "zoom-in", self.__zoom_in_action)
+        self.__zoom_out = self.__add_toolbar_item(QKeySequence.ZoomOut, "zoom-out", self.__zoom_out_action)
+        
         Application().event_dispatcher.subscribe(LanguageChangedEvent, lambda event: self.__reload_texts())
         
         self.__reload_texts()
@@ -85,11 +90,25 @@ class MainToolBar(QToolBar):
         if Application().commands.redo_stack_size > UNDO_REDO_COUNT:
             self.__redo_menu.addAction("...").setEnabled(False)
     
+    def __zoom_in_action(self, checked=False):
+        Application().tabs.current_tab.drawing_area.zoom_in()
+    
+    def __zoom_out_action(self, checked=False):
+        Application().tabs.current_tab.drawing_area.zoom_out()
+    
     def __refresh_enable(self):
         self.__save.setEnabled(Application().can_save_solution)
         
         self.__undo.setEnabled(Application().commands.can_undo)
         self.__redo.setEnabled(Application().commands.can_redo)
+        
+        tab = Application().tabs.current_tab
+        if tab is None:
+            self.__zoom_in.setEnabled(False)
+            self.__zoom_out.setEnabled(False)
+        else:
+            self.__zoom_in.setEnabled(tab.drawing_area.can_zoom_in)
+            self.__zoom_out.setEnabled(tab.drawing_area.can_zoom_out)
     
     def __reload_texts(self):
         self.setWindowTitle(_("Toolbar"))
@@ -99,6 +118,9 @@ class MainToolBar(QToolBar):
         
         self.__set_toolbar_item_text(self.__undo, _("Undo"))
         self.__set_toolbar_item_text(self.__redo, _("Redo"))
+        
+        self.__set_toolbar_item_text(self.__zoom_in, _("Zoom in"))
+        self.__set_toolbar_item_text(self.__zoom_out, _("Zoom out"))
     
     def __set_toolbar_item_text(self, item, text):
         item.setText(text)
