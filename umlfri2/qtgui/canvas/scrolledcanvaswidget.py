@@ -1,4 +1,5 @@
-from PySide.QtGui import QScrollArea, QFrame
+from PySide.QtCore import Qt
+from PySide.QtGui import QScrollArea, QFrame, QWheelEvent
 from .canvaswidget import CanvasWidget
 
 
@@ -10,6 +11,12 @@ class ScrolledCanvasWidget(QScrollArea):
         
         self.setWidget(self.__canvas)
         self.setWidgetResizable(True)
+    
+    def wheelEvent(self, event):
+        if event.modifiers() == Qt.ShiftModifier:
+            super().wheelEvent(QWheelEvent(event.pos(), event.delta(), event.buttons(), 0, Qt.Horizontal))
+        else:
+            super().wheelEvent(event)
     
     @property
     def diagram(self):
