@@ -16,7 +16,7 @@
 - [x] rendering package content in "Package" element visual
 - [ ] canvas visual object
 - [ ] copy as image
-- [ ] export image
+- [x] export image
 - [ ] addon management
 - [ ] printing
 - [ ] fullscreen

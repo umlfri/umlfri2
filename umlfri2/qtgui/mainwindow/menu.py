@@ -1,10 +1,11 @@
+import os.path
 from functools import partial
 
-from PySide.QtGui import QMenuBar, QAction, QMenu, QKeySequence, QIcon
-
+from PySide.QtGui import QMenuBar, QAction, QMenu, QKeySequence, QIcon, QFileDialog
 from umlfri2.application import Application
 from umlfri2.application.events.application.languagechanged import LanguageChangedEvent
 from umlfri2.constants.languages import AVAILABLE_LANGUAGES
+from umlfri2.qtgui.rendering import ImageExport
 from .newproject import NewProjectDialog
 
 
@@ -31,6 +32,9 @@ class MainWindowMenu(QMenuBar):
         edit_menu.addSeparator()
         self.__edit_select_all = self.__add_menu_item(edit_menu, QKeySequence.SelectAll, "edit-select-all",
                                                       self.__edit_select_all_action)
+        
+        self.__diagram, diagram_menu = self.__add_menu()
+        self.__diagram_export = self.__add_menu_item(diagram_menu, None, None, self.__diagram_export_action)
         
         self.__tools, tools_menu = self.__add_menu()
         self.__tools_languages_menu = QMenu()
@@ -89,6 +93,8 @@ class MainWindowMenu(QMenuBar):
         self.__edit_undo.setEnabled(Application().commands.can_undo)
         self.__edit_redo.setEnabled(Application().commands.can_redo)
         self.__edit_select_all.setEnabled(Application().tabs.current_tab is not None)
+        
+        self.__diagram.setEnabled(Application().tabs.current_tab is not None)
     
     def __file_new_action(self, checked=False):
         self.__main_window.new_project()
@@ -113,6 +119,33 @@ class MainWindowMenu(QMenuBar):
     
     def __edit_select_all_action(self, checked=False):
         Application().tabs.current_tab.drawing_area.selection.select_all()
+    
+    def __diagram_export_action(self, checked=False):
+        exp = ImageExport(Application().tabs.current_tab.drawing_area.diagram)
+        formats = []
+        for format in exp.supported_formats():
+            file_names = " ".join("*.{0}".format(i) for i in format)
+            filter_text = _("{0} image").format(format[0].upper()) + "({0})".format(file_names)
+            formats.append((filter_text, format[0]))
+        
+        file_name, filter = QFileDialog.getSaveFileName(
+            self,
+            caption=_("Export diagram"),
+            filter=";;".join(text for text, format in formats)
+        )
+        
+        if file_name:
+            for text, format in formats:
+                if text == filter:
+                    break
+            else:
+                raise Exception
+            
+            if '.' not in os.path.basename(file_name):
+                file_name = file_name + '.' + format
+            
+            # TODO: export to python file?
+            exp.export(file_name, format)
     
     def __tools_languages_menu_populate(self):
         selected_language = Application().selected_language
@@ -146,6 +179,9 @@ class MainWindowMenu(QMenuBar):
         self.__edit_undo.setText(_("&Undo"))
         self.__edit_redo.setText(_("&Redo"))
         self.__edit_select_all.setText(_("Select &all"))
+        
+        self.__diagram.setText(_("&Diagram"))
+        self.__diagram_export.setText(_("Export as &image"))
         
         self.__tools.setText(_("&Tools"))
         self.__tools_languages.setText(_("Change &language"))
