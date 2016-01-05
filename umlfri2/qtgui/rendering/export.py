@@ -2,7 +2,7 @@ from PySide.QtCore import QSize, QRect
 from PySide.QtGui import QPixmap, QPainter, QPrinter
 
 try:
-    from PySide.QSvg import QSvgGenerator
+    from PySide.QtSvg import QSvgGenerator
 except ImportError:
     QSvgGenerator = None
 
