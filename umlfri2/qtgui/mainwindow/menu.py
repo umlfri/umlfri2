@@ -151,7 +151,7 @@ class MainWindowMenu(QMenuBar):
             exp.export(file_name, format)
     
     def __diagram_full_screen_action(self):
-        window = FullScreenDiagram(Application().tabs.current_tab.drawing_area)
+        window = FullScreenDiagram(self.__main_window, Application().tabs.current_tab.drawing_area)
         window.showFullScreen()
     
     def __tools_languages_menu_populate(self):
