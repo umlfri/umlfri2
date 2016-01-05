@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-05 13:31+0100\n"
-"PO-Revision-Date: 2016-01-05 13:33+0100\n"
+"POT-Creation-Date: 2016-01-05 15:16+0100\n"
+"PO-Revision-Date: 2016-01-05 15:21+0100\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -202,6 +202,21 @@ msgstr "Hodnota"
 
 msgid "Z-order"
 msgstr "Poradie"
+
+msgid "Zoom &in"
+msgstr "Z&väčšiť"
+
+msgid "Zoom &out"
+msgstr "Z&menšiť"
+
+msgid "Zoom in"
+msgstr "Zväčšiť"
+
+msgid "Zoom o&riginal"
+msgstr "&Originálna veľkosť"
+
+msgid "Zoom out"
+msgstr "Zmenšiť"
 
 msgid "unsaved"
 msgstr "neuložený"

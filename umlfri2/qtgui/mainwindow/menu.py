@@ -224,6 +224,6 @@ class MainWindowMenu(QMenuBar):
         self.__tools_languages.setText(_("Change &language"))
         
         self.__view.setText(_("&View"))
-        self.__view_zoom_in.setText(_("Zoom in"))
-        self.__view_zoom_out.setText(_("Zoom out"))
-        self.__view_zoom_original.setText(_("Zoom original"))
+        self.__view_zoom_in.setText(_("Zoom &in"))
+        self.__view_zoom_out.setText(_("Zoom &out"))
+        self.__view_zoom_original.setText(_("Zoom o&riginal"))
