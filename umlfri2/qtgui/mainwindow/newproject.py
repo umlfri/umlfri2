@@ -21,7 +21,7 @@ class TemplateItem(QListWidgetItem):
 class NewProjectDialog(QDialog):
     def __init__(self, main_window):
         super().__init__(main_window)
-        self.setWindowTitle(_("New project"))
+        self.setWindowTitle(_("New Project"))
         self.__main_window = main_window
         
         button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)

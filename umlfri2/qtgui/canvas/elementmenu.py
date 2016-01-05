@@ -30,32 +30,32 @@ class CanvasElementMenu(ContextMenu):
         self.addSeparator()
         
         if len(self.__elements) == 1:
-            self._add_menu_item(None, _("Find in the project tree"), None, self.__show_in_project)
+            self._add_menu_item(None, _("Find in the Project Tree"), None, self.__show_in_project)
         else:
-            self._add_menu_item(None, _("Find in the project tree"), None)
+            self._add_menu_item(None, _("Find in the Project Tree"), None)
         
         if something_above or something_below:
-            z_order_menu = self._add_sub_menu_item(_("Z-order"))
+            z_order_menu = self._add_sub_menu_item(_("Z-Order"))
             
             if something_below:
-                self._add_menu_item("go-down", _("Send back"), "PgDown", self.__z_order_back, z_order_menu)
+                self._add_menu_item("go-down", _("Raise"), "PgDown", self.__z_order_back, z_order_menu)
             else:
-                self._add_menu_item("go-down", _("Send back"), "PgDown", None, z_order_menu)
+                self._add_menu_item("go-down", _("Raise"), "PgDown", None, z_order_menu)
             
             if something_above:
-                self._add_menu_item("go-up", _("Bring forward"), "PgUp", self.__z_order_forward, z_order_menu)
+                self._add_menu_item("go-up", _("Lower"), "PgUp", self.__z_order_forward, z_order_menu)
             else:
-                self._add_menu_item("go-up", _("Bring forward"), "PgUp", None, z_order_menu)
+                self._add_menu_item("go-up", _("Lower"), "PgUp", None, z_order_menu)
             
             if something_below:
-                self._add_menu_item("go-bottom", _("Send to bottom"), "End", self.__z_order_bottom, z_order_menu)
+                self._add_menu_item("go-bottom", _("Lower to Bottom"), "End", self.__z_order_bottom, z_order_menu)
             else:
-                self._add_menu_item("go-bottom", _("Send to bottom"), "End", None, z_order_menu)
+                self._add_menu_item("go-bottom", _("Lower to Bottom"), "End", None, z_order_menu)
             
             if something_above:
-                self._add_menu_item("go-top", _("Bring to top"), "Home", self.__z_order_top, z_order_menu)
+                self._add_menu_item("go-top", _("Raise to Top"), "Home", self.__z_order_top, z_order_menu)
             else:
-                self._add_menu_item("go-top", _("Bring to top"), "Home", None, z_order_menu)
+                self._add_menu_item("go-top", _("Raise to Top"), "Home", None, z_order_menu)
         else:
             self._add_sub_menu_item(_("Z-order"), False)
             

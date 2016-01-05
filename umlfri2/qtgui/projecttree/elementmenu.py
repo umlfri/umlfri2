@@ -16,18 +16,18 @@ class ProjectTreeElementMenu(ContextMenu):
         
         metamodel = element.project.metamodel
         
-        sub_menu = self._add_sub_menu_item(_("Add diagram"))
+        sub_menu = self._add_sub_menu_item(_("Add Diagram"))
         for diagram_type in metamodel.diagram_types:
             self._add_type_menu_item(diagram_type, self.__create_diagram_action, sub_menu)
         
-        sub_menu = self._add_sub_menu_item(_("Add element"))
+        sub_menu = self._add_sub_menu_item(_("Add Element"))
         for element_type in metamodel.element_types:
             self._add_type_menu_item(element_type, self.__create_element_action, sub_menu)
         
         self.addSeparator()
         
         diagrams = [visual.diagram for visual in element.visuals]
-        sub_menu = self._add_sub_menu_item(_("Show in diagram"), len(diagrams) > 0)
+        sub_menu = self._add_sub_menu_item(_("Show in Diagram"), len(diagrams) > 0)
         for diagram in diagrams:
             self._add_menu_item(None, diagram.get_display_name(), None,
                                 partial(self.__show_in_diagram, diagram), sub_menu)

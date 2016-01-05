@@ -21,7 +21,7 @@ class CanvasConnectionMenu(ContextMenu):
         
         self.addSeparator()
         
-        self._add_menu_item(None, _("Reverse connection"), None, self.__reverse_connection)
+        self._add_menu_item(None, _("Reverse Connection"), None, self.__reverse_connection)
         
         if connection.object.has_ufl_dialog:
             default = self._add_menu_item(None, _("Properties..."), None, self.__edit_properties)

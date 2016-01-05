@@ -157,7 +157,7 @@ class MainWindowMenu(QMenuBar):
         
         file_name, filter = QFileDialog.getSaveFileName(
             self,
-            caption=_("Export diagram"),
+            caption=_("Export Diagram"),
             filter=";;".join(text for text, format in filters),
             selectedFilter=default_filter
         )
@@ -219,16 +219,16 @@ class MainWindowMenu(QMenuBar):
         self.__edit.setText(_("&Edit"))
         self.__edit_undo.setText(_("&Undo"))
         self.__edit_redo.setText(_("&Redo"))
-        self.__edit_select_all.setText(_("Select &all"))
+        self.__edit_select_all.setText(_("Select &All"))
         
         self.__diagram.setText(_("&Diagram"))
-        self.__diagram_export.setText(_("Export as &image"))
-        self.__diagram_full_screen.setText(_("Show full &screen"))
+        self.__diagram_export.setText(_("Export as &Image"))
+        self.__diagram_full_screen.setText(_("Show Full &Screen"))
         
         self.__tools.setText(_("&Tools"))
-        self.__tools_languages.setText(_("Change &language"))
+        self.__tools_languages.setText(_("Change &Language"))
         
         self.__view.setText(_("&View"))
-        self.__view_zoom_in.setText(_("Zoom &in"))
-        self.__view_zoom_out.setText(_("Zoom &out"))
-        self.__view_zoom_original.setText(_("Zoom o&riginal"))
+        self.__view_zoom_in.setText(_("Zoom &In"))
+        self.__view_zoom_out.setText(_("Zoom &Out"))
+        self.__view_zoom_original.setText(_("O&riginal Zoom"))

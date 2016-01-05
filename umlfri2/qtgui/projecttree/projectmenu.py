@@ -13,7 +13,7 @@ class ProjectTreeProjectMenu(ContextMenu):
         
         metamodel = project.metamodel
         
-        sub_menu = self._add_sub_menu_item(_("Add element"))
+        sub_menu = self._add_sub_menu_item(_("Add Element"))
         for element_type in metamodel.element_types:
             self._add_type_menu_item(element_type, self.__create_element_action, sub_menu)
         

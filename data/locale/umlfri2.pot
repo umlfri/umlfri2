@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-05 15:16+0100\n"
+"POT-Creation-Date: 2016-01-05 19:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,28 +53,22 @@ msgstr ""
 msgid "&View"
 msgstr ""
 
-msgid "Add diagram"
+msgid "Add Diagram"
 msgstr ""
 
-msgid "Add element"
+msgid "Add Element"
 msgstr ""
 
-msgid "Application exit"
+msgid "Application Exit"
 msgstr ""
 
 msgid "Apply"
 msgstr ""
 
-msgid "Bring forward"
-msgstr ""
-
-msgid "Bring to top"
-msgstr ""
-
 msgid "Cancel"
 msgstr ""
 
-msgid "Change &language"
+msgid "Change &Language"
 msgstr ""
 
 msgid "Close without saving"
@@ -92,19 +86,25 @@ msgstr ""
 msgid "Edit..."
 msgstr ""
 
-msgid "Export as &image"
+msgid "Export Diagram"
 msgstr ""
 
-msgid "Export diagram"
+msgid "Export as &Image"
 msgstr ""
 
-msgid "Find in the project tree"
+msgid "Find in the Project Tree"
 msgstr ""
 
 msgid "General"
 msgstr ""
 
 msgid "Hide"
+msgstr ""
+
+msgid "Lower"
+msgstr ""
+
+msgid "Lower to Bottom"
 msgstr ""
 
 msgid "Metamodel version"
@@ -116,7 +116,10 @@ msgstr ""
 msgid "New"
 msgstr ""
 
-msgid "New project"
+msgid "New Project"
+msgstr ""
+
+msgid "O&riginal Zoom"
 msgstr ""
 
 msgid "Ok"
@@ -125,7 +128,7 @@ msgstr ""
 msgid "Open"
 msgstr ""
 
-msgid "Open project"
+msgid "Open Project"
 msgstr ""
 
 msgid "Project"
@@ -140,10 +143,16 @@ msgstr ""
 msgid "Properties..."
 msgstr ""
 
+msgid "Raise"
+msgstr ""
+
+msgid "Raise to Top"
+msgstr ""
+
 msgid "Redo"
 msgstr ""
 
-msgid "Reverse connection"
+msgid "Reverse Connection"
 msgstr ""
 
 msgid "Save"
@@ -152,28 +161,22 @@ msgstr ""
 msgid "Save &as"
 msgstr ""
 
-msgid "Save project"
+msgid "Save Project"
 msgstr ""
 
 msgid "Select"
 msgstr ""
 
-msgid "Select &all"
+msgid "Select &All"
 msgstr ""
 
-msgid "Send back"
+msgid "Show Diagram"
 msgstr ""
 
-msgid "Send to bottom"
+msgid "Show Full &Screen"
 msgstr ""
 
-msgid "Show diagram"
-msgstr ""
-
-msgid "Show full &screen"
-msgstr ""
-
-msgid "Show in diagram"
+msgid "Show in Diagram"
 msgstr ""
 
 msgid "System language"
@@ -200,22 +203,22 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
+msgid "Z-Order"
+msgstr ""
+
 msgid "Z-order"
 msgstr ""
 
-msgid "Zoom &in"
+msgid "Zoom &In"
 msgstr ""
 
-msgid "Zoom &out"
+msgid "Zoom &Out"
 msgstr ""
 
-msgid "Zoom in"
+msgid "Zoom In"
 msgstr ""
 
-msgid "Zoom o&riginal"
-msgstr ""
-
-msgid "Zoom out"
+msgid "Zoom Out"
 msgstr ""
 
 msgid "unsaved"

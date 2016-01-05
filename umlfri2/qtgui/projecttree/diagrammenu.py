@@ -12,7 +12,7 @@ class ProjectTreeDiagramMenu(ContextMenu):
         self.__main_window = main_window
         self.__diagram = diagram
         
-        show = self._add_menu_item(None, _("Show diagram"), None, self.__show_diagram_action)
+        show = self._add_menu_item(None, _("Show Diagram"), None, self.__show_diagram_action)
         self.setDefaultAction(show)
         
         self._add_menu_item("edit-delete", _("Delete"), DELETE_FROM_PROJECT, self.__delete_diagram_action)

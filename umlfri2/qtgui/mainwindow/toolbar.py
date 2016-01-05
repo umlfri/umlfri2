@@ -119,8 +119,8 @@ class MainToolBar(QToolBar):
         self.__set_toolbar_item_text(self.__undo, _("Undo"))
         self.__set_toolbar_item_text(self.__redo, _("Redo"))
         
-        self.__set_toolbar_item_text(self.__zoom_in, _("Zoom in"))
-        self.__set_toolbar_item_text(self.__zoom_out, _("Zoom out"))
+        self.__set_toolbar_item_text(self.__zoom_in, _("Zoom In"))
+        self.__set_toolbar_item_text(self.__zoom_out, _("Zoom Out"))
     
     def __set_toolbar_item_text(self, item, text):
         item.setText(text)

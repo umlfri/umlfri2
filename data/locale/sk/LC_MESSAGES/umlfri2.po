@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-05 15:16+0100\n"
-"PO-Revision-Date: 2016-01-05 15:21+0100\n"
+"POT-Creation-Date: 2016-01-05 19:31+0100\n"
+"PO-Revision-Date: 2016-01-05 19:31+0100\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -53,28 +53,22 @@ msgstr "&Späť"
 msgid "&View"
 msgstr "&Zobraziť"
 
-msgid "Add diagram"
+msgid "Add Diagram"
 msgstr "Pridať diagram"
 
-msgid "Add element"
+msgid "Add Element"
 msgstr "Pridať element"
 
-msgid "Application exit"
+msgid "Application Exit"
 msgstr "Ukončenie aplikácie"
 
 msgid "Apply"
 msgstr "Použiť"
 
-msgid "Bring forward"
-msgstr "O jeden dopredu"
-
-msgid "Bring to top"
-msgstr "Presunúť dopredu"
-
 msgid "Cancel"
 msgstr "Zrušiť"
 
-msgid "Change &language"
+msgid "Change &Language"
 msgstr "Zmeniť &jazyk"
 
 msgid "Close without saving"
@@ -92,13 +86,13 @@ msgstr "Chcete uložiť rozpracovaný projekt?"
 msgid "Edit..."
 msgstr "Upraviť..."
 
-msgid "Export as &image"
-msgstr "Exportovať ako &obrázok"
-
-msgid "Export diagram"
+msgid "Export Diagram"
 msgstr "Exportovať diagram"
 
-msgid "Find in the project tree"
+msgid "Export as &Image"
+msgstr "Exportovať ako &obrázok"
+
+msgid "Find in the Project Tree"
 msgstr "Nájsť v projektovom strome"
 
 msgid "General"
@@ -106,6 +100,12 @@ msgstr "Všeobecné"
 
 msgid "Hide"
 msgstr "Skryť"
+
+msgid "Lower"
+msgstr "O jeden dozadu"
+
+msgid "Lower to Bottom"
+msgstr "Presunúť dole"
 
 msgid "Metamodel version"
 msgstr "Verzia metamodelu"
@@ -116,8 +116,11 @@ msgstr "Názov"
 msgid "New"
 msgstr "Nový"
 
-msgid "New project"
+msgid "New Project"
 msgstr "Nový projekt"
+
+msgid "O&riginal Zoom"
+msgstr "Pôvodné zväčšenie"
 
 msgid "Ok"
 msgstr "Ok"
@@ -125,7 +128,7 @@ msgstr "Ok"
 msgid "Open"
 msgstr "Otvoriť"
 
-msgid "Open project"
+msgid "Open Project"
 msgstr "Otvoriť projekt"
 
 msgid "Project"
@@ -140,10 +143,16 @@ msgstr "Vlastnosti"
 msgid "Properties..."
 msgstr "Vlastnosti..."
 
+msgid "Raise"
+msgstr "O jeden dopredu"
+
+msgid "Raise to Top"
+msgstr "Presunúť navrch"
+
 msgid "Redo"
 msgstr "Znova"
 
-msgid "Reverse connection"
+msgid "Reverse Connection"
 msgstr "Otočiť smer spojenia"
 
 msgid "Save"
@@ -152,28 +161,22 @@ msgstr "Uložiť"
 msgid "Save &as"
 msgstr "Uložiť &ako"
 
-msgid "Save project"
+msgid "Save Project"
 msgstr "Uložiť projekt"
 
 msgid "Select"
 msgstr "Vybrať"
 
-msgid "Select &all"
+msgid "Select &All"
 msgstr "Vybrať &všetko"
 
-msgid "Send back"
-msgstr "O jeden dozadu"
-
-msgid "Send to bottom"
-msgstr "Presunúť dozadu"
-
-msgid "Show diagram"
+msgid "Show Diagram"
 msgstr "Zobraziť diagram"
 
-msgid "Show full &screen"
+msgid "Show Full &Screen"
 msgstr "Zobraziť na &celú obrazovku"
 
-msgid "Show in diagram"
+msgid "Show in Diagram"
 msgstr "Zobraziť v diagrame"
 
 msgid "System language"
@@ -200,22 +203,22 @@ msgstr "Späť"
 msgid "Value"
 msgstr "Hodnota"
 
+msgid "Z-Order"
+msgstr "Poradie"
+
 msgid "Z-order"
 msgstr "Poradie"
 
-msgid "Zoom &in"
+msgid "Zoom &In"
 msgstr "Z&väčšiť"
 
-msgid "Zoom &out"
+msgid "Zoom &Out"
 msgstr "Z&menšiť"
 
-msgid "Zoom in"
+msgid "Zoom In"
 msgstr "Zväčšiť"
 
-msgid "Zoom o&riginal"
-msgstr "&Originálna veľkosť"
-
-msgid "Zoom out"
+msgid "Zoom Out"
 msgstr "Zmenšiť"
 
 msgid "unsaved"
@@ -224,3 +227,18 @@ msgstr "neuložený"
 #, python-brace-format
 msgid "{0} image"
 msgstr "Obrázok {0}"
+
+#~ msgid "New project"
+#~ msgstr "Nový projekt"
+
+#~ msgid "Bring forward"
+#~ msgstr "O jeden dopredu"
+
+#~ msgid "Bring to top"
+#~ msgstr "Presunúť dopredu"
+
+#~ msgid "Send back"
+#~ msgstr "O jeden dozadu"
+
+#~ msgid "Zoom o&riginal"
+#~ msgstr "&Originálna veľkosť"
