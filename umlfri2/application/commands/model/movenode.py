@@ -1,5 +1,5 @@
 from umlfri2.application.events.model import NodeMovedEvent
-from ..base import Command
+from ..base import Command, CommandNotDone
 
 
 class MoveNodeCommand(Command):
@@ -18,6 +18,9 @@ class MoveNodeCommand(Command):
     def _do(self, ruler):
         self.__old_parent = self.__node.parent
         self.__old_index = self.__old_parent.get_child_index(self.__node)
+        
+        if self.__new_parent is self.__old_parent and self.__new_index == self.__old_index:
+            raise CommandNotDone
         
         self.__node.change_parent(self.__new_parent, self.__new_index)
 
