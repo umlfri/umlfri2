@@ -4,9 +4,10 @@ from functools import partial
 from PySide.QtGui import QMenuBar, QAction, QMenu, QKeySequence, QIcon, QFileDialog
 from umlfri2.application import Application
 from umlfri2.application.events.application.languagechanged import LanguageChangedEvent
+from umlfri2.constants.keys import FULL_SCREEN
 from umlfri2.constants.languages import AVAILABLE_LANGUAGES
+from umlfri2.qtgui.fullscreen import FullScreenDiagram
 from umlfri2.qtgui.rendering import ImageExport
-from .newproject import NewProjectDialog
 
 
 class MainWindowMenu(QMenuBar):
@@ -35,6 +36,8 @@ class MainWindowMenu(QMenuBar):
         
         self.__diagram, diagram_menu = self.__add_menu()
         self.__diagram_export = self.__add_menu_item(diagram_menu, None, None, self.__diagram_export_action)
+        self.__diagram_full_screen = self.__add_menu_item(diagram_menu, FULL_SCREEN, None,
+                                                          self.__diagram_full_screen_action)
         
         self.__tools, tools_menu = self.__add_menu()
         self.__tools_languages_menu = QMenu()
@@ -147,6 +150,10 @@ class MainWindowMenu(QMenuBar):
             # TODO: export to python file?
             exp.export(file_name, format)
     
+    def __diagram_full_screen_action(self):
+        window = FullScreenDiagram(Application().tabs.current_tab.drawing_area)
+        window.showFullScreen()
+    
     def __tools_languages_menu_populate(self):
         selected_language = Application().selected_language
         
@@ -182,6 +189,7 @@ class MainWindowMenu(QMenuBar):
         
         self.__diagram.setText(_("&Diagram"))
         self.__diagram_export.setText(_("Export as &image"))
+        self.__diagram_full_screen.setText(_("Show full &screen"))
         
         self.__tools.setText(_("&Tools"))
         self.__tools_languages.setText(_("Change &language"))

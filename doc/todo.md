@@ -19,4 +19,4 @@
 - [x] export image
 - [ ] addon management
 - [ ] printing
-- [ ] fullscreen
+- [x] fullscreen
