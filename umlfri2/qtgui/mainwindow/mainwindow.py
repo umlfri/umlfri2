@@ -163,7 +163,11 @@ class UmlFriMainWindow(QMainWindow):
             Application().new_project(dialog.selected_template, dialog.new_solution, dialog.project_name)
     
     def open_solution(self):
-        file_name, filter = QFileDialog.getOpenFileName(self, filter = _("UML .FRI 2 projects") + "(*.frip2)")
+        file_name, filter = QFileDialog.getOpenFileName(
+            self,
+            caption=_("Open project"),
+            filter=_("UML .FRI 2 projects") + "(*.frip2)"
+        )
         if file_name:
             if self.__check_save(_("Open project")):
                 Application().open_solution(file_name)
@@ -176,7 +180,11 @@ class UmlFriMainWindow(QMainWindow):
             return True
     
     def save_solution_as(self):
-        file_name, filter = QFileDialog.getSaveFileName(self, filter = _("UML .FRI 2 projects") + "(*.frip2)")
+        file_name, filter = QFileDialog.getSaveFileName(
+            self,
+            caption=_("Save project"),
+            filter=_("UML .FRI 2 projects") + "(*.frip2)"
+        )
         if file_name:
             if '.' not in os.path.basename(file_name):
                 file_name = file_name + '.frip2'
