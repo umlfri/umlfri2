@@ -98,6 +98,11 @@ class ElementObject:
         second_element.__connections.append(connection)
         return connection
     
+    def get_connections_to(self, element):
+        for connection in self.__connections:
+            if connection.is_connected_with(element):
+                yield connection
+    
     def add_connection(self, connection):
         if not connection.is_connected_with(self):
             raise Exception
