@@ -40,8 +40,20 @@ class ChangeZOrderCommand(Command):
             base = 0
         elif self.__direction == ZOrderDirection.top:
             base = self.__diagram.element_count - len(self.__elements)
-        else:
-            raise NotImplementedError
+        elif self.__direction == ZOrderDirection.above:
+            base = -float('inf')
+            for element in self.__elements:
+                above_element = self.__diagram.get_visual_above(ruler, element)
+                above_z_order = self.__diagram.get_z_order(above_element)
+                if above_z_order > base:
+                    base = above_z_order
+        elif self.__direction == ZOrderDirection.bellow:
+            base = float('inf')
+            for element in self.__elements:
+                below_element = self.__diagram.get_visual_below(ruler, element)
+                below_z_order = self.__diagram.get_z_order(below_element)
+                if below_z_order < base:
+                    base = below_z_order
         
         self.__new_z_indices = []
         for no, (z_order, element) in enumerate(self.__old_z_indices):

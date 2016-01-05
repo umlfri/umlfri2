@@ -19,9 +19,9 @@ class CanvasElementMenu(ContextMenu):
         something_above = False
         something_below = False
         for element in self.__elements:
-            if self.__diagram.is_something_above(Application().ruler, element):
+            if self.__diagram.get_visual_above(Application().ruler, element) is not None:
                 something_above = True
-            if self.__diagram.is_something_below(Application().ruler, element):
+            if self.__diagram.get_visual_below(Application().ruler, element) is not None:
                 something_below = True
         
         self._add_menu_item(None, _("Hide"), QKeySequence.Delete, self.__hide)

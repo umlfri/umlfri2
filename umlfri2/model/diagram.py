@@ -221,25 +221,29 @@ class Diagram:
         
         return None
     
-    def is_something_above(self, ruler, element):
-        element_bounds = element.get_bounds(ruler)
+    def get_visual_above(self, ruler, visual):
+        # TODO: implement it for connections too
+        element_bounds = visual.get_bounds(ruler)
         
+        above_visual = None
         for current_element in reversed(self.__elements):
-            if current_element is element:
-                return False
+            if current_element is visual:
+                return above_visual
             elif current_element.get_bounds(ruler).is_overlapping(element_bounds):
-                return True
+                above_visual = current_element
         
         raise Exception
     
-    def is_something_below(self, ruler, element):
-        element_bounds = element.get_bounds(ruler)
+    def get_visual_below(self, ruler, visual):
+        # TODO: implement it for connections too
+        element_bounds = visual.get_bounds(ruler)
         
+        above_visual = None
         for current_element in self.__elements:
-            if current_element is element:
-                return False
+            if current_element is visual:
+                return above_visual
             elif current_element.get_bounds(ruler).is_overlapping(element_bounds):
-                return True
+                above_visual = current_element
         
         raise Exception
     

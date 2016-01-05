@@ -4,7 +4,7 @@
 - [ ] zoom
 - [x] "Show in project tree" content menu item
 - [x] reversing a connection
-- [ ] z-order
+- [x] z-order
 - [ ] alignment
 - [ ] application preferences window - move language there
 - [ ] persisting application preferences (appdirs module)
