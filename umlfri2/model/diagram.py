@@ -74,6 +74,10 @@ class Diagram:
         yield from self.__elements
     
     @property
+    def element_count(self):
+        return len(self.__elements)
+    
+    @property
     def connections(self):
         yield from self.__connections
     
@@ -171,6 +175,19 @@ class Diagram:
             return self.__elements.index(visual)
         elif isinstance(visual, ConnectionVisual):
             return self.__connections.index(visual)
+        else:
+            raise Exception
+    
+    def change_z_order(self, visual, z_order):
+        if visual.diagram is not self:
+            raise Exception
+        
+        if isinstance(visual, ElementVisual):
+            self.__elements.remove(visual)
+            self.__elements.insert(z_order, visual)
+        elif isinstance(visual, ConnectionVisual):
+            self.__connections.remove(visual)
+            self.__connections.insert(z_order, visual)
         else:
             raise Exception
     

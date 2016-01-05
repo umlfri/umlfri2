@@ -8,3 +8,4 @@ from .addconnectionpoint import AddConnectionPointCommand
 from .showelement import ShowElementCommand
 from .hideconnection import HideConnectionCommand
 from .hideelements import HideElementsCommand
+from .changezorder import ChangeZOrderCommand, ZOrderDirection

@@ -1,7 +1,7 @@
 from PySide.QtGui import QKeySequence
 
 from umlfri2.application import Application
-from umlfri2.application.commands.diagram import HideElementsCommand
+from umlfri2.application.commands.diagram import HideElementsCommand, ChangeZOrderCommand, ZOrderDirection
 from umlfri2.application.commands.model import DeleteElementsCommand
 from umlfri2.constants.keys import DELETE_FROM_PROJECT
 from ..base.contextmenu import ContextMenu
@@ -38,22 +38,22 @@ class CanvasElementMenu(ContextMenu):
             z_order_menu = self._add_sub_menu_item(_("Z-order"))
             
             if something_below:
-                self._add_menu_item("go-down", _("Send back"), "PgDown", self.__zorder_back, z_order_menu)
+                self._add_menu_item("go-down", _("Send back"), "PgDown", self.__z_order_back, z_order_menu)
             else:
                 self._add_menu_item("go-down", _("Send back"), "PgDown", None, z_order_menu)
             
             if something_above:
-                self._add_menu_item("go-up", _("Bring forward"), "PgUp", self.__zorder_forward, z_order_menu)
+                self._add_menu_item("go-up", _("Bring forward"), "PgUp", self.__z_order_forward, z_order_menu)
             else:
                 self._add_menu_item("go-up", _("Bring forward"), "PgUp", None, z_order_menu)
             
             if something_below:
-                self._add_menu_item("go-bottom", _("Send to bottom"), "End", self.__zorder_bottom, z_order_menu)
+                self._add_menu_item("go-bottom", _("Send to bottom"), "End", self.__z_order_bottom, z_order_menu)
             else:
                 self._add_menu_item("go-bottom", _("Send to bottom"), "End", None, z_order_menu)
             
             if something_above:
-                self._add_menu_item("go-top", _("Bring to top"), "Home", self.__zorder_top, z_order_menu)
+                self._add_menu_item("go-top", _("Bring to top"), "Home", self.__z_order_top, z_order_menu)
             else:
                 self._add_menu_item("go-top", _("Bring to top"), "Home", None, z_order_menu)
         else:
@@ -80,17 +80,25 @@ class CanvasElementMenu(ContextMenu):
     def __show_in_project(self, checked=False):
         Application().select_item(self.__elements[0].object)
     
-    def __zorder_back(self, checked=False):
-        pass
+    def __z_order_back(self, checked=False):
+        command = ChangeZOrderCommand(self.__diagram, self.__elements, ZOrderDirection.bellow)
+        
+        Application().commands.execute(command)
     
-    def __zorder_forward(self, checked=False):
-        pass
+    def __z_order_forward(self, checked=False):
+        command = ChangeZOrderCommand(self.__diagram, self.__elements, ZOrderDirection.above)
+        
+        Application().commands.execute(command)
     
-    def __zorder_bottom(self, checked=False):
-        pass
+    def __z_order_bottom(self, checked=False):
+        command = ChangeZOrderCommand(self.__diagram, self.__elements, ZOrderDirection.bottom)
+        
+        Application().commands.execute(command)
     
-    def __zorder_top(self, checked=False):
-        pass
+    def __z_order_top(self, checked=False):
+        command = ChangeZOrderCommand(self.__diagram, self.__elements, ZOrderDirection.top)
+        
+        Application().commands.execute(command)
     
     def __edit_properties(self, checked=False):
         PropertiesDialog.open_for(self.__main_window, self.__elements[0].object)
