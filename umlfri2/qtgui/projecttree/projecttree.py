@@ -24,7 +24,7 @@ class ProjectTree(QTreeWidget):
         self.customContextMenuRequested.connect(self.__show_tree_menu)
         self.header().close()
         self.itemSelectionChanged.connect(self.__item_selected)
-        self.itemDoubleClicked.connect(self.__item_double_clicked)
+        self.itemActivated.connect(self.__item_activated)
         self.setDragDropMode(QTreeWidget.DragDrop)
         self.invisibleRootItem().setFlags(0)
         
@@ -174,7 +174,7 @@ class ProjectTree(QTreeWidget):
         else:
             self.__reload_diagram(parent_item, event.node, event.new_index)
     
-    def __item_double_clicked(self, item, column):
+    def __item_activated(self, item, column):
         if isinstance(item, ProjectTreeItem):
             if isinstance(item.model_object, Diagram):
                 Application().tabs.select_tab(item.model_object)
