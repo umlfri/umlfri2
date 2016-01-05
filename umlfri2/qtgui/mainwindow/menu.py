@@ -145,30 +145,35 @@ class MainWindowMenu(QMenuBar):
     
     def __diagram_export_action(self, checked=False):
         exp = ImageExport(Application().tabs.current_tab.drawing_area.diagram)
-        formats = []
-        for format in exp.supported_formats():
-            file_names = " ".join("*.{0}".format(i) for i in format)
-            filter_text = _("{0} image").format(format[0].upper()) + "({0})".format(file_names)
-            formats.append((filter_text, format[0]))
+        filters = []
+        default = exp.default_format
+        default_filter = None
+        for formats in exp.supported_formats():
+            file_names = " ".join("*.{0}".format(i) for i in formats)
+            filter_text = _("{0} image").format(formats[0].upper()) + "({0})".format(file_names)
+            filters.append((filter_text, formats[0]))
+            if default in formats:
+                default_filter = filter_text
         
         file_name, filter = QFileDialog.getSaveFileName(
             self,
             caption=_("Export diagram"),
-            filter=";;".join(text for text, format in formats)
+            filter=";;".join(text for text, format in filters),
+            selectedFilter=default_filter
         )
         
         if file_name:
-            for text, format in formats:
+            for text, formats in filters:
                 if text == filter:
                     break
             else:
                 raise Exception
             
             if '.' not in os.path.basename(file_name):
-                file_name = file_name + '.' + format
+                file_name = file_name + '.' + formats
             
             # TODO: export to python file?
-            exp.export(file_name, format)
+            exp.export(file_name, formats)
     
     def __diagram_full_screen_action(self):
         window = FullScreenDiagram(self.__main_window, Application().tabs.current_tab.drawing_area)

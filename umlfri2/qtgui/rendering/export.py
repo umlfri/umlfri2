@@ -25,6 +25,10 @@ class ImageExport:
         yield 'tiff',
         yield 'xbm', 'xpm'
     
+    @property
+    def default_format(self):
+        return 'png'
+    
     def export(self, file, format):
         size = self.__diagram.get_size(QTRuler())
         
