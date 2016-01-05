@@ -15,6 +15,10 @@ class AddConnectionAction(Action):
         self.__last_point = None
     
     @property
+    def connection_type(self):
+        return self.__type
+    
+    @property
     def path(self):
         return self.__path
     

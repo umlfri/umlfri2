@@ -121,6 +121,10 @@ class DrawingArea:
             self.__cursor = action.cursor
     
     @property
+    def current_action(self):
+        return self.__current_action
+    
+    @property
     def action_active(self):
         return self.__current_action is not None
     

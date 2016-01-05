@@ -10,14 +10,14 @@ from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionE
 from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent
 from umlfri2.constants.paths import GRAPHICS
 from umlfri2.model import Diagram
-from ..properties import PropertiesWidget
+from ..toolbox import MainToolBox
 from .menu import MainWindowMenu
 from .newproject import NewProjectDialog
 from .toolbar import MainToolBar
-from .toolbox import ToolBox
 from ..base import image_loader
 from ..canvas import ScrolledCanvasWidget
 from ..projecttree import ProjectTree
+from ..properties import PropertiesWidget
 
 
 class UmlFriMainWindow(QMainWindow):
@@ -36,7 +36,7 @@ class UmlFriMainWindow(QMainWindow):
         
         self.__toolbox_dock = QDockWidget()
         self.addDockWidget(Qt.LeftDockWidgetArea, self.__toolbox_dock)
-        self.__toolbox = ToolBox()
+        self.__toolbox = MainToolBox()
         self.__toolbox_dock.setWidget(self.__toolbox)
         
         self.__project_dock = QDockWidget()

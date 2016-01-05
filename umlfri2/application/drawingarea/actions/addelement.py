@@ -8,6 +8,10 @@ class AddElementAction(Action):
         self.__type = type
         self.__point = None
     
+    @property
+    def element_type(self):
+        return self.__type
+    
     def mouse_down(self, point):
         self.__point = point
     

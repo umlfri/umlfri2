@@ -22,10 +22,6 @@ class Tab:
         return self.__drawing_area
     
     @property
-    def diagram_type(self):
-        return self.__drawing_area.diagram.type
-    
-    @property
     def name(self):
         return self.__drawing_area.diagram.get_display_name()
     
