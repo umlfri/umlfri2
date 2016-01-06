@@ -1,4 +1,5 @@
 from umlfri2.application.events.application import ZoomChangedEvent
+from umlfri2.application.snippet import SnippetBuilder
 from umlfri2.types.geometry import Point
 from .drawingareacursor import DrawingAreaCursor
 from umlfri2.types.color import Colors
@@ -181,3 +182,22 @@ class DrawingArea:
     def zoom_original(self):
         self.__zoom = 0
         self.__application.event_dispatcher.dispatch(ZoomChangedEvent(self))
+    
+    @property
+    def can_copy_snippet(self):
+        return self.__selection.is_element_selected
+    
+    def copy_snippet(self):
+        builder = SnippetBuilder(self.__diagram.project)
+        
+        for element in self.__selection.selected_elements:
+            builder.add_element(self.__application.ruler, element)
+        
+        self.__application.clipboard = builder.build()
+    
+    @property
+    def can_paste_snippet(self):
+        if self.__application.clipboard_empty:
+            return False
+        
+        return self.__application.clipboard.can_be_pasted_to(self.__diagram)

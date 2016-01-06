@@ -2,6 +2,7 @@ from functools import partial
 
 from PySide.QtGui import QToolBar, QAction, QKeySequence, QIcon, QMenu
 from umlfri2.application import Application
+from umlfri2.application.commands.diagram import HideElementsCommand
 from umlfri2.application.events.application import LanguageChangedEvent
 
 UNDO_REDO_COUNT = 10
@@ -17,6 +18,12 @@ class MainToolBar(QToolBar):
         self.__new = self.__add_toolbar_item(QKeySequence.New, "document-new", self.__new_action)
         self.__open = self.__add_toolbar_item(QKeySequence.Open, "document-open", self.__open_action)
         self.__save = self.__add_toolbar_item(QKeySequence.Save, "document-save", self.__save_action)
+        
+        self.addSeparator()
+        
+        self.__cut = self.__add_toolbar_item(QKeySequence.Cut, "edit-cut", self.__cut_action)
+        self.__copy = self.__add_toolbar_item(QKeySequence.Copy, "edit-copy", self.__copy_action)
+        self.__paste = self.__add_toolbar_item(QKeySequence.Paste, "edit-paste")
         
         self.addSeparator()
         
@@ -64,6 +71,19 @@ class MainToolBar(QToolBar):
     def __save_action(self, checked=False):
         self.__main_window.save_solution()
     
+    def __copy_action(self, checked=False):
+        drawing_area = Application().tabs.current_tab.drawing_area
+        
+        drawing_area.copy_snippet()
+    
+    def __cut_action(self, checked=False):
+        drawing_area = Application().tabs.current_tab.drawing_area
+        
+        drawing_area.copy_snippet()
+        
+        command = HideElementsCommand(drawing_area.diagram, drawing_area.selection.selected_elements)
+        Application().commands.execute(command)
+    
     def __undo_action(self, count, checked=False):
         Application().commands.undo(count)
     
@@ -104,9 +124,17 @@ class MainToolBar(QToolBar):
         
         tab = Application().tabs.current_tab
         if tab is None:
+            self.__cut.setEnabled(False)
+            self.__copy.setEnabled(False)
+            self.__paste.setEnabled(False)
+            
             self.__zoom_in.setEnabled(False)
             self.__zoom_out.setEnabled(False)
         else:
+            self.__cut.setEnabled(tab.drawing_area.can_copy_snippet)
+            self.__copy.setEnabled(tab.drawing_area.can_copy_snippet)
+            self.__paste.setEnabled(tab.drawing_area.can_paste_snippet)
+            
             self.__zoom_in.setEnabled(tab.drawing_area.can_zoom_in)
             self.__zoom_out.setEnabled(tab.drawing_area.can_zoom_out)
     
@@ -115,6 +143,10 @@ class MainToolBar(QToolBar):
         self.__set_toolbar_item_text(self.__new, _("New"))
         self.__set_toolbar_item_text(self.__open, _("Open"))
         self.__set_toolbar_item_text(self.__save, _("Save"))
+        
+        self.__set_toolbar_item_text(self.__cut, _("Cut"))
+        self.__set_toolbar_item_text(self.__copy, _("Copy"))
+        self.__set_toolbar_item_text(self.__paste, _("Paste"))
         
         self.__set_toolbar_item_text(self.__undo, _("Undo"))
         self.__set_toolbar_item_text(self.__redo, _("Redo"))

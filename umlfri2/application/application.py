@@ -5,7 +5,7 @@ import os
 
 from umlfri2.addon import AddOnManager
 from umlfri2.application.commands.solution import NewProjectCommand
-from umlfri2.application.events.application import LanguageChangedEvent, ItemSelectedEvent
+from umlfri2.application.events.application import LanguageChangedEvent, ItemSelectedEvent, ClipboardSnippetChangedEvent
 from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent
 from umlfri2.application.tablist import TabList
 from umlfri2.constants.paths import ADDONS, LOCALE_DIR
@@ -46,6 +46,7 @@ class Application(metaclass=MetaApplication):
         self.__language = None
         self.change_language(None)
         self.__selected_item = None
+        self.__clipboard = None
     
     def __find_out_language(self):
         for e in 'LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG':
@@ -203,3 +204,21 @@ class Application(metaclass=MetaApplication):
         if self.__language is None:
             return self.__default_language
         return self.__language
+    
+    @property
+    def clipboard_empty(self):
+        if self.__clipboard is None:
+            return True
+        if self.__clipboard.empty:
+            return True
+        return False
+    
+    @property
+    def clipboard(self):
+        return self.__clipboard
+    
+    @clipboard.setter
+    def clipboard(self, value):
+        if self.__clipboard is not value:
+            self.__clipboard = value
+            self.__event_dispatcher.dispatch(ClipboardSnippetChangedEvent(value))
