@@ -6,7 +6,7 @@ from umlfri2.ufl.types import *
 
 
 class Snippet:
-    __encoder = json.JSONEncoder(ensure_ascii = False, check_circular = False, allow_nan = False)
+    __encoder = json.JSONEncoder(ensure_ascii=False, check_circular=False, allow_nan=False)
     __decoder = json.JSONDecoder()
     
     def __init__(self, data):
@@ -61,23 +61,14 @@ class Snippet:
             if obj['kind'] == 'element':
                 o = all_elements[obj['id']]
                 if not diagram.contains(o):
-                    visual = diagram.show(o)
-                    visual.move(ruler, Point(obj['x'], obj['y']))
-                    visual.resize(ruler, Size(obj['width'], obj['height']))
-                    yield visual
+                    yield self.__show_element(ruler, diagram, o, obj)
         
         for obj in self.__data['objects']:
             if obj['kind'] == 'connection':
                 o = all_connections[obj['id']]
                 if not diagram.contains(o):
                     if diagram.contains(o.source) and diagram.contains(o.destination):
-                        visual = diagram.show(o)
-                        for point in obj['points']:
-                            visual.add_point(ruler, None, Point(point['x'], point['y']))
-                        for label in visual.get_labels():
-                            point = obj['labels'][label.id]
-                            label.move(ruler, Point(point['x'], point['y']))
-                        yield visual
+                        yield self.__show_connection(ruler, diagram, o, obj)
     
     def can_be_duplicated_to(self, diagram):
         if diagram.project.metamodel.addon.identifier != self.__metamodel_id:
@@ -100,10 +91,38 @@ class Snippet:
                 
                 all_elements[obj['id']] = o # save object with old id, to make it possible to create connections
                 
-                visual = diagram.show(o)
-                visual.move(ruler, Point(obj['x'], obj['y']))
-                visual.resize(ruler, Size(obj['width'], obj['height']))
-                yield visual
+                yield self.__show_element(ruler, diagram, o, obj)
+        
+        for obj in self.__data['objects']:
+            if obj['kind'] == 'connection':
+                source = all_elements.get(obj['source'])
+                destination = all_elements.get(obj['destination'])
+                
+                if source is not None and destination is not None:
+                    o = source.connect_with(metamodel.get_connection_type(obj['type']), destination)
+                    
+                    mutable = o.data.make_mutable()
+                    self.__update_ufl_object(mutable, o.type.ufl_type, obj['data'])
+                    o.apply_ufl_patch(mutable.make_patch())
+                    
+                    yield self.__show_connection(ruler, diagram, o, obj)
+    
+    def __show_element(self, ruler, diagram, element, data):
+        visual = diagram.show(element)
+        visual.move(ruler, Point(data['x'], data['y']))
+        visual.resize(ruler, Size(data['width'], data['height']))
+        
+        return visual
+    
+    def __show_connection(self, ruler, diagram, connection, data):
+        visual = diagram.show(connection)
+        for point in data['points']:
+            visual.add_point(ruler, None, Point(point['x'], point['y']))
+        for label in visual.get_labels():
+            point = data['labels'][label.id]
+            label.move(ruler, Point(point['x'], point['y']))
+        
+        return visual
     
     def __update_ufl_immutable(self, type, input):
         # TODO: font/color/image/etc...

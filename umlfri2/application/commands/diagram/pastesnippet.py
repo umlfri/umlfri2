@@ -16,7 +16,7 @@ class PasteSnippetCommand(Command):
     
     def _do(self, ruler):
         self.__pasted_visuals = list(self.__snippet.paste_to(ruler, self.__diagram))
-        
+    
     def _redo(self, ruler):
         for visual in self.__pasted_visuals:
             self.__diagram.add(visual)
