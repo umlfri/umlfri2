@@ -72,3 +72,11 @@ class Project:
         if obj not in self.__children:
             raise Exception
         self.__children.remove(obj)
+    
+    def get_all_elements(self):
+        def recursion(obj):
+            for child in obj.children:
+                yield child
+                yield from recursion(child)
+        
+        return recursion(self)

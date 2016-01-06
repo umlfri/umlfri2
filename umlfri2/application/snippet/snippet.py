@@ -29,8 +29,16 @@ class Snippet:
         
         ids = set(str(element.object.save_id) for element in diagram.elements)
         
+        all_element_ids = set(str(element.save_id) for element in diagram.project.get_all_elements())
+        
         for obj in self.__data['objects']:
-            if obj['kind'] == 'element' and obj['id'] not in ids:
-                return True
+            if obj['kind'] == 'element':
+                if obj['id'] not in all_element_ids:
+                    return False
+        
+        for obj in self.__data['objects']:
+            if obj['kind'] == 'element':
+                if obj['id'] not in ids:
+                    return True
         
         return False
