@@ -1,6 +1,8 @@
 import json
 from uuid import UUID
 
+from umlfri2.types.geometry import Point, Size
+
 
 class Snippet:
     __encoder = json.JSONEncoder(ensure_ascii = False, check_circular = False, allow_nan = False)
@@ -41,6 +43,21 @@ class Snippet:
                     return True
         
         return False
+    
+    def paste_to(self, ruler, diagram):
+        all_elements = {str(element.save_id): element for element in diagram.project.get_all_elements()}
+        all_connections = {str(connection.save_id): connection
+                                for element in all_elements.values()
+                                    for connection in element.connections}
+        
+        for obj in self.__data['objects']:
+            if obj['kind'] == 'element':
+                o = all_elements[obj['id']]
+                if not diagram.contains(o):
+                    visual = diagram.show(o)
+                    visual.move(ruler, Point(obj['x'], obj['y']))
+                    visual.resize(ruler, Size(obj['width'], obj['height']))
+                    yield visual
     
     def can_be_duplicated_to(self, diagram):
         if diagram.project.metamodel.addon.identifier != self.__metamodel_id:

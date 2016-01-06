@@ -2,7 +2,7 @@ from functools import partial
 
 from PySide.QtGui import QToolBar, QAction, QKeySequence, QIcon, QMenu
 from umlfri2.application import Application
-from umlfri2.application.commands.diagram import HideElementsCommand
+from umlfri2.application.commands.diagram import HideElementsCommand, PasteSnippetCommand
 from umlfri2.application.events.application import LanguageChangedEvent
 
 UNDO_REDO_COUNT = 10
@@ -23,7 +23,7 @@ class MainToolBar(QToolBar):
         
         self.__cut = self.__add_toolbar_item(QKeySequence.Cut, "edit-cut", self.__cut_action)
         self.__copy = self.__add_toolbar_item(QKeySequence.Copy, "edit-copy", self.__copy_action)
-        self.__paste = self.__add_toolbar_item(QKeySequence.Paste, "edit-paste")
+        self.__paste = self.__add_toolbar_item(QKeySequence.Paste, "edit-paste", self.__paste_action)
         
         self.addSeparator()
         
@@ -82,6 +82,12 @@ class MainToolBar(QToolBar):
         drawing_area.copy_snippet()
         
         command = HideElementsCommand(drawing_area.diagram, drawing_area.selection.selected_elements)
+        Application().commands.execute(command)
+    
+    def __paste_action(self, checked=False):
+        drawing_area = Application().tabs.current_tab.drawing_area
+        
+        command = PasteSnippetCommand(drawing_area.diagram, Application().clipboard)
         Application().commands.execute(command)
     
     def __undo_action(self, count, checked=False):
