@@ -191,6 +191,25 @@ class Diagram:
         else:
             raise Exception
     
+    def change_z_order_many(self, z_order_visuals):
+        for z_order, visual in z_order_visuals:
+            if not isinstance(visual, (ElementVisual, ConnectionVisual)):
+                raise Exception
+            if visual.diagram is not self:
+                raise Exception
+        
+        for z_order, visual in z_order_visuals:
+            if isinstance(visual, ElementVisual):
+                self.__elements.remove(visual)
+            else:
+                self.__connections.remove(visual)
+        
+        for z_order, visual in z_order_visuals:
+            if isinstance(visual, ElementVisual):
+                self.__elements.insert(z_order, visual)
+            else:
+                self.__connections.insert(z_order, visual)
+    
     def draw(self, canvas, selection=None):
         canvas.clear(self.__type.get_background_color(self))
         
@@ -221,7 +240,7 @@ class Diagram:
         
         return None
     
-    def get_visual_above(self, ruler, visual):
+    def get_visual_above(self, ruler, visual, skip=set()):
         # TODO: implement it for connections too
         element_bounds = visual.get_bounds(ruler)
         
@@ -230,11 +249,12 @@ class Diagram:
             if current_element is visual:
                 return above_visual
             elif current_element.get_bounds(ruler).is_overlapping(element_bounds):
-                above_visual = current_element
+                if current_element not in skip:
+                    above_visual = current_element
         
         raise Exception
     
-    def get_visual_below(self, ruler, visual):
+    def get_visual_below(self, ruler, visual, skip=set()):
         # TODO: implement it for connections too
         element_bounds = visual.get_bounds(ruler)
         
@@ -243,7 +263,8 @@ class Diagram:
             if current_element is visual:
                 return above_visual
             elif current_element.get_bounds(ruler).is_overlapping(element_bounds):
-                above_visual = current_element
+                if current_element not in skip:
+                    above_visual = current_element
         
         raise Exception
     

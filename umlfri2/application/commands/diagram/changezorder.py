@@ -36,31 +36,50 @@ class ChangeZOrderCommand(Command):
         
         self.__old_z_indices.sort()
         
-        if self.__direction in (ZOrderDirection.above, ZOrderDirection.top):
-            if not any(self.__diagram.get_visual_above(ruler, element) is not None for element in self.__elements):
-                raise CommandNotDone
+        for element in self.__elements:
+            if self.__direction in (ZOrderDirection.above, ZOrderDirection.top):
+                found = self.__diagram.get_visual_above(ruler, element, self.__elements)
+            else:
+                found = self.__diagram.get_visual_below(ruler, element, self.__elements)
+            
+            if found is not None:
+                break
         else:
-            if not any(self.__diagram.get_visual_below(ruler, element) is not None for element in self.__elements):
-                raise CommandNotDone
+            raise CommandNotDone
         
         if self.__direction == ZOrderDirection.bottom:
             base = 0
         elif self.__direction == ZOrderDirection.top:
             base = self.__diagram.element_count - len(self.__elements)
         elif self.__direction == ZOrderDirection.above:
-            base = -float('inf')
-            for element in self.__elements:
-                above_element = self.__diagram.get_visual_above(ruler, element)
-                above_z_order = self.__diagram.get_z_order(above_element)
-                if above_z_order > base:
-                    base = above_z_order
-        elif self.__direction == ZOrderDirection.bellow:
+            # find the z-order of lowest element above the selection
             base = float('inf')
             for element in self.__elements:
-                below_element = self.__diagram.get_visual_below(ruler, element)
+                above_element = self.__diagram.get_visual_above(ruler, element, self.__elements)
+                if above_element is not None:
+                    above_z_order = self.__diagram.get_z_order(above_element)
+                    if above_z_order < base:
+                        base = above_z_order
+            
+            # is z-ordered elements are bellow found base, indices will be changed after their removal from a diagram
+            delta = 0
+            for element in self.__elements:
+                z_order = self.__diagram.get_z_order(element)
+                if z_order < base:
+                    delta += 1
+            
+            base -= delta
+            
+            # new z-order should be above the found one
+            base += 1
+        elif self.__direction == ZOrderDirection.bellow:
+            # find the z-order of topmost element below the selection
+            base = -float('inf')
+            for element in self.__elements:
+                below_element = self.__diagram.get_visual_below(ruler, element, self.__elements)
                 if below_element is not None:
                     below_z_order = self.__diagram.get_z_order(below_element)
-                    if below_z_order < base:
+                    if below_z_order > base:
                         base = below_z_order
         
         self.__new_z_indices = []
@@ -70,12 +89,10 @@ class ChangeZOrderCommand(Command):
         self._redo(ruler)
     
     def _redo(self, ruler):
-        for z_order, element in self.__new_z_indices:
-            self.__diagram.change_z_order(element, z_order)
+        self.__diagram.change_z_order_many(self.__new_z_indices)
     
     def _undo(self, ruler):
-        for z_order, element in self.__old_z_indices:
-            self.__diagram.change_z_order(element, z_order)
+        self.__diagram.change_z_order_many(self.__old_z_indices)
     
     def get_updates(self):
         for element in self.__elements:
