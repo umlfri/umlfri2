@@ -21,13 +21,20 @@ class DuplicateSnippetCommand(Command):
         
     def _redo(self, ruler):
         for visual in self.__pasted_visuals:
-            self.__parent.add_child(visual.object)
+            if isinstance(visual, ElementVisual):
+                self.__parent.add_child(visual.object)
+            else:
+                visual.object.source.reconnect(visual.object)
             self.__diagram.add(visual)
     
     def _undo(self, ruler):
-        for visual in self.__pasted_visuals:
-            self.__parent.remove_child(visual.object)
+        for visual in reversed(self.__pasted_visuals):
             self.__diagram.remove(visual)
+            
+            if isinstance(visual, ElementVisual):
+                self.__parent.remove_child(visual.object)
+            else:
+                visual.object.source.disconnect(visual.object)
     
     @property
     def element_visuals(self):
