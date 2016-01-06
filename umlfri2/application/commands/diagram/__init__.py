@@ -10,3 +10,4 @@ from .hideconnection import HideConnectionCommand
 from .hideelements import HideElementsCommand
 from .changezorder import ChangeZOrderCommand, ZOrderDirection
 from .pastesnippet import PasteSnippetCommand
+from .duplicatesnippet import DuplicateSnippetCommand

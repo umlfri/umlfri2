@@ -3,7 +3,7 @@ from functools import partial
 
 from PySide.QtGui import QMenuBar, QAction, QMenu, QKeySequence, QIcon, QFileDialog
 from umlfri2.application import Application
-from umlfri2.application.commands.diagram import HideElementsCommand, PasteSnippetCommand
+from umlfri2.application.commands.diagram import HideElementsCommand, PasteSnippetCommand, DuplicateSnippetCommand
 from umlfri2.application.events.application.languagechanged import LanguageChangedEvent
 from umlfri2.constants.keys import FULL_SCREEN, ZOOM_ORIGINAL, PASTE_DUPLICATE
 from umlfri2.constants.languages import AVAILABLE_LANGUAGES
@@ -37,7 +37,8 @@ class MainWindowMenu(QMenuBar):
         self.__edit_cut = self.__add_menu_item(edit_menu, QKeySequence.Cut, "edit-cut", self.__edit_cut_action)
         self.__edit_copy = self.__add_menu_item(edit_menu, QKeySequence.Copy, "edit-copy", self.__edit_copy_action)
         self.__edit_paste = self.__add_menu_item(edit_menu, QKeySequence.Paste, "edit-paste", self.__edit_paste_action)
-        self.__edit_duplicate = self.__add_menu_item(edit_menu, PASTE_DUPLICATE, "edit-paste")
+        self.__edit_duplicate = self.__add_menu_item(edit_menu, PASTE_DUPLICATE, "edit-paste",
+                                                     self.__edit_duplicate_action)
         
         edit_menu.addSeparator()
         
@@ -177,6 +178,13 @@ class MainWindowMenu(QMenuBar):
         drawing_area = Application().tabs.current_tab.drawing_area
         
         command = PasteSnippetCommand(drawing_area.diagram, Application().clipboard)
+        Application().commands.execute(command)
+        drawing_area.selection.select(command.element_visuals)
+    
+    def __edit_duplicate_action(self, checked=False):
+        drawing_area = Application().tabs.current_tab.drawing_area
+        
+        command = DuplicateSnippetCommand(drawing_area.diagram, Application().clipboard)
         Application().commands.execute(command)
         drawing_area.selection.select(command.element_visuals)
     
