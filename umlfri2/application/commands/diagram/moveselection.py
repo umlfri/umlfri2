@@ -46,7 +46,7 @@ class MoveSelectionCommand(Command):
         
         for connection, points in self.__connection_points:
             for idx, point in enumerate(points):
-                connection.move_point(ruler, idx + 1, point + self.__delta)
+                connection.move_point(ruler, idx + 1, point)
     
     def get_updates(self):
         for element in self.__elements:
