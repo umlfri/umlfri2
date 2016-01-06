@@ -1,7 +1,7 @@
 from PySide.QtGui import QKeySequence
 
 from umlfri2.application import Application
-from umlfri2.application.commands.diagram import PasteSnippetCommand
+from umlfri2.application.commands.diagram import PasteSnippetCommand, DuplicateSnippetCommand
 from umlfri2.constants.keys import PASTE_DUPLICATE
 from ..base.contextmenu import ContextMenu
 from ..properties import PropertiesDialog
@@ -38,7 +38,9 @@ class CanvasDiagramMenu(ContextMenu):
         self.__drawing_area.selection.select(command.element_visuals)
     
     def __duplicate_action(self, checked=False):
-        pass
+        command = DuplicateSnippetCommand(self.__diagram, Application().clipboard)
+        Application().commands.execute(command)
+        self.__drawing_area.selection.select(command.element_visuals)
     
     def __edit_properties(self, checked=False):
         PropertiesDialog.open_for(self.__main_window, self.__diagram)

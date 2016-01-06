@@ -2,7 +2,7 @@ from PySide.QtGui import QKeySequence
 
 from umlfri2.application import Application
 from umlfri2.application.commands.diagram import HideElementsCommand, ChangeZOrderCommand, ZOrderDirection, \
-    PasteSnippetCommand
+    PasteSnippetCommand, DuplicateSnippetCommand
 from umlfri2.application.commands.model import DeleteElementsCommand
 from umlfri2.constants.keys import DELETE_FROM_PROJECT, Z_ORDER_RAISE, Z_ORDER_LOWER, Z_ORDER_TO_BOTTOM, Z_ORDER_TO_TOP, \
     PASTE_DUPLICATE
@@ -107,7 +107,9 @@ class CanvasElementMenu(ContextMenu):
         self.__drawing_area.selection.select(command.element_visuals)
     
     def __duplicate_action(self, checked=False):
-        pass
+        command = DuplicateSnippetCommand(self.__diagram, Application().clipboard)
+        Application().commands.execute(command)
+        self.__drawing_area.selection.select(command.element_visuals)
     
     def __hide(self, checked=False):
         command = HideElementsCommand(self.__diagram, self.__elements)
