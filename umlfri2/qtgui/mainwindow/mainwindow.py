@@ -61,6 +61,8 @@ class UmlFriMainWindow(QMainWindow):
         
         self.__clipboard_adapter = QtClipboardAdatper()
         
+        self.__ignore_change_tab = False
+        
         Application().event_dispatcher.subscribe(OpenTabEvent, self.__open_tab)
         Application().event_dispatcher.subscribe(ChangedCurrentTabEvent, self.__change_tab)
         Application().event_dispatcher.subscribe(ClosedTabEvent, self.__close_tab)
@@ -73,6 +75,9 @@ class UmlFriMainWindow(QMainWindow):
         self.__reload_texts()
     
     def __tab_changed(self, index):
+        if self.__ignore_change_tab:
+            return
+        
         if index >= 0:
             Application().tabs.select_tab(self.__tabs.widget(index).diagram)
     
@@ -84,6 +89,9 @@ class UmlFriMainWindow(QMainWindow):
         self.__tabs.addTab(canvas, image_loader.load_icon(event.tab.icon), event.tab.name)
     
     def __change_tab(self, event):
+        if event.tab is None:
+            return
+        
         for widget_id in range(self.__tabs.count()):
             widget = self.__tabs.widget(widget_id)
             
@@ -96,7 +104,11 @@ class UmlFriMainWindow(QMainWindow):
             widget = self.__tabs.widget(widget_id)
             
             if widget.diagram is event.tab.drawing_area.diagram:
-                self.__tabs.removeTab(widget_id)
+                self.__ignore_change_tab = True
+                try:
+                    self.__tabs.removeTab(widget_id)
+                finally:
+                    self.__ignore_change_tab = False
                 return
     
     def __object_changed(self, event):
