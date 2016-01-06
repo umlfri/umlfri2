@@ -58,6 +58,19 @@ class Snippet:
                     visual.move(ruler, Point(obj['x'], obj['y']))
                     visual.resize(ruler, Size(obj['width'], obj['height']))
                     yield visual
+        
+        for obj in self.__data['objects']:
+            if obj['kind'] == 'connection':
+                o = all_connections[obj['id']]
+                if not diagram.contains(o):
+                    if diagram.contains(o.source) and diagram.contains(o.destination):
+                        visual = diagram.show(o)
+                        for point in obj['points']:
+                            visual.add_point(ruler, None, Point(point['x'], point['y']))
+                        for label in visual.get_labels():
+                            point = obj['labels'][label.id]
+                            label.move(ruler, Point(point['x'], point['y']))
+                        yield visual
     
     def can_be_duplicated_to(self, diagram):
         if diagram.project.metamodel.addon.identifier != self.__metamodel_id:

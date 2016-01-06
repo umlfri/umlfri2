@@ -190,8 +190,16 @@ class DrawingArea:
     def copy_snippet(self):
         builder = SnippetBuilder(self.__diagram.project)
         
+        connections = set()
+        
         for element in self.__selection.selected_elements:
             builder.add_element(self.__application.ruler, element)
+            
+            for connection in element.connections:
+                connections.add(connection)
+        
+        for connection in connections:
+            builder.add_connection(self.__application.ruler, connection)
         
         self.__application.clipboard = builder.build()
     

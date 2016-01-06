@@ -44,8 +44,8 @@ class SnippetBuilder:
         
         data['type'] = visual.object.type.id
         
-        data['source'] = visual.object.source.save_id
-        data['destination'] = visual.destination.source.save_id
+        data['source'] = str(visual.object.source.save_id)
+        data['destination'] = str(visual.object.destination.save_id)
         
         points = []
         for point in visual.get_points(ruler, False, False):
