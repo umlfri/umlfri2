@@ -14,6 +14,8 @@ class SnippetBuilder:
         
         data = {}
         
+        data['kind'] = 'element'
+        
         data['id'] = str(visual.object.save_id)
         
         data['type'] = visual.object.type.id
@@ -35,6 +37,8 @@ class SnippetBuilder:
             raise Exception
         
         data = {}
+        
+        data['kind'] = 'connection'
         
         data['id'] = str(visual.object.save_id)
         

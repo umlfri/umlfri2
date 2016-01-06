@@ -27,10 +27,10 @@ class Snippet:
         if diagram.project.save_id != self.__project_id:
             return False
         
-        ids = set(obj['id'] for obj in self.__data['objects'])
+        ids = set(str(element.object.save_id) for element in diagram.elements)
         
-        for element in diagram.elements:
-            if element.object.save_id not in ids:
+        for obj in self.__data['objects']:
+            if obj['kind'] == 'element' and obj['id'] not in ids:
                 return True
         
         return False
