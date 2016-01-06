@@ -16,11 +16,14 @@ class QtClipboardAdatper:
         
         self.__clipboard.changed.connect(self.__qt_clipboard_changed)
         Application().event_dispatcher.subscribe(ClipboardSnippetChangedEvent, self.__umlfri_clipboard_changed)
+        
+        self.__synchronize_from_qt()
     
     def __qt_clipboard_changed(self, mode):
-        if mode != QClipboard.Clipboard:
-            return
-        
+        if mode == QClipboard.Clipboard:
+            self.__synchronize_from_qt()
+    
+    def __synchronize_from_qt(self):
         mime_data = self.__clipboard.mimeData()
         if mime_data.hasFormat(self.UMLFRI_CLIPBOARD_FORMAT):
             serialized = mime_data.data(self.UMLFRI_CLIPBOARD_FORMAT).data()
