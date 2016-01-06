@@ -3,7 +3,11 @@ import abc
 
 class Canvas(metaclass=abc.ABCMeta):
     @abc.abstractmethod
-    def set_zoom(self, zoom):
+    def translate(self, delta):
+        pass
+    
+    @abc.abstractmethod
+    def zoom(self, zoom):
         pass
     
     @abc.abstractmethod

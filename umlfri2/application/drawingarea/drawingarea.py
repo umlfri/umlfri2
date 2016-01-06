@@ -38,7 +38,7 @@ class DrawingArea:
         return self.__selection
     
     def draw(self, canvas):
-        canvas.set_zoom(self.ZOOM_FACTOR**self.__zoom)
+        canvas.zoom(self.ZOOM_FACTOR ** self.__zoom)
         self.__diagram.draw(canvas, self.__selection)
         if self.__current_action is not None:
             if self.__current_action.box is not None:

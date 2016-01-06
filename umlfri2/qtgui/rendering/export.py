@@ -1,60 +1,77 @@
-from PySide.QtCore import QSize, QRect
-from PySide.QtGui import QPixmap, QPainter, QPrinter
+from PySide.QtCore import QSize, QRect, Qt, QPoint
+from PySide.QtGui import QPixmap, QPainter, QPrinter, QApplication
 
 try:
     from PySide.QtSvg import QSvgGenerator
 except ImportError:
     QSvgGenerator = None
 
+from umlfri2.types.geometry import Vector
 from .qtpaintercanvas import QTPainterCanvas
 from .qtruler import QTRuler
 
 
 class ImageExport:
-    def __init__(self, diagram):
+    def __init__(self, diagram, zoom, padding, transparent):
         self.__diagram = diagram
+        self.__zoom = zoom
+        self.__padding = padding
+        self.__transparent = transparent
     
     def supported_formats(self):
-        yield 'bmp',
-        yield 'jpg', 'jpeg'
+        if not self.__transparent:
+            yield 'bmp',
+            yield 'jpg', 'jpeg'
         yield 'pdf',
         yield 'png',
-        yield 'ppm',
         if QSvgGenerator is not None:
             yield 'svg',
-        yield 'tiff',
-        yield 'xbm', 'xpm'
+        yield 'xpm',
     
     @property
     def default_format(self):
         return 'png'
     
     def export(self, file, format):
-        size = self.__diagram.get_size(QTRuler())
+        bounds = self.__get_bounds()
+        size = self.get_size(bounds)
         
         if format == 'svg':
             output = QSvgGenerator()
             output.setFileName(file)
             
-            output.setSize(QSize(size.width, size.height))
-            output.setViewBox(QRect(0, 0, size.width, size.height))
+            output.setSize(size)
+            output.setViewBox(QRect(QPoint(0, 0), size))
             output.setTitle(self.__diagram.get_display_name() or "")
         elif format == 'pdf':
             output = QPrinter()
             output.setOutputFormat(QPrinter.PdfFormat)
-            output.setPaperSize(QSize(size.width, size.height), QPrinter.DevicePixel)
+            output.setPaperSize(size, QPrinter.DevicePixel)
             output.setPageMargins(0, 0, 0, 0, QPrinter.DevicePixel)
             output.setOutputFileName(file)
         else:
-            output = QPixmap(size.width, size.height)
-        
-        painter = QPainter()
-        painter.begin(output)
-        
-        canvas = QTPainterCanvas(painter)
-        self.__diagram.draw(canvas)
-        
-        painter.end()
+            output = QPixmap(size)
+            output.fill(Qt.transparent)
+
+        self.__draw(bounds, output)
         
         if format not in ('svg', 'pdf'):
             output.save(file, format)
+    
+    def __get_bounds(self):
+        return self.__diagram.get_bounds(QTRuler())
+    
+    def get_size(self, bounds):
+        return QSize(
+            (bounds.width + 2 * self.__padding) * self.__zoom,
+            (bounds.height + 2 * self.__padding) * self.__zoom
+        )
+    
+    def __draw(self, bounds, output):
+        painter = QPainter()
+        painter.begin(output)
+        canvas = QTPainterCanvas(painter)
+        canvas.zoom(self.__zoom)
+        canvas.translate(Vector(-bounds.x1 + self.__padding, -bounds.y1 + self.__padding))
+        self.__diagram.draw(canvas, transparent=self.__transparent)
+        painter.end()

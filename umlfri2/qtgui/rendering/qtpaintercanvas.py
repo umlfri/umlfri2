@@ -6,7 +6,7 @@ from umlfri2.qtgui.base import image_loader
 from umlfri2.qtgui.rendering.qtruler import QTRuler
 from umlfri2.types.enums import LineStyle
 from umlfri2.types.font import FontStyle
-from umlfri2.types.geometry import PathLineTo, PathCubicTo
+from umlfri2.types.geometry import PathLineTo, PathCubicTo, Vector
 
 
 class QTPainterCanvas(Canvas):
@@ -26,6 +26,10 @@ class QTPainterCanvas(Canvas):
         self.__painter = painter
         self.__ruler = QTRuler()
         self.__zoom = 1
+        self.__delta = Vector(0, 0)
+        
+        self.__zoom_set = False
+        self.__delta_set = False
 
     def __convert_color(self, color):
         return QColor.fromRgba(color.argb)
@@ -51,7 +55,17 @@ class QTPainterCanvas(Canvas):
     def __set_brush(self, color=None):
         self.__painter.setBrush(self.__create_brush(color))
     
-    def set_zoom(self, zoom):
+    def translate(self, delta):
+        if self.__delta_set:
+            raise Exception
+        
+        self.__painter.translate(delta.x, delta.y)
+        self.__delta = delta
+    
+    def zoom(self, zoom):
+        if self.__zoom_set or self.__delta_set:
+            raise Exception
+        
         if zoom != 1:
             self.__painter.scale(zoom, zoom)
             self.__zoom = zoom
@@ -122,7 +136,9 @@ class QTPainterCanvas(Canvas):
         else:
             self.__painter.setBackground(self.__convert_color(color))
         size = self.__painter.viewport()
-        self.__painter.eraseRect(QRect(0, 0, size.width() / self.__zoom, size.height() / self.__zoom))
+        self.__painter.eraseRect(
+            QRect(-self.__delta.x, -self.__delta.y, size.width() / self.__zoom, size.height() / self.__zoom)
+        )
     
     def get_ruler(self):
         return self.__ruler

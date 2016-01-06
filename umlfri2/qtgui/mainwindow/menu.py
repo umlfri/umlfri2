@@ -8,7 +8,7 @@ from umlfri2.application.events.application.languagechanged import LanguageChang
 from umlfri2.constants.keys import FULL_SCREEN, ZOOM_ORIGINAL, PASTE_DUPLICATE
 from umlfri2.constants.languages import AVAILABLE_LANGUAGES
 from umlfri2.qtgui.fullscreen import FullScreenDiagram
-from umlfri2.qtgui.rendering import ImageExport
+from umlfri2.qtgui.rendering import ImageExport, ExportDialog
 
 
 class MainWindowMenu(QMenuBar):
@@ -192,7 +192,13 @@ class MainWindowMenu(QMenuBar):
         Application().tabs.current_tab.drawing_area.selection.select_all()
     
     def __diagram_export_action(self, checked=False):
-        exp = ImageExport(Application().tabs.current_tab.drawing_area.diagram)
+        dialog = ExportDialog(self.__main_window)
+        
+        if dialog.exec_() == ExportDialog.Rejected:
+            return
+        
+        diagram = Application().tabs.current_tab.drawing_area.diagram
+        exp = ImageExport(diagram, dialog.zoom, dialog.padding, dialog.transparent)
         filters = []
         default = exp.default_format
         default_filter = None

@@ -210,8 +210,9 @@ class Diagram:
             else:
                 self.__connections.insert(z_order, visual)
     
-    def draw(self, canvas, selection=None):
-        canvas.clear(self.__type.get_background_color(self))
+    def draw(self, canvas, selection=None, transparent=False):
+        if not transparent:
+            canvas.clear(self.__type.get_background_color(self))
         
         for element in self.__elements:
             element.draw(canvas)
@@ -269,8 +270,11 @@ class Diagram:
         raise Exception
     
     def get_size(self, ruler):
+        return self.get_bounds(ruler).bottom_right.as_size()
+    
+    def get_bounds(self, ruler):
         return Rectangle.combine_bounds(visual.get_bounds(ruler)
-                                        for visual in chain(self.__elements, self.__connections)).bottom_right.as_size()
+                                        for visual in chain(self.__elements, self.__connections))
     
     def contains(self, object):
         if isinstance(object, ElementObject):
