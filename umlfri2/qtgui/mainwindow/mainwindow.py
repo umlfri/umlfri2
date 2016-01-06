@@ -10,6 +10,7 @@ from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionE
 from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent
 from umlfri2.constants.paths import GRAPHICS
 from umlfri2.model import Diagram
+from umlfri2.qtgui.base.clipboard import QtClipboardAdatper
 from ..toolbox import MainToolBox
 from .menu import MainWindowMenu
 from .newproject import NewProjectDialog
@@ -57,6 +58,8 @@ class UmlFriMainWindow(QMainWindow):
         self.setMenuBar(self.__menu_bar)
         
         self.setUnifiedTitleAndToolBarOnMac(True)
+        
+        self.__clipboard_adapter = QtClipboardAdatper()
         
         Application().event_dispatcher.subscribe(OpenTabEvent, self.__open_tab)
         Application().event_dispatcher.subscribe(ChangedCurrentTabEvent, self.__change_tab)
