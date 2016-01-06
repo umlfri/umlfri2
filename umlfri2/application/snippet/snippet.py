@@ -23,7 +23,6 @@ class Snippet:
         return len(self.__data['objects']) == 0
     
     def can_be_pasted_to(self, diagram):
-        # TODO: each element in snippet must exist in the project
         if diagram.project.save_id != self.__project_id:
             return False
         
@@ -42,3 +41,9 @@ class Snippet:
                     return True
         
         return False
+    
+    def can_be_duplicated_to(self, diagram):
+        if diagram.project.metamodel.addon.identifier != self.__metamodel_id:
+            return False
+        
+        return True

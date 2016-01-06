@@ -3,8 +3,9 @@ from functools import partial
 
 from PySide.QtGui import QMenuBar, QAction, QMenu, QKeySequence, QIcon, QFileDialog
 from umlfri2.application import Application
+from umlfri2.application.commands.diagram import HideElementsCommand
 from umlfri2.application.events.application.languagechanged import LanguageChangedEvent
-from umlfri2.constants.keys import FULL_SCREEN, ZOOM_ORIGINAL
+from umlfri2.constants.keys import FULL_SCREEN, ZOOM_ORIGINAL, PASTE_DUPLICATE
 from umlfri2.constants.languages import AVAILABLE_LANGUAGES
 from umlfri2.qtgui.fullscreen import FullScreenDiagram
 from umlfri2.qtgui.rendering import ImageExport
@@ -30,7 +31,16 @@ class MainWindowMenu(QMenuBar):
         self.__edit, edit_menu = self.__add_menu()
         self.__edit_undo = self.__add_menu_item(edit_menu, QKeySequence.Undo, "edit-undo", self.__edit_undo_action)
         self.__edit_redo = self.__add_menu_item(edit_menu, QKeySequence.Redo, "edit-redo", self.__edit_redo_action)
+        
         edit_menu.addSeparator()
+        
+        self.__edit_cut = self.__add_menu_item(edit_menu, QKeySequence.Cut, "edit-cut", self.__edit_cut_action)
+        self.__edit_copy = self.__add_menu_item(edit_menu, QKeySequence.Copy, "edit-copy", self.__edit_copy_action)
+        self.__edit_paste = self.__add_menu_item(edit_menu, QKeySequence.Paste, "edit-paste")
+        self.__edit_paste_duplicate = self.__add_menu_item(edit_menu, PASTE_DUPLICATE, "edit-paste")
+        
+        edit_menu.addSeparator()
+        
         self.__edit_select_all = self.__add_menu_item(edit_menu, QKeySequence.SelectAll, "edit-select-all",
                                                       self.__edit_select_all_action)
         
@@ -111,10 +121,20 @@ class MainWindowMenu(QMenuBar):
         self.__diagram.setEnabled(tab is not None)
         
         if tab is None:
+            self.__edit_cut.setEnabled(False)
+            self.__edit_copy.setEnabled(False)
+            self.__edit_paste.setEnabled(False)
+            self.__edit_paste_duplicate.setEnabled(False)
+            
             self.__view_zoom_in.setEnabled(False)
             self.__view_zoom_out.setEnabled(False)
             self.__view_zoom_original.setEnabled(False)
         else:
+            self.__edit_cut.setEnabled(tab.drawing_area.can_copy_snippet)
+            self.__edit_copy.setEnabled(tab.drawing_area.can_copy_snippet)
+            self.__edit_paste.setEnabled(tab.drawing_area.can_paste_snippet)
+            self.__edit_paste_duplicate.setEnabled(tab.drawing_area.can_paste_snippet_duplicate)
+            
             self.__view_zoom_in.setEnabled(tab.drawing_area.can_zoom_in)
             self.__view_zoom_out.setEnabled(tab.drawing_area.can_zoom_out)
             self.__view_zoom_original.setEnabled(tab.drawing_area.can_zoom_original)
@@ -139,6 +159,19 @@ class MainWindowMenu(QMenuBar):
     
     def __edit_redo_action(self, checked=False):
         Application().commands.redo()
+    
+    def __edit_copy_action(self, checked=False):
+        drawing_area = Application().tabs.current_tab.drawing_area
+        
+        drawing_area.copy_snippet()
+    
+    def __edit_cut_action(self, checked=False):
+        drawing_area = Application().tabs.current_tab.drawing_area
+        
+        drawing_area.copy_snippet()
+        
+        command = HideElementsCommand(drawing_area.diagram, drawing_area.selection.selected_elements)
+        Application().commands.execute(command)
     
     def __edit_select_all_action(self, checked=False):
         Application().tabs.current_tab.drawing_area.selection.select_all()
@@ -219,6 +252,10 @@ class MainWindowMenu(QMenuBar):
         self.__edit.setText(_("&Edit"))
         self.__edit_undo.setText(_("&Undo"))
         self.__edit_redo.setText(_("&Redo"))
+        self.__edit_cut.setText(_("C&ut"))
+        self.__edit_copy.setText(_("&Copy"))
+        self.__edit_paste.setText(_("&Paste"))
+        self.__edit_paste_duplicate.setText(_("Paste &Duplicate"))
         self.__edit_select_all.setText(_("Select &All"))
         
         self.__diagram.setText(_("&Diagram"))

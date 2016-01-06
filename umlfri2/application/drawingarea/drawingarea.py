@@ -201,3 +201,10 @@ class DrawingArea:
             return False
         
         return self.__application.clipboard.can_be_pasted_to(self.__diagram)
+    
+    @property
+    def can_paste_snippet_duplicate(self):
+        if self.__application.clipboard_empty:
+            return False
+        
+        return self.__application.clipboard.can_be_duplicated_to(self.__diagram)

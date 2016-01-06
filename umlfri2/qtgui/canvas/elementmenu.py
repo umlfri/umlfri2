@@ -3,7 +3,8 @@ from PySide.QtGui import QKeySequence
 from umlfri2.application import Application
 from umlfri2.application.commands.diagram import HideElementsCommand, ChangeZOrderCommand, ZOrderDirection
 from umlfri2.application.commands.model import DeleteElementsCommand
-from umlfri2.constants.keys import DELETE_FROM_PROJECT, Z_ORDER_RAISE, Z_ORDER_LOWER, Z_ORDER_TO_BOTTOM, Z_ORDER_TO_TOP
+from umlfri2.constants.keys import DELETE_FROM_PROJECT, Z_ORDER_RAISE, Z_ORDER_LOWER, Z_ORDER_TO_BOTTOM, Z_ORDER_TO_TOP, \
+    PASTE_DUPLICATE
 from ..base.contextmenu import ContextMenu
 from ..properties import PropertiesDialog
 
@@ -23,6 +24,28 @@ class CanvasElementMenu(ContextMenu):
                 something_above = True
             if self.__diagram.get_visual_below(Application().ruler, element) is not None:
                 something_below = True
+        
+        if drawing_area.can_copy_snippet:
+            self._add_menu_item("edit-cut", _("Cut"), QKeySequence.Cut, self.__cut_action)
+        else:
+            self._add_menu_item("edit-cut", _("Cut"), QKeySequence.Cut)
+        
+        if drawing_area.can_copy_snippet:
+            self._add_menu_item("edit-copy", _("Copy"), QKeySequence.Copy, self.__copy_action)
+        else:
+            self._add_menu_item("edit-copy", _("Copy"), QKeySequence.Copy)
+        
+        if drawing_area.can_paste_snippet:
+            self._add_menu_item("edit-paste", _("Paste"), QKeySequence.Paste, self.__paste_action)
+        else:
+            self._add_menu_item("edit-paste", _("Paste"), QKeySequence.Paste)
+        
+        if drawing_area.can_paste_snippet_duplicate:
+            self._add_menu_item("edit-paste", _("Paste Duplicate"), PASTE_DUPLICATE, self.__duplicate_action)
+        else:
+            self._add_menu_item("edit-paste", _("Paste Duplicate"), PASTE_DUPLICATE)
+        
+        self.addSeparator()
         
         self._add_menu_item(None, _("Hide"), QKeySequence.Delete, self.__hide)
         self._add_menu_item("edit-delete", _("Delete"), DELETE_FROM_PROJECT, self.__delete)
@@ -66,6 +89,25 @@ class CanvasElementMenu(ContextMenu):
             default = self._add_menu_item(None, _("Properties..."), None)
         
         self.setDefaultAction(default)
+    
+    def __cut_action(self, checked=False):
+        drawing_area = Application().tabs.current_tab.drawing_area
+        
+        drawing_area.copy_snippet()
+        
+        command = HideElementsCommand(drawing_area.diagram, drawing_area.selection.selected_elements)
+        Application().commands.execute(command)
+    
+    def __copy_action(self, checked=False):
+        drawing_area = Application().tabs.current_tab.drawing_area
+        
+        drawing_area.copy_snippet()
+    
+    def __paste_action(self, checked=False):
+        pass
+    
+    def __duplicate_action(self, checked=False):
+        pass
     
     def __hide(self, checked=False):
         command = HideElementsCommand(self.__diagram, self.__elements)

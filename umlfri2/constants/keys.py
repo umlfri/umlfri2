@@ -1,5 +1,8 @@
+PASTE_DUPLICATE = "Ctrl+Shift+V"
 DELETE_FROM_PROJECT = "Shift+Del"
+
 FULL_SCREEN = "Alt+Return"
+
 ZOOM_ORIGINAL = "Ctrl+0"
 
 Z_ORDER_RAISE = "PgDown"

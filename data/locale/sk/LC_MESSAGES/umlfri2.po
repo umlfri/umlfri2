@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-05 19:31+0100\n"
-"PO-Revision-Date: 2016-01-05 19:31+0100\n"
+"POT-Creation-Date: 2016-01-06 13:33+0100\n"
+"PO-Revision-Date: 2016-01-06 13:35+0100\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -16,6 +16,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.5\n"
+
+msgid "&Copy"
+msgstr "&Kopírovať"
 
 msgid "&Delete"
 msgstr "&Odstrániť"
@@ -34,6 +37,9 @@ msgstr "&Nový"
 
 msgid "&Open"
 msgstr "&Otvoriť"
+
+msgid "&Paste"
+msgstr "&Vložiť"
 
 msgid "&Quit"
 msgstr "U&končiť"
@@ -65,6 +71,9 @@ msgstr "Ukončenie aplikácie"
 msgid "Apply"
 msgstr "Použiť"
 
+msgid "C&ut"
+msgstr "Vy&strihnúť"
+
 msgid "Cancel"
 msgstr "Zrušiť"
 
@@ -74,8 +83,14 @@ msgstr "Zmeniť &jazyk"
 msgid "Close without saving"
 msgstr "Zatvoriť bez uloženia"
 
+msgid "Copy"
+msgstr "Kopírovať"
+
 msgid "Create a new &solution"
 msgstr "Vytvoriť novú &solution"
+
+msgid "Cut"
+msgstr "Vystrihnúť"
 
 msgid "Delete"
 msgstr "Odstrániť"
@@ -130,6 +145,15 @@ msgstr "Otvoriť"
 
 msgid "Open Project"
 msgstr "Otvoriť projekt"
+
+msgid "Paste"
+msgstr "Vložiť"
+
+msgid "Paste &Duplicate"
+msgstr "Vložiť &ako kópiu"
+
+msgid "Paste Duplicate"
+msgstr "Vložiť ako kópiu"
 
 msgid "Project"
 msgstr "Projekt"
