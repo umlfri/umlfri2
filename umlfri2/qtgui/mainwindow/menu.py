@@ -3,7 +3,7 @@ from functools import partial
 
 from PySide.QtGui import QMenuBar, QAction, QMenu, QKeySequence, QIcon, QFileDialog
 from umlfri2.application import Application
-from umlfri2.application.commands.diagram import HideElementsCommand
+from umlfri2.application.commands.diagram import HideElementsCommand, PasteSnippetCommand
 from umlfri2.application.events.application.languagechanged import LanguageChangedEvent
 from umlfri2.constants.keys import FULL_SCREEN, ZOOM_ORIGINAL, PASTE_DUPLICATE
 from umlfri2.constants.languages import AVAILABLE_LANGUAGES
@@ -36,8 +36,8 @@ class MainWindowMenu(QMenuBar):
         
         self.__edit_cut = self.__add_menu_item(edit_menu, QKeySequence.Cut, "edit-cut", self.__edit_cut_action)
         self.__edit_copy = self.__add_menu_item(edit_menu, QKeySequence.Copy, "edit-copy", self.__edit_copy_action)
-        self.__edit_paste = self.__add_menu_item(edit_menu, QKeySequence.Paste, "edit-paste")
-        self.__edit_paste_duplicate = self.__add_menu_item(edit_menu, PASTE_DUPLICATE, "edit-paste")
+        self.__edit_paste = self.__add_menu_item(edit_menu, QKeySequence.Paste, "edit-paste", self.__edit_paste_action)
+        self.__edit_duplicate = self.__add_menu_item(edit_menu, PASTE_DUPLICATE, "edit-paste")
         
         edit_menu.addSeparator()
         
@@ -124,7 +124,7 @@ class MainWindowMenu(QMenuBar):
             self.__edit_cut.setEnabled(False)
             self.__edit_copy.setEnabled(False)
             self.__edit_paste.setEnabled(False)
-            self.__edit_paste_duplicate.setEnabled(False)
+            self.__edit_duplicate.setEnabled(False)
             
             self.__view_zoom_in.setEnabled(False)
             self.__view_zoom_out.setEnabled(False)
@@ -133,7 +133,7 @@ class MainWindowMenu(QMenuBar):
             self.__edit_cut.setEnabled(tab.drawing_area.can_copy_snippet)
             self.__edit_copy.setEnabled(tab.drawing_area.can_copy_snippet)
             self.__edit_paste.setEnabled(tab.drawing_area.can_paste_snippet)
-            self.__edit_paste_duplicate.setEnabled(tab.drawing_area.can_paste_snippet_duplicate)
+            self.__edit_duplicate.setEnabled(tab.drawing_area.can_paste_snippet_duplicate)
             
             self.__view_zoom_in.setEnabled(tab.drawing_area.can_zoom_in)
             self.__view_zoom_out.setEnabled(tab.drawing_area.can_zoom_out)
@@ -172,6 +172,13 @@ class MainWindowMenu(QMenuBar):
         
         command = HideElementsCommand(drawing_area.diagram, drawing_area.selection.selected_elements)
         Application().commands.execute(command)
+    
+    def __edit_paste_action(self, checked=False):
+        drawing_area = Application().tabs.current_tab.drawing_area
+        
+        command = PasteSnippetCommand(drawing_area.diagram, Application().clipboard)
+        Application().commands.execute(command)
+        drawing_area.selection.select(command.element_visuals)
     
     def __edit_select_all_action(self, checked=False):
         Application().tabs.current_tab.drawing_area.selection.select_all()
@@ -255,7 +262,7 @@ class MainWindowMenu(QMenuBar):
         self.__edit_cut.setText(_("C&ut"))
         self.__edit_copy.setText(_("&Copy"))
         self.__edit_paste.setText(_("&Paste"))
-        self.__edit_paste_duplicate.setText(_("Paste &Duplicate"))
+        self.__edit_duplicate.setText(_("Paste &Duplicate"))
         self.__edit_select_all.setText(_("Select &All"))
         
         self.__diagram.setText(_("&Diagram"))

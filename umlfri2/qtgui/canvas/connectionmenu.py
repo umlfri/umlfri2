@@ -1,7 +1,7 @@
 from PySide.QtGui import QKeySequence
 
 from umlfri2.application import Application
-from umlfri2.application.commands.diagram import HideConnectionCommand
+from umlfri2.application.commands.diagram import HideConnectionCommand, PasteSnippetCommand
 from umlfri2.application.commands.model import DeleteConnectionCommand, ReverseConnectionCommand
 from umlfri2.constants.keys import DELETE_FROM_PROJECT, PASTE_DUPLICATE
 from ..base.contextmenu import ContextMenu
@@ -15,6 +15,7 @@ class CanvasConnectionMenu(ContextMenu):
         self.__main_window = main_window
         self.__connection = connection
         self.__diagram = drawing_area.diagram
+        self.__drawing_area = drawing_area
         
         if drawing_area.can_paste_snippet:
             self._add_menu_item("edit-paste", _("Paste"), QKeySequence.Paste, self.__paste_action)
@@ -43,7 +44,9 @@ class CanvasConnectionMenu(ContextMenu):
         self.setDefaultAction(default)
     
     def __paste_action(self, checked=False):
-        pass
+        command = PasteSnippetCommand(self.__diagram, Application().clipboard)
+        Application().commands.execute(command)
+        self.__drawing_area.selection.select(command.element_visuals)
     
     def __duplicate_action(self, checked=False):
         pass

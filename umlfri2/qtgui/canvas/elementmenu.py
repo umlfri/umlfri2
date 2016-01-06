@@ -1,7 +1,8 @@
 from PySide.QtGui import QKeySequence
 
 from umlfri2.application import Application
-from umlfri2.application.commands.diagram import HideElementsCommand, ChangeZOrderCommand, ZOrderDirection
+from umlfri2.application.commands.diagram import HideElementsCommand, ChangeZOrderCommand, ZOrderDirection, \
+    PasteSnippetCommand
 from umlfri2.application.commands.model import DeleteElementsCommand
 from umlfri2.constants.keys import DELETE_FROM_PROJECT, Z_ORDER_RAISE, Z_ORDER_LOWER, Z_ORDER_TO_BOTTOM, Z_ORDER_TO_TOP, \
     PASTE_DUPLICATE
@@ -15,6 +16,7 @@ class CanvasElementMenu(ContextMenu):
         
         self.__main_window = main_window
         self.__elements = tuple(elements)
+        self.__drawing_area = drawing_area
         self.__diagram = drawing_area.diagram
         
         something_above = False
@@ -91,20 +93,18 @@ class CanvasElementMenu(ContextMenu):
         self.setDefaultAction(default)
     
     def __cut_action(self, checked=False):
-        drawing_area = Application().tabs.current_tab.drawing_area
+        self.__drawing_area.copy_snippet()
         
-        drawing_area.copy_snippet()
-        
-        command = HideElementsCommand(drawing_area.diagram, drawing_area.selection.selected_elements)
+        command = HideElementsCommand(self.__diagram, self.__elements)
         Application().commands.execute(command)
     
     def __copy_action(self, checked=False):
-        drawing_area = Application().tabs.current_tab.drawing_area
-        
-        drawing_area.copy_snippet()
+        self.__drawing_area.copy_snippet()
     
     def __paste_action(self, checked=False):
-        pass
+        command = PasteSnippetCommand(self.__diagram, Application().clipboard)
+        Application().commands.execute(command)
+        self.__drawing_area.selection.select(command.element_visuals)
     
     def __duplicate_action(self, checked=False):
         pass

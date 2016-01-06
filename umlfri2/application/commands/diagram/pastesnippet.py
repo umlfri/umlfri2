@@ -25,6 +25,12 @@ class PasteSnippetCommand(Command):
         for visual in self.__pasted_visuals:
             self.__diagram.remove(visual)
     
+    @property
+    def element_visuals(self):
+        for visual in self.__pasted_visuals:
+            if isinstance(visual, ElementVisual):
+                yield visual
+    
     def get_updates(self):
         for visual in self.__pasted_visuals:
             if isinstance(visual, ElementVisual):

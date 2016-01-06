@@ -1,3 +1,5 @@
+from collections import Iterable
+
 from umlfri2.application.events.diagram import SelectionChangedEvent
 from umlfri2.types.enums import LineStyle
 from .selectionpointposition import SelectionPointPosition
@@ -54,7 +56,10 @@ class Selection:
     def select(self, visual):
         self.__selected.clear()
         if visual is not None:
-            self.__selected.add(visual)
+            if isinstance(visual, Iterable):
+                self.__selected.update(visual)
+            else:
+                self.__selected.add(visual)
         
         self.__application.event_dispatcher.dispatch(SelectionChangedEvent(self.__diagram, self))
     

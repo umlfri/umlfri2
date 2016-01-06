@@ -89,6 +89,7 @@ class MainToolBar(QToolBar):
         
         command = PasteSnippetCommand(drawing_area.diagram, Application().clipboard)
         Application().commands.execute(command)
+        drawing_area.selection.select(command.element_visuals)
     
     def __undo_action(self, count, checked=False):
         Application().commands.undo(count)
