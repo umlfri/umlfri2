@@ -1,5 +1,5 @@
 def compute_interface_api_name(name):
-    return ('I' + name).upper_camel_case
+    return name.upper_camel_case
 
 
 def compute_method_api_name(singular):
