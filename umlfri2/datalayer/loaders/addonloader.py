@@ -7,7 +7,7 @@ from .metamodelloader import MetamodelLoader
 from umlfri2.types.image import Image
 from .addoninfoloader import AddOnInfoLoader
 from umlfri2.addon.addon import AddOn
-from ..constants import ADDON_NAMESPACE, ADDON_ADDON_FILE
+from ..constants import ADDON_NAMESPACE, ADDON_ADDON_FILE, ADDON_DISABLE_FILE
 
 
 class AddOnLoader:
@@ -16,6 +16,9 @@ class AddOnLoader:
     
     def is_addon(self):
         return self.__storage.exists(ADDON_ADDON_FILE)
+    
+    def is_enabled(self):
+        return not self.__storage.exists(ADDON_DISABLE_FILE)
     
     def load(self):
         info = AddOnInfoLoader(lxml.etree.parse(self.__storage.open(ADDON_ADDON_FILE)).getroot()).load()

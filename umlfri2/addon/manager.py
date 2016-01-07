@@ -9,7 +9,7 @@ class AddOnManager:
         for dir in storage.list():
             with storage.create_substorage(dir) as addon_storage:
                 loader = AddOnLoader(addon_storage)
-                if loader.is_addon():
+                if loader.is_addon() and loader.is_enabled():
                     self.__addons.append(loader.load())
     
     def get_addon(self, identifier):
