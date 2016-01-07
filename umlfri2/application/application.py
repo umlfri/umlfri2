@@ -90,6 +90,9 @@ class Application(metaclass=MetaApplication):
         
         return 'POSIX'
     
+    def stop(self):
+        self.__addons.stop_all()
+    
     def use_ruler(self, ruler):
         if self.__ruler is not None:
             raise Exception("Cannot change used ruler")

@@ -35,7 +35,7 @@ class PatchPlugin:
         module = getattr(module, module_name)
         module = getattr(module, self.__module)
         
-        self.__obj = module.Plugin()
+        self.__obj = module.Patch()
     
     def start(self):
         if self.__obj is None:

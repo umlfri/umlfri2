@@ -18,17 +18,36 @@ class AddOnManager:
                 return addon
     
     def start_all(self):
+        def recursion(addon):
+            if addon.is_started:
+                return
+            
+            for dependency in addon.dependencies:
+                recursion(self.get_addon(dependency))
+            
+            addon.start()
+        
         for addon in self.__addons:
-            self.__start_recursive_if_needed(addon)
+            recursion(addon)
     
-    def __start_recursive_if_needed(self, addon):
-        if addon.is_started:
-            return
+    def stop_all(self):
+        reverse_dependencies = {}
         
-        for dependency in addon.dependencies:
-            self.__start_recursive_if_needed(self.get_addon(dependency))
+        for addon in self.__addons:
+            for dependency in addon.dependencies:
+                reverse_dependencies.setdefault(dependency, []).append(addon.identifier)
         
-        addon.start()
+        def recursion(addon):
+            if not addon.is_started:
+                return
+            
+            for dependency in reverse_dependencies.get(addon.identifier, ()):
+                recursion(self.get_addon(dependency))
+            
+            addon.stop()
+        
+        for addon in self.__addons:
+            recursion(addon)
     
     def __iter__(self):
         yield from self.__addons

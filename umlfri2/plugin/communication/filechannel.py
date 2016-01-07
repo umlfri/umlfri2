@@ -24,7 +24,7 @@ class FileChannel(Channel):
             for chunk in self.__encoder.iterencode(data):
                 self.__output.write(chunk.encode('utf8'))
             
-            self.__output.write('\r\n')
+            self.__output.write(b'\r\n')
             self.__output.flush()
     
     def read(self):
@@ -35,7 +35,8 @@ class FileChannel(Channel):
             while True:
                 ret = self.__input.readline()
                 if ret:
-                    return self.__decoder.decode(ret.rstrip('\r\n').decode('utf8'))
+                    ret = ret.decode('utf8').rstrip('\r\n')
+                    return self.__decoder.decode(ret)
                 else:
                     self.__closed = True
                     return

@@ -27,4 +27,8 @@ Application().use_ruler(QTRuler())
 window = UmlFriMainWindow()
 window.showMaximized()
 
-sys.exit(app.exec_())
+no = app.exec_()
+
+Application().stop()
+
+sys.exit(no)
