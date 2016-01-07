@@ -6,14 +6,15 @@ try:
 except ImportError:
     QSvgGenerator = None
 
+from umlfri2.model import Diagram
 from umlfri2.types.geometry import Vector
 from .qtpaintercanvas import QTPainterCanvas
 from .qtruler import QTRuler
 
 
 class ImageExport:
-    def __init__(self, diagram, zoom, padding, transparent):
-        self.__diagram = diagram
+    def __init__(self, diagram_or_selection, zoom, padding, transparent):
+        self.__diagram_or_selection = diagram_or_selection
         self.__zoom = zoom
         self.__padding = padding
         self.__transparent = transparent
@@ -42,7 +43,8 @@ class ImageExport:
             
             output.setSize(size)
             output.setViewBox(QRect(QPoint(0, 0), size))
-            output.setTitle(self.__diagram.get_display_name() or "")
+            if isinstance(self.__diagram_or_selection, Diagram):
+                output.setTitle(self.__diagram_or_selection.get_display_name() or "")
         elif format == 'pdf':
             output = QPrinter()
             output.setOutputFormat(QPrinter.PdfFormat)
@@ -58,8 +60,22 @@ class ImageExport:
         if format not in ('svg', 'pdf'):
             output.save(file, format)
     
+    def export_to_clipboard(self):
+        bounds = self.__get_bounds()
+        size = self.get_size(bounds)
+        
+        output = QPixmap(size)
+        output.fill(Qt.transparent)
+
+        self.__draw(bounds, output)
+        
+        QApplication.clipboard().setPixmap(output)
+    
     def __get_bounds(self):
-        return self.__diagram.get_bounds(QTRuler())
+        if isinstance(self.__diagram_or_selection, Diagram):
+            return self.__diagram_or_selection.get_bounds(QTRuler())
+        else:
+            return self.__diagram_or_selection.get_bounds()
     
     def get_size(self, bounds):
         return QSize(
@@ -73,5 +89,8 @@ class ImageExport:
         canvas = QTPainterCanvas(painter)
         canvas.zoom(self.__zoom)
         canvas.translate(Vector(-bounds.x1 + self.__padding, -bounds.y1 + self.__padding))
-        self.__diagram.draw(canvas, transparent=self.__transparent)
+        if isinstance(self.__diagram_or_selection, Diagram):
+            self.__diagram_or_selection.draw(canvas, transparent=self.__transparent)
+        else:
+            self.__diagram_or_selection.draw_selected(canvas, transparent=self.__transparent)
         painter.end()

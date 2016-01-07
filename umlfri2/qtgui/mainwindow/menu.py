@@ -5,7 +5,7 @@ from PySide.QtGui import QMenuBar, QAction, QMenu, QKeySequence, QIcon, QFileDia
 from umlfri2.application import Application
 from umlfri2.application.commands.diagram import HideElementsCommand, PasteSnippetCommand, DuplicateSnippetCommand
 from umlfri2.application.events.application.languagechanged import LanguageChangedEvent
-from umlfri2.constants.keys import FULL_SCREEN, ZOOM_ORIGINAL, PASTE_DUPLICATE
+from umlfri2.constants.keys import FULL_SCREEN, ZOOM_ORIGINAL, PASTE_DUPLICATE, COPY_IMAGE
 from umlfri2.constants.languages import AVAILABLE_LANGUAGES
 from umlfri2.qtgui.fullscreen import FullScreenDiagram
 from umlfri2.qtgui.rendering import ImageExport, ExportDialog
@@ -36,6 +36,7 @@ class MainWindowMenu(QMenuBar):
         
         self.__edit_cut = self.__add_menu_item(edit_menu, QKeySequence.Cut, "edit-cut", self.__edit_cut_action)
         self.__edit_copy = self.__add_menu_item(edit_menu, QKeySequence.Copy, "edit-copy", self.__edit_copy_action)
+        self.__edit_copy_image = self.__add_menu_item(edit_menu, COPY_IMAGE, None, self.__edit_copy_image_action)
         self.__edit_paste = self.__add_menu_item(edit_menu, QKeySequence.Paste, "edit-paste", self.__edit_paste_action)
         self.__edit_duplicate = self.__add_menu_item(edit_menu, PASTE_DUPLICATE, "edit-paste",
                                                      self.__edit_duplicate_action)
@@ -124,6 +125,7 @@ class MainWindowMenu(QMenuBar):
         if tab is None:
             self.__edit_cut.setEnabled(False)
             self.__edit_copy.setEnabled(False)
+            self.__edit_copy_image.setEnabled(False)
             self.__edit_paste.setEnabled(False)
             self.__edit_duplicate.setEnabled(False)
             
@@ -133,6 +135,7 @@ class MainWindowMenu(QMenuBar):
         else:
             self.__edit_cut.setEnabled(tab.drawing_area.can_copy_snippet)
             self.__edit_copy.setEnabled(tab.drawing_area.can_copy_snippet)
+            self.__edit_copy_image.setEnabled(tab.drawing_area.selection.is_element_selected)
             self.__edit_paste.setEnabled(tab.drawing_area.can_paste_snippet)
             self.__edit_duplicate.setEnabled(tab.drawing_area.can_paste_snippet_duplicate)
             
@@ -165,6 +168,16 @@ class MainWindowMenu(QMenuBar):
         drawing_area = Application().tabs.current_tab.drawing_area
         
         drawing_area.copy_snippet()
+    
+    def __edit_copy_image_action(self, checked=False):
+        dialog = ExportDialog(self.__main_window)
+        
+        if dialog.exec_() == ExportDialog.Rejected:
+            return
+        
+        selection = Application().tabs.current_tab.drawing_area.selection
+        exp = ImageExport(selection, dialog.zoom, dialog.padding, dialog.transparent)
+        exp.export_to_clipboard()
     
     def __edit_cut_action(self, checked=False):
         drawing_area = Application().tabs.current_tab.drawing_area
@@ -275,6 +288,7 @@ class MainWindowMenu(QMenuBar):
         self.__edit_redo.setText(_("&Redo"))
         self.__edit_cut.setText(_("C&ut"))
         self.__edit_copy.setText(_("&Copy"))
+        self.__edit_copy_image.setText(_("&Copy as Image"))
         self.__edit_paste.setText(_("&Paste"))
         self.__edit_duplicate.setText(_("Paste &Duplicate"))
         self.__edit_select_all.setText(_("Select &All"))

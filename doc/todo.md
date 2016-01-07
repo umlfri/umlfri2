@@ -15,7 +15,7 @@
 - [x] accessing project tree from ufl
 - [x] rendering package content in "Package" element visual
 - [ ] canvas visual object
-- [ ] copy as image
+- [x] copy as image
 - [x] export image
 - [ ] addon management
 - [ ] printing

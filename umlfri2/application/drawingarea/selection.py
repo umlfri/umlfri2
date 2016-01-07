@@ -154,6 +154,30 @@ class Selection:
                         canvas.draw_line(line_to_connection.first, intersect[0], fg=self.SELECTION_COLOR,
                                          line_width=self.SELECTION_SIZE, line_style=LineStyle.dot)
     
+    def draw_selected(self, canvas, selection=False, transparent=False):
+        if not transparent:
+            self.__diagram.draw_background(canvas)
+        
+        if self.is_connection_selected:
+            self.selected_connection.draw(canvas)
+            if selection:
+                self.draw_for(canvas, self.selected_connection)
+        elif self.is_element_selected:
+            elements = [element for element in self.__diagram.elements if element in self.__selected]
+            
+            for element in elements:
+                element.draw(canvas)
+                if selection:
+                    self.draw_for(canvas, element)
+            
+            for connection in self.__diagram.connections:
+                if connection.source in self.__selected and connection.destination in self.__selected:
+                    connection.draw(canvas)
+                    if selection:
+                        self.draw_for(canvas, connection)
+        else:
+            raise Exception
+    
     def __get_selection_points_positions(self, visual):
         resizable_x, resizable_y = visual.is_resizable(self.__application.ruler)
         
@@ -247,7 +271,14 @@ class Selection:
         return visual not in self.__selected
     
     def get_bounds(self):
-        return Rectangle.combine_bounds(visual.get_bounds(self.__application.ruler) for visual in self.__selected)
+        bounds = [visual.get_bounds(self.__application.ruler) for visual in self.__selected]
+        
+        if self.is_element_selected:
+            for connection in self.__diagram.connections:
+                if connection.source in self.__selected or connection.destination in self.__selected:
+                    bounds.append(connection.get_bounds(self.__application.ruler))
+        
+        return Rectangle.combine_bounds(bounds)
     
     @property
     def is_diagram_selected(self):

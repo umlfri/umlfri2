@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-06 13:33+0100\n"
-"PO-Revision-Date: 2016-01-06 13:35+0100\n"
+"POT-Creation-Date: 2016-01-07 01:05+0100\n"
+"PO-Revision-Date: 2016-01-07 01:06+0100\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -19,6 +19,9 @@ msgstr ""
 
 msgid "&Copy"
 msgstr "&Kopírovať"
+
+msgid "&Copy as Image"
+msgstr "Kopírovať ako &obrázok"
 
 msgid "&Delete"
 msgstr "&Odstrániť"
@@ -86,6 +89,9 @@ msgstr "Zatvoriť bez uloženia"
 msgid "Copy"
 msgstr "Kopírovať"
 
+msgid "Copy without background (transparent)"
+msgstr "Kopírovať bez pozadia (priehľadne)"
+
 msgid "Create a new &solution"
 msgstr "Vytvoriť novú &solution"
 
@@ -103,6 +109,9 @@ msgstr "Upraviť..."
 
 msgid "Export Diagram"
 msgstr "Exportovať diagram"
+
+msgid "Export Options"
+msgstr "Nastavenie exportu"
 
 msgid "Export as &Image"
 msgstr "Exportovať ako &obrázok"
@@ -145,6 +154,9 @@ msgstr "Otvoriť"
 
 msgid "Open Project"
 msgstr "Otvoriť projekt"
+
+msgid "Padding"
+msgstr "Okraj"
 
 msgid "Paste"
 msgstr "Vložiť"
@@ -232,6 +244,9 @@ msgstr "Poradie"
 
 msgid "Z-order"
 msgstr "Poradie"
+
+msgid "Zoom"
+msgstr "Zväčšenie"
 
 msgid "Zoom &In"
 msgstr "Z&väčšiť"

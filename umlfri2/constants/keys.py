@@ -1,3 +1,4 @@
+COPY_IMAGE = "Ctrl+Shift+C"
 PASTE_DUPLICATE = "Ctrl+Shift+V"
 DELETE_FROM_PROJECT = "Shift+Del"
 

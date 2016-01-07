@@ -210,9 +210,12 @@ class Diagram:
             else:
                 self.__connections.insert(z_order, visual)
     
+    def draw_background(self, canvas):
+        canvas.clear(self.__type.get_background_color(self))
+    
     def draw(self, canvas, selection=None, transparent=False):
         if not transparent:
-            canvas.clear(self.__type.get_background_color(self))
+            self.draw_background(canvas)
         
         for element in self.__elements:
             element.draw(canvas)
