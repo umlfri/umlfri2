@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <interface
-    xmlns="http://umlfri.org/xmlschema/publicApi.xsd"
+    xmlns="http://umlfri.org/v2/api.xsd"
     name="org.umlfri.api.metamodel.ConnectionType">
     
     <documentation>
