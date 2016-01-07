@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+<interface
+    xmlns="http://umlfri.org/xmlschema/publicApi.xsd"
+    name="org.umlfri.api.model.ConnectionVisual"
+    base="org.umlfri.api.model.Visual">
+    
+    <documentation>
+        Visual information about connection shown on some diagram.
+    </documentation>
+    
+    <property name="object">
+        <documentation>
+            Associated connection object.
+        </documentation>
+        <value type="org.umlfri.api.model.ConnectionObject" readable="true" />
+    </property>
+    
+    <property name="diagram">
+        <documentation>
+            Diagram, on which the connection is located.
+        </documentation>
+        
+        <value type="org.umlfri.api.model.Diagram" readable="true" />
+    </property>
+    
+    <property name="source">
+        <documentation>
+            Element at source end of the connection.
+        </documentation>
+        <value type="org.umlfri.api.model.ElementVisual" readable="true" />
+    </property>
+    
+    <property name="destination">
+        <documentation>
+            Element at destination end of the connection.
+        </documentation>
+        <value type="org.umlfri.api.model.ElementVisual" readable="true" />
+    </property>
+    
+    <property name="points">
+        <documentation>
+            All bend points of the connection.
+        </documentation>
+        <value type="xy" iterable="true" />
+    </property>
+    
+    <property name="labels">
+        <documentation>
+            Positions of all connection labels associated with the connection.
+        </documentation>
+        <value type="org.umlfri.api.model.ConnectionLabel" iterable="true" />
+    </property>
+</interface>

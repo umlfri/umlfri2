@@ -1,0 +1,88 @@
+<?xml version="1.0" ?>
+<interface
+    xmlns="http://umlfri.org/xmlschema/publicApi.xsd"
+    name="org.umlfri.api.model.ConnectionObject">
+    
+    <documentation>
+        Logical information about connection.
+    </documentation>
+    
+    <method name="getConnectedObject">
+        <documentation>
+            Gets the element connected through the connection to element
+            passed as parameter.
+        </documentation>
+        
+        <parameter name="obj" type="org.umlfri.api.model.ElementObject">
+            <documentation>
+                Known element connected through the connection.
+            </documentation>
+        </parameter>
+        
+        <return type="org.umlfri.api.model.ElementObject" />
+    </method>
+    
+    <property name="source">
+        <documentation>
+            Connection source element.
+        </documentation>
+        <value type="org.umlfri.api.model.ElementObject" readable="true" />
+    </property>
+    
+    <property name="destination">
+        <documentation>
+            Connection destination element.
+        </documentation>
+        <value type="org.umlfri.api.model.ElementObject" readable="true" />
+    </property>
+    
+    <property name="values" singular="value">
+        <documentation>
+            Collection, that contains all property values.
+        </documentation>
+        <index name="path" type="string">
+            <documentation>
+                Identifier of the connection attribute.
+            </documentation>
+        </index>
+        <value type="variant" readable="true" writable="true" iterable="true" />
+    </property>
+    
+    <method name="appendItem">
+        <documentation>
+            Appends new item to the list contained in the connection property.
+        </documentation>
+        
+        <parameter name="path" type="string">
+            <documentation>
+                Path to the list.
+            </documentation>
+        </parameter>
+    </method>
+    
+    <method name="removeItem">
+        <documentation>
+            Removes an item from the list contained in the connection property.
+        </documentation>
+        
+        <parameter name="path" type="string">
+            <documentation>
+                Path to the item.
+            </documentation>
+        </parameter>
+    </method>
+    
+    <property name="type">
+        <documentation>
+            Connection type.
+        </documentation>
+        <value type="org.umlfri.api.metamodel.ConnectionType" readable="true" />
+    </property>
+    
+    <property name="visuals">
+        <documentation>
+            Connection appearances in project diagrams.
+        </documentation>
+        <value type="org.umlfri.api.model.ConnectionVisual" iterable="true" />
+    </property>
+</interface>

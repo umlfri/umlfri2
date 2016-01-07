@@ -1,0 +1,67 @@
+<?xml version="1.0" ?>
+<interface
+    xmlns="http://umlfri.org/xmlschema/publicApi.xsd"
+    name="org.umlfri.api.model.ElementVisual"
+    base="org.umlfri.api.model.Visual">
+    
+    <documentation>
+        Visual information about element in model.
+    </documentation>
+    
+    <property name="position">
+        <documentation>
+            Absolute position of the element.
+        </documentation>
+        
+        <value type="xy" readable="true" />
+    </property>
+    
+    <property name="center">
+        <documentation>
+            Absolute position of the element center.
+        </documentation>
+        
+        <value type="xy" readable="true" />
+    </property>
+    
+    <property name="size">
+        <documentation>
+            Size of the element.
+        </documentation>
+        
+        <value type="wh" readable="true" />
+    </property>
+    
+    <property name="minimalSize">
+        <documentation>
+            Minimal size of the element.
+        </documentation>
+        
+        <value type="wh" readable="true" />
+    </property>
+    
+    <property name="object">
+        <documentation>
+            Element object associated with the element visual.
+        </documentation>
+        
+        <value type="org.umlfri.api.model.ElementObject" readable="true" />
+    </property>
+    
+    <property name="diagram">
+        <documentation>
+            Diagram, on which the element is located.
+        </documentation>
+        
+        <value type="org.umlfri.api.model.Diagram" readable="true" />
+    </property>
+    
+    <property name="connections">
+        <documentation>
+            Collection of all connections attached to the element that
+            are shown on the same diagram.
+        </documentation>
+        
+        <value type="org.umlfri.api.model.ConnectionVisual" iterable="true" />
+    </property>
+</interface>

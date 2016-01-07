@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<interface
+    xmlns="http://umlfri.org/xmlschema/publicApi.xsd"
+    name="org.umlfri.api.base.Application">
+    
+    <documentation>
+        Root of public api object hierarchy.
+    </documentation>
+    
+    <property name="solution">
+        <documentation>
+            Gets a reference to the current project, or null if no project
+            is loaded.
+        </documentation>
+        <value type="org.umlfri.api.model.Solution" readable="true" nullable="true" />
+    </property>
+    
+    <property name="currentDiagram">
+        <documentation>
+            Gets or sets a reference to the current diagram, or null if no diagram
+            is selected.
+        </documentation>
+        <value type="org.umlfri.api.model.Diagram" readable="true" writable="true" nullable="true" />
+        
+        <setter transactional="false" />
+    </property>
+</interface>

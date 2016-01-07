@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<interface
+    xmlns="http://umlfri.org/xmlschema/publicApi.xsd"
+    name="org.umlfri.api.model.Visual"
+    abstract="true">
+    
+    <documentation>
+        Common base class for ConnectionVisual and ElementVisual
+    </documentation>
+</interface>

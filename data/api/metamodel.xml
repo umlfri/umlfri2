@@ -1,0 +1,67 @@
+<?xml version="1.0" ?>
+<interface
+    xmlns="http://umlfri.org/xmlschema/publicApi.xsd"
+    name="org.umlfri.api.metamodel.Metamodel">
+    
+    <documentation>
+        Root object for metamodel object hierarchy.
+    </documentation>
+    
+    <property name="identifier">
+        <documentation>
+            The metamodel identifier.
+        </documentation>
+        
+        <value type="string" readable="true" />
+    </property>
+    
+    <property name="version">
+        <documentation>
+            The metamodel version.
+        </documentation>
+        
+        <value type="string" readable="true" />
+    </property>
+    
+    <property name="diagrams" singular="diagram">
+        <documentation>
+            Diagram types defined in the metamodel.
+        </documentation>
+        
+        <index name="name" type="string">
+            <documentation>
+                Identifier of the diagram type.
+            </documentation>
+        </index>
+        
+        <value type="org.umlfri.api.metamodel.DiagramType" readable="true" iterable="true" nullable="true" />
+    </property>
+    
+    <property name="elements" singular="element">
+        <documentation>
+            Element types defined in the metamodel.
+        </documentation>
+        
+        <index name="name" type="string">
+            <documentation>
+                Identifier of the element type.
+            </documentation>
+        </index>
+        
+        <value type="org.umlfri.api.metamodel.ElementType" readable="true" iterable="true" nullable="true" />
+    </property>
+    
+    <property name="connections" singular="connection">
+        <documentation>
+            Connection types defined in the metamodel.
+        </documentation>
+        
+        <index name="name" type="string">
+            <documentation>
+                Identifier of the connection type.
+            </documentation>
+        </index>
+        
+        <value type="org.umlfri.api.metamodel.ConnectionType" readable="true" iterable="true" nullable="true" />
+    </property>
+</interface>

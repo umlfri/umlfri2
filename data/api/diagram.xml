@@ -1,0 +1,126 @@
+<?xml version="1.0" ?>
+<interface
+    xmlns="http://umlfri.org/xmlschema/publicApi.xsd"
+    name="org.umlfri.api.model.Diagram">
+    
+    <documentation>
+        Logical and visual information in one piece.
+    </documentation>
+    
+    <method name="getElement">
+        <documentation>
+            Returns visual element associated with the given element object.
+        </documentation>
+        
+        <parameter name="obj" type="org.umlfri.api.model.ElementObject">
+            <documentation>
+                The element object.
+            </documentation>
+        </parameter>
+        
+        <return type="org.umlfri.api.model.ElementVisual" nullable="true" />
+    </method>
+    
+    <method name="getConnection">
+        <documentation>
+            Returns visual connection associated with the given connection object.
+        </documentation>
+        
+        <parameter name="obj" type="org.umlfri.api.model.ConnectionObject">
+            <documentation>
+                The connection object.
+            </documentation>
+        </parameter>
+        
+        <return type="org.umlfri.api.model.ConnectionVisual" nullable="true" />
+    </method>
+    
+    <property name="selection">
+        <documentation>
+            Elements or connections selected on the diagram.
+        </documentation>
+        
+        <value type="org.umlfri.api.model.Visual" iterable="true" />
+    </property>
+    
+    <property name="elements">
+        <documentation>
+            All elements in the diagram.
+        </documentation>
+        
+        <value type="org.umlfri.api.model.ElementVisual" iterable="true" />
+    </property>
+    
+    <property name="connections">
+        <documentation>
+            All connections in the diagram.
+        </documentation>
+        
+        <value type="org.umlfri.api.model.ConnectionVisual" iterable="true" />
+    </property>
+    
+    <property name="name">
+        <documentation>
+            Diagram name.
+        </documentation>
+        
+        <value type="string" readable="true" />
+    </property>
+    
+    <property name="values" singular="value">
+        <documentation>
+            Collection, that contains all property values.
+        </documentation>
+        
+        <index name="path" type="string" />
+        <value type="variant" readable="true" writable="true" iterable="true" />
+    </property>
+    
+    <method name="appendItem">
+        <documentation>
+            Appends new item to the list contained in the diagram property.
+        </documentation>
+        
+        <parameter name="path" type="string">
+            <documentation>
+                Path to the list.
+            </documentation>
+        </parameter>
+    </method>
+    
+    <method name="removeItem">
+        <documentation>
+            Removes an item from the list contained in the diagram property.
+        </documentation>
+        
+        <parameter name="path" type="string">
+            <documentation>
+                Path to the item.
+            </documentation>
+        </parameter>
+    </method>
+    
+    <property name="type">
+        <documentation>
+            Diagram type identifier.
+        </documentation>
+        
+        <value type="org.umlfri.api.metamodel.DiagramType" readable="true" />
+    </property>
+    
+    <property name="parent">
+        <documentation>
+            Parent element of the diagram.
+        </documentation>
+        
+        <value type="org.umlfri.api.model.ElementObject" readable="true" />
+    </property>
+    
+    <property name="project">
+        <documentation>
+            Project the diagram is located in.
+        </documentation>
+        
+        <value type="org.umlfri.api.model.Project" readable="true" />
+    </property>
+</interface>

@@ -1,0 +1,110 @@
+<?xml version="1.0" ?>
+<interface
+    xmlns="http://umlfri.org/xmlschema/publicApi.xsd"
+    name="org.umlfri.api.model.ElementObject">
+    
+    <documentation>
+        Logical information about element in model.
+    </documentation>
+    
+    <property name="name">
+        <documentation>
+            Element name.
+        </documentation>
+        
+        <value type="string" readable="true" />
+    </property>
+    
+    <property name="values" singular="value">
+        <documentation>
+            Collection, that contains all property values.
+        </documentation>
+        
+        <index name="path" type="string">
+            <documentation>
+                Identifier of the element attribute.
+            </documentation>
+        </index>
+        <value type="variant" readable="true" writable="true" iterable="true" />
+    </property>
+    
+    <method name="appendItem">
+        <documentation>
+            Appends new item to the list contained in the element property.
+        </documentation>
+        
+        <parameter name="path" type="string">
+            <documentation>
+                Path to the list.
+            </documentation>
+        </parameter>
+    </method>
+    
+    <method name="removeItem">
+        <documentation>
+            Removes an item from the list contained in the element property.
+        </documentation>
+        
+        <parameter name="path" type="string">
+            <documentation>
+                Path to the item.
+            </documentation>
+        </parameter>
+    </method>
+    
+    <property name="type">
+        <documentation>
+            Element type.
+        </documentation>
+        
+        <value type="org.umlfri.api.metamodel.ElementType" readable="true" />
+    </property>
+    
+    <property name="visuals">
+        <documentation>
+            Element appearances in project diagrams.
+        </documentation>
+        
+        <value type="org.umlfri.api.model.ElementVisual" iterable="true" />
+    </property>
+    
+    <property name="diagrams">
+        <documentation>
+            Child diagrams of the element.
+        </documentation>
+        
+        <value type="org.umlfri.api.model.Diagram" iterable="true" />
+    </property>
+    
+    <property name="connections">
+        <documentation>
+            Connections attached to the element.
+        </documentation>
+        
+        <value type="org.umlfri.api.model.ConnectionObject" iterable="true" />
+    </property>
+    
+    <property name="children">
+        <documentation>
+            Child elements of the element.
+        </documentation>
+        
+        <value type="org.umlfri.api.model.ElementObject" iterable="true" />
+    </property>
+    
+    <property name="parent">
+        <documentation>
+            Parent element of the element.
+        </documentation>
+        
+        <value type="org.umlfri.api.model.ElementObject" readable="true" />
+    </property>
+    
+    <property name="project">
+        <documentation>
+            Project the element is located in.
+        </documentation>
+        
+        <value type="org.umlfri.api.model.Project" readable="true" />
+    </property>
+</interface>

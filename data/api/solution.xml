@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<interface
+    xmlns="http://umlfri.org/xmlschema/publicApi.xsd"
+    name="org.umlfri.api.model.Solution">
+    
+    <documentation>
+        Solution - group of all opened projects.
+    </documentation>
+    
+    <property name="children">
+        <documentation>
+            Child projects.
+        </documentation>
+        
+        <value type="org.umlfri.api.model.Project" iterable="true" />
+    </property>
+</interface>

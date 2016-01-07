@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<interface
+    xmlns="http://umlfri.org/xmlschema/publicApi.xsd"
+    name="org.umlfri.api.model.ConnectionLabel">
+    
+    <documentation>
+        Label element associated with some connection.
+    </documentation>
+    
+    <property name="position">
+        <documentation>
+            Absolute position of the connection label.
+        </documentation>
+        
+        <value type="xy" readable="true" />
+    </property>
+    
+    <property name="center">
+        <documentation>
+            Absolute position of the connection label center.
+        </documentation>
+        
+        <value type="xy" readable="true" />
+    </property>
+    
+    <property name="size">
+        <documentation>
+            Size of the connection label.
+        </documentation>
+        
+        <value type="wh" readable="true" />
+    </property>
+    
+    <property name="connection">
+        <documentation>
+            Connection associated with the label.
+        </documentation>
+        
+        <value type="org.umlfri.api.model.ConnectionVisual" readable="true" />
+    </property>
+    
+    <property name="diagram">
+        <documentation>
+            Diagram, on which the connection label is located.
+        </documentation>
+        
+        <value type="org.umlfri.api.model.Diagram" readable="true" />
+    </property>
+</interface>

@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<interface
+    xmlns="http://umlfri.org/xmlschema/publicApi.xsd"
+    name="org.umlfri.api.model.Project">
+    
+    <documentation>
+        Root object for project definition.
+    </documentation>
+    
+    <property name="fileName">
+        <documentation>
+            Full path to the project file.
+        </documentation>
+        
+        <value type="string" readable="true" />
+    </property>
+    
+    <property name="children">
+        <documentation>
+            Child elements of the project.
+        </documentation>
+        
+        <value type="org.umlfri.api.model.ElementObject" iterable="true" />
+    </property>
+    
+    <property name="metamodel">
+        <documentation>
+            Metamodel associated with the project.
+        </documentation>
+        
+        <value type="org.umlfri.api.metamodel.Metamodel" readable="true" />
+    </property>
+</interface>
