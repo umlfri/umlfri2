@@ -4,7 +4,7 @@ from .translation import POSIX_TRANSLATION
 
 class AddOn:
     def __init__(self, identifier, name, version, author, homepage, license, icon, description, dependencies, config,
-                 translations, metamodel, patch_plugin):
+                 translations, metamodel, patch_plugin, plugin):
         self.__identifier = identifier
         self.__name = name
         self.__version = version
@@ -28,6 +28,9 @@ class AddOn:
         self.__patch_plugin = patch_plugin
         if self.__patch_plugin is not None:
             self.__patch_plugin._set_addon(self)
+        self.__plugin = plugin
+        if self.__plugin is not None:
+            self.__plugin._set_addon(self)
     
     @property
     def identifier(self):
@@ -116,3 +119,5 @@ class AddOn:
         self.__started = True
         if self.__patch_plugin is not None:
             self.__patch_plugin.start()
+        if self.__plugin is not None:
+            self.__plugin.start()

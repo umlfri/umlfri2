@@ -1,7 +1,7 @@
 import lxml.etree
 
 from umlfri2.datalayer.storages import DirectoryStorage
-from umlfri2.plugin.patch import PatchPlugin
+from umlfri2.plugin import PatchPlugin, Plugin
 from .translationloader import TranslationLoader
 from .metamodelloader import MetamodelLoader
 from umlfri2.types.image import Image
@@ -44,9 +44,16 @@ class AddOnLoader:
                 raise Exception
             patch = PatchPlugin(self.__storage.path, info.patch_module)
         
+        if info.plugin_info is None:
+            plugin = None
+        else:
+            if not isinstance(self.__storage, DirectoryStorage):
+                raise Exception
+            plugin = Plugin(self.__storage.path, info.plugin_info.starter, info.plugin_info.path)
+        
         ret = AddOn(info.identifier, info.name, info.version, info.author, info.homepage,
                      info.license, icon, info.description, info.dependencies, info.config, translations,
-                     metamodel, patch)
+                     metamodel, patch, plugin)
         
         ret.compile()
         

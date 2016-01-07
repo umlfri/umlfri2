@@ -6,8 +6,8 @@ import types
 class PatchPlugin:
     __RE_MODULE_NAME_INVALID_CHAR = re.compile('[^a-zA-Z0-9]')
     
-    def __init__(self, path, module):
-        self.__path = path
+    def __init__(self, addon_path, module):
+        self.__addon_path = addon_path
         self.__module = module
         
         self.__addon = None
@@ -27,7 +27,7 @@ class PatchPlugin:
         
         if addon_fqn not in sys.modules:
             module = sys.modules[addon_fqn] = types.ModuleType(module_name)
-            module.__path__ = [self.__path]
+            module.__path__ = [self.__addon_path]
             
             setattr(sys.modules['plugins'], module_name, module)
         

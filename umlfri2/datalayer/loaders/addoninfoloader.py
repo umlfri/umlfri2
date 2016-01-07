@@ -10,7 +10,7 @@ from umlfri2.types.version import Version
 AddOnInfo = namedtuple('AddOnInfo', ('identifier', 'name', 'version', 'author', 'homepage', 'license', 'icon',
                                      'description', 'dependencies', 'config', 'translations', 'metamodel',
                                      'patch_module', 'plugin_info'))
-PluginInfo = namedtuple('PluginInfo', ('module', 'starter'))
+PluginInfo = namedtuple('PluginInfo', ('path', 'starter'))
 
 
 class AddOnInfoLoader:
