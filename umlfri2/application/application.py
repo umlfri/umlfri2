@@ -8,7 +8,7 @@ from umlfri2.application.commands.solution import NewProjectCommand
 from umlfri2.application.events.application import LanguageChangedEvent, ItemSelectedEvent, ClipboardSnippetChangedEvent
 from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent
 from umlfri2.application.tablist import TabList
-from umlfri2.constants.paths import ADDONS, LOCALE_DIR
+from umlfri2.constants.paths import ADDONS, LOCALE_DIR, LOCAL_ADDONS
 from umlfri2.datalayer import Storage
 from umlfri2.datalayer.loaders import ProjectLoader, WholeSolutionLoader
 from umlfri2.datalayer.savers import WholeSolutionSaver
@@ -36,8 +36,16 @@ class Application(metaclass=MetaApplication):
     def __init__(self):
         self.__event_dispatcher = EventDispatcher()
         self.__commands = CommandProcessor(self)
+        
+        self.__addons = AddOnManager()
+        
         with Storage.read_storage(ADDONS) as addon_storage:
-            self.__addons = AddOnManager(addon_storage)
+            self.__addons.load_addons(addon_storage)
+        
+        if os.path.exists(LOCAL_ADDONS):
+            with Storage.read_storage(LOCAL_ADDONS) as addon_storage:
+                self.__addons.load_addons(addon_storage)
+        
         self.__tabs = TabList(self)
         self.__solution = None
         self.__ruler = None

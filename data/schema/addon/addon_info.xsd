@@ -11,55 +11,75 @@
                         <xs:sequence>
                             <xs:element name="Name">
                                 <xs:complexType>
-                                    <xs:attribute name="name" type="xs:string"/>
+                                    <xs:attribute name="name" type="xs:string" use="required"/>
                                 </xs:complexType>
                             </xs:element>
                             <xs:element name="Version">
                                 <xs:complexType>
-                                    <xs:attribute name="version" type="xs:string"/>
+                                    <xs:attribute name="version" type="xs:string" use="required"/>
                                 </xs:complexType>
                             </xs:element>
-                            <xs:element name="Author">
+                            <xs:element name="Author" minOccurs="0">
                                 <xs:complexType>
-                                    <xs:attribute name="name" type="xs:string"/>
+                                    <xs:attribute name="name" type="xs:string" use="required"/>
                                 </xs:complexType>
                             </xs:element>
-                            <xs:element name="Homepage">
+                            <xs:element name="Homepage" minOccurs="0">
                                 <xs:complexType>
-                                    <xs:attribute name="url" type="xs:string"/>
+                                    <xs:attribute name="url" type="xs:string" use="required"/>
                                 </xs:complexType>
                             </xs:element>
-                            <xs:element name="CommonLicense">
+                            <xs:element name="CommonLicense" minOccurs="0">
                                 <xs:complexType>
-                                    <xs:attribute name="name" type="xs:string"/>
+                                    <xs:attribute name="name" type="xs:string" use="required"/>
                                 </xs:complexType>
                             </xs:element>
-                            <xs:element name="Icon">
+                            <xs:element name="Icon" minOccurs="0">
                                 <xs:complexType>
-                                    <xs:attribute name="path" type="xs:string"/>
+                                    <xs:attribute name="path" type="xs:string" use="required"/>
                                 </xs:complexType>
                             </xs:element>
-                            <xs:element name="Description" type="xs:string"/>
+                            <xs:element name="Description" type="xs:string" minOccurs="0"/>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
                 
-                <xs:element name="Config" type="ufl_object"/>
+                <xs:element name="Config" type="ufl_object" minOccurs="0"/>
                 
-                <xs:element name="Translations">
+                <xs:element name="Translations" minOccurs="0">
                     <xs:complexType>
-                        <xs:attribute name="path" type="xs:string"/>
+                        <xs:attribute name="path" type="xs:string" use="required"/>
                     </xs:complexType>
                 </xs:element>
                 
-                <xs:element name="Metamodel">
-                    <xs:complexType>
-                        <xs:attribute name="path" type="xs:string"/>
-                    </xs:complexType>
-                </xs:element>
+                <xs:choice>
+                    <xs:sequence>
+                        <xs:element name="Patch" type="patch_type"/>
+                        <xs:element name="Plugin" type="plugin_type" minOccurs="0"/>
+                        <xs:element name="Metamodel" type="metamodel_type" minOccurs="0"/>
+                    </xs:sequence>
+                    <xs:sequence>
+                        <xs:element name="Plugin" type="plugin_type"/>
+                        <xs:element name="Metamodel" type="metamodel_type" minOccurs="0"/>
+                    </xs:sequence>
+                    <xs:element name="Metamodel" type="metamodel_type"/>
+                </xs:choice>
             </xs:sequence>
 
             <xs:attribute name="id" type="xs:string"/>
         </xs:complexType>
     </xs:element>
+    
+    <xs:complexType name="metamodel_type">
+        <xs:attribute name="path" type="xs:string" use="required"/>
+    </xs:complexType>
+    
+    <xs:complexType name="patch_type">
+        <xs:attribute name="module" type="xs:string" use="required"/>
+    </xs:complexType>
+    
+    <xs:complexType name="plugin_type">
+        <xs:attribute name="module" type="xs:string" use="required"/>
+        <xs:attribute name="starter" type="xs:string" use="required"/>
+    </xs:complexType>
 </xs:schema>

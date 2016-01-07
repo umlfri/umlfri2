@@ -1,5 +1,7 @@
 import lxml.etree
 
+from umlfri2.datalayer.storages import DirectoryStorage
+from umlfri2.plugin.patch import PatchPlugin
 from .translationloader import TranslationLoader
 from .metamodelloader import MetamodelLoader
 from umlfri2.types.image import Image
@@ -28,14 +30,23 @@ class AddOnLoader:
             with self.__storage.create_substorage(info.translations) as translations_storage:
                 translations = tuple(self.__load_translations(translations_storage))
         
-        if not self.__storage.exists(info.icon):
-            raise Exception("Unknown icon {0}".format(info.icon))
-        icon = Image(self.__storage, info.icon)
-
+        if info.icon is None:
+            icon = None
+        else:
+            if not self.__storage.exists(info.icon):
+                raise Exception("Unknown icon {0}".format(info.icon))
+            icon = Image(self.__storage, info.icon)
+        
+        if info.patch_module is None:
+            patch = None
+        else:
+            if not isinstance(self.__storage, DirectoryStorage):
+                raise Exception
+            patch = PatchPlugin(self.__storage.path, info.patch_module)
         
         ret = AddOn(info.identifier, info.name, info.version, info.author, info.homepage,
                      info.license, icon, info.description, info.config, translations,
-                     metamodel)
+                     metamodel, patch)
         
         ret.compile()
         

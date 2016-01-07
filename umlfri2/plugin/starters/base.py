@@ -1,0 +1,3 @@
+class BaseProgramStarter:
+    program = ()
+    environment = {}

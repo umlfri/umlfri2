@@ -7,7 +7,10 @@ from .structureloader import UflStructureLoader
 from umlfri2.types.version import Version
 
 
-AddOnInfo = namedtuple('AddOnInfo', ('identifier', 'name', 'version', 'author', 'homepage', 'license', 'icon', 'description', 'config', 'translations', 'metamodel'))
+AddOnInfo = namedtuple('AddOnInfo', ('identifier', 'name', 'version', 'author', 'homepage', 'license', 'icon',
+                                     'description', 'config', 'translations', 'metamodel', 'patch_module',
+                                     'plugin_info'))
+PluginInfo = namedtuple('PluginInfo', ('module', 'starter'))
 
 
 class AddOnInfoLoader:
@@ -29,6 +32,8 @@ class AddOnInfoLoader:
         config = None
         translations = None
         metamodel = None
+        patch_module = None
+        plugin_info = None
         
         for child in self.__xmlroot:
             if child.tag == "{{{0}}}AddOnInfo".format(ADDON_NAMESPACE):
@@ -55,10 +60,15 @@ class AddOnInfoLoader:
                 translations = child.attrib["path"]
             elif child.tag == "{{{0}}}Metamodel".format(ADDON_NAMESPACE):
                 metamodel = child.attrib["path"]
+            elif child.tag == "{{{0}}}Patch".format(ADDON_NAMESPACE):
+                patch_module = child.attrib["module"]
+            elif child.tag == "{{{0}}}Plugin".format(ADDON_NAMESPACE):
+                plugin_info = PluginInfo(child.attrib["module"], child.attrib["starter"])
             else:
                 raise Exception
         
-        return AddOnInfo(identifier, name, version, author, homepage, license, icon, description, config, translations, metamodel)
+        return AddOnInfo(identifier, name, version, author, homepage, license, icon, description, config, translations,
+                         metamodel, patch_module, plugin_info)
     
     def __format_text(self, text):
         current_text = []

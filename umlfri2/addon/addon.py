@@ -1,8 +1,10 @@
+from umlfri2.ufl.types import UflObjectType
 from .translation import POSIX_TRANSLATION
 
 
 class AddOn:
-    def __init__(self, identifier, name, version, author, homepage, license, icon, description, config, translations, metamodel):
+    def __init__(self, identifier, name, version, author, homepage, license, icon, description, config, translations,
+                 metamodel, patch_plugin):
         self.__identifier = identifier
         self.__name = name
         self.__version = version
@@ -11,12 +13,20 @@ class AddOn:
         self.__license = license
         self.__icon = icon
         self.__description = description
-        self.__config_structure = config
+        if config is None:
+            self.__config_structure = UflObjectType({})
+        else:
+            self.__config_structure = config
         self.__config_structure.set_parent(None)
-        self.__config = config.build_default(None)
+        self.__config = self.__config_structure.build_default(None)
         self.__translations = translations
         self.__metamodel = metamodel
-        self.__metamodel._set_addon(self)
+        if self.__metamodel is not None:
+            self.__metamodel._set_addon(self)
+        self.__patch_plugin = patch_plugin
+        if self.__patch_plugin is not None:
+            self.__patch_plugin._set_addon(self)
+            self.__patch_plugin.start() # TODO: start and stop at request
     
     @property
     def identifier(self):
@@ -88,4 +98,5 @@ class AddOn:
         return None
 
     def compile(self):
-        self.__metamodel.compile()
+        if self.__metamodel is not None:
+            self.__metamodel.compile()

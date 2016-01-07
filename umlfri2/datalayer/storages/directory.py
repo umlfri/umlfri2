@@ -28,6 +28,10 @@ class DirectoryStorage(Storage):
         self.__path = path
         self.__mode = mode
     
+    @property
+    def path(self):
+        return self.__path
+    
     def list(self, path=None):
         return os.listdir(self.__fix_path(path))
 

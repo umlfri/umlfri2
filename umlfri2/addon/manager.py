@@ -2,8 +2,10 @@ from umlfri2.datalayer import AddOnLoader
 
 
 class AddOnManager:
-    def __init__(self, storage):
+    def __init__(self):
         self.__addons = []
+    
+    def load_addons(self, storage):
         for dir in storage.list():
             with storage.create_substorage(dir) as addon_storage:
                 loader = AddOnLoader(addon_storage)
