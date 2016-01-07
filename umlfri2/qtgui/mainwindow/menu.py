@@ -48,7 +48,7 @@ class MainWindowMenu(QMenuBar):
         
         self.__diagram, diagram_menu = self.__add_menu()
         self.__diagram_export = self.__add_menu_item(diagram_menu, None, None, self.__diagram_export_action)
-        self.__diagram_full_screen = self.__add_menu_item(diagram_menu, FULL_SCREEN, None,
+        self.__diagram_full_screen = self.__add_menu_item(diagram_menu, FULL_SCREEN, "view-fullscreen",
                                                           self.__diagram_full_screen_action)
         
         self.__tools, tools_menu = self.__add_menu()
