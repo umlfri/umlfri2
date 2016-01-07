@@ -1,0 +1,57 @@
+{% macro link_to(element, fqn=False) %}
+    {% if element == '*' %}
+        param array
+    {% elif element.type_name == 'PrimitiveType' %}
+        {% if fqn %}
+            {{ element.fqn }}
+        {% else %}
+            {{ element.name }}
+        {% endif %}
+    {% else %}
+        {% if fqn %}
+            <a href="{{ paths.get_path(element) }}">{{ element.fqn }}</a>
+        {% else %}
+            <a href="{{ paths.get_path(element) }}">{{ element.name }}</a>
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+{% macro method_params(method) %}
+    (
+    {% for param in method.parameters %}
+        {% if not loop.first %}
+            ,
+        {% endif %}
+        {{ link_to(param.type) }}
+        {{ param.name }}
+    {% endfor %}
+    )
+{% endmacro %}
+<html>
+    <head>
+        <title>Documentation for interface {{ root.fqn }}</title>
+        <style>
+            .TableHeadingColor     { background: #CCCCFF; color:#000000 } /* Dark mauve */
+            .TableSubHeadingColor  { background: #EEEEFF; color:#000000 } /* Light mauve */
+            .TableRowColor         { background: #FFFFFF; color:#000000 } /* White */
+        </style>
+    </head>
+    <body>
+        <h2><font size="-1">{{ root.namespace.fqn }}</font><br />Delegate {{ root.name }}</h2>
+        <hr />
+        <code>
+            delegate
+            {% if root.return_type %}
+                {{ link_to(root.return_type.type }}
+                {% if root.return_type.iterable %}
+                    []
+                {% endif %}
+            {% else %}
+                void
+            {% endif %}
+            {{ root.name }}
+            {{ method_params(root) }}
+        </code>
+        <br /><br />
+        {{ root.documentation }}
+    </body>
+</html>

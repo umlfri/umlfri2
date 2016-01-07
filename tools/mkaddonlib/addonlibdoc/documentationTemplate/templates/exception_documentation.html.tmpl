@@ -1,0 +1,148 @@
+{% macro base_indent(indent) -%}
+    {% for i in range(indent) %}
+        &nbsp;&nbsp;&nbsp;
+    {% endfor %}
+    {% if indent > 0 %}
+        <img src="inherit.gif" />
+    {% endif %}
+{%- endmacro %}
+{% macro link_to(element, fqn=False) %}
+    {% if element == '*' %}
+        param array
+    {% elif element.type_name == 'PrimitiveType' %}
+        {% if fqn %}
+            {{ element.fqn }}
+        {% else %}
+            {{ element.name }}
+        {% endif %}
+    {% else %}
+        {% if fqn %}
+            <a href="{{ paths.get_path(element) }}">{{ element.fqn }}</a>
+        {% else %}
+            <a href="{{ paths.get_path(element) }}">{{ element.name }}</a>
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+<html>
+    <head>
+        <title>Documentation for exception {{ root.fqn }}</title>
+        <style>
+            .TableHeadingColor     { background: #CCCCFF; color:#000000 } /* Dark mauve */
+            .TableSubHeadingColor  { background: #EEEEFF; color:#000000 } /* Light mauve */
+            .TableRowColor         { background: #FFFFFF; color:#000000 } /* White */
+        </style>
+    </head>
+    <body>
+        <h2><font size="-1">{{ root.namespace.fqn }}</font><br />Exception {{ root.name }}</h2>
+        <div>
+            {% for base in root.all_bases %}
+                {{ base_indent(loop.index0) }}{{ link_to(base, True) }}<br />
+            {% endfor %}
+            {{ base_indent(len  (root.all_bases)) }}<b>{{ root.fqn }}</b>
+        </div>
+        {% if root.descendants %}
+            <dl>
+                <dt><b>All Known Descendants:</b></dt>
+                <dd>
+                    {% for descendant in root.descendants %}
+                        {% if not loop.first %}
+                            ,
+                        {% endif %}
+                        {{ link_to(descendant) }}
+                    {% endfor %}
+                </dd>
+            </dl>
+        {% endif %}
+        <hr />
+        <code>
+            exception {{ root.name }}
+            {% if root.base %}
+                <br />
+                extends {{ link_to(root.base) }}
+            {% endif %}
+        </code>
+        <br /><br />
+        {{ root.documentation }}
+        <br /><br />
+        {% if root.has_children_of_type('ExceptionProperty') %}
+            <table border="1" width="100%" cellpadding="3" cellspacing="0">
+                <tr bgcolor="#CCCCFF" class="TableHeadingColor">
+                    <th align="left" colspan="2"><font size="+2"><b>Property Summary</b></font></th>
+                </tr>
+                {% for property in root.children_of_type('ExceptionProperty') %}
+                    <tr bgcolor="white" class="TableRowColor">
+                        <td align="right" valign="top" width="1%" nowrap="nowrap">
+                            <font size="-1">
+                                <code>
+                                    {{ link_to(property.type) }}
+                                    {% if property.iterable %}
+                                        []
+                                    {% endif %}
+                                </code>
+                            </font>
+                        </td>
+                        <td>
+                            <code>
+                                <b>
+                                    <a href="\#member-{{ property.name }}">{{ property.name }}</a>
+                                </b>
+                            </code><br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            {{ property.documentation.first_sentence }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <br />
+        {% endif %}
+        {% for base in root.all_bases %}
+            {% if base.has_children %}
+                <table border="1" width="100%" cellpadding="3" cellspacing="0">
+                    <tr bgcolor="#EEEEFF" class="TableSubHeadingColor">
+                        <th align="left">
+                            <b>Members inherited from exception {{ link_to(base) }}</b>
+                        </th>
+                    </tr>
+                    <tr bgcolor="white" class="TableRowColor">
+                        <td>
+                            {% for member in base.children %}
+                                {% if not loop.first %}
+                                    ,
+                                {% endif %}
+                                <code><a href="{{ paths.get_path(base) }}#member-{{ member.name }}">{{ member.name }}</a></code>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                </table>
+                <br />
+            {% endif %}
+        {% endfor %}
+        {% if root.has_children_of_type('ExceptionProperty') %}
+            <table border="1" width="100%" cellpadding="3" cellspacing="0">
+                <tr bgcolor="#CCCCFF" class="TableHeadingColor">
+                    <th align="left" colspan="2"><font size="+2"><b>Property Detail</b></font></th>
+                </tr>
+            </table>
+            {% for property in root.children_of_type('ExceptionProperty') %}
+                {% if not loop.first %}
+                    <hr />
+                {% endif %}
+                <a name="member-{{ property.name }}"></a>
+                <h3>{{ property.name }}</h3>
+                <code>
+                    {{ link_to(property.type) }}
+                    {% if property.iterable %}
+                        []
+                    {% endif %}
+                    {{ property.name }}
+                </code>
+                <dl>
+                    <dd>
+                        <p>{{ property.documentation.replace("\n\n", "</p><p>") }}</p>
+                    </dd>
+                </dl>
+            {% endfor %}
+            <br />
+        {% endif %}
+    </body>
+</html>

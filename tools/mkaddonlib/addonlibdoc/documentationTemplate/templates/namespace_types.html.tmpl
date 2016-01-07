@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <title>Types in namespace {{ root.fqn }}</title>
+        <style>
+            .FrameTitleFont   { font-size: 100%; font-family: Helvetica, Arial, sans-serif; color:#000000 }
+            .FrameHeadingFont { font-size:  90%; font-family: Helvetica, Arial, sans-serif; color:#000000 }
+            .FrameItemFont    { font-size:  90%; font-family: Helvetica, Arial, sans-serif; color:#000000 }
+            ul { list-style-type: none; }
+        </style>
+    </head>
+    <body>
+        <font size="+1" class="FrameHeadingFont"><b>Types in namespace {{ root.fqn }}</b></font><br />
+        
+        <ul>
+            {% for element in sorted(root.children_of_type('Interface', 'Exception', 'Delegate')) %}
+                <li>
+                    {% if element.type_name == 'Interface' %}
+                        <a href="{{ paths.get_path(element) }}" target="documentation">{{ element.name }}</a>
+                    {% else %}
+                        <i><a href="{{ paths.get_path(element) }}" target="documentation">{{ element.name }}</a></i>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </body>
+</html>

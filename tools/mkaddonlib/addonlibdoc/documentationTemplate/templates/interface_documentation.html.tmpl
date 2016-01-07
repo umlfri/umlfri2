@@ -1,0 +1,405 @@
+{% macro base_indent(indent) -%}
+    {% for i in range(indent) %}
+        &nbsp;&nbsp;&nbsp;
+    {% endfor %}
+    {% if indent > 0 %}
+        <img src="inherit.gif" />
+    {% endif %}
+{%- endmacro %}
+{% macro link_to(element, fqn=False) %}
+    {% if element == '*' %}
+        param array
+    {% elif element.type_name == 'PrimitiveType' %}
+        {% if fqn %}
+            {{ element.fqn }}
+        {% else %}
+            {{ element.name }}
+        {% endif %}
+    {% else %}
+        {% if fqn %}
+            <a href="{{ paths.get_path(element) }}">{{ element.fqn }}</a>
+        {% else %}
+            <a href="{{ paths.get_path(element) }}">{{ element.name }}</a>
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+{% macro method_params(method) %}
+    (
+    {% for param in method.parameters %}
+        {% if not loop.first %}
+            ,
+        {% endif %}
+        {{ link_to(param.type) }}
+        {{ param.name }}
+    {% endfor %}
+    )
+{% endmacro %}
+<html>
+    <head>
+        <title>Documentation for interface {{ root.fqn }}</title>
+        <style>
+            .TableHeadingColor     { background: #CCCCFF; color:#000000 } /* Dark mauve */
+            .TableSubHeadingColor  { background: #EEEEFF; color:#000000 } /* Light mauve */
+            .TableRowColor         { background: #FFFFFF; color:#000000 } /* White */
+        </style>
+    </head>
+    <body>
+        <h2><font size="-1">{{ root.namespace.fqn }}</font><br />Interface {{ root.name }}</h2>
+        <div>
+            {% for base in root.all_bases %}
+                {{ base_indent(loop.index0) }}{{ link_to(base, True) }}<br />
+            {% endfor %}
+            {{ base_indent(len  (root.all_bases)) }}<b>{{ root.fqn }}</b>
+        </div>
+        {% if root.descendants %}
+            <dl>
+                <dt><b>All Known Descendants:</b></dt>
+                <dd>
+                    {% for descendant in root.descendants %}
+                        {% if not loop.first %}
+                            ,
+                        {% endif %}
+                        {{ link_to(descendant) }}
+                    {% endfor %}
+                </dd>
+            </dl>
+        {% endif %}
+        <hr />
+        <code>
+            {% if root.is_abstract %}
+                abstract
+            {% endif %}
+            interface {{ root.name }}
+            {% if root.base %}
+                <br />
+                extends {{ link_to(root.base) }}
+            {% endif %}
+        </code>
+        <br /><br />
+        {{ root.documentation }}
+        <br /><br />
+        {% if root.has_children_of_type('InterfaceProperty') %}
+            <table border="1" width="100%" cellpadding="3" cellspacing="0">
+                <tr bgcolor="#CCCCFF" class="TableHeadingColor">
+                    <th align="left" colspan="2"><font size="+2"><b>Property Summary</b></font></th>
+                </tr>
+                {% for property in root.children_of_type('InterfaceProperty') %}
+                    <tr bgcolor="white" class="TableRowColor">
+                        <td align="right" valign="top" width="1%" nowrap="nowrap">
+                            <font size="-1">
+                                <code>
+                                    {{ link_to(property.type) }}
+                                    {% if property.iterator and not property.index %}
+                                        []
+                                    {% endif %}
+                                </code>
+                            </font>
+                        </td>
+                        <td>
+                            <code>
+                                <b>
+                                    <a href="\#member-{{ property.name }}">{{ property.name }}</a>
+                                </b>
+                                {% if property.index %}
+                                    [ {{ link_to(property.index.type) }} {{ property.index.name }} ]
+                                {% endif %}
+                            </code><br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            {{ property.documentation.first_sentence }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <br />
+        {% endif %}
+        {% if root.has_children_of_type('InterfaceMethod') %}
+            <table border="1" width="100%" cellpadding="3" cellspacing="0">
+                <tr bgcolor="#CCCCFF" class="TableHeadingColor">
+                    <th align="left" colspan="2"><font size="+2"><b>Method Summary</b></font></th>
+                </tr>
+                {% for method in root.children_of_type('InterfaceMethod') %}
+                    <tr bgcolor="white" class="TableRowColor">
+                        <td align="right" valign="top" width="1%" nowrap="nowrap">
+                            <font size="-1">
+                                <code>
+                                    {% if method.return_type %}
+                                        {{ link_to(method.return_type.type) }}
+                                        {% if method.return_type.iterable %}
+                                            []
+                                        {% endif %}
+                                    {% else %}
+                                        void
+                                    {% endif %}
+                                </code>
+                            </font>
+                        </td>
+                        <td>
+                            <code>
+                                <b><a href="\#member-{{ method.name }}">{{ method.name }}</a></b>{{ method_params(method) }}
+                            </code><br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            {{ method.documentation.first_sentence }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <br />
+        {% endif %}
+        {% if root.has_children_of_type('InterfaceEvent') %}
+            <table border="1" width="100%" cellpadding="3" cellspacing="0">
+                <tr bgcolor="#CCCCFF" class="TableHeadingColor">
+                    <th align="left" colspan="2"><font size="+2"><b>Event Summary</b></font></th>
+                </tr>
+                {% for event in root.children_of_type('InterfaceEvent') %}
+                    <tr bgcolor="white" class="TableRowColor">
+                        <td align="right" valign="top" width="1%" nowrap="nowrap">
+                            <font size="-1">
+                                <code>
+                                    {{ link_to(event.type) }}
+                                </code>
+                            </font>
+                        </td>
+                        <td>
+                            <code><b><a href="\#member-{{ event.name }}">{{ event.name }}</a></b></code><br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            {{ event.documentation.first_sentence }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <br />
+        {% endif %}
+        {% for base in root.all_bases %}
+            {% if base.has_children %}
+                <table border="1" width="100%" cellpadding="3" cellspacing="0">
+                    <tr bgcolor="#EEEEFF" class="TableSubHeadingColor">
+                        <th align="left">
+                            <b>Members inherited from interface {{ link_to(base) }}</b>
+                        </th>
+                    </tr>
+                    <tr bgcolor="white" class="TableRowColor">
+                        <td>
+                            {% for member in base.children %}
+                                {% if not loop.first %}
+                                    ,
+                                {% endif %}
+                                <code><a href="{{ paths.get_path(base) }}#member-{{ member.name }}">{{ member.name }}</a></code>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                </table>
+                <br />
+            {% endif %}
+        {% endfor %}
+        {% if root.has_children_of_type('InterfaceProperty') %}
+            <table border="1" width="100%" cellpadding="3" cellspacing="0">
+                <tr bgcolor="#CCCCFF" class="TableHeadingColor">
+                    <th align="left" colspan="2"><font size="+2"><b>Property Detail</b></font></th>
+                </tr>
+            </table>
+            {% for property in root.children_of_type('InterfaceProperty') %}
+                {% if not loop.first %}
+                    <hr />
+                {% endif %}
+                <a name="member-{{ property.name }}"></a>
+                <h3>{{ property.name }}</h3>
+                <code>
+                    {{ link_to(property.type) }}
+                    {% if property.iterator and not property.index %}
+                        []
+                    {% endif %}
+                    {{ property.name }}
+                    {% if property.index %}
+                        [ {{ link_to(property.index.type) }} {{ property.index.name }} ]
+                    {% endif %}
+                </code>
+                <dl>
+                    <dd>
+                        <p>{{ property.documentation.replace("\n\n", "</p><p>") }}</p>
+                        {% if property.nullable %}
+                            <p><i>Property can contain null values.</i></p>
+                        {% endif %}
+                    </dd>
+                </dl>
+                <dl>
+                    <dt><b>Access:</b></dt>
+                    <dd>
+                        {% for accessor in property.children_of_type('InterfacePropertySetter', 'InterfacePropertyGetter', 'InterfacePropertyIterator') %}
+                            {% if not loop.first %}
+                                ,
+                            {% endif %}
+                            {% if accessor.type_name == 'InterfacePropertySetter' %}
+                                Writable
+                            {% elif accessor.type_name == 'InterfacePropertyGetter' %}
+                                Readable
+                            {% else %}
+                                Iterable
+                            {% endif %}
+                        {% endfor %}
+                    </dd>
+                </dl>
+                {% if property.index and property.index.documentation %}
+                    <dl>
+                        <dt><b>Parameters:</b></dt>
+                        <dd>
+                            <ul>
+                                <li>{{ property.index.name }} &mdash; {{ property.index.documentation }}</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                {% endif %}
+                {% if property.getter and property.getter.has_children_of_type('InterfacePropertyThrows') %}
+                    <dl>
+                        <dt><b>Getter Throws:</b></dt>
+                        <dd>
+                            <ul>
+                                {% for throw in property.getter.throws %}
+                                    {% if throw.documentation %}
+                                        <li>{{ link_to(throw.exception) }} &mdash; {{ throw.documentation }}</li>
+                                    {% else %}
+                                        <li>{{ link_to(throw.exception) }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </dd>
+                    </dl>
+                {% endif %}
+                {% if property.setter and property.setter.has_children_of_type('InterfacePropertyThrows') %}
+                    <dl>
+                        <dt><b>Setter Throws:</b></dt>
+                        <dd>
+                            <ul>
+                                {% for throw in property.setter.throws %}
+                                    {% if throw.documentation %}
+                                        <li>{{ link_to(throw.exception) }} &mdash; {{ throw.documentation }}</li>
+                                    {% else %}
+                                        <li>{{ link_to(throw.exception) }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </dd>
+                    </dl>
+                {% endif %}
+                {% if property.iterator and property.iterator.has_children_of_type('InterfacePropertyThrows') %}
+                    <dl>
+                        <dt><b>Iterator Throws:</b></dt>
+                        <dd>
+                            <ul>
+                                {% for throw in property.iterator.throws %}
+                                    {% if throw.documentation %}
+                                        <li>{{ link_to(throw.exception) }} &mdash; {{ throw.documentation }}</li>
+                                    {% else %}
+                                        <li>{{ link_to(throw.exception) }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </dd>
+                    </dl>
+                {% endif %}
+            {% endfor %}
+            <br />
+        {% endif %}
+        {% if root.has_children_of_type('InterfaceMethod') %}
+            <table border="1" width="100%" cellpadding="3" cellspacing="0">
+                <tr bgcolor="#CCCCFF" class="TableHeadingColor">
+                    <th align="left" colspan="2"><font size="+2"><b>Method Detail</b></font></th>
+                </tr>
+            </table>
+            {% for method in root.children_of_type('InterfaceMethod') %}
+                {% if not loop.first %}
+                    <hr />
+                {% endif %}
+                <a name="member-{{ method.name }}"></a>
+                <h3>{{ method.name }}</h3>
+                <code>
+                    {% if method.return_type %}
+                        {{ link_to(method.return_type.type) }}
+                        {% if method.return_type.iterable %}
+                            []
+                        {% endif %}
+                    {% else %}
+                        void
+                    {% endif %}
+                    {{ method.name }}
+                    {{ method_params(method) }}
+                </code>
+                <dl>
+                    <dd>
+                        <p>{{ method.documentation.replace("\n\n", "</p><p>") }}</p>
+                    </dd>
+                </dl>
+                {% if method.has_children_of_type('InterfaceMethodParameter') %}
+                    <dl>
+                        <dt><b>Parameters:</b></dt>
+                        <dd>
+                            <ul>
+                                {% for param in method.parameters %}
+                                    {% if param.documentation %}
+                                        <li>
+                                            {{ param.name }} &mdash; {{ param.documentation }}
+                                            {% if param.nullable %}
+                                                <i>Parameter can be used with null value.</i>
+                                            {% endif %}
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </dd>
+                    </dl>
+                {% endif %}
+                {% if method.return_type and (method.return_type.documentation or method.return_type.nullable) %}
+                    <dl>
+                        <dt><b>Returns:</b></dt>
+                        <dd>
+                            {{ method.returnType.documentation }}
+                            {% if method.return_type.nullable %}
+                                <i>Return value can be null in some cases.</i>
+                            {% endif %}
+                        </dd>
+                    </dl>
+                {% endif %}
+                {% if method.has_children_of_type('InterfaceMethodThrows') %}
+                    <dl>
+                        <dt><b>Throws:</b></dt>
+                        <dd>
+                            <ul>
+                                {% for throw in method.throws %}
+                                    {% if throw.documentation %}
+                                        <li>{{ link_to(throw.exception) }} &mdash; {{ throw.documentation }}</li>
+                                    {% else %}
+                                        <li>{{ link_to(throw.exception) }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </dd>
+                    </dl>
+                {% endif %}
+            {% endfor %}
+            <br />
+        {% endif %}
+        {% if root.has_children_of_type('InterfaceEvent') %}
+            <table border="1" width="100%" cellpadding="3" cellspacing="0">
+                <tr bgcolor="#CCCCFF" class="TableHeadingColor">
+                    <th align="left" colspan="2"><font size="+2"><b>Event Detail</b></font></th>
+                </tr>
+            </table>
+            {% for event in root.children_of_type('InterfaceEvent') %}
+                {% if not loop.first %}
+                    <hr />
+                {% endif %}
+                <a name="member-{{ event.name }}"></a>
+                <h3>{{ event.name }}</h3>
+                <code>
+                    {{ link_to(event.type) }}
+                    {{ event.name }}
+                </code>
+                <dl>
+                    <dd>
+                        <p>{{ event.documentation.replace("\n\n", "</p><p>") }}</p>
+                    </dd>
+                </dl>
+            {% endfor %}
+            <br />
+        {% endif %}
+    </body>
+</html>

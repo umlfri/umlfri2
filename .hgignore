@@ -3,3 +3,4 @@ syntax: glob
 .idea
 **/__pycache__
 data/icons
+tools/mkaddonlib/addonlibdoc/documentation/*

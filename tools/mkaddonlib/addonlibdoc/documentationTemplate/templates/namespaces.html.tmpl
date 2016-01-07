@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title>All namespaces</title>
+        <style>
+            .FrameTitleFont   { font-size: 100%; font-family: Helvetica, Arial, sans-serif; color:#000000 }
+            .FrameHeadingFont { font-size:  90%; font-family: Helvetica, Arial, sans-serif; color:#000000 }
+            .FrameItemFont    { font-size:  90%; font-family: Helvetica, Arial, sans-serif; color:#000000 }
+            ul { list-style-type: none; }
+        </style>
+    </head>
+    <body>
+        <a href="types.html" target="classes">All types</a><br /><br />
+        
+        <font size="+1" class="FrameHeadingFont"><b>Namespaces</b></font><br />
+        <ul>
+            {% for element in root.descendants %}
+                {% if element.type_name == 'Namespace' and element.has_children_of_type('Interface', 'Exception', 'Delegate') %}
+                    <li><a href="{{ paths.get_path(element) }}" target="classes">{{ element.fqn }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </body>
+</html>
