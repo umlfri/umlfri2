@@ -275,7 +275,7 @@ class Selection:
         
         if self.is_element_selected:
             for connection in self.__diagram.connections:
-                if connection.source in self.__selected or connection.destination in self.__selected:
+                if connection.source in self.__selected and connection.destination in self.__selected:
                     bounds.append(connection.get_bounds(self.__application.ruler))
         
         return Rectangle.combine_bounds(bounds)
