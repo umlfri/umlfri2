@@ -286,10 +286,10 @@ class ProjectTree(QTreeWidget):
         if index < 0:
             index = 0
         
-        if isinstance(data.model_object, ElementObject) and index >= parent.model_object.children_count:
-            index = parent.model_object.children_count - 1
-        elif isinstance(data.model_object, Diagram) and index >= parent.model_object.diagram_count:
-            index = parent.model_object.diagram_count - 1
+        if isinstance(data.model_object, ElementObject) and index > parent.model_object.children_count:
+            index = parent.model_object.children_count
+        elif isinstance(data.model_object, Diagram) and index > parent.model_object.diagram_count:
+            index = parent.model_object.diagram_count
         
         command = MoveNodeCommand(data.model_object, parent.model_object, index)
         Application().commands.execute(command)
