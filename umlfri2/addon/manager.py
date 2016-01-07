@@ -17,5 +17,18 @@ class AddOnManager:
             if addon.identifier == identifier:
                 return addon
     
+    def start_all(self):
+        for addon in self.__addons:
+            self.__start_recursive_if_needed(addon)
+    
+    def __start_recursive_if_needed(self, addon):
+        if addon.is_started:
+            return
+        
+        for dependency in addon.dependencies:
+            self.__start_recursive_if_needed(self.get_addon(dependency))
+        
+        addon.start()
+    
     def __iter__(self):
         yield from self.__addons

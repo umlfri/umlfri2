@@ -8,8 +8,8 @@ from umlfri2.types.version import Version
 
 
 AddOnInfo = namedtuple('AddOnInfo', ('identifier', 'name', 'version', 'author', 'homepage', 'license', 'icon',
-                                     'description', 'config', 'translations', 'metamodel', 'patch_module',
-                                     'plugin_info'))
+                                     'description', 'dependencies', 'config', 'translations', 'metamodel',
+                                     'patch_module', 'plugin_info'))
 PluginInfo = namedtuple('PluginInfo', ('module', 'starter'))
 
 
@@ -29,6 +29,7 @@ class AddOnInfoLoader:
         license = None
         icon = None
         description = None
+        dependencies = []
         config = None
         translations = None
         metamodel = None
@@ -54,6 +55,8 @@ class AddOnInfoLoader:
                         description = self.__format_text(childchild.text)
                     else:
                         raise Exception
+            elif child.tag == "{{{0}}}Dependencies".format(ADDON_NAMESPACE):
+                dependencies = self.__load_dependencies(child)
             elif child.tag == "{{{0}}}Config".format(ADDON_NAMESPACE):
                 config = UflStructureLoader(child).load()
             elif child.tag == "{{{0}}}Translations".format(ADDON_NAMESPACE):
@@ -63,12 +66,12 @@ class AddOnInfoLoader:
             elif child.tag == "{{{0}}}Patch".format(ADDON_NAMESPACE):
                 patch_module = child.attrib["module"]
             elif child.tag == "{{{0}}}Plugin".format(ADDON_NAMESPACE):
-                plugin_info = PluginInfo(child.attrib["module"], child.attrib["starter"])
+                plugin_info = PluginInfo(child.attrib["path"], child.attrib["starter"])
             else:
                 raise Exception
         
-        return AddOnInfo(identifier, name, version, author, homepage, license, icon, description, config, translations,
-                         metamodel, patch_module, plugin_info)
+        return AddOnInfo(identifier, name, version, author, homepage, license, icon, description, dependencies, config,
+                         translations, metamodel, patch_module, plugin_info)
     
     def __format_text(self, text):
         current_text = []
@@ -81,3 +84,9 @@ class AddOnInfoLoader:
                 current_text.append(' '.join(current_line))
                 current_line = []
         return '\n'.join(current_text)
+
+    def __load_dependencies(self, node):
+        ret = []
+        for child in node:
+            ret.append(child.attrib['id'])
+        return ret

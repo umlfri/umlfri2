@@ -3,8 +3,8 @@ from .translation import POSIX_TRANSLATION
 
 
 class AddOn:
-    def __init__(self, identifier, name, version, author, homepage, license, icon, description, config, translations,
-                 metamodel, patch_plugin):
+    def __init__(self, identifier, name, version, author, homepage, license, icon, description, dependencies, config,
+                 translations, metamodel, patch_plugin):
         self.__identifier = identifier
         self.__name = name
         self.__version = version
@@ -13,6 +13,7 @@ class AddOn:
         self.__license = license
         self.__icon = icon
         self.__description = description
+        self.__dependencies = tuple(dependencies)
         if config is None:
             self.__config_structure = UflObjectType({})
         else:
@@ -23,10 +24,10 @@ class AddOn:
         self.__metamodel = metamodel
         if self.__metamodel is not None:
             self.__metamodel._set_addon(self)
+        self.__started = False
         self.__patch_plugin = patch_plugin
         if self.__patch_plugin is not None:
             self.__patch_plugin._set_addon(self)
-            self.__patch_plugin.start() # TODO: start and stop at request
     
     @property
     def identifier(self):
@@ -59,6 +60,10 @@ class AddOn:
     @property
     def description(self):
         return self.__description
+    
+    @property
+    def dependencies(self):
+        yield from self.__dependencies
     
     @property
     def config_structure(self):
@@ -100,3 +105,14 @@ class AddOn:
     def compile(self):
         if self.__metamodel is not None:
             self.__metamodel.compile()
+    
+    @property
+    def is_started(self):
+        return self.__started
+    
+    def start(self):
+        if self.__started:
+            raise Exception
+        self.__started = True
+        if self.__patch_plugin is not None:
+            self.__patch_plugin.start()

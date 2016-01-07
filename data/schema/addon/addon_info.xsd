@@ -44,6 +44,18 @@
                     </xs:complexType>
                 </xs:element>
                 
+                <xs:element name="Dependencies" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="AddOn" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attribute name="id" type="xs:string" use="required" />
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                
                 <xs:element name="Config" type="ufl_object" minOccurs="0"/>
                 
                 <xs:element name="Translations" minOccurs="0">
@@ -79,7 +91,7 @@
     </xs:complexType>
     
     <xs:complexType name="plugin_type">
-        <xs:attribute name="module" type="xs:string" use="required"/>
+        <xs:attribute name="path" type="xs:string" use="required"/>
         <xs:attribute name="starter" type="xs:string" use="required"/>
     </xs:complexType>
 </xs:schema>

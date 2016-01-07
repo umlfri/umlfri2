@@ -39,12 +39,9 @@ class Application(metaclass=MetaApplication):
         
         self.__addons = AddOnManager()
         
-        with Storage.read_storage(ADDONS) as addon_storage:
-            self.__addons.load_addons(addon_storage)
+        self.__load_addons()
         
-        if os.path.exists(LOCAL_ADDONS):
-            with Storage.read_storage(LOCAL_ADDONS) as addon_storage:
-                self.__addons.load_addons(addon_storage)
+        self.__addons.start_all() # TODO: start in splash screen
         
         self.__tabs = TabList(self)
         self.__solution = None
@@ -55,7 +52,14 @@ class Application(metaclass=MetaApplication):
         self.change_language(None)
         self.__selected_item = None
         self.__clipboard = None
-    
+
+    def __load_addons(self):
+        with Storage.read_storage(ADDONS) as addon_storage:
+            self.__addons.load_addons(addon_storage)
+        if os.path.exists(LOCAL_ADDONS):
+            with Storage.read_storage(LOCAL_ADDONS) as addon_storage:
+                self.__addons.load_addons(addon_storage)
+
     def __find_out_language(self):
         for e in 'LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG':
             if e in os.environ:

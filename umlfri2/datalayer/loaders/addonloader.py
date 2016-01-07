@@ -45,7 +45,7 @@ class AddOnLoader:
             patch = PatchPlugin(self.__storage.path, info.patch_module)
         
         ret = AddOn(info.identifier, info.name, info.version, info.author, info.homepage,
-                     info.license, icon, info.description, info.config, translations,
+                     info.license, icon, info.description, info.dependencies, info.config, translations,
                      metamodel, patch)
         
         ret.compile()
