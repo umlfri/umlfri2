@@ -1,13 +1,18 @@
 from .basecontainer import BaseContainer
+from . import helper
 
 
 class Exception(BaseContainer):
-    def __init__(self, name, namespace, number, base=None, throws_from=None, documentation=None):
+    def __init__(self, name, namespace, api_name=None, base=None, throws_from=None, documentation=None):
         BaseContainer.__init__(self, name, namespace)
+        
+        if api_name is not None:
+            self.__api_name = api_name
+        else:
+            self.__api_name = helper.compute_event_api_name(self.identifier)
         
         self.__documentation = documentation
         self.__base = base
-        self.__number = number
         if throws_from is None:
             self.__throwsFrom = []
         else:
@@ -17,6 +22,10 @@ class Exception(BaseContainer):
     @property
     def namespace(self):
         return self.parent
+    
+    @property
+    def api_name(self):
+        return self.__api_name
     
     @property
     def documentation(self):
@@ -29,10 +38,6 @@ class Exception(BaseContainer):
     @property
     def throws_from(self):
         return set(self.__throwsFrom)
-    
-    @property
-    def number(self):
-        return self.__number
     
     @property
     def descendants(self):

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://umlfri.org/v2/api.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://umlfri.org/v2/api.xsd" elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+	<xs:element name="exception">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="documentation" type="xs:string" minOccurs="0"/>
+				<xs:element name="property" type="exceptionPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="name" type="xs:string" use="required"/>
+			<xs:attribute name="base" type="xs:string"/>
+			<xs:attribute name="number" type="xs:int" use="required"/>
+			<xs:attribute name="throwsFrom" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="exceptionPropertyType">
+		<xs:sequence>
+			<xs:element name="documentation" type="xs:string" minOccurs="0"/>
+			<xs:element name="value">
+				<xs:complexType>
+					<xs:attribute name="type" type="xs:string" use="required"/>
+					<xs:attribute name="readable" type="xs:boolean" default="false"/>
+					<xs:attribute name="iterable" type="xs:boolean" default="false"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="index" type="xs:int" use="required"/>
+	</xs:complexType>
+</xs:schema>

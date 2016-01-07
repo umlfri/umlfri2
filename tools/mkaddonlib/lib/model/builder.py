@@ -287,7 +287,7 @@ class Builder(object):
         exception = ExceptionDefinition(
             name,
             namespace,
-            number=int(root.attrib['number']),
+            api_name=root.attrib.get('apiname'),
             base=root.attrib.get('base'),
             throws_from=root.attrib.get('throwsFrom'),
             documentation=self.__parse_documentation(root.find(self.__xml_ns.format('documentation')))
