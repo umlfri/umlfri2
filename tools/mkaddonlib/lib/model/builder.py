@@ -35,7 +35,7 @@ class Builder(object):
 
     __xml_definitions = os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", "data", "api")
     
-    __xml_ns = "{{http://umlfri.org/v2/api.xsd}}{0}"
+    __xml_ns = "{{http://umlfri.org/xmlschema/publicApi.xsd}}{0}"
     
     def __init__(self):
         self.__root_namespace = Namespace(None, None)
@@ -287,7 +287,7 @@ class Builder(object):
         exception = ExceptionDefinition(
             name,
             namespace,
-            api_name=root.attrib.get('apiname'),
+            number=int(root.attrib['number']),
             base=root.attrib.get('base'),
             throws_from=root.attrib.get('throwsFrom'),
             documentation=self.__parse_documentation(root.find(self.__xml_ns.format('documentation')))
