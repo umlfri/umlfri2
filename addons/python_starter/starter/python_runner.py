@@ -14,16 +14,16 @@ if os.name == 'nt':
 sys.path.insert(0, os.environ['UMLFRI_PATH'])
 sys.path.append(os.environ['UMLFRI_LIB'])
 
-from org.umlfri.api.implementation import Server, FileChannel, MIMChannel, StartupMessage
+from org.umlfri.api.implementation import Server, FileChannel, MIMChannel
 from org.umlfri.api.base import Application
 
-fin = os.fdopen(pin, 'r')
-fout = os.fdopen(pout, 'w')
+fin = os.fdopen(pin, 'rb')
+fout = os.fdopen(pout, 'wb')
 
 channel = FileChannel(fin, fout)
 
-if 'UMLFRI_PLUGIN_DEBUG' in os.environ:
-    channel = MIMChannel(channel)
+#if 'UMLFRI_PLUGIN_DEBUG' in os.environ:
+channel = MIMChannel(channel)
 
 server = Server(channel)
 
@@ -31,8 +31,6 @@ import plugin
 
 adapter=Application(server, 'app')
 plugin.plugin_main(adapter)
-
-server.start()
 
 try:
     server.main_loop()

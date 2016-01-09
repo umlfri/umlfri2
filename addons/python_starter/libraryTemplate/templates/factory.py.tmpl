@@ -4,12 +4,12 @@ class Factory(object):
     def __init__(self, server):
 {% for element in root.descendants %}
 {% if element.type_name == 'Interface' and not element.is_abstract %}
-        from ..{{ element.namespace.identifier.lower_camel_case }}.{{ element.identifier.lower_camel_case }} import {{ element.identifier.upper_camel_case }}
+        from ..{{ element.namespace.identifier.lower_case }}.{{ element.identifier.lower_case }} import {{ element.identifier.upper_camel_case }}
 {% endif %}
 {% endfor %}
         
         self.__types = {
-{% for element in root.descendats %}
+{% for element in root.descendants %}
 {% if element.type_name == 'Interface' and not element.is_abstract %}
             '{{ element.api_name }}': {{ element.identifier.upper_camel_case }},
 {% endif %}

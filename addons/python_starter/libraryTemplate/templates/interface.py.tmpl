@@ -65,7 +65,7 @@ from {{ paths.get_import_path(depend, root) }} import {{ depend.identifier.upper
 {% endif %}
 {% endfor %}
 {% if root.base %}
-from {{ paths.get_import_path(root.base, root) }} import {{ root.identifier.upper_camel_case }}
+from {{ paths.get_import_path(root.base, root) }} import {{ root.base.identifier.upper_camel_case }}
 {% endif %}
 
 class {{root.identifier.upper_camel_case}}{% if root.base %}({{ root.base.identifier.upper_camel_case }}) {% endif %}:
@@ -105,19 +105,19 @@ class {{root.identifier.upper_camel_case}}{% if root.base %}({{ root.base.identi
     @{{property.identifier.lower_underscore_separated}}.getter
 {{ interface_method(method.create_method()) }}
 {% endfor %}
-{% for method in property.children_of_type('InterfacePropertyGetter') %}
+{% for method in property.children_of_type('InterfacePropertySetter') %}
     
     @{{property.identifier.lower_underscore_separated}}.setter
 {{ interface_method(method.create_method()) }}
 {% endfor %}
-{% for method in property.children_of_type('InterfacePropertyGetter') %}
+{% for method in property.children_of_type('InterfacePropertyIterator') %}
     
     @{{property.identifier.lower_underscore_separated}}.iterator
 {{ interface_method(method.create_method()) }}
 {% endfor %}
 {% endfor %}
-{##if $root.fqn == 'org::umlfri::api::base::Adapter':
-#include "appends/application.py.tmpl"
-#elif $root.fqn == 'org::umlfri::api::base::Transaction':
-#include "appends/transaction.py.tmpl"
-#end if#}
+{% if root.fqn == 'org::umlfri::api::base::Application' %}
+    
+    def set_main_loop(self, implementation):
+        self.__server.set_main_loop(implementation)
+{% endif %}

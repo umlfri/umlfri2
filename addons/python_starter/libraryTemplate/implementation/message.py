@@ -72,7 +72,7 @@ class Message(object):
         server.send_command(self, True)
     
     def create_message(self):
-        return {'target': self.__target.__id__, 'selector': self.__selector, 'arguments': self.__arguments}
+        return {'target': self.__target, 'selector': self.__selector, 'arguments': self.__arguments}
     
     def accept(self, data):
         self.__result = data

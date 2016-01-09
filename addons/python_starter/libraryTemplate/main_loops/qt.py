@@ -15,27 +15,23 @@ class QtMainLoop(object):
             self.__callback()
     
     def __init__(self):
-        self.__events = Queue()
         self.__running = False
+        self.__app = QApplication(sys.argv)
     
     @property
     def in_main_loop(self):
         return self.__running
         
     def main_loop(self, serve_callback):
-        self.__app = QApplication(sys.argv)
-        self.__MainThread(serve_callback).start()
+        self.__thread = self.__MainThread(serve_callback)
+        self.__thread.start()
         
         self.__running = True
-        while True:
-            cmd = self.__events.get()
-            if cmd is None:
-                break
-            cmd[0](*cmd[1])
+        self.__app.exec_()
         self.__running = False
             
     def call(self, callable, *args):
-        self.__events.put((callable, args))
+        pass
     
     def quit(self):
-        self.__events.put(None)
+        self.__app.quit()

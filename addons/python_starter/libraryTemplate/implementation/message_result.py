@@ -73,6 +73,9 @@ class MessageResult(object):
     def return_object(self, type):
         self.__control_exception()
         
+        if 'return' not in self.__data:
+            return None
+        
         if type is None:
             return self.__factory.get_instance(self.__data['return'][0], self.__data['return'][1])
         else:

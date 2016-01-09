@@ -9,10 +9,10 @@ def get_path(type):
         tmp = tmp.parent
     
     if type.type_name == 'Namespace':
-        path = [part.identifier.lower_underscore_separated for part in path] + ['__init__.py']
+        path = [part.identifier.lower_case for part in path] + ['__init__.py']
     else:
-        path = [part.identifier.lower_underscore_separated for part in path[:-1]]\
-               + [path[-1].identifier.lower_underscore_separated+ '.py']
+        path = [part.identifier.lower_case for part in path[:-1]]\
+               + [path[-1].identifier.lower_case + '.py']
     
     return os.path.join(* ['.'] + path)
 
@@ -63,4 +63,4 @@ def get_import_path(type, relative_to=None):
             
             break
     
-    return ''.join(relativity) + '.'.join(part.identifier.lower_underscore_separated for part in path)
+    return ''.join(relativity) + '.'.join(part.identifier.lower_case for part in path)
