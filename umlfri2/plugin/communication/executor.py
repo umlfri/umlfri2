@@ -104,7 +104,8 @@ class PluginExecutor(object):
         return typed_parameters
     
     def __encode_return(self, method, ret):
-        polymorfic = hasattr(method, 'method_polymorfic')
+        spec = inspect.getfullargspec(method)
+        polymorfic = 'return' in spec.annotations and spec.annotations['return'] is object
 
         def recursion(ret):
             if not isinstance(ret, str) and isinstance(ret, Iterable):

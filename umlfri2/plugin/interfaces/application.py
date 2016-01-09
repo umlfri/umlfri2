@@ -17,7 +17,7 @@ class IApplication(Interface):
         from umlfri2.application import Application
         return Application()
 
-    def get_current_diagram(self):
+    def get_current_diagram(self) -> object:
         from .diagram import IDiagram
         
         tab = self.__get_application().tabs.current_tab
