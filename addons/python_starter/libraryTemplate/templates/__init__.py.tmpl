@@ -1,0 +1,5 @@
+{% for type in root.children %}
+{% if type.type_name in ('Interface', 'Exception') %}
+from .{{ type.identifier.lower_cammel_case }} import {{ type.identifier.upper_cammel_case }}
+{% endif %}
+{% endfor %}

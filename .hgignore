@@ -5,3 +5,4 @@ syntax: glob
 data/icons
 tools/mkaddonlib/addonlibdoc/documentation/*
 tools/mkaddonlib/checked_api/*
+addons/python_starter/library/*

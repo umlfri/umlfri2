@@ -57,15 +57,15 @@ class Interface(BaseContainer):
     
     @property
     def referenced(self):
-        ret = set()
+        ret = {}
         if self.__base is not None:
-            ret.add(self.__base)
+            ret[self.__base.fqn] = self.__base
         
         for child in self.children:
             for type in child.referenced:
-                ret.add(type)
+                ret[type.fqn] = type
         
-        for obj in ret:
+        for obj in ret.values():
             yield obj
     
     def validate(self):

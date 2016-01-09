@@ -1,0 +1,7 @@
+class {{ root.identifier.upper_cammel_case }}({% if root.base %}{{ root.base.identifier.upper_cammel_case }}{% else %}Exception{% endif %}):
+{% if root.documentation %}
+    """
+    {{ root.documentation.indent(4) }}
+    """
+{% endif %}
+    pass

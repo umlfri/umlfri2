@@ -1,7 +1,7 @@
 import inspect
 import threading
 import traceback
-
+from base64 import b64encode
 from collections import Iterable
 
 from ..interfaces import IApplication, Interface
@@ -43,12 +43,15 @@ class PluginExecutor(object):
             ret = method(**arguments)
             
             if session is not None:
-                self.__channel.write(
-                    {
-                        'session': session,
-                        'return': self.__encode_return(method, ret)
-                    }
-                )
+                if ret is None:
+                    self.__channel.write({'session': session})
+                else:
+                    self.__channel.write(
+                        {
+                            'session': session,
+                            'return': self.__encode_return(method, ret)
+                        }
+                    )
             
         except Exception as ex:
             if session is not None:
@@ -83,18 +86,7 @@ class PluginExecutor(object):
                     # TODO: exception - object not found
                     typed_parameters[name] = self.__objects[value]
             elif type is None:
-                vartype, value = value
-                # TODO: exception - incorrect parameter type
-                if vartype == "boolean":
-                    typed_parameters[name] = value == "true"
-                elif vartype == "int32":
-                    typed_parameters[name] = int(value)
-                elif vartype == "float":
-                    typed_parameters[name] = float(value)
-                elif vartype == "string":
-                    typed_parameters[name] = str(value)
-                else:
-                    pass # TODO: exception - incorrect type
+                typed_parameters[name] = value # variant does not have to be retyped
             else:
                 # TODO: exception - incorrect parameter type
                 typed_parameters[name] = type(value)
@@ -108,7 +100,11 @@ class PluginExecutor(object):
         polymorfic = 'return' in spec.annotations and spec.annotations['return'] is object
 
         def recursion(ret):
-            if not isinstance(ret, str) and isinstance(ret, Iterable):
+            if isinstance(ret, str):
+                return ret
+            elif isinstance(ret, bytes):
+                return b64encode(ret)
+            elif isinstance(ret, Iterable):
                 return [recursion(value) for value in ret]
             elif isinstance(ret, Interface):
                 if ret.id not in self.__objects:

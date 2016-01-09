@@ -1,0 +1,123 @@
+{% macro interface_method(method, include_doc) %}
+    def {{ method.identifier.lower_underscore_separated }}(self
+{% for parameter in method.children_of_type('InterfaceMethodParameter') %}
+    {% if parameter.type == '*' %}
+        , *{{ parameter.identifier.lower_case }}
+    {% else %}
+        , {{ parameter.identifier.lower_case }}
+        {% if not parameter.required %}
+            = {{ repr(parameter.default) }}
+        {% endif %}
+    {% endif %}
+{% endfor %}):
+{% if method.documentation and include_doc %}
+        """
+        {{ method.documentation.indent(8) }}
+        """
+{% endif %}
+        return (
+            Message(self.__id, '{{ method.api_name }}')
+{% for parameter in method.parameters %}
+{% if parameter.type == '*' %}
+                .args_parameter('{{ parameter.api_name }}', {{ parameter.identifier.lower_case }})
+{% elif parameter.type.type_name == 'PrimitiveType' %}
+                .{{parameter.type.name}}_parameter('{{ parameter.api_name }}', {{ parameter.identifier.lower_case }})
+{% else %}
+                .object_parameter('{{ parameter.api_name }}', {{ parameter.identifier.lower_case }}, parameter.type.is_abstract)
+{% endif %}
+{% endfor %}
+{% if method.async %}
+                .send_async(self.__server)
+{% else %}
+                .send(self.__server)
+{% for exception in method.throws %}
+                .throws_exception('{{ exception.exception.api_name }}', {{ exception.exception.identifier.upper_camel_case }})
+{% endfor %}
+{% if not method.return_type %}
+                .return_void()
+{% elif method.return_type.iterable and method.return_type.type.type_name == 'PrimitiveType' %}
+                .iterate_{{ method.return_type.type.name }}()
+{% elif method.return_type.iterable %}
+{% if method.return_type.type.is_abstract %}
+                .iterate_object(None)
+{% else %}
+                .iterate_object('{{ method.return_type.type.api_name }}')
+{% endif %}
+{% elif method.return_type.type.type_name == 'PrimitiveType' %}
+                .return_{{ method.return_type.type.name }}()
+{% else %}
+{% if method.return_type.type.is_abstract %}
+                .return_object(None)
+{% else %}
+                .return_object('{{ method.return_type.type.api_name }}')
+{% endif %}
+{% endif %}
+{% endif %}
+        )
+{% endmacro %}
+
+from ..implementation import Message
+from ..implementation import AdvProperty
+from ..implementation.communication import Server
+{% for depend in root.referenced %}
+{% if depend.type_name == 'Exception' %}
+from {{ paths.get_import_path(depend, root) }} import {{ depend.identifier.upper_camel_case }}
+{% endif %}
+{% endfor %}
+{% if root.base %}
+from {{ paths.get_import_path(root.base, root) }} import {{ root.identifier.upper_camel_case }}
+{% endif %}
+
+class {{root.identifier.upper_camel_case}}{% if root.base %}({{ root.base.identifier.upper_camel_case }}) {% endif %}:
+{% if root.documentation %}
+    """
+    {{ root.documentation.indent(4) }}
+    """
+    
+{% endif %}
+    def __init__(self, server, id):
+{% if root.base %}
+        super().__init__(server, id)
+{% endif %}
+        self.__server = server
+        self.__id = id
+    
+    @property
+    def __interface__(self):
+        return "{{ root.api_name }}"
+    
+    @property
+    def __id__(self):
+        return self.__id
+{% for method in root.children_of_type('InterfaceMethod') %}
+    
+{{ interface_method(method, True) }}
+{% endfor %}
+{% for property in root.children_of_type('InterfaceProperty') %}
+    
+    {{ property.identifier.lower_underscore_separated }} = AdvProperty(
+        '{{ property.identifier.lower_underscore_separated }}',
+        {% if property.index %}True{% else %}False{% endif %},
+        {{ repr(property.documentation) }}
+    )
+{% for method in property.children_of_type('InterfacePropertyGetter') %}
+    
+    @{{property.identifier.lower_underscore_separated}}.getter
+{{ interface_method(method.create_method()) }}
+{% endfor %}
+{% for method in property.children_of_type('InterfacePropertyGetter') %}
+    
+    @{{property.identifier.lower_underscore_separated}}.setter
+{{ interface_method(method.create_method()) }}
+{% endfor %}
+{% for method in property.children_of_type('InterfacePropertyGetter') %}
+    
+    @{{property.identifier.lower_underscore_separated}}.iterator
+{{ interface_method(method.create_method()) }}
+{% endfor %}
+{% endfor %}
+{##if $root.fqn == 'org::umlfri::api::base::Adapter':
+#include "appends/application.py.tmpl"
+#elif $root.fqn == 'org::umlfri::api::base::Transaction':
+#include "appends/transaction.py.tmpl"
+#end if#}

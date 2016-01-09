@@ -32,7 +32,7 @@ class BaseProgramStarter(AddonStarter):
         env = os.environ.copy()
         
         for name, value in self.environment.items():
-            env['UMLFRI_' + name] = value
+            env['UMLFRI_' + name] = value.format(path = self.__path)
         
         program = [part.format(path = self.__path) for part in self.program]
         
