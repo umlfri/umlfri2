@@ -8,9 +8,6 @@ class Base(object):
         else:
             self.__identifier = Identifier(name)
         self.__parent = parent
-        
-        if self.__parent is not None:
-            self.__parent._add_child(self)
     
     @property
     def name(self):

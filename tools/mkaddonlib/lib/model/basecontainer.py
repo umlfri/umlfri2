@@ -49,7 +49,7 @@ class BaseContainer(Base):
         for child in self.children:
             child._link(builder)
     
-    def _add_child(self, child):
+    def add_child(self, child):
         self.__children[child.name] = child
         self.__ordered_children.append(child)
         if self.__sorted:

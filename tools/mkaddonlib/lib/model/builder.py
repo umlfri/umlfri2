@@ -35,7 +35,7 @@ class Builder(object):
 
     __xml_definitions = os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", "data", "api")
     
-    __xml_ns = "{{http://umlfri.org/xmlschema/publicApi.xsd}}{0}"
+    __xml_ns = "{{http://umlfri.org/v2/api.xsd}}{0}"
     
     def __init__(self):
         self.__root_namespace = Namespace(None, None)
@@ -94,6 +94,15 @@ class Builder(object):
     def get_type_by_fqn(self, fqn):
         return self.__cache[fqn]
     
+    def get_type_by_type(self, *types):
+        def recursion(obj):
+            if obj.type_name in types:
+                yield obj
+            else:
+                for child in obj.children:
+                    yield from recursion(child)
+        return recursion(self.__root_namespace)
+    
     ################
     ### Interface
     
@@ -116,6 +125,8 @@ class Builder(object):
             documentation=self.__parse_documentation(root.find(self.__xml_ns.format('documentation')))
         )
         
+        namespace.add_child(interface)
+        
         for child in root:
             if child.tag == self.__xml_ns.format('property'):
                 self.__parse_interface_property(child, interface)
@@ -135,6 +146,8 @@ class Builder(object):
             documentation=self.__parse_documentation(root.find(self.__xml_ns.format('documentation')))
         )
         
+        interface.add_child(method)
+        
         for child in root:
             if child.tag == self.__xml_ns.format('parameter'):
                 if child.attrib['type'] == 'namedparams':
@@ -150,6 +163,7 @@ class Builder(object):
                     default= child.attrib.get('default'),
                     documentation=self.__parse_documentation(child.find(self.__xml_ns.format('documentation'))),
                 )
+                method.add_child(parameter)
             elif child.tag == self.__xml_ns.format('parameterDictionary'):
                 parameter = InterfaceMethodParameter(
                     child.attrib['name'],
@@ -159,20 +173,23 @@ class Builder(object):
                     required=True,
                     documentation=self.__parse_documentation(child.find(self.__xml_ns.format('documentation'))),
                 )
+                method.add_child(parameter)
             elif child.tag == self.__xml_ns.format('return'):
-                returnType = InterfaceMethodReturn(
+                return_type = InterfaceMethodReturn(
                     method,
                     child.attrib['type'],
                     nullable=child.attrib.get('nullable', "false").lower() in ("1", "true"),
                     iterable=child.attrib.get('iterable', "false").lower() in ("1", "true"),
                     documentation=self.__parse_documentation(child.find(self.__xml_ns.format('documentation'))),
                 )
+                method.add_child(return_type)
             elif child.tag == self.__xml_ns.format('throws'):
                 throws = InterfaceMethodThrows(
                     method,
                     child.attrib['exception'],
                     documentation = self.__parse_documentation(child.find(self.__xml_ns.format('documentation'))),
                 )
+                method.add_child(throws)
     
     def __parse_interface_property(self, root, interface):
         value = root.find(self.__xml_ns.format('value'))
@@ -190,14 +207,17 @@ class Builder(object):
             documentation=self.__parse_documentation(root.find(self.__xml_ns.format('documentation')))
         )
         
+        interface.add_child(property)
+        
         if index is not None:
-            InterfacePropertyIndex(
+            property_index = InterfacePropertyIndex(
                 index.attrib['name'],
                 property,
                 type=index.attrib['type'],
                 api_name=index.attrib.get('apiname'),
                 documentation=self.__parse_documentation(index.find(self.__xml_ns.format('documentation')))
             )
+            property.add_child(property_index)
         able_children = 0
         
         if value.attrib.get('readable', "false").lower() in ("1", "true"):
@@ -206,13 +226,14 @@ class Builder(object):
             if getter is not None:
                 api_name = getter.attrib.get('apiname')
             
-            method = InterfacePropertyGetter(
+            accessor = InterfacePropertyGetter(
                 property,
                 api_name=api_name
             )
+            property.add_child(accessor)
             
             if getter is not None:
-                self.__parse_interface_property_throws(method, getter)
+                self.__parse_interface_property_throws(accessor, getter)
             
             able_children += 1
         
@@ -224,14 +245,15 @@ class Builder(object):
                 api_name = setter.attrib.get('apiname')
                 transactional = setter.attrib.get('transactional', "true").lower() in ("1", "true")
             
-            method = InterfacePropertySetter(
+            accessor = InterfacePropertySetter(
                 property,
                 api_name=api_name,
                 transactional=transactional
             )
+            property.add_child(accessor)
             
             if setter is not None:
-                self.__parse_interface_property_throws(method, setter)
+                self.__parse_interface_property_throws(accessor, setter)
             
             able_children += 1
         
@@ -241,13 +263,14 @@ class Builder(object):
             if iterator is not None:
                 api_name = iterator.attrib.get('apiname')
             
-            method = InterfacePropertyIterator(
+            accessor = InterfacePropertyIterator(
                 property,
                 api_name=api_name
             )
+            property.add_child(accessor)
             
             if iterator is not None:
-                self.__parse_interface_property_throws(method, iterator)
+                self.__parse_interface_property_throws(accessor, iterator)
             
             able_children += 1
         
@@ -262,15 +285,17 @@ class Builder(object):
                     child.attrib['exception'],
                     documentation=self.__parse_documentation(child.find(self.__xml_ns.format('documentation'))),
                 )
+                method.add_child(throws)
     
     def __parse_interface_event(self, root, interface):
-        property = InterfaceEvent(
+        event = InterfaceEvent(
             root.attrib['name'],
             interface,
             root.attrib.get('apiname'),
             type=root.attrib['type'],
             documentation=self.__parse_documentation(root.find(self.__xml_ns.format('documentation')))
         )
+        interface.add_child(event)
     
     ################
     ### Exception
@@ -292,6 +317,7 @@ class Builder(object):
             throws_from=root.attrib.get('throwsFrom'),
             documentation=self.__parse_documentation(root.find(self.__xml_ns.format('documentation')))
         )
+        namespace.add_child(exception)
         
         for child in root:
             if child.tag == self.__xml_ns.format('property'):
@@ -311,6 +337,7 @@ class Builder(object):
                     iterable=iterable,
                     documentation=self.__parse_documentation(child.find(self.__xml_ns.format('documentation')))
                 )
+                exception.add_child(property)
     
     ################
     ### Delegate
@@ -329,6 +356,7 @@ class Builder(object):
             namespace,
             documentation = self.__parse_documentation(root.find(self.__xml_ns.format('documentation')))
         )
+        namespace.add_child(delegate)
         
         for child in root:
             if child.tag == self.__xml_ns.format('parameter'):
@@ -344,6 +372,7 @@ class Builder(object):
                     default=child.attrib.get('default'),
                     documentation=self.__parse_documentation(child.find(self.__xml_ns.format('documentation'))),
                 )
+                delegate.add_child(parameter)
             elif child.tag == self.__xml_ns.format('parameterDictionary'):
                 parameter = DelegateParameter(
                     child.attrib['name'],
@@ -353,6 +382,7 @@ class Builder(object):
                     required=True,
                     documentation=self.__parse_documentation(child.find(self.__xml_ns.format('documentation'))),
                 )
+                delegate.add_child(parameter)
             elif child.tag == self.__xml_ns.format('return'):
                 return_type = DelegateReturn(
                     delegate,
@@ -360,12 +390,14 @@ class Builder(object):
                     iterable=child.attrib.get('iterable', "true").lower() in ("1", "true"),
                     documentation=self.__parse_documentation(child.find(self.__xml_ns.format('documentation'))),
                 )
+                delegate.add_child(return_type)
             elif child.tag == self.__xml_ns.format('throws'):
-                return_type = DelegateThrows(
+                throws = DelegateThrows(
                     delegate,
                     child.attrib['exception'],
                     documentation=self.__parse_documentation(child.find(self.__xml_ns.format('documentation'))),
                 )
+                delegate.add_child(throws)
     
     ################
     ### Helpers
@@ -383,7 +415,9 @@ class Builder(object):
                 if not isinstance(namespace, Namespace):
                     raise Exception()
             except KeyError:
-                namespace = Namespace(symbol, namespace)
+                parent = namespace
+                namespace = Namespace(symbol, parent)
+                parent.add_child(namespace)
         
         return namespace, name
     
@@ -449,8 +483,10 @@ class Builder(object):
     
     def __set_auto_throws_to_method(self, member, exceptions):
         for exc in exceptions:
-            InterfaceMethodThrows(member, exc)
+            throws = InterfaceMethodThrows(member, exc)
+            member.add_child(throws)
     
     def __set_auto_throws_to_property(self, member, exceptions):
         for exc in exceptions:
-            InterfacePropertyThrows(member, exc)
+            throws = InterfacePropertyThrows(member, exc)
+            member.add_child(throws)

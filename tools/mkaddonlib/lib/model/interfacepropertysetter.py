@@ -65,13 +65,16 @@ class InterfacePropertySetter(BaseContainer):
                                transactional=self.__transactional, documentation=self.interface_property.documentation)
         
         if self.index is not None:
-            InterfaceMethodParameter(self.index.name, meth, self.index.type, api_name=self.index.api_name,
+            index = InterfaceMethodParameter(self.index.name, meth, self.index.type, api_name=self.index.api_name,
                                      documentation=self.index.documentation)
+            meth.add_child(index)
         
-        InterfaceMethodParameter(value, meth, self.type, api_name='value')
+        value = InterfaceMethodParameter(value, meth, self.type, api_name='value')
+        meth.add_child(value)
         
         for throw in self.throws:
-            InterfaceMethodThrows(meth, throw.exception, throw.documentation)
+            throws = InterfaceMethodThrows(meth, throw.exception, throw.documentation)
+            meth.add_child(throws)
         
         return meth
     

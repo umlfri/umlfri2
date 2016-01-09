@@ -61,13 +61,16 @@ class InterfacePropertyGetter(BaseContainer):
                                documentation=self.interface_property.documentation)
         
         if self.index is not None:
-            InterfaceMethodParameter(self.index.name, meth, self.index.type, api_name=self.index.api_name,
+            index = InterfaceMethodParameter(self.index.name, meth, self.index.type, api_name=self.index.api_name,
                                      documentation=self.index.documentation)
+            meth.add_child(index)
         
-        InterfaceMethodReturn(meth, self.type)
+        ret = InterfaceMethodReturn(meth, self.type)
+        meth.add_child(ret)
         
         for throw in self.throws:
-            InterfaceMethodThrows(meth, throw.exception, throw.documentation)
+            throws = InterfaceMethodThrows(meth, throw.exception, throw.documentation)
+            meth.add_child(throws)
         
         return meth
     

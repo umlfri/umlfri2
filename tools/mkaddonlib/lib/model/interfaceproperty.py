@@ -14,10 +14,7 @@ class InterfaceProperty(BaseContainer):
         self.__documentation = documentation
         self.__nullable = nullable
         
-        if type in PRIMITIVE_TYPES:
-            self.__type = PRIMITIVE_TYPES[type]
-        else:
-            self.__type = type
+        self.__type = type
     
     @property
     def interface(self):
@@ -78,5 +75,7 @@ class InterfaceProperty(BaseContainer):
     def _link(self, builder):
         BaseContainer._link(self, builder)
         
-        if not isinstance(self.__type, PrimitiveType):
+        if self.__type in PRIMITIVE_TYPES:
+            self.__type = PRIMITIVE_TYPES[self.__type]
+        else:
             self.__type = builder.get_type_by_name(self.__type)

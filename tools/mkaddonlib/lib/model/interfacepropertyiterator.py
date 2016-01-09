@@ -50,19 +50,21 @@ class InterfacePropertyIterator(BaseContainer):
         return self.parent.fqn + '::' + '__iter__'
     
     @property
-    def apiName(self):
+    def api_name(self):
         return self.__api_name
     
     def create_method(self, name=None):
         if name is None:
             name = self.name
-        meth = InterfaceMethod(name, self.interface_property.interface, api_name=self.apiName,
+        meth = InterfaceMethod(name, self.interface_property.interface, api_name=self.api_name,
                                documentation=self.interface_property.documentation)
         
-        InterfaceMethodReturn(meth, self.type, iterable = True)
+        ret = InterfaceMethodReturn(meth, self.type, iterable = True)
+        meth.add_child(ret)
         
         for throw in self.throws:
-            InterfaceMethodThrows(meth, throw.exception, throw.documentation)
+            throws = InterfaceMethodThrows(meth, throw.exception, throw.documentation)
+            meth.add_child(throws)
         
         return meth
     

@@ -13,10 +13,7 @@ class InterfacePropertyIndex(Base):
         else:
             self.__api_name = helper.compute_property_index_api_name(self.identifier)
         
-        if type in PRIMITIVE_TYPES:
-            self.__type = PRIMITIVE_TYPES[type]
-        else:
-            self.__type = type
+        self.__type = type
         
         self.__documentation = documentation
     
@@ -46,5 +43,7 @@ class InterfacePropertyIndex(Base):
     def _link(self, builder):
         Base._link(self, builder)
         
-        if not isinstance(self.__type, PrimitiveType):
+        if self.__type in PRIMITIVE_TYPES:
+            self.__type = PRIMITIVE_TYPES[self.__type]
+        else:
             self.__type = builder.get_type_by_name(self.__type)

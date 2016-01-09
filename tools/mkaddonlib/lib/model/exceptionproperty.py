@@ -9,10 +9,7 @@ class ExceptionProperty(Base):
         self.__iterable = iterable
         self.__index = index
         
-        if type in PRIMITIVE_TYPES:
-            self.__type = PRIMITIVE_TYPES[type]
-        else:
-            self.__type = type
+        self.__type = type
     
     @property
     def exception(self):
@@ -37,5 +34,7 @@ class ExceptionProperty(Base):
     def _link(self, builder):
         Base._link(self, builder)
         
-        if not isinstance(self.__type, PrimitiveType):
+        if self.__type in PRIMITIVE_TYPES:
+            self.__type = PRIMITIVE_TYPES[self.__type]
+        else:
             self.__type = builder.get_type_by_name(self.__type)

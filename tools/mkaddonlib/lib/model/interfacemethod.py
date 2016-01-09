@@ -34,7 +34,7 @@ class InterfaceMethod(BaseContainer):
                 yield child
     
     @property
-    def returnType(self):
+    def return_type(self):
         for child in self.children:
             if isinstance(child, InterfaceMethodReturn):
                 return child
@@ -46,7 +46,7 @@ class InterfaceMethod(BaseContainer):
                 yield child
     
     @property
-    def apiName(self):
+    def api_name(self):
         return self.__api_name
     
     @property

@@ -17,19 +17,8 @@ class InterfaceMethodParameter(Base):
         else:
             self.__api_name = helper.compute_method_parameter_api_name(self.identifier)
         
-        if type in PRIMITIVE_TYPES:
-            self.__type = PRIMITIVE_TYPES[type]
-            
-            if not self.__required:
-                if default is None:
-                    self.__default = None
-                else:
-                    self.__default = self.__type.convert(default)
-            else:
-                self.__default = None
-        else:
-            self.__type = type
-            self.__default = None
+        self.__type = type
+        self.__default = default
         
         self.__documentation = documentation
     
@@ -76,5 +65,14 @@ class InterfaceMethodParameter(Base):
     def _link(self, builder):
         Base._link(self, builder)
         
-        if self.__type != '*' and not isinstance(self.__type, PrimitiveType):
+        if self.__type in PRIMITIVE_TYPES:
+            self.__type = PRIMITIVE_TYPES[self.__type]
+            
+            if not self.__required:
+                if self.__default is None:
+                    self.__default = self.__type.default
+                else:
+                    self.__default = self.__type.convert(self.__default)
+        elif self.__type != '*':
             self.__type = builder.get_type_by_name(self.__type)
+            self.__default = None
