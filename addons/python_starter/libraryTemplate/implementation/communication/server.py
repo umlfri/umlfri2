@@ -1,4 +1,4 @@
-from ...main_loops import DefaultMainLoop
+from ...main_loops.default import DefaultMainLoop
 from ..factory import Factory
 f
 from threading import Lock
