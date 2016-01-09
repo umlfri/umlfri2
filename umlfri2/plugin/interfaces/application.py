@@ -3,7 +3,7 @@ from .interface import Interface
 
 class IApplication(Interface):
     def __init__(self, executor):
-        self.__executor = executor
+        super().__init__(executor)
 
     @property
     def id(self):
@@ -17,7 +17,7 @@ class IApplication(Interface):
         from umlfri2.application import Application
         return Application()
 
-    def get_current_diagram(self) -> object:
+    def get_current_diagram(self):
         from .diagram import IDiagram
         
         tab = self.__get_application().tabs.current_tab
@@ -25,7 +25,7 @@ class IApplication(Interface):
         if tab is None:
             return None
         else:
-            return IDiagram(self.__executor, tab.drawing_area.diagram)
+            return IDiagram(self._executor, tab.drawing_area.diagram)
 
     def set_current_diagram(self, value: object):
         self.__get_application().tabs.select_tab(value.diagram)

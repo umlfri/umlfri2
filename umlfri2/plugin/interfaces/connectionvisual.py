@@ -3,7 +3,7 @@ from .interface import Interface
 
 class IConnectionVisual(Interface):
     def __init__(self, executor):
-        self.__executor = executor
+        super().__init__(executor)
 
     @property
     def id(self):

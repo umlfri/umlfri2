@@ -3,12 +3,12 @@ from .interface import Interface
 
 class IDiagram(Interface):
     def __init__(self, executor, diagram):
-        self.__executor = executor
-        self.__diagram = diagram
+        super().__init__(executor)
+        self.__diagram = self._ref(diagram)
 
     @property
     def id(self):
-        return str(self.__diagram.save_id)
+        return str(self.__diagram().save_id)
 
     @property
     def api_name(self):
@@ -16,7 +16,7 @@ class IDiagram(Interface):
     
     @property
     def diagram(self):
-        return self.__diagram
+        return self.__diagram()
 
     def append_item(self, path: str):
         raise NotImplementedError

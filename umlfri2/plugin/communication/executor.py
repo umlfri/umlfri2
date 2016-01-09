@@ -148,3 +148,6 @@ class PluginExecutor(object):
                 'selector': 'stop'
             }
         )
+    
+    def object_removed(self, object):
+        del self.__objects[object.id]
