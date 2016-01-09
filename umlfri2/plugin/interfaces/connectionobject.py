@@ -1,0 +1,44 @@
+from .interface import Interface
+
+
+class IConnectionObject(Interface):
+    def __init__(self, executor):
+        self.__executor = executor
+
+    @property
+    def id(self):
+        raise NotImplementedError
+
+    @property
+    def api_name(self):
+        return 'ConnectionObject'
+
+    def append_item(self, path: str):
+        raise NotImplementedError
+
+    def get_destination(self):
+        raise NotImplementedError
+
+    def get_connected_object(self, obj: object):
+        raise NotImplementedError
+
+    def remove_item(self, path: str):
+        raise NotImplementedError
+
+    def get_source(self):
+        raise NotImplementedError
+
+    def get_type(self):
+        raise NotImplementedError
+
+    def get_value(self, path: str):
+        raise NotImplementedError
+
+    def set_value(self, path: str, value: None):
+        raise NotImplementedError
+
+    def get_values(self):
+        raise NotImplementedError
+
+    def get_visuals(self):
+        raise NotImplementedError

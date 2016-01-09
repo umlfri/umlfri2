@@ -17,13 +17,13 @@ class UmlFriInterfaceWriter:
             file.write('# change: {0}\n'.format(interface.change))
         file.write('class I{0}(Interface):\n'.format(interface.name))
         file.write('    def __init__(self, executor):\n')
-        file.write('        raise NotImplementedError\n\n')
+        file.write('        self.__executor = executor\n\n')
         file.write('    @property\n')
         file.write('    def id(self):\n')
         file.write('        raise NotImplementedError\n\n')
         file.write('    @property\n')
         file.write('    def api_name(self):\n')
-        file.write('        raise {0}\n'.format(interface.name))
+        file.write('        return \'{0}\'\n'.format(interface.name))
         for method in interface.methods:
             self.__write_method(file, method)
         
