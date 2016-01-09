@@ -4,3 +4,4 @@ syntax: glob
 **/__pycache__
 data/icons
 tools/mkaddonlib/addonlibdoc/documentation/*
+tools/mkaddonlib/checked_api/*
