@@ -1,3 +1,4 @@
+import inspect
 import threading
 import traceback
 
@@ -62,19 +63,18 @@ class PluginExecutor(object):
             elif __debug__:
                 traceback.print_exc()
 
-    def __decode_parameters(self, method, parameters):
-        func = method.__func__
-        if not hasattr(func, 'method_param_types'):
-            return {}
+    def __decode_parameters(self, method, real_parameters):
+        spec = inspect.getfullargspec(method)
         
         # ignore self parameter
-        parameters = func.__code__.co_varnames[1:func.__code__.co_argcount + 1]
-        parameter_types = func.method_param_types
+        parameters = spec.args[1:]
+        parameter_types = spec.annotations
         
         typed_parameters = {}
         
-        for name, type in zip(parameters, parameter_types):
-            value = parameters.pop(name)
+        for name in parameters:
+            type = parameter_types[name]
+            value = real_parameters.pop(name)
             
             if type is object:
                 if value is None:
@@ -132,6 +132,10 @@ class PluginExecutor(object):
                 'arguments': arguments
             }
         )
+    
+    @property
+    def running(self):
+        return not self.__channel.closed
     
     def start(self):
         threading.Thread(target = self.__main).start()

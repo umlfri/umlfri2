@@ -30,7 +30,7 @@ class Plugin:
         self.__executor.start()
     
     def stop(self):
-        if self.__executor is not None:
+        if self.__executor is not None and self.__executor.running:
             self.__executor.send_stop()
     
     def terminate(self):
