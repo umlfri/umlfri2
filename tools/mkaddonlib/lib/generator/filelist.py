@@ -42,7 +42,7 @@ class FileList:
         else:
             if path.endswith('.xml'):
                 data = lxml.etree.parse(path).getroot()
-            elif path.endswith('.xml.tmpl'):
+            elif path.endswith('.xml.jinja2'):
                 with open(path) as template_file:
                     data = lxml.etree.XML(
                         JINJA_ENV.from_string(template_file.read()).render(root=self.__builder.get_root_namespace(),

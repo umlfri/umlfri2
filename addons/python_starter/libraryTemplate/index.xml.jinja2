@@ -1,0 +1,15 @@
+<library>
+    {% for element in root.descendants %}
+        {% if element.type_name == 'Namespace' %}
+            <template path="templates/__init__.py.jinja2" output="{{ paths.get_path(element) }}" root="{{ element.fqn }}"/>
+        {% elif element.type_name == 'Interface' %}
+            <template path="templates/interface.py.jinja2" output="{{ paths.get_path(element) }}" root="{{ element.fqn }}"/>
+        {% elif element.type_name == 'Exception' %}
+            <template path="templates/exception.py.jinja2" output="{{ paths.get_path(element) }}" root="{{ element.fqn }}"/>
+        {% endif %}
+    {% endfor %}
+    
+    <template path="templates/factory.py.jinja2" output="org/umlfri/api/implementation/factory.py" root="{{ root.fqn }}"/>
+    <directory path="implementation" output="org/umlfri/api/implementation" glob="*.py"/>
+    <directory path="main_loops" output="org/umlfri/api/main_loops" glob="*.py"/>
+</library>

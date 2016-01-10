@@ -1,0 +1,17 @@
+<library>
+    {% for element in root.descendants %}
+        {% if element.type_name == 'Namespace' and element.has_children_of_type('Interface', 'Exception', 'Delegate') %}
+            <template path="templates/namespace_types.html.jinja2" output="{{ paths.get_path(element) }}" root="{{ element.fqn }}"/>
+        {% elif element.type_name == 'Interface' %}
+            <template path="templates/interface_documentation.html.jinja2" output="{{ paths.get_path(element) }}" root="{{ element.fqn }}"/>
+        {% elif element.type_name == 'Exception' %}
+            <template path="templates/exception_documentation.html.jinja2" output="{{ paths.get_path(element) }}" root="{{ element.fqn }}"/>
+        {% elif element.type_name == 'Delegate' %}
+            <template path="templates/delegate_documentation.html.jinja2" output="{{ paths.get_path(element) }}" root="{{ element.fqn }}"/>
+        {% endif %}
+    {% endfor %}
+    
+    <template path="templates/namespaces.html.jinja2" output="namespaces.html" root="{{ root.fqn }}" />
+    <template path="templates/types.html.jinja2" output="types.html" root="{{ root.fqn }}" />
+    <directory path="static" output="" glob="*.*" />
+</library>
