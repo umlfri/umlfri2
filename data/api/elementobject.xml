@@ -25,7 +25,7 @@
                 Identifier of the element attribute.
             </documentation>
         </index>
-        <value type="variant" readable="true" writable="true" iterable="true" />
+        <value type="variant" readable="true" iterable="true" />
     </property>
     
     <method name="appendItem">

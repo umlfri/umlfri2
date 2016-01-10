@@ -73,7 +73,7 @@
         </documentation>
         
         <index name="path" type="string" />
-        <value type="variant" readable="true" writable="true" iterable="true" />
+        <value type="variant" readable="true" iterable="true" />
     </property>
     
     <method name="appendItem">

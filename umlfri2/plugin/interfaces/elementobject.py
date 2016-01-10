@@ -43,9 +43,6 @@ class IElementObject(Interface):
     def get_value(self, path: str):
         raise NotImplementedError
 
-    def set_value(self, path: str, value: None):
-        raise NotImplementedError
-
     def get_values(self):
         raise NotImplementedError
 
