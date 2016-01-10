@@ -2,7 +2,7 @@ from base64 import b64decode
 from io import BytesIO
 
 
-class MessageResult(object):
+class MessageResult:
     def __init__(self, factory, data):
         self.__factory = factory
         self.__data = data

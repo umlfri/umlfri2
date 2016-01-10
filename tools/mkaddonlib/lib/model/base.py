@@ -1,7 +1,7 @@
 from .identifier import Identifier
 
 
-class Base(object):
+class Base:
     def __init__(self, name, parent):
         if name is None:
             self.__identifier = None

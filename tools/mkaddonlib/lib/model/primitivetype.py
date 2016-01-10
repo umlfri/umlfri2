@@ -1,4 +1,4 @@
-class PrimitiveType(object):
+class PrimitiveType:
     def __init__(self, name, numeric=False, logic=False, string=False, object=False, default=None, convertor=None):
         self.__name = name
         self.__numeric = numeric

@@ -1,7 +1,7 @@
 import re
 
 
-class Identifier(object):
+class Identifier:
     __reIdentifierSplitter = re.compile('([A-Z][a-z0-9]+)')
     
     def __init__(self, identifier):

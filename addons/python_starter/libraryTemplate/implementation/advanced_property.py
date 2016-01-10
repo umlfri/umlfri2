@@ -6,7 +6,7 @@ class NonIterableException(Exception):
     pass
 
 
-class AdvPropertyIndexer(object):
+class AdvPropertyIndexer:
     def __init__(self, name, documentation, instance, getter, setter, iterator):
         self.__name__ = name
         self.__doc__ = documentation
@@ -31,7 +31,7 @@ class AdvPropertyIndexer(object):
         else:
             return iter(self.__iterator(self.__instance))
 
-class AdvProperty(object):
+class AdvProperty:
     def __init__(self, name, has_index, documentation):
         self.__name__ = name
         self.__doc__ = documentation

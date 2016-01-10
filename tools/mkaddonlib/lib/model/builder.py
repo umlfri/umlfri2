@@ -26,7 +26,7 @@ import os.path
 import lxml.etree
 
 
-class Builder(object):
+class Builder:
     __xml_schema = lxml.etree.XMLSchema(
         lxml.etree.parse(
             os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", "data", "schema", "api", "api.xsd")

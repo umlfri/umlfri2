@@ -3,7 +3,7 @@ from threading import Event
 from .message_result import MessageResult
 
 
-class Message(object):
+class Message:
     def __init__(self, target, selector):
         self.__target = target
         self.__selector = selector

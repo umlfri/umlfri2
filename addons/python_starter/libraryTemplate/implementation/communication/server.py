@@ -4,7 +4,7 @@ from ..factory import Factory
 from threading import Lock
 
 
-class Server(object):
+class Server:
     def __init__(self, channel):
         self.__channel = channel
         self.__stopped = False

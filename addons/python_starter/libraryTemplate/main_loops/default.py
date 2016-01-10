@@ -2,7 +2,7 @@ from queue import Queue
 from threading import Thread
 
 
-class DefaultMainLoop(object):
+class DefaultMainLoop:
     def __init__(self):
         self.__events = Queue()
         self.__running = False

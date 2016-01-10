@@ -1,6 +1,6 @@
 from weakref import WeakValueDictionary
 
-class Factory(object):
+class Factory:
     def __init__(self, server):
 {% for element in root.descendants %}
 {% if element.type_name == 'Interface' and not element.is_abstract %}

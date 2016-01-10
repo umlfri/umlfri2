@@ -5,7 +5,7 @@ from PySide.QtCore import QThread, Signal
 from PySide.QtGui import QApplication
 
 
-class QtMainLoop(object):
+class QtMainLoop:
     class __MainThread(QThread):
         def __init__(self, callback):
             super().__init__()

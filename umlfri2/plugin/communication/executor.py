@@ -7,11 +7,11 @@ from collections import Iterable
 from ..interfaces import IApplication, Interface
 
 
-class PluginExecutor(object):
+class PluginExecutor:
     def __init__(self, channel):
         self.__channel = channel
         application = IApplication(self)
-        self.__objects = { # TODO: replace with weakref.WeakValueDictionary
+        self.__objects = {
             application.id: application
         }
     
