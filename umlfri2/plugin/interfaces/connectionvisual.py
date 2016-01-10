@@ -4,11 +4,11 @@ from .interface import Interface
 class IConnectionVisual(Interface):
     def __init__(self, executor, connection):
         super().__init__(executor)
-        self.__connection = connection
+        self.__connection = self._ref(connection)
 
     @property
     def id(self):
-        return "{0}/{1}".format(self.__connection.diagram.save_id, self.__connection.object.save_id)
+        return "{0}/{1}".format(self.__connection().diagram.save_id, self.__connection().object.save_id)
 
     @property
     def api_name(self):

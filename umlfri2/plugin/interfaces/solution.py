@@ -4,11 +4,11 @@ from .interface import Interface
 class ISolution(Interface):
     def __init__(self, executor, solution):
         super().__init__(executor)
-        self.__solution = solution
+        self.__solution = self._ref(solution)
 
     @property
     def id(self):
-        return str(self.__solution.save_id)
+        return str(self.__solution().save_id)
 
     @property
     def api_name(self):
@@ -20,5 +20,5 @@ class ISolution(Interface):
     def get_projects(self):
         from .project import IProject
         
-        for project in self.__solution.children:
+        for project in self.__solution().children:
             yield IProject(self._executor, project)
