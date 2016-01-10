@@ -22,8 +22,8 @@ fout = os.fdopen(pout, 'wb')
 
 channel = FileChannel(fin, fout)
 
-#if 'UMLFRI_PLUGIN_DEBUG' in os.environ:
-channel = MIMChannel(channel)
+if 'UMLFRI_PLUGIN_DEBUG' in os.environ:
+    channel = MIMChannel(channel)
 
 server = Server(channel)
 

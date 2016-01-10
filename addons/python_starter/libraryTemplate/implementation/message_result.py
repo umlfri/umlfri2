@@ -8,13 +8,13 @@ class MessageResult(object):
         self.__data = data
     
     def throws_exception(self, name, exception):
-        if 'exception' in self.__data and self.__data['exception'] == name:
+        if 'exception' in self.__data and self.__data['exception']['type'] == name:
             raise exception()
         return self
     
     def __control_exception(self):
         if 'exception' in self.__data:
-            raise Exception("Unknown exception {0}".format(self.__data['exception']))
+            raise Exception("Unknown exception {0}".format(self.__data['exception']['type']))
     
     def return_void(self):
         self.__control_exception()
