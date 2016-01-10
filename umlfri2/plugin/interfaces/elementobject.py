@@ -2,12 +2,13 @@ from .interface import Interface
 
 
 class IElementObject(Interface):
-    def __init__(self, executor):
+    def __init__(self, executor, element):
         super().__init__(executor)
+        self.__element = element
 
     @property
     def id(self):
-        raise NotImplementedError
+        return str(self.__element.save_id)
 
     @property
     def api_name(self):

@@ -15,7 +15,12 @@ class IProject(Interface):
         return 'Project'
 
     def get_children(self):
-        raise NotImplementedError
+        from .elementobject import IElementObject
+        
+        for child in self.__project.children:
+            yield IElementObject(self._executor, child)
 
     def get_metamodel(self):
-        raise NotImplementedError
+        from .metamodel import IMetamodel
+        
+        return IMetamodel(self._executor, self.__project.metamodel)

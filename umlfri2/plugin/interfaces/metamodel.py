@@ -2,12 +2,13 @@ from .interface import Interface
 
 
 class IMetamodel(Interface):
-    def __init__(self, executor):
+    def __init__(self, executor, metamodel):
         super().__init__(executor)
+        self.__metamodel = metamodel
 
     @property
     def id(self):
-        raise NotImplementedError
+        return '{{{0}}}metamodel'.format(self.__metamodel.addon.identifier)
 
     @property
     def api_name(self):
