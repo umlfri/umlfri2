@@ -18,5 +18,24 @@ class UmlFriInterfaceList:
         
         return UmlFriInterfaceList(new_interfaces)
     
+    def print_changes(self):
+        for interface in self.__interfaces:
+            if interface.has_change:
+                print(interface.name, interface.change)
+            else:
+                first = True
+                for method in interface.methods:
+                    if method.has_change:
+                        if first:
+                            print(interface.name)
+                            first = False
+                        print('-', method.name, method.change)
+                
+                for method in interface.removed_methods:
+                    if first:
+                        print(interface.name)
+                        first = False
+                    print('-', method.name, 'removed')
+    
     def __iter__(self):
         yield from self.__interfaces

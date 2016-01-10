@@ -26,5 +26,7 @@ def main(*args):
     
     writer = UmlFriInterfaceWriter(interfaces)
     writer.write_to(options.output_directory)
+    
+    interfaces.print_changes()
 
 main(*sys.argv[1:])
