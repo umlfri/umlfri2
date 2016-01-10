@@ -2,16 +2,17 @@ from .interface import Interface
 
 
 class IConnectionType(Interface):
-    def __init__(self, executor):
+    def __init__(self, executor, connection):
         super().__init__(executor)
+        self.__connection = connection
 
     @property
     def id(self):
-        raise NotImplementedError
+        return '{{{0}}}connection:{1}'.format(self.__connection.metamodel.addon.identifier, self.__connection.id)
 
     @property
     def api_name(self):
         return 'ConnectionType'
 
     def get_name(self):
-        raise NotImplementedError
+        return self.__connection.id

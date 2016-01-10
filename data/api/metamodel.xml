@@ -23,6 +23,7 @@
         <value type="string" readable="true" />
     </property>
     
+    <!-- TODO: exception for element/connection/diagram not found by name -->
     <property name="diagrams" singular="diagram">
         <documentation>
             Diagram types defined in the metamodel.

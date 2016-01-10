@@ -15,25 +15,43 @@ class IMetamodel(Interface):
         return 'Metamodel'
 
     def get_connection(self, name: str):
-        raise NotImplementedError
+        from .connectiontype import IConnectionType
+        
+        type = self.__metamodel.get_connection_type(name)
+        return IConnectionType(self._executor, type)
 
     def get_connections(self):
-        raise NotImplementedError
+        from .connectiontype import IConnectionType
+        
+        for type in self.__metamodel.connection_types:
+            yield IConnectionType(self._executor, type)
 
     def get_diagram(self, name: str):
-        raise NotImplementedError
+        from .diagramtype import IDiagramType
+        
+        type = self.__metamodel.get_diagram_type(name)
+        return IDiagramType(self._executor, type)
 
     def get_diagrams(self):
-        raise NotImplementedError
+        from .diagramtype import IDiagramType
+        
+        for type in self.__metamodel.diagram_types:
+            yield IDiagramType(self._executor, type)
 
     def get_element(self, name: str):
-        raise NotImplementedError
+        from .elementtype import IElementType
+        
+        type = self.__metamodel.get_element_type(name)
+        return IElementType(self._executor, type)
 
     def get_elements(self):
-        raise NotImplementedError
+        from .elementtype import IElementType
+        
+        for type in self.__metamodel.element_types:
+            yield IElementType(self._executor, type)
 
     def get_identifier(self):
-        raise NotImplementedError
+        return self.__metamodel.addon.identifier
 
     def get_version(self):
-        raise NotImplementedError
+        return str(self.__metamodel.addon.version)
