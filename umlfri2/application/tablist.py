@@ -14,6 +14,13 @@ class TabList:
     def __diagram_deleted(self, event):
         self.close_tab(event.diagram)
     
+    def get_tab_for(self, diagram):
+        for tab in self.__tabs:
+            if tab.drawing_area.diagram is diagram:
+                return tab
+        
+        return None
+    
     def select_tab(self, diagram):
         for tab in self.__tabs:
             if tab.drawing_area.diagram is diagram:

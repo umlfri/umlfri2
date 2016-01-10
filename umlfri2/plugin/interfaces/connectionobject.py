@@ -14,6 +14,10 @@ class IConnectionObject(Interface):
     @property
     def api_name(self):
         return 'ConnectionObject'
+    
+    @property
+    def connection_object(self):
+        return self.__connection
 
     def get_destination(self):
         from .elementobject import IElementObject
