@@ -7,14 +7,6 @@
         Root object for project definition.
     </documentation>
     
-    <property name="fileName">
-        <documentation>
-            Full path to the project file.
-        </documentation>
-        
-        <value type="string" readable="true" />
-    </property>
-    
     <property name="children">
         <documentation>
             Child elements of the project.

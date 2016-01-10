@@ -14,6 +14,11 @@ class Interface:
         return self.__class__.__name__[1:]
     
     @property
+    def _application(self):
+        from umlfri2.application import Application
+        return Application()
+    
+    @property
     def _executor(self):
         return self.__executor
     

@@ -7,7 +7,15 @@
         Solution - group of all opened projects.
     </documentation>
     
-    <property name="children">
+    <property name="fileName">
+        <documentation>
+            Full path to the project file.
+        </documentation>
+        
+        <value type="string" readable="true" nullable="true" />
+    </property>
+    
+    <property name="projects">
         <documentation>
             Child projects.
         </documentation>

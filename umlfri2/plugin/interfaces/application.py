@@ -12,15 +12,11 @@ class IApplication(Interface):
     @property
     def api_name(self):
         return 'Application'
-    
-    def __get_application(self):
-        from umlfri2.application import Application
-        return Application()
 
     def get_current_diagram(self):
         from .diagram import IDiagram
         
-        tab = self.__get_application().tabs.current_tab
+        tab = self._application.tabs.current_tab
         
         if tab is None:
             return None
@@ -28,7 +24,14 @@ class IApplication(Interface):
             return IDiagram(self._executor, tab.drawing_area.diagram)
 
     def set_current_diagram(self, value: object):
-        self.__get_application().tabs.select_tab(value.diagram)
+        self._application.tabs.select_tab(value.diagram)
 
     def get_solution(self):
-        raise NotImplementedError
+        from .solution import ISolution
+        
+        solution = self._application.solution
+        
+        if solution is None:
+            return None
+        else:
+            return ISolution(self._executor, solution)
