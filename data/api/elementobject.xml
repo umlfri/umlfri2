@@ -28,30 +28,6 @@
         <value type="variant" readable="true" iterable="true" />
     </property>
     
-    <method name="appendItem">
-        <documentation>
-            Appends new item to the list contained in the element property.
-        </documentation>
-        
-        <parameter name="path" type="string">
-            <documentation>
-                Path to the list.
-            </documentation>
-        </parameter>
-    </method>
-    
-    <method name="removeItem">
-        <documentation>
-            Removes an item from the list contained in the element property.
-        </documentation>
-        
-        <parameter name="path" type="string">
-            <documentation>
-                Path to the item.
-            </documentation>
-        </parameter>
-    </method>
-    
     <property name="type">
         <documentation>
             Element type.

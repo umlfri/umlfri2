@@ -14,9 +14,6 @@ class IElementObject(Interface):
     def api_name(self):
         return 'ElementObject'
 
-    def append_item(self, path: str):
-        raise NotImplementedError
-
     def get_children(self):
         raise NotImplementedError
 
@@ -33,9 +30,6 @@ class IElementObject(Interface):
         raise NotImplementedError
 
     def get_project(self):
-        raise NotImplementedError
-
-    def remove_item(self, path: str):
         raise NotImplementedError
 
     def get_type(self):

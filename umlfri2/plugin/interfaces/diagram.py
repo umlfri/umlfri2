@@ -18,9 +18,6 @@ class IDiagram(Interface):
     def diagram(self):
         return self.__diagram()
 
-    def append_item(self, path: str):
-        raise NotImplementedError
-
     def get_connections(self):
         raise NotImplementedError
 
@@ -40,9 +37,6 @@ class IDiagram(Interface):
         raise NotImplementedError
 
     def get_project(self):
-        raise NotImplementedError
-
-    def remove_item(self, path: str):
         raise NotImplementedError
 
     def get_selection(self) -> object:

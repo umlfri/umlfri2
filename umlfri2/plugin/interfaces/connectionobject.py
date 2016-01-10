@@ -13,16 +13,10 @@ class IConnectionObject(Interface):
     def api_name(self):
         return 'ConnectionObject'
 
-    def append_item(self, path: str):
-        raise NotImplementedError
-
     def get_destination(self):
         raise NotImplementedError
 
     def get_connected_object(self, obj: object):
-        raise NotImplementedError
-
-    def remove_item(self, path: str):
         raise NotImplementedError
 
     def get_source(self):
