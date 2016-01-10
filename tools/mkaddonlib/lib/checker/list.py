@@ -10,6 +10,8 @@ class UmlFriInterfaceList:
         old_interfaces = {interface.name: interface for interface in self.__interfaces}
         
         for obj in interfaces:
+            if obj.is_abstract:
+                continue
             if obj.api_name in old_interfaces:
                 new_interfaces.append(old_interfaces[obj.api_name].fix_from(obj))
                 del old_interfaces[obj.api_name]

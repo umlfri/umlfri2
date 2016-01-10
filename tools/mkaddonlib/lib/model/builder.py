@@ -98,7 +98,7 @@ class Builder:
         def recursion(obj):
             if obj.type_name in types:
                 yield obj
-            else:
+            elif isinstance(obj, BaseContainer):
                 for child in obj.children:
                     yield from recursion(child)
         return recursion(self.__root_namespace)

@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<delegate
+    xmlns="http://umlfri.org/v2/api.xsd"
+    name="org.umlfri.api.base.ActionTriggered">
+    
+    <documentation>
+        Basic action event handler.
+    </documentation>
+    
+    <parameter name="action" type="org.umlfri.api.base.Action">
+        <documentation>
+            Action triggered.
+        </documentation>
+    </parameter>
+</delegate>

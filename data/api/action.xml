@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<interface
+    xmlns="http://umlfri.org/v2/api.xsd"
+    name="org.umlfri.api.base.Action">
+    
+    <documentation>
+        Action attached to UML .FRI gui component.
+    </documentation>
+    
+    <property name="enabled">
+        <documentation>
+            True, if widget is enabled.
+        </documentation>
+        <value type="boolean" readable="true" writable="true" />
+    </property>
+    
+    <property name="label">
+        <documentation>
+            Action's label.
+        </documentation>
+        
+        <value type="string" readable="true" />
+    </property>
+    
+    <event name="triggered" type="org.umlfri.api.base.ActionTriggered">
+        <documentation>
+            Event occurs when action is triggered by some user interaction in UML .FRI gui.
+        </documentation>
+    </event>
+</interface>

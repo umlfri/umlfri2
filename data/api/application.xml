@@ -24,4 +24,14 @@
         
         <setter transactional="false" />
     </property>
+    
+    <property name="actions" singular="action">
+        <documentation>
+            Contains list of all addon actions.
+        </documentation>
+        
+        <index name="id" type="string"/>
+        
+        <value type="org.umlfri.api.base.Action" readable="true" iterable="true"/>
+    </property>
 </interface>

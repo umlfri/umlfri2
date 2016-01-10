@@ -13,6 +13,12 @@ class IApplication(Interface):
     def api_name(self):
         return 'Application'
 
+    def get_action(self, id: str):
+        raise NotImplementedError
+
+    def get_actions(self):
+        raise NotImplementedError
+
     def get_current_diagram(self):
         from .diagram import IDiagram
         
