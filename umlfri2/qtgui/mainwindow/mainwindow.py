@@ -1,8 +1,7 @@
 import os.path
 
 from PySide.QtCore import Qt
-from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget, QMessageBox, QFileDialog, QIcon
-
+from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget, QMessageBox, QFileDialog, QIcon, QToolBar
 from umlfri2.application import Application
 from umlfri2.application.events.application import LanguageChangedEvent, ChangeStatusChangedEvent
 from umlfri2.application.events.model import ObjectDataChangedEvent
@@ -53,6 +52,9 @@ class UmlFriMainWindow(QMainWindow):
         
         self.__tool_bar = MainToolBar(self)
         self.addToolBar(self.__tool_bar)
+        
+        self.__addon_toolbars = []
+        self.__create_addon_toolbars()
         
         self.__menu_bar = MainWindowMenu(self)
         self.setMenuBar(self.__menu_bar)
@@ -159,6 +161,9 @@ class UmlFriMainWindow(QMainWindow):
     
     def get_toolbar_actions(self):
         yield self.__tool_bar.toggleViewAction()
+        
+        for toolbar in self.__addon_toolbars:
+            yield toolbar.toggleViewAction()
     
     def get_dock_actions(self):
         yield self.__toolbox_dock.toggleViewAction()
@@ -207,6 +212,25 @@ class UmlFriMainWindow(QMainWindow):
             return True # the project was saved
         else:
             return False # the project was not saved
+    
+    def __create_addon_toolbars(self):
+        for addon in Application().addons:
+            for toolbar in addon.toolbars:
+                self.__create_addon_toolbar(toolbar)
+    
+    def __create_addon_toolbar(self, toolbar):
+        qt_toolbar = QToolBar()
+        qt_toolbar.setWindowTitle(toolbar.label)
+        
+        for action in toolbar.actions:
+            qt_action = qt_toolbar.addAction(action.label)
+            qt_action.setToolTip(action.label)
+            if action.icon is not None:
+                qt_action.setIcon(image_loader.load_icon(action.icon))
+            qt_action.setEnabled(action.enabled)
+        
+        self.addToolBar(qt_toolbar)
+        self.__addon_toolbars.append(qt_toolbar)
     
     def __reload_window_title(self):
         title = _("UML .FRI 2")

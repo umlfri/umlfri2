@@ -1,5 +1,6 @@
 import lxml.etree
 
+from .toolbarloader import ToolBarLoader
 from umlfri2.datalayer.storages import DirectoryStorage
 from umlfri2.plugin import PatchPlugin, Plugin
 from .translationloader import TranslationLoader
@@ -40,6 +41,15 @@ class AddOnLoader:
                 raise Exception("Unknown icon {0}".format(info.icon))
             icon = Image(self.__storage, info.icon)
         
+        toolbars = []
+        for toolbar_path in info.toolbars:
+            toolbars.append(
+                ToolBarLoader(
+                    self.__storage,
+                    lxml.etree.parse(self.__storage.open(toolbar_path)).getroot()
+                ).load()
+            )
+        
         if info.patch_module is None:
             patch = None
         else:
@@ -56,7 +66,7 @@ class AddOnLoader:
         
         ret = AddOn(info.identifier, info.name, info.version, info.author, info.homepage,
                      info.license, icon, info.description, info.dependencies, info.config, translations,
-                     metamodel, patch, plugin)
+                     metamodel, toolbars, patch, plugin)
         
         ret.compile()
         

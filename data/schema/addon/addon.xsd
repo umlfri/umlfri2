@@ -8,4 +8,5 @@
     <xs:include schemaLocation="diagram.xsd"/>
     <xs:include schemaLocation="addon_info.xsd"/>
     <xs:include schemaLocation="translation.xsd"/>
+    <xs:include schemaLocation="toolbar.xsd"/>
 </xs:schema>

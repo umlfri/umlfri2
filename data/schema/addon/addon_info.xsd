@@ -66,12 +66,13 @@
                 
                 <xs:choice>
                     <xs:sequence>
-                        <xs:element name="Patch" type="patch_type"/>
-                        <xs:element name="Plugin" type="plugin_type" minOccurs="0"/>
+                        <xs:element name="ToolBar" type="toolbar_type" minOccurs="0" maxOccurs="unbounded"/>
+                        <xs:element name="Plugin" type="plugin_type"/>
+                        <xs:element name="Patch" type="patch_type" minOccurs="0"/>
                         <xs:element name="Metamodel" type="metamodel_type" minOccurs="0"/>
                     </xs:sequence>
                     <xs:sequence>
-                        <xs:element name="Plugin" type="plugin_type"/>
+                        <xs:element name="Patch" type="patch_type"/>
                         <xs:element name="Metamodel" type="metamodel_type" minOccurs="0"/>
                     </xs:sequence>
                     <xs:element name="Metamodel" type="metamodel_type"/>
@@ -81,6 +82,10 @@
             <xs:attribute name="id" type="xs:string"/>
         </xs:complexType>
     </xs:element>
+    
+    <xs:complexType name="toolbar_type">
+        <xs:attribute name="path" type="xs:string" use="required"/>
+    </xs:complexType>
     
     <xs:complexType name="metamodel_type">
         <xs:attribute name="path" type="xs:string" use="required"/>

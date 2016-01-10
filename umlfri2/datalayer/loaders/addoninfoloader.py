@@ -9,7 +9,7 @@ from umlfri2.types.version import Version
 
 AddOnInfo = namedtuple('AddOnInfo', ('identifier', 'name', 'version', 'author', 'homepage', 'license', 'icon',
                                      'description', 'dependencies', 'config', 'translations', 'metamodel',
-                                     'patch_module', 'plugin_info'))
+                                     'toolbars', 'patch_module', 'plugin_info'))
 PluginInfo = namedtuple('PluginInfo', ('path', 'starter'))
 
 
@@ -35,6 +35,7 @@ class AddOnInfoLoader:
         metamodel = None
         patch_module = None
         plugin_info = None
+        toolbars = []
         
         for child in self.__xmlroot:
             if child.tag == "{{{0}}}AddOnInfo".format(ADDON_NAMESPACE):
@@ -61,6 +62,8 @@ class AddOnInfoLoader:
                 config = UflStructureLoader(child).load()
             elif child.tag == "{{{0}}}Translations".format(ADDON_NAMESPACE):
                 translations = child.attrib["path"]
+            elif child.tag == "{{{0}}}ToolBar".format(ADDON_NAMESPACE):
+                toolbars.append(child.attrib["path"])
             elif child.tag == "{{{0}}}Metamodel".format(ADDON_NAMESPACE):
                 metamodel = child.attrib["path"]
             elif child.tag == "{{{0}}}Patch".format(ADDON_NAMESPACE):
@@ -71,7 +74,7 @@ class AddOnInfoLoader:
                 raise Exception
         
         return AddOnInfo(identifier, name, version, author, homepage, license, icon, description, dependencies, config,
-                         translations, metamodel, patch_module, plugin_info)
+                         translations, metamodel, toolbars, patch_module, plugin_info)
     
     def __format_text(self, text):
         current_text = []
