@@ -65,7 +65,7 @@ class InterfacePropertyGetter(BaseContainer):
                                      documentation=self.index.documentation)
             meth.add_child(index)
         
-        ret = InterfaceMethodReturn(meth, self.type)
+        ret = InterfaceMethodReturn(meth, self.type, nullable=self.parent.nullable)
         meth.add_child(ret)
         
         for throw in self.throws:

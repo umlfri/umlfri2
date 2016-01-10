@@ -44,12 +44,12 @@
                 .iterate_object('{{ method.return_type.type.api_name }}')
 {% endif %}
 {% elif method.return_type.type.type_name == 'PrimitiveType' %}
-                .return_{{ method.return_type.type.name }}()
+                .return_{{ method.return_type.type.name }}({{ method.return_type.nullable }})
 {% else %}
 {% if method.return_type.type.is_abstract %}
-                .return_object(None)
+                .return_object(None, {{ method.return_type.nullable }})
 {% else %}
-                .return_object('{{ method.return_type.type.api_name }}')
+                .return_object('{{ method.return_type.type.api_name }}', {{ method.return_type.nullable }})
 {% endif %}
 {% endif %}
 {% endif %}

@@ -59,7 +59,7 @@ class InterfacePropertyIterator(BaseContainer):
         meth = InterfaceMethod(name, self.interface_property.interface, api_name=self.api_name,
                                documentation=self.interface_property.documentation)
         
-        ret = InterfaceMethodReturn(meth, self.type, iterable = True)
+        ret = InterfaceMethodReturn(meth, self.type, iterable=True)
         meth.add_child(ret)
         
         for throw in self.throws:

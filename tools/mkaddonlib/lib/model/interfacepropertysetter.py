@@ -69,7 +69,7 @@ class InterfacePropertySetter(BaseContainer):
                                      documentation=self.index.documentation)
             meth.add_child(index)
         
-        value = InterfaceMethodParameter(value, meth, self.type, api_name='value')
+        value = InterfaceMethodParameter(value, meth, self.type, api_name='value', nullable=self.parent.nullable)
         meth.add_child(value)
         
         for throw in self.throws:
