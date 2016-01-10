@@ -15,19 +15,31 @@ class IConnectionVisual(Interface):
         return 'ConnectionVisual'
 
     def get_destination(self):
-        raise NotImplementedError
+        from .elementvisual import IElementVisual
+        
+        return IElementVisual(self._executor, self.__connection().destination)
 
     def get_diagram(self):
-        raise NotImplementedError
+        from .diagram import IDiagram
+        
+        return IDiagram(self._executor, self.__connection().diagram)
 
     def get_labels(self):
-        raise NotImplementedError
+        from .connectionlabel import IConnectionLabel
+        
+        for label in self.__connection().get_labels():
+            yield IConnectionLabel(self._executor, label)
 
     def get_object(self):
-        raise NotImplementedError
+        from .connectionobject import IConnectionObject
+        
+        return IConnectionObject(self._executor, self.__connection().object)
 
     def get_points(self):
-        raise NotImplementedError
+        for point in self.__connection().get_points(self._application.ruler, False, False):
+            yield point.x, point.y
 
     def get_source(self):
-        raise NotImplementedError
+        from .elementvisual import IElementVisual
+        
+        return IElementVisual(self._executor, self.__connection().source)

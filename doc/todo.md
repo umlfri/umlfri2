@@ -8,7 +8,8 @@
 - [ ] alignment
 - [ ] application preferences window - move language there
 - [ ] persisting application preferences (appdirs module)
-- [ ] plugin system
+- [x] plugin system
+- [ ] gui support for plugins
 - [x] diamond visual object
 - [x] ellipse visual object
 - [x] icon visual object
