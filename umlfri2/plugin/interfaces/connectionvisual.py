@@ -2,12 +2,13 @@ from .interface import Interface
 
 
 class IConnectionVisual(Interface):
-    def __init__(self, executor):
+    def __init__(self, executor, connection):
         super().__init__(executor)
+        self.__connection = connection
 
     @property
     def id(self):
-        raise NotImplementedError
+        return "{0}/{1}".format(self.__connection.diagram.save_id, self.__connection.object.save_id)
 
     @property
     def api_name(self):

@@ -73,7 +73,7 @@
             Parent element of the element.
         </documentation>
         
-        <value type="org.umlfri.api.model.ElementObject" readable="true" />
+        <value type="org.umlfri.api.model.ElementObject" readable="true" nullable="true" />
     </property>
     
     <property name="project">

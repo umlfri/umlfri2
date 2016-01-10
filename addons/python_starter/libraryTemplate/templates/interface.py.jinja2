@@ -23,7 +23,7 @@
 {% elif parameter.type.type_name == 'PrimitiveType' %}
                 .{{parameter.type.name}}_parameter('{{ parameter.api_name }}', {{ parameter.identifier.lower_case }})
 {% else %}
-                .object_parameter('{{ parameter.api_name }}', {{ parameter.identifier.lower_case }}, parameter.type.is_abstract)
+                .object_parameter('{{ parameter.api_name }}', {{ parameter.identifier.lower_case }}, {{ parameter.type.is_abstract }})
 {% endif %}
 {% endfor %}
 {% if method.async %}

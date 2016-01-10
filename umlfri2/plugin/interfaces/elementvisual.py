@@ -2,12 +2,13 @@ from .interface import Interface
 
 
 class IElementVisual(Interface):
-    def __init__(self, executor):
+    def __init__(self, executor, element):
         super().__init__(executor)
+        self.__element = element
 
     @property
     def id(self):
-        raise NotImplementedError
+        return "{0}/{1}".format(self.__element.diagram.save_id, self.__element.object.save_id)
 
     @property
     def api_name(self):

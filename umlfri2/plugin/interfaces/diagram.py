@@ -1,3 +1,4 @@
+from .helpers.uflobject import UflObjectApiHelper
 from .interface import Interface
 
 
@@ -46,7 +47,7 @@ class IDiagram(Interface):
         raise NotImplementedError
 
     def get_value(self, path: str):
-        raise NotImplementedError
+        return UflObjectApiHelper(self.__diagram.data)[path]
 
     def get_values(self):
-        raise NotImplementedError
+        yield from UflObjectApiHelper(self.__diagram.data)
