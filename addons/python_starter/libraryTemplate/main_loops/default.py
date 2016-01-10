@@ -12,7 +12,8 @@ class DefaultMainLoop(object):
         return self.__running
         
     def main_loop(self, serve_callback):
-        Thread(serve_callback, daemon=True).start()
+        self.__thread = Thread(serve_callback, daemon=True)
+        self.__thread.start()
         
         self.__running = True
         while True:
@@ -27,3 +28,6 @@ class DefaultMainLoop(object):
     
     def quit(self):
         self.__events.put(None)
+    
+    def wait(self):
+        self.__thread.join(3)

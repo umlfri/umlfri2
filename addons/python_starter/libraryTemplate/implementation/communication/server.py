@@ -28,6 +28,7 @@ class Server(object):
     
     def main_loop(self):
         self.__main_loop.main_loop(self.__serve)
+        self.__main_loop.wait()
     
     def send_command(self, message, async=False):
         if self.__stopped:

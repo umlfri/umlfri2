@@ -35,3 +35,6 @@ class QtMainLoop(object):
     
     def quit(self):
         self.__app.quit()
+    
+    def wait(self):
+        self.__thread.wait(3000)
