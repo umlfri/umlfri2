@@ -133,13 +133,13 @@ class MessageResult:
         self.__control_exception()
         
         for item in self.__data['return']:
-            return (str(item[0]), item[1])
+            yield (str(item[0]), item[1])
     
     def iterate_object(self, type):
         self.__control_exception()
         
         for item in self.__data['return']:
             if type is None:
-                return self.__factory.get_instance(item[0], item[1])
+                yield self.__factory.get_instance(item[0], item[1])
             else:
-                return self.__factory.get_instance(type, item)
+                yield self.__factory.get_instance(type, item)
