@@ -10,6 +10,7 @@ class SolutionSaver:
     
     def save(self, solution):
         root = lxml.etree.Element('{{{0}}}Solution'.format(MODEL_NAMESPACE), nsmap={None: MODEL_NAMESPACE})
+        root.attrib["id"] = str(solution.save_id)
         
         for project in solution.children:
             project_xml = lxml.etree.Element('{{{0}}}Project'.format(MODEL_NAMESPACE))

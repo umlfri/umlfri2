@@ -3,8 +3,10 @@ from collections import namedtuple
 from ..constants import MODEL_SCHEMA, MODEL_NAMESPACE
 
 ProjectInfo = namedtuple("ProjectInfo", ["id"])
+SolutionInfo = namedtuple("SolutionInfo", ["id", "projects"])
 
-class SolutionLoader:
+
+class SolutionInfoLoader:
     def __init__(self, xmlroot):
         self.__xmlroot = xmlroot
         
@@ -17,4 +19,4 @@ class SolutionLoader:
             if node.tag == "{{{0}}}Project".format(MODEL_NAMESPACE):
                 ret.append(ProjectInfo(node.attrib["id"]))
         
-        return ret
+        return SolutionInfo(self.__xmlroot.attrib["id"], ret)
