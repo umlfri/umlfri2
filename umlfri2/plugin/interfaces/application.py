@@ -14,10 +14,15 @@ class IApplication(Interface):
         return 'Application'
 
     def get_action(self, id: str):
-        raise NotImplementedError
+        from .action import IAction
+        
+        return IAction(self._executor, self._executor.addon.gui_injection.get_action(id))
 
     def get_actions(self):
-        raise NotImplementedError
+        from .action import IAction
+        
+        for action in self._executor.addon.gui_injection.actions:
+            yield IAction(self._executor, action)
 
     def get_current_diagram(self):
         from .diagram import IDiagram

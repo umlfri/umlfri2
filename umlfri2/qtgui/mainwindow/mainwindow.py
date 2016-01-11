@@ -215,19 +215,19 @@ class UmlFriMainWindow(QMainWindow):
     
     def __create_addon_toolbars(self):
         for addon in Application().addons:
-            for toolbar in addon.toolbars:
+            for toolbar in addon.gui_injection.toolbars:
                 self.__create_addon_toolbar(toolbar)
     
     def __create_addon_toolbar(self, toolbar):
         qt_toolbar = QToolBar()
         qt_toolbar.setWindowTitle(toolbar.label)
         
-        for action in toolbar.actions:
-            qt_action = qt_toolbar.addAction(action.label)
-            qt_action.setToolTip(action.label)
-            if action.icon is not None:
-                qt_action.setIcon(image_loader.load_icon(action.icon))
-            qt_action.setEnabled(action.enabled)
+        for item in toolbar.items:
+            qt_action = qt_toolbar.addAction(item.label)
+            qt_action.setToolTip(item.label)
+            if item.icon is not None:
+                qt_action.setIcon(image_loader.load_icon(item.icon))
+            qt_action.setEnabled(item.action.enabled)
         
         self.addToolBar(qt_toolbar)
         self.__addon_toolbars.append(qt_toolbar)

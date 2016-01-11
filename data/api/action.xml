@@ -14,9 +14,9 @@
         <value type="boolean" readable="true" writable="true" />
     </property>
     
-    <property name="label">
+    <property name="id">
         <documentation>
-            Action's label.
+            Action's id.
         </documentation>
         
         <value type="string" readable="true" />

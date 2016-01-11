@@ -1,21 +1,19 @@
 class AddOnAction:
-    def __init__(self, id, icon, label):
+    def __init__(self, id):
         self.__id = id
-        self.__icon = icon
-        self.__label = label
         self.__enabled = True
+        self.__addon = None
+    
+    def _set_addon(self, addon):
+        self.__addon = addon
     
     @property
     def id(self):
         return self.__id
     
     @property
-    def icon(self):
-        return self.__icon
-    
-    @property
-    def label(self):
-        return self.__label
+    def addon(self):
+        return self.__addon
     
     @property
     def enabled(self):

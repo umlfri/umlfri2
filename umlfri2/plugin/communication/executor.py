@@ -8,12 +8,17 @@ from ..interfaces import IApplication, Interface
 
 
 class PluginExecutor:
-    def __init__(self, channel):
+    def __init__(self, addon, channel):
         self.__channel = channel
+        self.__addon = addon
         application = IApplication(self)
         self.__objects = {
             application.id: application
         }
+    
+    @property
+    def addon(self):
+        return self.__addon
     
     def __main(self):
         while True:

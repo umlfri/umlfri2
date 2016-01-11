@@ -26,7 +26,7 @@ class Plugin:
         starter = STARTER_LIST[self.__starter]
         self.__started_starter = starter(os.path.join(self.__addon_path, self.__path))
         channel = self.__started_starter.start()
-        self.__executor = PluginExecutor(channel)
+        self.__executor = PluginExecutor(self.__addon, channel)
         self.__executor.start()
     
     def stop(self):

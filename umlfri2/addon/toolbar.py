@@ -2,9 +2,9 @@ from uuid import uuid4
 
 
 class ToolBar:
-    def __init__(self, label, actions):
+    def __init__(self, label, items):
         self.__label = label
-        self.__actions = tuple(actions)
+        self.__items = tuple(items)
         self.__id = uuid4() # random ID for now
     
     @property
@@ -16,5 +16,5 @@ class ToolBar:
         return self.__label
     
     @property
-    def actions(self):
-        yield from self.__actions
+    def items(self):
+        yield from self.__items

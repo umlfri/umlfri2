@@ -1,5 +1,6 @@
 import lxml.etree
 
+from umlfri2.addon.guiinjection import GuiInjection
 from .toolbarloader import ToolBarLoader
 from umlfri2.datalayer.storages import DirectoryStorage
 from umlfri2.plugin import PatchPlugin, Plugin
@@ -42,13 +43,17 @@ class AddOnLoader:
             icon = Image(self.__storage, info.icon)
         
         toolbars = []
+        actions = {}
         for toolbar_path in info.toolbars:
             toolbars.append(
                 ToolBarLoader(
                     self.__storage,
-                    lxml.etree.parse(self.__storage.open(toolbar_path)).getroot()
+                    lxml.etree.parse(self.__storage.open(toolbar_path)).getroot(),
+                    actions
                 ).load()
             )
+        
+        gui_injection = GuiInjection(actions, toolbars)
         
         if info.patch_module is None:
             patch = None
@@ -66,7 +71,7 @@ class AddOnLoader:
         
         ret = AddOn(info.identifier, info.name, info.version, info.author, info.homepage,
                      info.license, icon, info.description, info.dependencies, info.config, translations,
-                     metamodel, toolbars, patch, plugin)
+                     metamodel, gui_injection, patch, plugin)
         
         ret.compile()
         
