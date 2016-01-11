@@ -117,6 +117,12 @@ class DrawingArea:
         else:
             return visual.object
     
+    def ensure_selection_at(self, point):
+        point = self.__transform_position(point)
+        
+        if self.__selection.is_selection_at(point):
+            self.__selection.select_at(point)
+    
     def __postprocess_action(self, point, shift_pressed):
         if self.__current_action is not None and self.__current_action.finished:
             self.set_action(None)

@@ -140,13 +140,8 @@ class CanvasWidget(QWidget):
         if event.reason() == QContextMenuEvent.Mouse:
             pos = event.pos()
             point = Point(pos.x(), pos.y())
-            if self.__drawing_area.selection.is_selection_at(point):
-                self.__drawing_area.selection.select_at(point)
             
-            menu_pos = event.globalPos()
-        else:
-            point = self.__drawing_area.selection.get_bounds().center
-            menu_pos = self.mapToGlobal(QPoint(point.x, point.y))
+            self.__drawing_area.ensure_selection_at(point)
         
         self.unsetCursor()
         
@@ -162,6 +157,7 @@ class CanvasWidget(QWidget):
         else:
             raise Exception
         
+        menu_pos = event.globalPos()
         menu.exec_(menu_pos)
     
     def dragEnterEvent(self, event):
