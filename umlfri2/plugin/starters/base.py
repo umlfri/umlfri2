@@ -1,5 +1,4 @@
 import os
-from multiprocessing import forking
 
 import subprocess
 
@@ -7,6 +6,10 @@ import signal
 
 try:
     import msvcrt
+    try:
+        from multiprocessing.forking import duplicate
+    except ImportError:
+        from multiprocessing.reduction import duplicate
 except ImportError:
     pass
 
@@ -37,8 +40,8 @@ class BaseProgramStarter(AddonStarter):
         program = [part.format(path = self.__path) for part in self.program]
         
         if os.name == 'nt':
-            ppin = forking.duplicate(msvcrt.get_osfhandle(channel.child_reader_descriptor), inheritable=True)
-            ppout = forking.duplicate(msvcrt.get_osfhandle(channel.child_writer_descriptor), inheritable=True)
+            ppin = duplicate(msvcrt.get_osfhandle(channel.child_reader_descriptor), inheritable=True)
+            ppout = duplicate(msvcrt.get_osfhandle(channel.child_writer_descriptor), inheritable=True)
             
             env['UMLFRI_PIN'] = str(ppin)
             env['UMLFRI_POUT'] = str(ppout)
