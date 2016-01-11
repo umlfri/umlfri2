@@ -1,0 +1,7 @@
+PySide
+appdirs
+ipython==3.2.1
+jinja2
+pyzmq
+lxml
+pygments
