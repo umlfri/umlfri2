@@ -29,6 +29,13 @@ server = Server(channel)
 
 import plugin
 
+if hasattr(plugin, 'get_main_loop'):
+    main_loop = plugin.get_main_loop()
+else:
+    main_loop = None
+
+server.start(main_loop)
+
 adapter=Application(server, 'app')
 plugin.plugin_main(adapter)
 

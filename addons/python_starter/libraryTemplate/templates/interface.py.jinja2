@@ -130,8 +130,3 @@ class {{root.identifier.upper_camel_case}}{% if root.base %}({{ root.base.identi
     def {{ event.identifier.lower_underscore_separated }}(self, handler):
         self.__server.disconnect_event(self.__id, "{{ event.name }}", "{{ event.deregistrar.api_name }}", handler)
 {% endfor %}
-{% if root.fqn == 'org::umlfri::api::base::Application' %}
-    
-    def set_main_loop(self, implementation):
-        self.__server.set_main_loop(implementation)
-{% endif %}

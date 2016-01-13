@@ -23,12 +23,13 @@ class QtMainLoop:
     @property
     def in_main_loop(self):
         return self.__running
-        
-    def main_loop(self, serve_callback):
+    
+    def start(self, serve_callback):
         self.__thread = self.__MainThread(serve_callback)
         self.__thread.call.connect(lambda callable, args: callable(**args))
         self.__thread.start()
-        
+    
+    def main_loop(self):
         self.__running = True
         self.__app.exec_()
         self.__running = False

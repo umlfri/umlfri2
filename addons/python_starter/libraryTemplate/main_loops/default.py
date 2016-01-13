@@ -10,11 +10,12 @@ class DefaultMainLoop:
     @property
     def in_main_loop(self):
         return self.__running
-        
-    def main_loop(self, serve_callback):
+    
+    def start(self, serve_callback):
         self.__thread = Thread(serve_callback, daemon=True)
         self.__thread.start()
         
+    def main_loop(self):
         self.__running = True
         while True:
             cmd = self.__events.get()

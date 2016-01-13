@@ -12,7 +12,7 @@ class Server:
         self.__channel = channel
         self.__stopped = False
         
-        self.__main_loop = DefaultMainLoop()
+        self.__main_loop = None
         
         self.__factory = Factory(self)
         
@@ -25,13 +25,16 @@ class Server:
     def factory(self):
         return self.__factory
     
-    def set_main_loop(self, main_loop):
-        if self.__main_loop.in_main_loop:
-            raise Exception("Cannot change main loop while plugin is running")
-        self.__main_loop = main_loop
+    def start(self, main_loop=None):
+        if main_loop is None:
+            self.__main_loop = DefaultMainLoop()
+        else:
+            self.__main_loop = main_loop
+        
+        self.__main_loop.start(self.__serve)
     
     def main_loop(self):
-        self.__main_loop.main_loop(self.__serve)
+        self.__main_loop.main_loop()
         self.__main_loop.wait()
     
     def send_command(self, message, async=False):
