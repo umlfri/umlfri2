@@ -1,4 +1,4 @@
-from umlfri2.addon.translation import Translation
+from umlfri2.application.addon.translation import Translation
 from ..constants import ADDON_NAMESPACE, ADDON_SCHEMA
 
 

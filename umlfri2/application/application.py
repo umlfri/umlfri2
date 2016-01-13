@@ -3,7 +3,7 @@ import gettext
 import locale
 import os
 
-from umlfri2.addon import AddOnManager
+from umlfri2.application.addon import AddOnManager
 from umlfri2.application.commands.solution import NewProjectCommand
 from umlfri2.application.events.application import LanguageChangedEvent, ItemSelectedEvent, ClipboardSnippetChangedEvent
 from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent
