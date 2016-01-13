@@ -1,3 +1,6 @@
+import sys
+
+from ..message import Message
 from ...main_loops.default import DefaultMainLoop
 from ..factory import Factory
 
@@ -16,6 +19,7 @@ class Server:
         self.__message_lock = Lock()
         self.__messages = {}
         self.__session_id = 0
+        self.__events = {}
     
     @property
     def factory(self):
@@ -44,6 +48,26 @@ class Server:
             
             self.__channel.write(encoded)
     
+    def connect_event(self, target, selector, registrar_api_name, handler):
+        key = target, selector
+        
+        if key in self.__events:
+            self.__events[key].append(handler)
+        else:
+            Message(target, registrar_api_name).send_async(self)
+            self.__events[key] = [handler]
+    
+    def disconnect_event(self, target, selector, deregistrar_api_name, handler):
+        key = target, selector
+        
+        if key not in self.__events or handler not in self.__events[key]:
+            raise Exception("Event handler not connected to the event")
+        
+        self.__events[key].remove(handler)
+        if not self.__events[key]:
+            Message(target, deregistrar_api_name).send_async(self)
+            del self.__events[key]
+    
     def __serve(self):
         while not self.__stopped:
             data = self.__channel.read()
@@ -70,4 +94,15 @@ class Server:
                 self.__channel.close()
                 self.__main_loop.quit()
                 self.__stopped = True
-            # TODO: event handling
+            else:
+                self.__fire_event(data['target'], data['selector'], data.get('arguments', {}))
+    
+    def __fire_event(self, target, selector, arguments):
+        key = target, selector
+        
+        if key in self.__events:
+            for handler in self.__events[key]:
+                try:
+                    handler(**arguments)
+                except Exception as ex:
+                    sys.excepthook(ex.__class__, ex, ex.__traceback__)

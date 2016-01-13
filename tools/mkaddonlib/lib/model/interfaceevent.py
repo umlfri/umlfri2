@@ -1,22 +1,18 @@
-from .base import Base
+from .basecontainer import BaseContainer
 from .delegate import Delegate
+from .interfaceeventregistrar import InterfaceEventRegistrar
+from .interfaceeventderegistrar import InterfaceEventDeregistrar
 
-from . import helper
 
-
-class InterfaceEvent(Base):
-    def __init__(self, name, interface, api_name, type, documentation=None):
-        Base.__init__(self, name, interface)
-        if api_name is not None:
-            self.__api_name = api_name
-        else:
-            self.__api_name = helper.compute_event_api_name(self.identifier)
+class InterfaceEvent(BaseContainer):
+    def __init__(self, name, interface, type, documentation=None):
+        BaseContainer.__init__(self, name, interface)
         self.__type = type
         self.__documentation = documentation
     
     @property
-    def api_name(self):
-        return self.__api_name
+    def interface(self):
+        return self.parent
     
     @property
     def type(self):
@@ -30,8 +26,20 @@ class InterfaceEvent(Base):
     def referenced(self):
         yield self.__type
     
+    @property
+    def registrar(self):
+        for child in self.children:
+            if isinstance(child, InterfaceEventRegistrar):
+                return child
+    
+    @property
+    def deregistrar(self):
+        for child in self.children:
+            if isinstance(child, InterfaceEventDeregistrar):
+                return child
+    
     def _link(self, builder):
-        Base._link(self, builder)
+        BaseContainer._link(self, builder)
         
         delegate = builder.get_type_by_name(self.__type)
         if not isinstance(delegate, Delegate):

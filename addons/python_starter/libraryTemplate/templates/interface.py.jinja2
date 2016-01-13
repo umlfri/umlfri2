@@ -56,8 +56,7 @@
         )
 {% endmacro %}
 
-from ..implementation import Message
-from ..implementation import AdvProperty
+from ..implementation import Message, ApiProperty, ApiEvent
 from ..implementation.communication import Server
 {% for depend in root.referenced %}
 {% if depend.type_name == 'Exception' %}
@@ -95,7 +94,7 @@ class {{root.identifier.upper_camel_case}}{% if root.base %}({{ root.base.identi
 {% endfor %}
 {% for property in root.children_of_type('InterfaceProperty') %}
     
-    {{ property.identifier.lower_underscore_separated }} = AdvProperty(
+    {{ property.identifier.lower_underscore_separated }} = ApiProperty(
         '{{ property.identifier.lower_underscore_separated }}',
         {% if property.index %}True{% else %}False{% endif %},
         {{ repr(property.documentation) }}
@@ -115,6 +114,21 @@ class {{root.identifier.upper_camel_case}}{% if root.base %}({{ root.base.identi
     @{{property.identifier.lower_underscore_separated}}.iterator
 {{ interface_method(method.create_method()) }}
 {% endfor %}
+{% endfor %}
+{% for event in root.children_of_type('InterfaceEvent') %}
+    
+    {{ event.identifier.lower_underscore_separated }} = ApiEvent(
+        '{{ event.identifier.lower_underscore_separated }}',
+        {{ repr(event.documentation) }}
+    )
+    
+    @{{ event.identifier.lower_underscore_separated }}.connector
+    def {{ event.identifier.lower_underscore_separated }}(self, handler):
+        self.__server.connect_event(self.__id, "{{ event.name }}", "{{ event.registrar.api_name }}", handler)
+    
+    @{{ event.identifier.lower_underscore_separated }}.disconnector
+    def {{ event.identifier.lower_underscore_separated }}(self, handler):
+        self.__server.disconnect_event(self.__id, "{{ event.name }}", "{{ event.deregistrar.api_name }}", handler)
 {% endfor %}
 {% if root.fqn == 'org::umlfri::api::base::Application' %}
     

@@ -8,6 +8,8 @@ from .exception import Exception as ExceptionDefinition
 from .exceptionproperty import ExceptionProperty
 from .interface import Interface
 from .interfaceevent import InterfaceEvent
+from .interfaceeventregistrar import InterfaceEventRegistrar
+from .interfaceeventderegistrar import InterfaceEventDeregistrar
 from .interfacemethod import InterfaceMethod
 from .interfacemethodparameter import InterfaceMethodParameter
 from .interfacemethodreturn import InterfaceMethodReturn
@@ -288,13 +290,29 @@ class Builder:
                 method.add_child(throws)
     
     def __parse_interface_event(self, root, interface):
+        registrar = root.find(self.__xml_ns.format('registrar'))
+        deregistrar = root.find(self.__xml_ns.format('deregistrar'))
+        
         event = InterfaceEvent(
             root.attrib['name'],
             interface,
-            root.attrib.get('apiname'),
             type=root.attrib['type'],
             documentation=self.__parse_documentation(root.find(self.__xml_ns.format('documentation')))
         )
+        
+        if registrar is not None:
+            registrar_api_name = registrar.attrib.get('apiname')
+        else:
+            registrar_api_name = None
+        
+        if deregistrar is not None:
+            deregistrar_api_name = deregistrar.attrib.get('apiname')
+        else:
+            deregistrar_api_name = None
+        
+        event.add_child(InterfaceEventRegistrar(event, registrar_api_name))
+        event.add_child(InterfaceEventDeregistrar(event, deregistrar_api_name))
+        
         interface.add_child(event)
     
     ################

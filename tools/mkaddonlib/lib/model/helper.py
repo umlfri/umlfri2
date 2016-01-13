@@ -26,5 +26,9 @@ def compute_property_iterator_api_name(singular, plural):
     return ('get' + plural).lower_underscore_separated
 
 
-def compute_event_api_name(identifier):
-    return identifier.upper_camel_case
+def compute_event_registrar_api_name(identifier):
+    return ('register' + identifier).lower_underscore_separated
+
+
+def compute_event_deregistrar_api_name(identifier):
+    return ('deregister' + identifier).lower_underscore_separated

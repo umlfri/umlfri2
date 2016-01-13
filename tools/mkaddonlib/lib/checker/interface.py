@@ -68,6 +68,14 @@ class UmlFriInterface:
                         new_methods.append(method)
                         if method.name in old_methods:
                             del old_methods[method.name]
+            elif child.type_name == 'InterfaceEvent':
+                for member in child.children:
+                    if member.type_name in ('InterfaceEventRegistrar', 'InterfaceEventDeregistrar'):
+                        method = self.__fix_method_from(member.create_method(member.api_name),
+                                                        old_methods.get(member.api_name))
+                        new_methods.append(method)
+                        if method.name in old_methods:
+                            del old_methods[method.name]
         
         return UmlFriInterface(self.__name, new_methods, old_methods.values())
 
