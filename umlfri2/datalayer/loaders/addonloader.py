@@ -13,8 +13,9 @@ from ..constants import ADDON_NAMESPACE, ADDON_ADDON_FILE, ADDON_DISABLE_FILE
 
 
 class AddOnLoader:
-    def __init__(self, storage):
+    def __init__(self, application, storage):
         self.__storage = storage
+        self.__application = application
     
     def is_addon(self):
         return self.__storage.exists(ADDON_ADDON_FILE)
@@ -47,6 +48,7 @@ class AddOnLoader:
         for toolbar_path in info.toolbars:
             toolbars.append(
                 ToolBarLoader(
+                    self.__application,
                     self.__storage,
                     lxml.etree.parse(self.__storage.open(toolbar_path)).getroot(),
                     actions
@@ -69,7 +71,7 @@ class AddOnLoader:
                 raise Exception
             plugin = Plugin(self.__storage.path, info.plugin_info.starter, info.plugin_info.path)
         
-        ret = AddOn(info.identifier, info.name, info.version, info.author, info.homepage,
+        ret = AddOn(self.__application, info.identifier, info.name, info.version, info.author, info.homepage,
                      info.license, icon, info.description, info.dependencies, info.config, translations,
                      metamodel, gui_injection, patch, plugin)
         

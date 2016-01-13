@@ -37,7 +37,7 @@ class Application(metaclass=MetaApplication):
         self.__event_dispatcher = EventDispatcher()
         self.__commands = CommandProcessor(self)
         
-        self.__addons = AddOnManager()
+        self.__addons = AddOnManager(self)
         
         self.__load_addons()
         

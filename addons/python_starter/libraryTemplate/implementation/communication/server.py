@@ -103,6 +103,6 @@ class Server:
         if key in self.__events:
             for handler in self.__events[key]:
                 try:
-                    handler(**arguments)
+                    self.__main_loop.call(handler, arguments)
                 except Exception as ex:
                     sys.excepthook(ex.__class__, ex, ex.__traceback__)

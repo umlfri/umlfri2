@@ -6,10 +6,11 @@ from ..constants import ADDON_SCHEMA, ADDON_NAMESPACE
 
 
 class ToolBarLoader:
-    def __init__(self, storage, xmlroot, actions):
+    def __init__(self, application, storage, xmlroot, actions):
         self.__xmlroot = xmlroot
         self.__storage = storage
         self.__actions = actions
+        self.__application = application
         
         if not ADDON_SCHEMA.validate(xmlroot):
             raise Exception("Cannot load addon info: {0}".format(ADDON_SCHEMA.error_log.last_error))
@@ -25,7 +26,7 @@ class ToolBarLoader:
                 if child.attrib["id"] in self.__actions:
                     action = self.__actions[child.attrib["id"]]
                 else:
-                    action = self.__actions[child.attrib["id"]] = AddOnAction(child.attrib["id"])
+                    action = self.__actions[child.attrib["id"]] = AddOnAction(self.__application, child.attrib["id"])
                 items.append(ToolBarItem(action, icon, child.attrib["label"]))
             else:
                 raise Exception

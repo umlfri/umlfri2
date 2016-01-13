@@ -102,26 +102,26 @@ class PluginExecutor:
     
     def __encode_return(self, method, ret):
         spec = inspect.getfullargspec(method)
-        polymorfic = 'return' in spec.annotations and spec.annotations['return'] is object
+        polymorphic = 'return' in spec.annotations and spec.annotations['return'] is object
 
-        def recursion(ret):
-            if isinstance(ret, str):
-                return ret
-            elif isinstance(ret, bytes):
-                return b64encode(ret)
-            elif isinstance(ret, Iterable):
-                return [recursion(value) for value in ret]
-            elif isinstance(ret, Interface):
-                if ret.id not in self.__objects:
-                    self.__objects[ret.id] = ret
-                if polymorfic:
-                    return ret.type, ret.id
-                else:
-                    return ret.id
+        return self.__encode(ret, polymorphic)
+    
+    def __encode(self, data, polymorphic):
+        if isinstance(data, str):
+            return data
+        elif isinstance(data, bytes):
+            return b64encode(data)
+        elif isinstance(data, Iterable):
+            return [self.__encode(value, polymorphic) for value in data]
+        elif isinstance(data, Interface):
+            if data.id not in self.__objects:
+                self.__objects[data.id] = data
+            if polymorphic:
+                return data.type, data.id
             else:
-                return ret
-        
-        return recursion(ret)
+                return data.id
+        else:
+            return data
     
     def __encode_exception(self, ex):
         return {'type': ex.__class__.__name__}

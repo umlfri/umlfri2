@@ -10,6 +10,7 @@ from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent
 from umlfri2.constants.paths import GRAPHICS
 from umlfri2.model import Diagram
 from umlfri2.qtgui.base.clipboard import QtClipboardAdatper
+from umlfri2.qtgui.mainwindow.addontoolbar import AddOnToolBar
 from ..toolbox import MainToolBox
 from .menu import MainWindowMenu
 from .newproject import NewProjectDialog
@@ -216,21 +217,9 @@ class UmlFriMainWindow(QMainWindow):
     def __create_addon_toolbars(self):
         for addon in Application().addons:
             for toolbar in addon.gui_injection.toolbars:
-                self.__create_addon_toolbar(toolbar)
-    
-    def __create_addon_toolbar(self, toolbar):
-        qt_toolbar = QToolBar()
-        qt_toolbar.setWindowTitle(toolbar.label)
-        
-        for item in toolbar.items:
-            qt_action = qt_toolbar.addAction(item.label)
-            qt_action.setToolTip(item.label)
-            if item.icon is not None:
-                qt_action.setIcon(image_loader.load_icon(item.icon))
-            qt_action.setEnabled(item.action.enabled)
-        
-        self.addToolBar(qt_toolbar)
-        self.__addon_toolbars.append(qt_toolbar)
+                qt_toolbar = AddOnToolBar(toolbar)
+                self.addToolBar(qt_toolbar)
+                self.__addon_toolbars.append(qt_toolbar)
     
     def __reload_window_title(self):
         title = _("UML .FRI 2")

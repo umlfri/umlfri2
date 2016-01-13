@@ -5,6 +5,13 @@ class EventDispatcher:
     def subscribe(self, event_type, function):
         self.__events.setdefault(event_type, []).append(function)
     
+    def unsubscribe(self, event_type, function):
+        if event_type not in self.__events or function not in self.__events[event_type]:
+            raise Exception
+        self.__events[event_type].remove(function)
+        if not self.__events[event_type]:
+            del self.__events[event_type]
+    
     def dispatch(self, event):
         self.__dispatch_recursive(event)
         for function in self.__events.get(None, ()):

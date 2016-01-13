@@ -1,3 +1,4 @@
+from umlfri2.application.events.application import ActionTriggeredEvent
 from .interface import Interface
 
 
@@ -22,3 +23,13 @@ class IAction(Interface):
 
     def get_id(self):
         return self.__action().id
+
+    def register_triggered(self):
+        self._application.event_dispatcher.subscribe(ActionTriggeredEvent, self.__fire_triggered)
+
+    def deregister_triggered(self):
+        self._application.event_dispatcher.unsubscribe(ActionTriggeredEvent, self.__fire_triggered)
+    
+    def __fire_triggered(self, event):
+        if event.action is self.__action():
+            self._executor.fire_event(self, 'triggered')

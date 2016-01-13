@@ -20,10 +20,10 @@ class DefaultMainLoop:
             cmd = self.__events.get()
             if cmd is None:
                 break
-            cmd[0](*cmd[1])
+            cmd[0](**cmd[1])
         self.__running = False
             
-    def call(self, callable, *args):
+    def call(self, callable, args):
         self.__events.put((callable, args))
     
     def quit(self):

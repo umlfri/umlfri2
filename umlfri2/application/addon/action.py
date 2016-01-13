@@ -1,5 +1,9 @@
+from umlfri2.application.events.application import ActionTriggeredEvent
+
+
 class AddOnAction:
-    def __init__(self, id):
+    def __init__(self, application, id):
+        self.__application = application
         self.__id = id
         self.__enabled = True
         self.__addon = None
@@ -22,3 +26,6 @@ class AddOnAction:
     @enabled.setter
     def enabled(self, value):
         self.__enabled = value
+    
+    def trigger(self):
+        self.__application.event_dispatcher.dispatch(ActionTriggeredEvent(self))

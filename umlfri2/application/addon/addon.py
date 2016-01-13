@@ -3,8 +3,9 @@ from .translation import POSIX_TRANSLATION
 
 
 class AddOn:
-    def __init__(self, identifier, name, version, author, homepage, license, icon, description, dependencies, config,
-                 translations, metamodel, gui_injection, patch_plugin, plugin):
+    def __init__(self, application, identifier, name, version, author, homepage, license, icon, description,
+                 dependencies, config, translations, metamodel, gui_injection, patch_plugin, plugin):
+        self.__application = application
         self.__identifier = identifier
         self.__name = name
         self.__version = version
