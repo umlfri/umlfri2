@@ -19,14 +19,18 @@ class ToolBarLoader:
         items = []
         
         for child in self.__xmlroot:
-            if child.tag == "{{{0}}}Action".format(ADDON_NAMESPACE):
+            if child.tag == "{{{0}}}Item".format(ADDON_NAMESPACE):
                 icon = None
                 if "icon" in child.attrib:
                     icon = Image(self.__storage, child.attrib["icon"])
-                if child.attrib["id"] in self.__actions:
-                    action = self.__actions[child.attrib["id"]]
+                
+                action_id = child.attrib["action"]
+                if action_id in self.__actions:
+                    action = self.__actions[action_id]
                 else:
-                    action = self.__actions[child.attrib["id"]] = AddOnAction(self.__application, child.attrib["id"])
+                    action = AddOnAction(self.__application, action_id)
+                    self.__actions[action_id] = action
+                
                 items.append(ToolBarItem(action, icon, child.attrib["label"]))
             else:
                 raise Exception

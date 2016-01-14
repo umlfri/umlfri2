@@ -5,9 +5,9 @@
     <xs:element name="ToolBar">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="Action">
+                <xs:element name="Item">
                     <xs:complexType>
-                        <xs:attribute name="id" type="xs:string" use="required"/>
+                        <xs:attribute name="action" type="xs:string" use="required"/>
                         <xs:attribute name="label" type="xs:string" use="required"/>
                         <xs:attribute name="icon" type="xs:string"/>
                     </xs:complexType>

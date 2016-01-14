@@ -1,4 +1,4 @@
-from umlfri2.application.events.application import ActionTriggeredEvent
+from umlfri2.application.events.application import ActionTriggeredEvent, ActionEnableStatusChangedEvent
 
 
 class AddOnAction:
@@ -26,6 +26,7 @@ class AddOnAction:
     @enabled.setter
     def enabled(self, value):
         self.__enabled = value
+        self.__application.event_dispatcher.dispatch(ActionEnableStatusChangedEvent(self))
     
     def trigger(self):
         self.__application.event_dispatcher.dispatch(ActionTriggeredEvent(self))
