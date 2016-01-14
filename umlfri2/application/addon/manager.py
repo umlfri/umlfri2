@@ -2,13 +2,14 @@ from umlfri2.datalayer import AddOnLoader
 
 
 class AddOnManager:
-    def __init__(self):
+    def __init__(self, application):
         self.__addons = []
+        self.__application = application
     
     def load_addons(self, storage):
         for dir in storage.list():
             with storage.create_substorage(dir) as addon_storage:
-                loader = AddOnLoader(addon_storage)
+                loader = AddOnLoader(self.__application, addon_storage)
                 if loader.is_addon() and loader.is_enabled():
                     self.__addons.append(loader.load())
     
