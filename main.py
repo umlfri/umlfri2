@@ -10,25 +10,31 @@ from umlfri2.constants.paths import NT_ICON_THEME_PATH, NT_ICON_THEME
 from umlfri2.qtgui import UmlFriMainWindow
 from umlfri2.qtgui.rendering import QTRuler
 
-if os.name == 'nt':
-    import ctypes
-    SetCurrentProcessExplicitAppUserModelID = getattr(ctypes.windll.shell32, 'SetCurrentProcessExplicitAppUserModelID', None)
+
+def main(args):
+    if os.name == 'nt':
+        import ctypes
+        SetCurrentProcessExplicitAppUserModelID = getattr(ctypes.windll.shell32, 'SetCurrentProcessExplicitAppUserModelID', None)
+        
+        if SetCurrentProcessExplicitAppUserModelID is not None:
+            SetCurrentProcessExplicitAppUserModelID("FriUniza.UmlFri.{0}".format(Application().VERSION))
     
-    if SetCurrentProcessExplicitAppUserModelID is not None:
-        SetCurrentProcessExplicitAppUserModelID("FriUniza.UmlFri.{0}".format(Application().VERSION))
+        QIcon.setThemeSearchPaths([NT_ICON_THEME_PATH])
+        QIcon.setThemeName(NT_ICON_THEME)
+    
+    app = QApplication(args)
+    
+    Application().use_ruler(QTRuler())
+    
+    window = UmlFriMainWindow()
+    window.showMaximized()
+    
+    no = app.exec_()
+    
+    Application().stop()
+    
+    return no
 
-    QIcon.setThemeSearchPaths([NT_ICON_THEME_PATH])
-    QIcon.setThemeName(NT_ICON_THEME)
 
-app = QApplication(sys.argv)
-
-Application().use_ruler(QTRuler())
-
-window = UmlFriMainWindow()
-window.showMaximized()
-
-no = app.exec_()
-
-Application().stop()
-
-sys.exit(no)
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))
