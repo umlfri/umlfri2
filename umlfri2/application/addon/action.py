@@ -1,4 +1,4 @@
-from umlfri2.application.events.application import ActionTriggeredEvent, ActionEnableStatusChangedEvent
+from umlfri2.application.events.addon import ActionTriggeredEvent, ActionEnableStatusChangedEvent
 
 
 class AddOnAction:

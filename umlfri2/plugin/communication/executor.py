@@ -21,18 +21,22 @@ class PluginExecutor:
         return self.__addon
     
     def __main(self):
-        while True:
-            try:
-                data = self.__channel.read()
-            except:
-                traceback.print_exc()
-                data = None
+        try:
+            while True:
+                try:
+                    data = self.__channel.read()
+                except:
+                    traceback.print_exc()
+                    data = None
+                    
+                if self.__channel.closed:
+                    break
                 
-            if self.__channel.closed:
-                return
-            
-            if data is not None:
-                self.__execute(data)
+                if data is not None:
+                    self.__execute(data)
+        finally:
+            self.__started = False
+            self.__addon._plugin_stopped()
     
     def __execute(self, data):
         session = data.get('session')

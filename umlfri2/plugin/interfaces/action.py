@@ -1,4 +1,4 @@
-from umlfri2.application.events.application import ActionTriggeredEvent
+from umlfri2.application.events.addon import ActionTriggeredEvent
 from .interface import Interface
 
 

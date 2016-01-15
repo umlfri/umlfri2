@@ -29,9 +29,19 @@ class Plugin:
         self.__executor = PluginExecutor(self.__addon, channel)
         self.__executor.start()
     
+    @property
+    def running(self):
+        if self.__executor is None:
+            return False
+        return self.__executor.running
+    
     def stop(self):
         if self.__executor is not None and self.__executor.running:
             self.__executor.send_stop()
+    
+    def stop_if_needed(self):
+        if self.running:
+            self.stop()
     
     def terminate(self):
         self.__started_starter.terminate()

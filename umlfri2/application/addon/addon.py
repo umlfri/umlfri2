@@ -1,3 +1,4 @@
+from umlfri2.application.events.addon import PluginStartedEvent, PluginStoppedEvent
 from umlfri2.ufl.types import UflObjectType
 from .translation import POSIX_TRANSLATION
 
@@ -128,6 +129,7 @@ class AddOn:
             self.__patch_plugin.start()
         if self.__plugin is not None:
             self.__plugin.start()
+        self.__application.event_dispatcher.dispatch(PluginStartedEvent(self))
     
     def stop(self):
         if not self.__started:
@@ -137,3 +139,11 @@ class AddOn:
             self.__patch_plugin.stop()
         if self.__plugin is not None:
             self.__plugin.stop()
+    
+    def _plugin_stopped(self):
+        self.__started = False
+        if self.__patch_plugin is not None:
+            self.__patch_plugin.stop_if_needed()
+        if self.__plugin is not None:
+            self.__plugin.stop_if_needed()
+        self.__application.event_dispatcher.dispatch(PluginStoppedEvent(self))
