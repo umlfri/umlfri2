@@ -35,12 +35,13 @@ class Server:
     
     def main_loop(self):
         self.__main_loop.main_loop()
-        self.__channel.write(
-            {
-                'target': 'system',
-                'selector': 'stopped'
-            }
-        )
+        if not self.__channel.closed:
+            self.__channel.write(
+                {
+                    'target': 'system',
+                    'selector': 'stopped'
+                }
+            )
         self.__main_loop.wait()
     
     def send_command(self, message, async=False):
