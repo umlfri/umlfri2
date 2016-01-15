@@ -38,11 +38,14 @@ class PluginExecutor:
         session = data.get('session')
         
         try:
-            target = self.__objects[data['target']]
+            target = data['target']
             selector = data['selector']
             arguments = data.get('arguments', {})
             
-            method = getattr(target, selector)
+            if self.__execute_special(target, selector, arguments):
+                return
+            
+            method = getattr(self.__objects[target], selector)
             
             arguments = self.__decode_parameters(method, arguments)
             ret = method(**arguments)
@@ -70,6 +73,13 @@ class PluginExecutor:
                 traceback.print_exc()
             elif __debug__:
                 traceback.print_exc()
+    
+    def __execute_special(self, target, selector, arguments):
+        if target == 'system' and selector == 'stopped':
+            self.send_stop()
+            return True
+        else:
+            return False
 
     def __decode_parameters(self, method, real_parameters):
         spec = inspect.getfullargspec(method)
