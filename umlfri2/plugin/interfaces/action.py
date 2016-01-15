@@ -9,7 +9,7 @@ class IAction(Interface):
 
     @property
     def id(self):
-        return '{{{0}}}action:{1}'.format(self.__action().addon.identifier, self.__action().id)
+        return 'action:{0}'.format(self.__action().id)
 
     @property
     def api_name(self):
