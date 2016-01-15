@@ -24,3 +24,6 @@ class IProject(Interface):
         from .metamodel import IMetamodel
         
         return IMetamodel(self._executor, self.__project().metamodel)
+
+    def get_name(self):
+        return self.__project().name
