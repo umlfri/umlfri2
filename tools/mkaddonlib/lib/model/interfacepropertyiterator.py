@@ -3,13 +3,15 @@ from .interfacepropertythrows import InterfacePropertyThrows
 from .interfacemethod import InterfaceMethod
 from .interfacemethodreturn import InterfaceMethodReturn
 from .interfacemethodthrows import InterfaceMethodThrows
+from .keyvaluetype import KeyValueType
 
 from . import helper
 
 
 class InterfacePropertyIterator(BaseContainer):
-    def __init__(self, interface_property, api_name=None):
+    def __init__(self, interface_property, include_index=False, api_name=None):
         BaseContainer.__init__(self, None, interface_property)
+        self.__include_index = include_index
         if api_name is not None:
             self.__api_name = api_name
         else:
@@ -29,7 +31,10 @@ class InterfacePropertyIterator(BaseContainer):
     
     @property
     def type(self):
-        return self.parent.type
+        if self.__include_index:
+            return KeyValueType(self.parent.index.type, self.parent.type)
+        else:
+            return self.parent.type
     
     @property
     def throws(self):
@@ -48,6 +53,10 @@ class InterfacePropertyIterator(BaseContainer):
     @property
     def fqn(self):
         return self.parent.fqn + '::' + '__iter__'
+    
+    @property
+    def include_index(self):
+        return self.__include_index
     
     @property
     def api_name(self):

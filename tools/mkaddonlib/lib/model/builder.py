@@ -261,12 +261,15 @@ class Builder:
         
         if value.attrib.get('iterable', "false").lower() in ("1", "true"):
             api_name = None
+            include_index = False
             
             if iterator is not None:
                 api_name = iterator.attrib.get('apiname')
+                include_index = iterator.attrib.get('includeindex', "false").lower() in ("1", "true")
             
             accessor = InterfacePropertyIterator(
                 property,
+                include_index=include_index,
                 api_name=api_name
             )
             property.add_child(accessor)

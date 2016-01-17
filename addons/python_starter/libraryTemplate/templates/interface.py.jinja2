@@ -1,3 +1,29 @@
+{% macro return_type_api_name(type) -%}
+    {%- if (type.is_abstract) -%}
+        None
+    {%- else -%}
+        '{{ type.api_name }}'
+    {%- endif -%}
+{%- endmacro %}
+
+{% macro return_type(return_type) -%}
+    {%- if return_type.type_name == 'PrimitiveType' -%}
+        {{- return_type.name -}}()
+    {%- elif return_type.type_name == 'KeyValueType' -%}
+        {%- if return_type.key_type.type_name == 'PrimitiveType' and return_type.value_type.type_name == 'PrimitiveType' -%}
+            keyvalue_{{ return_type.key_type.name }}_{{ return_type.value_type.name }}()
+        {%- elif return_type.key_type.type_name == 'PrimitiveType' -%}
+            keyvalue_{{ return_type.key_type.name }}_object({{ return_type_api_name(return_type.value_type) }})
+        {%- elif return_type.value_type.type_name == 'PrimitiveType' -%}
+            keyvalue_object_{{ return_type.value_type.name }}({{ return_type_api_name(return_type.key_type) }})
+        {%- else -%}
+            keyvalue_object_object({{ return_type_api_name(return_type.key_type) }}), {{ return_type_api_name(return_type.value_type) }})
+        {%- endif -%}
+    {%- else -%}
+        object({{ return_type_api_name(return_type) }})
+    {%- endif -%}
+{%- endmacro %}
+
 {% macro interface_method(method, include_doc) %}
     def {{ method.identifier.lower_underscore_separated }}(self
 {% for parameter in method.children_of_type('InterfaceMethodParameter') %}
@@ -35,22 +61,10 @@
 {% endfor %}
 {% if not method.return_type %}
                 .return_void()
-{% elif method.return_type.iterable and method.return_type.type.type_name == 'PrimitiveType' %}
-                .iterate_{{ method.return_type.type.name }}()
 {% elif method.return_type.iterable %}
-{% if method.return_type.type.is_abstract %}
-                .iterate_object(None)
+                .iterate_{{ return_type(method.return_type.type) }}
 {% else %}
-                .iterate_object('{{ method.return_type.type.api_name }}')
-{% endif %}
-{% elif method.return_type.type.type_name == 'PrimitiveType' %}
-                .return_{{ method.return_type.type.name }}({{ method.return_type.nullable }})
-{% else %}
-{% if method.return_type.type.is_abstract %}
-                .return_object(None, {{ method.return_type.nullable }})
-{% else %}
-                .return_object('{{ method.return_type.type.api_name }}', {{ method.return_type.nullable }})
-{% endif %}
+                .return_{{ return_type(method.return_type.type) }}
 {% endif %}
 {% endif %}
         )

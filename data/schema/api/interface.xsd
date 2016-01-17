@@ -96,6 +96,7 @@
 						</xs:element>
 					</xs:sequence>
 					<xs:attribute name="apiname" type="xs:string"/>
+					<xs:attribute name="includeindex" type="xs:boolean" default="false"/>
 				</xs:complexType>
 			</xs:element>
 		</xs:sequence>

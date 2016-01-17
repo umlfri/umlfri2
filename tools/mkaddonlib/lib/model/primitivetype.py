@@ -59,5 +59,4 @@ PRIMITIVE_TYPES = {
     'xy':           PrimitiveType('xy', object=True),
     'xywh':         PrimitiveType('xywh', object=True),
     'wh':           PrimitiveType('wh', object=True),
-    'keyvalue':     PrimitiveType('keyvalue', object=True),
 }

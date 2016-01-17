@@ -2,6 +2,10 @@ from base64 import b64decode
 from io import BytesIO
 
 
+def _inputstream(data):
+    return BytesIO(b64decode(data))
+
+
 class MessageResult:
     def __init__(self, factory, data):
         self.__factory = factory
@@ -36,7 +40,7 @@ class MessageResult:
         if self.__control_null(allow_null):
             return None
         
-        return BytesIO(b64decode(self.__data['return']))
+        return _inputstream(self.__data['return'])
     
     def return_int32(self, allow_null=False):
         self.__control_exception()
@@ -68,7 +72,7 @@ class MessageResult:
         if self.__control_null(allow_null):
             return None
         
-        return self.__data['return']
+        return str(self.__data['return'])
     
     def return_xy(self, allow_null=False):
         self.__control_exception()
@@ -94,14 +98,6 @@ class MessageResult:
             return None
         
         return (int(self.__data['return'][0]), int(self.__data['return'][1]))
-    
-    def return_keyvalue(self, allow_null=False):
-        self.__control_exception()
-        
-        if self.__control_null(allow_null):
-            return None
-        
-        return (str(self.__data['return'][0]), self.__data['return'][1])
     
     def return_object(self, type, allow_null=False):
         self.__control_exception()
@@ -145,7 +141,7 @@ class MessageResult:
         self.__control_exception()
         
         for item in self.__data['return']:
-            yield item
+            yield str(item)
     
     def iterate_xy(self):
         self.__control_exception()
@@ -165,11 +161,11 @@ class MessageResult:
         for item in self.__data['return']:
             yield (int(item[0]), int(item[1]))
     
-    def iterate_keyvalue(self):
+    def iterate_keyvalue_string_variant(self):
         self.__control_exception()
         
-        for item in self.__data['return']:
-            yield (str(item[0]), item[1])
+        for key, value in self.__data['return']:
+            yield (str(key), value)
     
     def iterate_object(self, type):
         self.__control_exception()

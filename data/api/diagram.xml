@@ -74,6 +74,7 @@
         
         <index name="path" type="string" />
         <value type="variant" readable="true" iterable="true" />
+        <iterator includeindex="true" />
     </property>
     
     <property name="type">
