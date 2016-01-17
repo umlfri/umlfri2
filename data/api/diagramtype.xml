@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <interface
-    xmlns="http://umlfri.org/v2/api.xsd"
-    name="org.umlfri.api.metamodel.DiagramType">
+        xmlns="http://umlfri.org/v2/api.xsd"
+        name="org.umlfri.api.metamodel.DiagramType">
     
     <documentation>
         Type of diagram as defined in the metamodel.
@@ -12,7 +12,7 @@
             Diagram type name.
         </documentation>
         
-        <value type="string" readable="true" />
+        <value type="string" readable="true"/>
     </property>
     
     <property name="elements">
@@ -20,7 +20,7 @@
             All element types defined for the diagram.
         </documentation>
         
-        <value type="org.umlfri.api.metamodel.ElementType" iterable="true" />
+        <value type="org.umlfri.api.metamodel.ElementType" iterable="true"/>
     </property>
     
     <property name="connections">
@@ -28,6 +28,6 @@
             All connection types defined for the diagram
         </documentation>
         
-        <value type="org.umlfri.api.metamodel.ConnectionType" iterable="true" />
+        <value type="org.umlfri.api.metamodel.ConnectionType" iterable="true"/>
     </property>
 </interface>

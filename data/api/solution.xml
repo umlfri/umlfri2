@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <interface
-    xmlns="http://umlfri.org/v2/api.xsd"
-    name="org.umlfri.api.model.Solution">
+        xmlns="http://umlfri.org/v2/api.xsd"
+        name="org.umlfri.api.model.Solution">
     
     <documentation>
         Solution - group of all opened projects.
@@ -12,7 +12,7 @@
             Full path to the project file.
         </documentation>
         
-        <value type="string" readable="true" nullable="true" />
+        <value type="string" readable="true" nullable="true"/>
     </property>
     
     <property name="projects">
@@ -20,6 +20,6 @@
             Child projects.
         </documentation>
         
-        <value type="org.umlfri.api.model.Project" iterable="true" />
+        <value type="org.umlfri.api.model.Project" iterable="true"/>
     </property>
 </interface>

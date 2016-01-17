@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <interface
-    xmlns="http://umlfri.org/v2/api.xsd"
-    name="org.umlfri.api.model.ConnectionLabel">
+        xmlns="http://umlfri.org/v2/api.xsd"
+        name="org.umlfri.api.model.ConnectionLabel">
     
     <documentation>
         Label element associated with some connection.
@@ -12,7 +12,7 @@
             Absolute position of the connection label.
         </documentation>
         
-        <value type="xy" readable="true" />
+        <value type="xy" readable="true"/>
     </property>
     
     <property name="center">
@@ -20,7 +20,7 @@
             Absolute position of the connection label center.
         </documentation>
         
-        <value type="xy" readable="true" />
+        <value type="xy" readable="true"/>
     </property>
     
     <property name="size">
@@ -28,7 +28,7 @@
             Size of the connection label.
         </documentation>
         
-        <value type="wh" readable="true" />
+        <value type="wh" readable="true"/>
     </property>
     
     <property name="connection">
@@ -36,7 +36,7 @@
             Connection associated with the label.
         </documentation>
         
-        <value type="org.umlfri.api.model.ConnectionVisual" readable="true" />
+        <value type="org.umlfri.api.model.ConnectionVisual" readable="true"/>
     </property>
     
     <property name="diagram">
@@ -44,6 +44,6 @@
             Diagram, on which the connection label is located.
         </documentation>
         
-        <value type="org.umlfri.api.model.Diagram" readable="true" />
+        <value type="org.umlfri.api.model.Diagram" readable="true"/>
     </property>
 </interface>

@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <interface
-    xmlns="http://umlfri.org/v2/api.xsd"
-    name="org.umlfri.api.base.Action">
+        xmlns="http://umlfri.org/v2/api.xsd"
+        name="org.umlfri.api.base.Action">
     
     <documentation>
         Action attached to UML .FRI gui component.
@@ -11,7 +11,7 @@
         <documentation>
             True, if widget is enabled.
         </documentation>
-        <value type="boolean" readable="true" writable="true" />
+        <value type="boolean" readable="true" writable="true"/>
     </property>
     
     <property name="id">
@@ -19,7 +19,7 @@
             Action's id.
         </documentation>
         
-        <value type="string" readable="true" />
+        <value type="string" readable="true"/>
     </property>
     
     <event name="triggered" type="org.umlfri.api.base.ActionTriggered">

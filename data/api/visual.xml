@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 <interface
-    xmlns="http://umlfri.org/v2/api.xsd"
-    name="org.umlfri.api.model.Visual"
-    abstract="true">
+        xmlns="http://umlfri.org/v2/api.xsd"
+        name="org.umlfri.api.model.Visual"
+        abstract="true">
     
     <documentation>
         Common base class for ConnectionVisual and ElementVisual

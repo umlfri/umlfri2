@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <interface
-    xmlns="http://umlfri.org/v2/api.xsd"
-    name="org.umlfri.api.metamodel.ElementType">
+        xmlns="http://umlfri.org/v2/api.xsd"
+        name="org.umlfri.api.metamodel.ElementType">
     
     <documentation>
         Element type as defined in metamodel.
@@ -12,6 +12,6 @@
             Connection type name.
         </documentation>
         
-        <value type="string" readable="true" />
+        <value type="string" readable="true"/>
     </property>
 </interface>

@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <interface
-    xmlns="http://umlfri.org/v2/api.xsd"
-    name="org.umlfri.api.metamodel.Metamodel">
+        xmlns="http://umlfri.org/v2/api.xsd"
+        name="org.umlfri.api.metamodel.Metamodel">
     
     <documentation>
         Root object for metamodel object hierarchy.
@@ -12,7 +12,7 @@
             The metamodel identifier.
         </documentation>
         
-        <value type="string" readable="true" />
+        <value type="string" readable="true"/>
     </property>
     
     <property name="version">
@@ -20,7 +20,7 @@
             The metamodel version.
         </documentation>
         
-        <value type="string" readable="true" />
+        <value type="string" readable="true"/>
     </property>
     
     <!-- TODO: exception for element/connection/diagram not found by name -->
@@ -35,7 +35,7 @@
             </documentation>
         </index>
         
-        <value type="org.umlfri.api.metamodel.DiagramType" readable="true" iterable="true" nullable="true" />
+        <value type="org.umlfri.api.metamodel.DiagramType" readable="true" iterable="true" nullable="true"/>
     </property>
     
     <property name="elements" singular="element">
@@ -49,7 +49,7 @@
             </documentation>
         </index>
         
-        <value type="org.umlfri.api.metamodel.ElementType" readable="true" iterable="true" nullable="true" />
+        <value type="org.umlfri.api.metamodel.ElementType" readable="true" iterable="true" nullable="true"/>
     </property>
     
     <property name="connections" singular="connection">
@@ -63,6 +63,6 @@
             </documentation>
         </index>
         
-        <value type="org.umlfri.api.metamodel.ConnectionType" readable="true" iterable="true" nullable="true" />
+        <value type="org.umlfri.api.metamodel.ConnectionType" readable="true" iterable="true" nullable="true"/>
     </property>
 </interface>

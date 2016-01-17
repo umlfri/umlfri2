@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 <interface
-    xmlns="http://umlfri.org/v2/api.xsd"
-    name="org.umlfri.api.model.ElementVisual"
-    base="org.umlfri.api.model.Visual">
+        xmlns="http://umlfri.org/v2/api.xsd"
+        name="org.umlfri.api.model.ElementVisual"
+        base="org.umlfri.api.model.Visual">
     
     <documentation>
         Visual information about element in model.
@@ -13,7 +13,7 @@
             Absolute position of the element.
         </documentation>
         
-        <value type="xy" readable="true" />
+        <value type="xy" readable="true"/>
     </property>
     
     <property name="center">
@@ -21,7 +21,7 @@
             Absolute position of the element center.
         </documentation>
         
-        <value type="xy" readable="true" />
+        <value type="xy" readable="true"/>
     </property>
     
     <property name="size">
@@ -29,7 +29,7 @@
             Size of the element.
         </documentation>
         
-        <value type="wh" readable="true" />
+        <value type="wh" readable="true"/>
     </property>
     
     <property name="minimalSize">
@@ -37,7 +37,7 @@
             Minimal size of the element.
         </documentation>
         
-        <value type="wh" readable="true" />
+        <value type="wh" readable="true"/>
     </property>
     
     <property name="object">
@@ -45,7 +45,7 @@
             Element object associated with the element visual.
         </documentation>
         
-        <value type="org.umlfri.api.model.ElementObject" readable="true" />
+        <value type="org.umlfri.api.model.ElementObject" readable="true"/>
     </property>
     
     <property name="diagram">
@@ -53,7 +53,7 @@
             Diagram, on which the element is located.
         </documentation>
         
-        <value type="org.umlfri.api.model.Diagram" readable="true" />
+        <value type="org.umlfri.api.model.Diagram" readable="true"/>
     </property>
     
     <property name="connections">
@@ -62,6 +62,6 @@
             are shown on the same diagram.
         </documentation>
         
-        <value type="org.umlfri.api.model.ConnectionVisual" iterable="true" />
+        <value type="org.umlfri.api.model.ConnectionVisual" iterable="true"/>
     </property>
 </interface>

@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <interface
-    xmlns="http://umlfri.org/v2/api.xsd"
-    name="org.umlfri.api.model.Diagram">
+        xmlns="http://umlfri.org/v2/api.xsd"
+        name="org.umlfri.api.model.Diagram">
     
     <documentation>
         Logical and visual information in one piece.
@@ -18,7 +18,7 @@
             </documentation>
         </parameter>
         
-        <return type="org.umlfri.api.model.ElementVisual" nullable="true" />
+        <return type="org.umlfri.api.model.ElementVisual" nullable="true"/>
     </method>
     
     <method name="getConnection">
@@ -32,7 +32,7 @@
             </documentation>
         </parameter>
         
-        <return type="org.umlfri.api.model.ConnectionVisual" nullable="true" />
+        <return type="org.umlfri.api.model.ConnectionVisual" nullable="true"/>
     </method>
     
     <property name="selection">
@@ -40,7 +40,7 @@
             Elements or connections selected on the diagram.
         </documentation>
         
-        <value type="org.umlfri.api.model.Visual" iterable="true" />
+        <value type="org.umlfri.api.model.Visual" iterable="true"/>
     </property>
     
     <property name="elements">
@@ -48,7 +48,7 @@
             All elements in the diagram.
         </documentation>
         
-        <value type="org.umlfri.api.model.ElementVisual" iterable="true" />
+        <value type="org.umlfri.api.model.ElementVisual" iterable="true"/>
     </property>
     
     <property name="connections">
@@ -56,7 +56,7 @@
             All connections in the diagram.
         </documentation>
         
-        <value type="org.umlfri.api.model.ConnectionVisual" iterable="true" />
+        <value type="org.umlfri.api.model.ConnectionVisual" iterable="true"/>
     </property>
     
     <property name="name">
@@ -64,7 +64,7 @@
             Diagram name.
         </documentation>
         
-        <value type="string" readable="true" />
+        <value type="string" readable="true"/>
     </property>
     
     <property name="values" singular="value">
@@ -72,9 +72,9 @@
             Collection, that contains all property values.
         </documentation>
         
-        <index name="path" type="string" />
-        <value type="variant" readable="true" iterable="true" />
-        <iterator includeindex="true" />
+        <index name="path" type="string"/>
+        <value type="variant" readable="true" iterable="true"/>
+        <iterator includeindex="true"/>
     </property>
     
     <property name="type">
@@ -82,7 +82,7 @@
             Diagram type identifier.
         </documentation>
         
-        <value type="org.umlfri.api.metamodel.DiagramType" readable="true" />
+        <value type="org.umlfri.api.metamodel.DiagramType" readable="true"/>
     </property>
     
     <property name="parent">
@@ -90,7 +90,7 @@
             Parent element of the diagram.
         </documentation>
         
-        <value type="org.umlfri.api.model.ElementObject" readable="true" />
+        <value type="org.umlfri.api.model.ElementObject" readable="true"/>
     </property>
     
     <property name="project">
@@ -98,6 +98,6 @@
             Project the diagram is located in.
         </documentation>
         
-        <value type="org.umlfri.api.model.Project" readable="true" />
+        <value type="org.umlfri.api.model.Project" readable="true"/>
     </property>
 </interface>

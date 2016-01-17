@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <interface
-    xmlns="http://umlfri.org/v2/api.xsd"
-    name="org.umlfri.api.model.ConnectionObject">
+        xmlns="http://umlfri.org/v2/api.xsd"
+        name="org.umlfri.api.model.ConnectionObject">
     
     <documentation>
         Logical information about connection.
@@ -19,21 +19,21 @@
             </documentation>
         </parameter>
         
-        <return type="org.umlfri.api.model.ElementObject" />
+        <return type="org.umlfri.api.model.ElementObject"/>
     </method>
     
     <property name="source">
         <documentation>
             Connection source element.
         </documentation>
-        <value type="org.umlfri.api.model.ElementObject" readable="true" />
+        <value type="org.umlfri.api.model.ElementObject" readable="true"/>
     </property>
     
     <property name="destination">
         <documentation>
             Connection destination element.
         </documentation>
-        <value type="org.umlfri.api.model.ElementObject" readable="true" />
+        <value type="org.umlfri.api.model.ElementObject" readable="true"/>
     </property>
     
     <property name="values" singular="value">
@@ -45,21 +45,21 @@
                 Identifier of the connection attribute.
             </documentation>
         </index>
-        <value type="variant" readable="true" iterable="true" />
-        <iterator includeindex="true" />
+        <value type="variant" readable="true" iterable="true"/>
+        <iterator includeindex="true"/>
     </property>
     
     <property name="type">
         <documentation>
             Connection type.
         </documentation>
-        <value type="org.umlfri.api.metamodel.ConnectionType" readable="true" />
+        <value type="org.umlfri.api.metamodel.ConnectionType" readable="true"/>
     </property>
     
     <property name="visuals">
         <documentation>
             Connection appearances in project diagrams.
         </documentation>
-        <value type="org.umlfri.api.model.ConnectionVisual" iterable="true" />
+        <value type="org.umlfri.api.model.ConnectionVisual" iterable="true"/>
     </property>
 </interface>
