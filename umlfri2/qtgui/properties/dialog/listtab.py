@@ -44,14 +44,17 @@ class ListPropertyTab(PropertyTab):
             self.__list.clear()
             for row in self._tab.rows:
                 self.__list.addTopLevelItem(QTreeWidgetItem(row))
-            if self._tab.current_index is not None:
-                item = self.__list.topLevelItem(self._tab.current_index)
-                self.__list.setCurrentItem(item)
-            else:
-                self.__list.setCurrentItem(None)
+            self.__update_list_current_index()
         finally:
             self.__disable_selection_handling = False
-    
+
+    def __update_list_current_index(self):
+        if self._tab.current_index is not None:
+            item = self.__list.topLevelItem(self._tab.current_index)
+            self.__list.setCurrentItem(item)
+        else:
+            self.__list.setCurrentItem(None)
+
     def __update_buttons(self):
         self.__new_button.setEnabled(self._tab.can_new)
         self.__save_button.setEnabled(self._tab.can_save)
@@ -63,11 +66,21 @@ class ListPropertyTab(PropertyTab):
         items = self.__list.selectedItems()
         if items:
             index = self.__list.indexOfTopLevelItem(items[0])
-            self._tab.current_index = index
         else:
-            self._tab.current_index = None
+            index = None
+        
+        if index == self._tab.current_index:
+            return
+        
+        if self._tab.should_save:
+            if not self.handle_needed_save():
+                self.__list.setCurrentItem(self.__list.topLevelItem(self._tab.current_index))
+                return
+        
+        self._tab.change_current_index(index)
         self._update_values()
         self.__update_buttons()
+        self.__update_list_current_index()
     
     def __new(self):
         self._tab.new()
@@ -77,7 +90,7 @@ class ListPropertyTab(PropertyTab):
     def __save(self, deselect=False):
         self._tab.save()
         if deselect:
-            self._tab.current_index = None
+            self._tab.change_current_index(None)
         self.__update_list()
         self._update_values()
         self.__update_buttons()
@@ -85,7 +98,7 @@ class ListPropertyTab(PropertyTab):
     def __discard(self, deselect=False):
         self._tab.discard()
         if deselect:
-            self._tab.current_index = None
+            self._tab.change_current_index(None)
         self.__update_list()
         self._update_values()
         self.__update_buttons()

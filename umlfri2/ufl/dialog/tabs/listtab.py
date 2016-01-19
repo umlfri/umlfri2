@@ -85,8 +85,9 @@ class UflDialogListTab(UflDialogTab):
     def current_index(self):
         return self.__current_index
     
-    @current_index.setter
-    def current_index(self, value):
+    def change_current_index(self, value):
+        if self.should_save:
+            raise Exception
         self.__current_index = value
         
         if value is None:
@@ -98,7 +99,9 @@ class UflDialogListTab(UflDialogTab):
     
     def associate(self, ufl_object):
         self.__list = ufl_object
-        self.current_index = None
+        self.__current_index = None
+        self._set_current_object(None)
+        self.__is_new = False
     
     def finish(self):
         pass
