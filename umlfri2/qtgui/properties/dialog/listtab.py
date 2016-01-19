@@ -1,4 +1,4 @@
-from PySide.QtGui import QVBoxLayout, QTreeWidget, QHBoxLayout, QPushButton, QIcon, QTreeWidgetItem
+from PySide.QtGui import QVBoxLayout, QTreeWidget, QHBoxLayout, QPushButton, QIcon, QTreeWidgetItem, QMessageBox
 from umlfri2.qtgui.base.hlinewidget import HLineWidget
 from .tab import PropertyTab
 
@@ -74,8 +74,18 @@ class ListPropertyTab(PropertyTab):
         self._update_values()
         self.__update_buttons()
     
-    def __save(self):
+    def __save(self, deselect=False):
         self._tab.save()
+        if deselect:
+            self._tab.current_index = None
+        self.__update_list()
+        self._update_values()
+        self.__update_buttons()
+    
+    def __discard(self, deselect=False):
+        self._tab.discard()
+        if deselect:
+            self._tab.current_index = None
         self.__update_list()
         self._update_values()
         self.__update_buttons()
@@ -85,3 +95,28 @@ class ListPropertyTab(PropertyTab):
         self.__update_list()
         self._update_values()
         self.__update_buttons()
+    
+    def handle_needed_save(self):
+        message_box = QMessageBox(self)
+        message_box.setIcon(QMessageBox.Question)
+        message_box.setWindowTitle(_("Data changed"))
+        message_box.setText(_("The data on this tab has been modified."))
+        message_box.setInformativeText(_("Do you want to save the data?"))
+        message_box.setStandardButtons(QMessageBox.Save | QMessageBox.Discard | QMessageBox.Cancel)
+        message_box.setDefaultButton(QMessageBox.Save)
+        message_box.button(QMessageBox.Save).setText(_("Save"))
+        message_box.button(QMessageBox.Discard).setText(_("Discard"))
+        message_box.button(QMessageBox.Cancel).setText(_("Cancel"))
+        
+        resp = message_box.exec_()
+        
+        if resp == QMessageBox.Cancel:
+            return False
+        
+        if resp == QMessageBox.Save:
+            self.__save(deselect=True)
+        
+        if resp == QMessageBox.Discard:
+            self.__discard()
+        
+        return True

@@ -102,7 +102,15 @@ class UflMutableList(UflMutable):
                 changes.append(UflListPatch.ItemAdded(new_index, value))
             elif not self.__type.item_type.is_immutable:
                 patch = value.make_patch()
-                if patch.has_changes():
+                if patch.has_changes:
                     changes.append(UflListPatch.ItemPatch(new_index, patch))
         
         return UflListPatch(self.__type, changes)
+    
+    def discard_changes(self):
+        self.__values = self.__old_values[:]
+        
+        if self.__type.item_type.is_immutable:
+            self.__values = list(enumerate(self.__old_values))
+        else:
+            self.__values = list(enumerate(value.make_mutable() for value in self.__old_values))

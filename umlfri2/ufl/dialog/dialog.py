@@ -12,12 +12,16 @@ class UflDialog:
         self.__original_object = None
         self.__mutable_object = None
         self.__options = options
+        self.__current_tab = None
         if isinstance(self.__type, UflListType):
-            self.__add_list_tab(None, self.__type)
+            self.__current_tab = self.__add_list_tab(None, self.__type)
         elif isinstance(self.__type, UflObjectType):
             self.__add_tabs()
         else:
             raise ValueError("UflDialog can be constructed using list or object type only")
+        
+        for no, tab in enumerate(self.__tabs):
+            tab._associate_tab_index(no)
     
     def __add_tabs(self):
         tab = UflDialogObjectTab(None)
@@ -35,6 +39,9 @@ class UflDialog:
         
         if self.__tabs[0].widget_count == 0:
             del self.__tabs[0]
+        
+        if self.__tabs:
+            self.__current_tab = self.__tabs[0]
     
     def __add_list_tab(self, attr, type):
         tab = UflDialogListTab(attr, type)
@@ -45,6 +52,8 @@ class UflDialog:
                 tab.add_widget(self.__make_widget(tab, attr, attr.type))
         else:
             tab.add_widget(self.__make_widget(tab, None, type))
+        
+        return tab
     
     def __add_object_tab(self, attr, type):
         tab = UflDialogObjectTab(attr)
@@ -52,12 +61,16 @@ class UflDialog:
         
         for attr in type.attributes:
             tab.add_widget(self.__make_widget(tab, attr, attr.type))
+        
+        return tab
     
     def __add_multiline_tab(self, attr, type):
         tab = UflDialogValueTab(attr)
         self.__tabs.append(tab)
         
         tab.add_widget(self.__make_widget(tab, None, type))
+        
+        return tab
 
     def __make_widget(self, tab, attr, type):
         if isinstance(type, UflBoolType):
@@ -83,6 +96,20 @@ class UflDialog:
             raise ValueError
     
     @property
+    def should_save_tab(self):
+        return isinstance(self.__current_tab, UflDialogListTab) and self.__current_tab.should_save
+    
+    def switch_tab(self, index):
+        if isinstance(self.__current_tab, UflDialogListTab) and self.__current_tab.should_save:
+            raise Exception
+        
+        self.__current_tab = self.__tabs[index]
+    
+    @property
+    def current_tab(self):
+        return self.__current_tab
+    
+    @property
     def original_object(self):
         return self.__original_object
     
@@ -93,6 +120,8 @@ class UflDialog:
                 self.__mutable_object.set_value(tab.id, tab.current_object)
     
     def make_patch(self):
+        if self.__mutable_object is None:
+            return None
         return self.__mutable_object.make_patch()
     
     @property
@@ -107,6 +136,8 @@ class UflDialog:
     
     def associate(self, ufl_object):
         if ufl_object is None:
+            self.__original_object = None
+            self.__mutable_object = None
             for tab in self.__tabs:
                 tab.associate(None)
         else:

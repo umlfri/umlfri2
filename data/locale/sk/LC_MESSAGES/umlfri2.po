@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-07 01:05+0100\n"
-"PO-Revision-Date: 2016-01-07 01:06+0100\n"
+"POT-Creation-Date: 2016-01-19 10:21+0100\n"
+"PO-Revision-Date: 2016-01-19 10:26+0100\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -100,6 +100,12 @@ msgstr "Vystrihnúť"
 
 msgid "Delete"
 msgstr "Odstrániť"
+
+msgid "Discard"
+msgstr "Zrušiť zmeny"
+
+msgid "Do you want to save the data?"
+msgstr "Chcete uložiť dáta?"
 
 msgid "Do you want to save the project?"
 msgstr "Chcete uložiť rozpracovaný projekt?"
@@ -200,6 +206,9 @@ msgstr "Uložiť &ako"
 msgid "Save Project"
 msgstr "Uložiť projekt"
 
+msgid "Save needed"
+msgstr "Je potrebné uložiť dáta"
+
 msgid "Select"
 msgstr "Vybrať"
 
@@ -217,6 +226,9 @@ msgstr "Zobraziť v diagrame"
 
 msgid "System language"
 msgstr "Systémový jazyk"
+
+msgid "The data on this tab has been modified."
+msgstr "Dáta na tejto záložke boli zmenené"
 
 msgid "The model has been modified."
 msgstr "Model bol zmenený"
@@ -266,18 +278,3 @@ msgstr "neuložený"
 #, python-brace-format
 msgid "{0} image"
 msgstr "Obrázok {0}"
-
-#~ msgid "New project"
-#~ msgstr "Nový projekt"
-
-#~ msgid "Bring forward"
-#~ msgstr "O jeden dopredu"
-
-#~ msgid "Bring to top"
-#~ msgstr "Presunúť dopredu"
-
-#~ msgid "Send back"
-#~ msgstr "O jeden dozadu"
-
-#~ msgid "Zoom o&riginal"
-#~ msgstr "&Originálna veľkosť"

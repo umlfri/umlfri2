@@ -27,25 +27,33 @@ class PropertiesDialog(QDialog):
             button_box = QDialogButtonBox(QDialogButtonBox.Ok)
             button_box.button(QDialogButtonBox.Ok).setText(_("Ok"))
         
-        button_box.accepted.connect(self.accept)
+        button_box.accepted.connect(self.__accept_clicked)
         button_box.rejected.connect(self.reject)
         layout = QVBoxLayout()
         
+        self.__tabs = []
         tab = dialog.get_lonely_tab()
         if isinstance(tab, UflDialogListTab):
-            layout.addWidget(ListPropertyTab(self, tab))
+            qt_tab = ListPropertyTab(self, tab)
+            layout.addWidget(qt_tab)
+            self.__tabs.append(qt_tab)
         elif isinstance(tab, (UflDialogObjectTab, UflDialogValueTab)):
-            layout.addWidget(ObjectPropertyTab(self, tab))
+            qt_tab = ObjectPropertyTab(self, tab)
+            layout.addWidget(qt_tab)
+            self.__tabs.append(qt_tab)
         else:
-            tabs = QTabWidget()
-            tabs.setFocusPolicy(Qt.NoFocus)
+            self.__tab_widget = QTabWidget()
+            self.__tab_widget.setFocusPolicy(Qt.NoFocus)
+            self.__tab_widget.currentChanged.connect(self.__tab_changed)
             
             for tab in dialog.tabs:
                 if isinstance(tab, UflDialogListTab):
-                    tabs.addTab(ListPropertyTab(self, tab), tab.name or _("General"))
+                    qt_tab = ListPropertyTab(self, tab)
                 elif isinstance(tab, (UflDialogObjectTab, UflDialogValueTab)):
-                    tabs.addTab(ObjectPropertyTab(self, tab), tab.name or _("General"))
-            layout.addWidget(tabs)
+                    qt_tab = ObjectPropertyTab(self, tab)
+                self.__tab_widget.addTab(qt_tab, tab.name or _("General"))
+                self.__tabs.append(qt_tab)
+            layout.addWidget(self.__tab_widget)
         
         layout.addWidget(button_box)
         self.setLayout(layout)
@@ -55,10 +63,30 @@ class PropertiesDialog(QDialog):
         return QSize(500, orig.height())
     
     def __apply_clicked(self, checked=False):
+        if self.__dialog.should_save_tab:
+            if not self.__tabs[self.__dialog.current_tab.tab_index].handle_needed_save():
+                return
+        
         self.__dialog.finish()
         command = ApplyPatchCommand(self.__object, self.__dialog.make_patch())
         Application().commands.execute(command)
         self.__dialog.reset()
+    
+    def __accept_clicked(self):
+        if self.__dialog.should_save_tab:
+            if not self.__tabs[self.__dialog.current_tab.tab_index].handle_needed_save():
+                return
+        
+        self.accept()
+    
+    def __tab_changed(self, tab_index):
+        if tab_index == self.__dialog.current_tab.tab_index:
+            return
+        if self.__dialog.should_save_tab:
+            if not self.__tabs[self.__dialog.current_tab.tab_index].handle_needed_save():
+                self.__tab_widget.setCurrentIndex(self.__dialog.current_tab.tab_index)
+                return
+        self.__dialog.switch_tab(tab_index)
     
     @staticmethod
     def open_for(main_window, object):

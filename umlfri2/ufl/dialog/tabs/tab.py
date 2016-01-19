@@ -4,6 +4,7 @@ class UflDialogTab:
         self.__name = None
         self.__ufl_object = None
         self.__attr = attr
+        self.__index = None
     
     @property
     def id(self):
@@ -11,6 +12,15 @@ class UflDialogTab:
             return None
         else:
             return self.__attr.name
+    
+    @property
+    def tab_index(self):
+        return self.__index
+    
+    def _associate_tab_index(self, tab_index):
+        if self.__index is not None:
+            raise Exception
+        self.__index = tab_index
     
     @property
     def name(self):

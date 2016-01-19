@@ -27,7 +27,7 @@ class ApplyPatchCommand(Command):
         return "Changed {0} of {1}".format(change_desc, name)
 
     def _do(self, ruler):
-        if not self.__patch.has_changes():
+        if not self.__patch.has_changes:
             raise CommandNotDone
         
         if isinstance(self.__object, ElementObject):

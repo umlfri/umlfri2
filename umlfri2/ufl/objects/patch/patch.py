@@ -10,6 +10,7 @@ class UflPatch:
     def type(self):
         return self.__type
     
+    @property
     def has_changes(self):
         return len(self.__changes) > 0
     

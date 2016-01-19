@@ -5,6 +5,7 @@ class UflDialogValuedWidget(UflDialogWidget):
     def __init__(self, tab, attr): 
         super().__init__(tab, attr)
         self.__value = None
+        self.__old_value = None
     
     @property
     def value(self):
@@ -21,3 +22,11 @@ class UflDialogValuedWidget(UflDialogWidget):
             self.__value = ufl_object
         else:
             self.__value = ufl_object.get_value(self.id)
+        self.__old_value = self.__value
+    
+    @property
+    def changed(self):
+        return self.__value != self.__old_value
+    
+    def finish_after_save(self):
+        self.__old_value = self.__value

@@ -49,12 +49,24 @@ class UflDialogListTab(UflDialogTab):
                         self.__list.set_item(self.__current_index, widget.value)
                 else:
                     self.current_object.set_value(widget.id, widget.value)
-            elif isinstance(widget, UflDialogChildWidget):
-                widget.dialog.finish()
+            widget.finish_after_save()
         
         if self.__is_new:
             self.__list.append(self.current_object)
             self.new()
+    
+    def discard(self):
+        self.__list.discard_changes()
+        self.associate(self.__list)
+    
+    @property
+    def should_save(self):
+        if self.__is_new:
+            return True
+        for widget in self.widgets:
+            if widget.changed:
+                return True
+        return False
     
     @property
     def can_save(self):

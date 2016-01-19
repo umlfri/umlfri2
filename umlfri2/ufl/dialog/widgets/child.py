@@ -22,3 +22,14 @@ class UflDialogChildWidget(UflDialogWidget):
         super().translate(translation)
         
         self.__dialog.translate(translation)
+    
+    @property
+    def changed(self):
+        patch = self.__dialog.make_patch()
+        if patch is None:
+            return False
+        else:
+            return patch.has_changes
+    
+    def finish_after_save(self):
+        self.__dialog.finish()

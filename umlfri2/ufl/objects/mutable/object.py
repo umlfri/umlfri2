@@ -51,7 +51,14 @@ class UflMutableObject(UflMutable):
                     changes.append(UflObjectPatch.AttributeChanged(name, old_value, value))
             else:
                 patch = value.make_patch()
-                if patch.has_changes():
+                if patch.has_changes:
                     changes.append(UflObjectPatch.AttributePatch(name, patch))
         
         return UflObjectPatch(self.__type, changes)
+    
+    def discard_changes(self):
+        for name, item in self.__attributes.items():
+            if self.__type.get_attribute(name).type.is_immutable:
+                item[1] = item[0]
+            else:
+                item[1] = item[0].make_mutable()

@@ -29,3 +29,10 @@ class UflDialogWidget:
     def translate(self, translation):
         if self.__attr is not None:
             self.__label = translation.translate(self.__attr)
+    
+    @property
+    def changed(self):
+        raise NotImplementedError
+    
+    def finish_after_save(self):
+        raise NotImplementedError
