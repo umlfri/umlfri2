@@ -83,9 +83,14 @@ class ListPropertyTab(PropertyTab):
         self.__update_list_current_index()
     
     def __new(self):
+        if self._tab.should_save:
+            if not self.handle_needed_save():
+                return
+        
         self._tab.new()
         self._update_values()
         self.__update_buttons()
+        self.__update_list_current_index()
     
     def __save(self, deselect=False):
         self._tab.save()
