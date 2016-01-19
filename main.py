@@ -25,6 +25,7 @@ def main(args):
     app = QApplication(args)
     
     Application().use_ruler(QTRuler())
+    Application().start()
     
     window = UmlFriMainWindow()
     window.showMaximized()

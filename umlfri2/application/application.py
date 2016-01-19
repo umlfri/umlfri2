@@ -41,8 +41,6 @@ class Application(metaclass=MetaApplication):
         
         self.__load_addons()
         
-        self.__addons.start_all() # TODO: start in splash screen
-        
         self.__tabs = TabList(self)
         self.__solution = None
         self.__ruler = None
@@ -89,6 +87,9 @@ class Application(metaclass=MetaApplication):
             return lang
         
         return 'POSIX'
+    
+    def start(self):
+        self.__addons.start_all() # TODO: start in splash screen
     
     def stop(self):
         self.__addons.stop_all()
