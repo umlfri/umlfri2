@@ -9,7 +9,7 @@
 - [ ] application preferences window - move language there
 - [ ] persisting application preferences (appdirs module)
 - [x] plugin system
-- [ ] gui support for plugins
+- [x] gui support for plugins
 - [x] diamond visual object
 - [x] ellipse visual object
 - [x] icon visual object
@@ -21,3 +21,4 @@
 - [ ] addon management
 - [ ] printing
 - [x] fullscreen
+- [ ] fix bugs in discarding values in properties dialog
