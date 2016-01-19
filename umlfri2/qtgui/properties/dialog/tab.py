@@ -1,5 +1,7 @@
-from PySide.QtGui import QWidget, QFormLayout, QCheckBox, QPushButton, QComboBox, QSpinBox, QLineEdit, QTextEdit, QLabel
+from PySide.QtGui import QWidget, QFormLayout, QCheckBox, QPushButton, QComboBox, QTextEdit, QLabel
+
 from umlfri2.ufl.dialog import *
+from .widgets import SelectAllLineEdit, SelectAllSpinBox
 
 
 class ShowDialogAction:
@@ -87,7 +89,7 @@ class PropertyTab(QWidget):
                 self.__qt_widgets[widget.id] = qt_widget
                 ret.addRow(widget.label, qt_widget)
             elif isinstance(widget, UflDialogIntegerWidget):
-                qt_widget = QSpinBox()
+                qt_widget = SelectAllSpinBox()
                 self.__qt_widgets[widget.id] = qt_widget
                 self.__connect_action(qt_widget.valueChanged, WidgetChanged(qt_widget, widget))
                 ret.addRow(widget.label, qt_widget)
@@ -99,7 +101,7 @@ class PropertyTab(QWidget):
                 self.__connect_action(qt_widget.currentIndexChanged, WidgetChanged(qt_widget, widget))
                 ret.addRow(widget.label, qt_widget)
             elif isinstance(widget, UflDialogTextWidget):
-                qt_widget = QLineEdit()
+                qt_widget = SelectAllLineEdit()
                 self.__qt_widgets[widget.id] = qt_widget
                 self.__connect_action(qt_widget.textChanged, WidgetChanged(qt_widget, widget))
                 ret.addRow(widget.label, qt_widget)
@@ -143,3 +145,7 @@ class PropertyTab(QWidget):
         finally:
             for action in self.__actions:
                 action.set_enabled(True)
+    
+    def _focus_first(self):
+        if self.__qt_widgets:
+            self.__qt_widgets[self.__tab.first_widget.id].setFocus()

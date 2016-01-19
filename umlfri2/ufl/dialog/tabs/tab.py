@@ -41,6 +41,10 @@ class UflDialogTab:
         return len(self.__widgets)
     
     @property
+    def first_widget(self):
+        return self.__widgets[0]
+    
+    @property
     def widgets(self):
         yield from self.__widgets
     
