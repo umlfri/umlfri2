@@ -5,4 +5,12 @@ syntax: glob
 data/icons
 tools/mkaddonlib/addonlibdoc/documentation/*
 tools/mkaddonlib/checked_api/*
+tools/win32exe/stub/Debug
+tools/win32exe/stub/Release
+tools/win32exe/stub/ipch
+tools/win32exe/stub/*.aps
+tools/win32exe/stub/*.sdf
+tools/win32exe/stub/*.suo
+tools/win32exe/stub/*.filters
+tools/win32exe/stub/*.user
 addons/python_starter/library/*
