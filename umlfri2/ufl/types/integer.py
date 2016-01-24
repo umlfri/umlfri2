@@ -1,5 +1,6 @@
 from .type import UflType
 
+
 class UflIntegerType(UflType):
     def __init__(self, default=None):
         self.__default = default or 0

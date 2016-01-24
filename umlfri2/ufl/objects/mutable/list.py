@@ -108,8 +108,6 @@ class UflMutableList(UflMutable):
         return UflListPatch(self.__type, changes)
     
     def discard_changes(self):
-        self.__values = self.__old_values[:]
-        
         if self.__type.item_type.is_immutable:
             self.__values = list(enumerate(self.__old_values))
         else:

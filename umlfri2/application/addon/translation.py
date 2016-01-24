@@ -1,6 +1,5 @@
 from umlfri2.metamodel import DiagramType, ElementType, ConnectionType
-from umlfri2.ufl.types import UflObjectAttribute, UflObjectType, UflListType, UflEnumType
-from umlfri2.ufl.types.enum import UflEnumPossibility
+from umlfri2.ufl.types import UflObjectAttribute, UflObjectType, UflListType, UflEnumType, UflEnumPossibility
 
 
 class AttributeTranslation:

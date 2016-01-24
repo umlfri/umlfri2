@@ -1,8 +1,8 @@
-from .enum import UflEnumType
 from .enumpossibility import UflEnumPossibility
+from .flags import UflFlagsType
 
 
-class UflStringEnumType(UflEnumType):
+class UflStringFlagsType(UflFlagsType):
     def __init__(self, possibilities, default=None):
         
         super().__init__((UflEnumPossibility(self, name, name) for name in possibilities), default)
@@ -14,4 +14,4 @@ class UflStringEnumType(UflEnumType):
         return self.possibilities == other.possibilities
     
     def __str__(self):
-        return 'Enum[{0}]'.format(", ".join(self.__possibilities))
+        return 'Flags[{0}]'.format(", ".join(self.__possibilities))

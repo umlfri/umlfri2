@@ -1,4 +1,5 @@
-from .enum import UflEnumType, UflEnumPossibility
+from .enum import UflEnumType
+from .enumpossibility import UflEnumPossibility
 
 
 class UflDefinedEnumType(UflEnumType):
