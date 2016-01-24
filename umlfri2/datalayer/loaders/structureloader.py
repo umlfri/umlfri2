@@ -40,6 +40,11 @@ class UflStructureLoader:
                     attr = ufltype()
             elif type == "enum":
                 attr = UflStringEnumType(self.__load_possibilities(child) or (), child.attrib.get("default"))
+            elif type == "flags":
+                default = None
+                if "default" in child.attrib:
+                    default = child.attrib["default"].split()
+                attr = UflStringFlagsType(self.__load_possibilities(child) or (), default)
             elif type == "object":
                 attr = UflObjectType(self.__load_object(child))
             elif type == "str":

@@ -30,6 +30,8 @@
                     <xs:enumeration value="object[]"/>
                     <xs:enumeration value="enum"/>
                     <xs:enumeration value="enum[]"/>
+                    <xs:enumeration value="flags"/>
+                    <xs:enumeration value="flags[]"/>
                     <xs:enumeration value="text"/>
                     <xs:enumeration value="text[]"/>
                     <xs:enumeration value="color"/>

@@ -14,5 +14,6 @@ from .object import UflObjectType, UflObjectAttribute
 from .proportion import UflProportionType
 from .string import UflStringType
 from .stringenum import UflStringEnumType
+from .stringflags import UflStringFlagsType
 from .type import UflType
 from .typedenum import UflTypedEnumType
