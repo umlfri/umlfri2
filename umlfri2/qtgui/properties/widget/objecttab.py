@@ -86,6 +86,7 @@ class ObjectTab(TableTab):
             widget.check(index)
         else:
             widget.uncheck(index)
+        self.__widget.apply()
     
     def __index_changed(self, widget, index):
         widget.current_index = index
