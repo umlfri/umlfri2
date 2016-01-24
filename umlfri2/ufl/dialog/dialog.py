@@ -79,6 +79,8 @@ class UflDialog:
             return UflDialogColorWidget(tab, attr)
         elif isinstance(type, UflEnumType):
             return UflDialogSelectWidget(tab, attr)
+        elif isinstance(type, UflFlagsType):
+            return UflDialogMultiSelectWidget(tab, attr)
         elif isinstance(type, UflFontType):
             return UflDialogFontWidget(tab, attr)
         elif isinstance(type, UflFontType):

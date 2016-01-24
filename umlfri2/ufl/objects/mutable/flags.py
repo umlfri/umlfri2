@@ -17,6 +17,9 @@ class UflMutableFlags(UflMutable):
             if possibility.value in self.__values:
                 yield possibility.value
     
+    def __contains__(self, item):
+        return item in self.__values
+    
     def set(self, value):
         if not self.__type.is_valid_possibility(value):
             raise ValueError

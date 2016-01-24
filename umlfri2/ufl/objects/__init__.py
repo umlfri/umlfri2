@@ -1,1 +1,1 @@
-from .immutable import UflObject, UflList
+from .immutable import UflFlags, UflObject, UflList

@@ -1,7 +1,9 @@
 from PySide.QtGui import QWidget, QFormLayout, QCheckBox, QPushButton, QComboBox, QTextEdit, QLabel
 
+from umlfri2.qtgui.base.multiselectcombobox import MultiSelectComboBox
+from umlfri2.qtgui.base.selectalllineedit import SelectAllLineEdit
+from umlfri2.qtgui.base.selectallspinbox import SelectAllSpinBox
 from umlfri2.ufl.dialog import *
-from .widgets import SelectAllLineEdit, SelectAllSpinBox
 
 
 class ShowDialogAction:
@@ -92,6 +94,13 @@ class PropertyTab(QWidget):
                 qt_widget = SelectAllSpinBox()
                 self.__qt_widgets[widget.id] = qt_widget
                 self.__connect_action(qt_widget.valueChanged, WidgetChanged(qt_widget, widget))
+                ret.addRow(widget.label, qt_widget)
+            elif isinstance(widget, UflDialogMultiSelectWidget):
+                qt_widget = MultiSelectComboBox()
+                self.__qt_widgets[widget.id] = qt_widget
+                for checked, item in widget.possibilities:
+                    qt_widget.add_check_item(checked, item)
+                self.__connect_action(qt_widget.check_changed, WidgetChanged(qt_widget, widget))
                 ret.addRow(widget.label, qt_widget)
             elif isinstance(widget, UflDialogSelectWidget):
                 qt_widget = QComboBox()

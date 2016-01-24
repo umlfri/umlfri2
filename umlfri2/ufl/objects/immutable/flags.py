@@ -20,6 +20,9 @@ class UflFlags(UflImmutable):
             if possibility.value in self.__values:
                 yield possibility.value
     
+    def __contains__(self, item):
+        return item in self.__values
+    
     def __bool__(self):
         return bool(self.__values)
     

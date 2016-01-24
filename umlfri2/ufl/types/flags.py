@@ -1,6 +1,7 @@
 from collections import OrderedDict
 
 from .type import UflType
+from ..objects import UflFlags
 
 
 class UflFlagsType(UflType):
@@ -16,13 +17,11 @@ class UflFlagsType(UflType):
     def default_possibilities(self):
         yield from self.__default
     
-    @property
-    def default(self):
-        for possibility in self.__default:
-            yield possibility.value
-    
     def build_default(self, generator):
-        return set(self.default)
+        default = set()
+        for possibility in self.__default:
+            default.add(possibility.value)
+        return UflFlags(self, default)
     
     @property
     def possibilities(self):
@@ -42,4 +41,9 @@ class UflFlagsType(UflType):
         return False
     
     def is_default_value(self, value):
-        return list(self.default) == value
+        for possibility in self.__possibilities:
+            if possibility in self.__default and possibility.value not in value:
+                return False
+            if possibility not in self.__default and possibility.value in value:
+                return False
+        return True

@@ -3,6 +3,7 @@ from functools import partial
 from PySide.QtCore import Qt
 from PySide.QtGui import QTableWidgetItem
 
+from umlfri2.qtgui.base.multiselectcombobox import MultiSelectComboBox
 from ..dialog import PropertiesDialog
 from .selectionchangingwidgets import QSelectionChangingCheckBox, QSelectionChangingPushButton,\
     QSelectionChangingComboBox, QSelectionChangingSpinBox, QSelectionChangingLineEdit
@@ -43,6 +44,11 @@ class ObjectTab(TableTab):
             elif isinstance(widget, UflDialogIntegerWidget):
                 qt_widget = QSelectionChangingSpinBox(self, no)
                 qt_widget.valueChanged[int].connect(partial(self.__value_changed, widget))
+            elif isinstance(widget, UflDialogMultiSelectWidget):
+                qt_widget = MultiSelectComboBox()
+                for checked, item in widget.possibilities:
+                    qt_widget.add_check_item(checked, item)
+                qt_widget.check_changed.connect(partial(self.__multi_changed, widget))
             elif isinstance(widget, UflDialogSelectWidget):
                 qt_widget = QSelectionChangingComboBox(self, no)
                 for item in widget.possibilities:
@@ -75,6 +81,12 @@ class ObjectTab(TableTab):
         widget.value = value
         self.__widget.apply()
     
+    def __multi_changed(self, widget, index, checked):
+        if checked:
+            widget.check(index)
+        else:
+            widget.uncheck(index)
+    
     def __index_changed(self, widget, index):
         widget.current_index = index
         self.__widget.apply()
@@ -98,6 +110,9 @@ class ObjectTab(TableTab):
                 pass
             elif isinstance(widget, UflDialogIntegerWidget):
                 qt_widget.setValue(widget.value)
+            elif isinstance(widget, UflDialogMultiSelectWidget):
+                for no, (checked, possibility) in enumerate(widget.possibilities):
+                    qt_widget.set_item_checked(no, checked)
             elif isinstance(widget, UflDialogSelectWidget):
                 qt_widget.setCurrentIndex(widget.current_index)
             elif isinstance(widget, UflDialogTextWidget):
@@ -119,6 +134,9 @@ class ObjectTab(TableTab):
             elif isinstance(widget, UflDialogSelectWidget):
                 for no, possibility in enumerate(widget.possibilities):
                     qt_widget.setItemText(no, possibility)
+            elif isinstance(widget, UflDialogMultiSelectWidget):
+                for no, (checked, possibility) in enumerate(widget.possibilities):
+                    qt_widget.set_item_text(no, possibility)
     
     @property
     def label(self):

@@ -4,6 +4,7 @@ from .color import UflDialogColorWidget
 from .combo import UflDialogComboWidget
 from .font import UflDialogFontWidget
 from .integer import UflDialogIntegerWidget
+from .multiselect import UflDialogMultiSelectWidget
 from .select import UflDialogSelectWidget
 from .text import UflDialogTextWidget
 from .textarea import UflDialogTextAreaWidget
