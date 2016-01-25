@@ -12,6 +12,20 @@ class UflObject(UflImmutable):
     def type(self):
         return self.__type
     
+    def __eq__(self, other):
+        if not isinstance(other, UflObject):
+            return NotImplemented
+        
+        if self.__type is not other.__type:
+            return NotImplemented
+        
+        for name, mine in self.__attributes:
+            theirs = other.__attributes[name]
+            if mine != theirs:
+                return False
+        
+        return True
+    
     def get_values(self):
         yield from self.__attributes.items()
     
@@ -30,3 +44,14 @@ class UflObject(UflImmutable):
                 self.__attributes[change.name] = change.new_value
             elif isinstance(change, UflObjectPatch.AttributePatch):
                 self.__attributes[change.name].apply_patch(change.patch)
+    
+    def copy(self):
+        attributes = {}
+        
+        for name, value in self.__attributes.items():
+            if self.__type.get_attribute(name).is_immutable:
+                attributes[name] = value
+            else:
+                attributes[name] = value.copy()
+        
+        return UflObject(self.__type, attributes)

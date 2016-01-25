@@ -45,6 +45,22 @@ class UflMutableList(UflMutable):
         for index, value in self.__values:
             yield value
     
+    def __eq__(self, other):
+        if not isinstance(other, UflMutableList):
+            return NotImplemented
+        
+        if self.__type is not other.__type:
+            return NotImplemented
+        
+        if self.get_length() != other.get_length():
+            return False
+        
+        for mine, theirs in zip(self.__values, other.__values):
+            if mine != theirs:
+                return False
+        
+        return True
+    
     def get_item(self, index):
         return self.__values[index][1]
     
@@ -107,8 +123,11 @@ class UflMutableList(UflMutable):
         
         return UflListPatch(self.__type, changes)
     
-    def discard_changes(self):
+    def copy(self):
+        ret = UflMutableList(self.__type, [])
         if self.__type.item_type.is_immutable:
-            self.__values = list(enumerate(self.__old_values))
+            ret.__values = self.__values[:]
         else:
-            self.__values = list(enumerate(value.make_mutable() for value in self.__old_values))
+            ret.__values = [(index, value.copy()) for index, value in self.__values]
+        ret.__old_values = self.__old_values
+        return ret

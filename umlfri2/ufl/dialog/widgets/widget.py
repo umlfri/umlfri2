@@ -9,6 +9,10 @@ class UflDialogWidget:
         self.__attr = attr
     
     @property
+    def value(self):
+        raise NotImplementedError
+    
+    @property
     def attribute(self):
         return self.__attr
     
@@ -35,4 +39,7 @@ class UflDialogWidget:
         raise NotImplementedError
     
     def finish_after_save(self):
+        raise NotImplementedError
+    
+    def discard(self):
         raise NotImplementedError

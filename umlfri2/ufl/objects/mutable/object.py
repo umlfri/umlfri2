@@ -17,6 +17,20 @@ class UflMutableObject(UflMutable):
     def type(self):
         return self.__type
     
+    def __eq__(self, other):
+        if not isinstance(other, UflMutableObject):
+            return NotImplemented
+        
+        if self.__type is not other.__type:
+            return NotImplemented
+        
+        for name, mine in self.__attributes.items():
+            theirs = other.__attributes[name]
+            if mine != theirs:
+                return False
+        
+        return True
+    
     def get_values(self):
         for name, (old_value, value) in self.__attributes.items():
             yield name, value
@@ -27,8 +41,12 @@ class UflMutableObject(UflMutable):
     def set_value(self, name, value):
         attribute_type = self.__type.get_attribute(name).type
         
-        if attribute_type.is_immutable and  not attribute_type.is_valid_value(value):
-            raise ValueError
+        if attribute_type.is_immutable:
+            if not attribute_type.is_valid_value(value):
+                raise ValueError
+        else:
+            if value.type is not attribute_type:
+                raise ValueError
         
         self.__attributes[name][1] = value
     
@@ -56,9 +74,16 @@ class UflMutableObject(UflMutable):
         
         return UflObjectPatch(self.__type, changes)
     
-    def discard_changes(self):
-        for name, item in self.__attributes.items():
+    def copy(self):
+        attributes = {}
+        
+        for name, (old_value, new_value) in self.__attributes.items():
             if self.__type.get_attribute(name).type.is_immutable:
-                item[1] = item[0]
+                attributes[name] = [old_value, new_value]
             else:
-                item[1] = item[0].make_mutable()
+                attributes[name] = [old_value, new_value.copy()]
+        
+        ret = UflMutableObject(self.__type, {})
+        ret.__attributes = attributes
+        
+        return ret

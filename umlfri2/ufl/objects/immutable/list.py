@@ -27,6 +27,22 @@ class UflList(UflImmutable):
     def __bool__(self):
         return bool(self.__values)
     
+    def __eq__(self, other):
+        if not isinstance(other, UflList):
+            return NotImplemented
+        
+        if self.__type is not other.__type:
+            return NotImplemented
+        
+        if self.get_length() != other.get_length():
+            return False
+        
+        for mine, theirs in zip(self.__values, other.__values):
+            if mine != theirs:
+                return False
+        
+        return True
+    
     def make_mutable(self):
         return UflMutableList(self.__type, self.__values)
     
@@ -41,3 +57,9 @@ class UflList(UflImmutable):
                 del self.__values[change.index]
             elif isinstance(change, UflListPatch.ItemPatch):
                 self.__values[change.index].apply_patch(change.patch)
+    
+    def copy(self):
+        if self.__type.item_type.is_immutable:
+            return UflList(self.__type, self.__values)
+        else:
+            return UflList(self.__type, [value.copy() for value in self.__values])

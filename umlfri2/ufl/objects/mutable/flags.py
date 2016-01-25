@@ -20,6 +20,15 @@ class UflMutableFlags(UflMutable):
     def __contains__(self, item):
         return item in self.__values
     
+    def __eq__(self, other):
+        if not isinstance(other, UflMutableFlags):
+            return NotImplemented
+        
+        if self.__type is not other.__type:
+            return NotImplemented
+        
+        return self.__values == other.__values
+    
     def set(self, value):
         if not self.__type.is_valid_possibility(value):
             raise ValueError
@@ -48,5 +57,7 @@ class UflMutableFlags(UflMutable):
         
         return UflFlagsPatch(self.__type, changes)
     
-    def discard_changes(self):
-        self.__values = self.__old_values.copy()
+    def copy(self):
+        ret = UflMutableFlags(self.__type, set())
+        ret.__values = self.__values.copy()
+        ret.__old_values = self.__old_values

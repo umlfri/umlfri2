@@ -89,7 +89,7 @@ class PropertyTab(QWidget):
     def __show_dialog(self, widget, checked=False):
         from .dialog import PropertiesDialog
         
-        PropertiesDialog(self.__main_window, widget.dialog, None).exec_()
+        PropertiesDialog(self.__window, widget.dialog, None).exec_()
         
     def __state_changed(self, widget, state):
         if not self.__enabled:

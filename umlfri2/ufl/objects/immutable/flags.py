@@ -26,6 +26,15 @@ class UflFlags(UflImmutable):
     def __bool__(self):
         return bool(self.__values)
     
+    def __eq__(self, other):
+        if not isinstance(other, UflFlags):
+            return NotImplemented
+        
+        if self.__type is not other.__type:
+            return NotImplemented
+        
+        return self.__values == other.__values
+    
     def make_mutable(self):
         return UflMutableFlags(self.__type, self.__values)
     
@@ -38,3 +47,6 @@ class UflFlags(UflImmutable):
                 self.__values.add(change.new_value)
             elif isinstance(change, UflFlagsPatch.ItemRemoved):
                 self.__values.remove(change.old_value)
+    
+    def copy(self):
+        return UflFlags(self.__type, self.__values)

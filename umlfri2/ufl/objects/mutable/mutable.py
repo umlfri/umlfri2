@@ -9,5 +9,5 @@ class UflMutable:
     def make_patch(self):
         raise NotImplementedError
     
-    def discard_changes(self):
+    def copy(self):
         raise NotImplementedError

@@ -30,3 +30,6 @@ class UflDialogValuedWidget(UflDialogWidget):
     
     def finish_after_save(self):
         self.__old_value = self.__value
+    
+    def discard(self):
+        self.__value = self.__old_value
