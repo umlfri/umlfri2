@@ -30,6 +30,10 @@ class UflFlagsType(UflType):
     @property
     def is_immutable(self):
         return False
+
+    @property
+    def item_type(self):
+        raise NotImplementedError
     
     def parse(self, value):
         return tuple(self.__possibilities[item].value for item in value.split())

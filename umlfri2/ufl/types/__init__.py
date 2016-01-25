@@ -8,6 +8,7 @@ from .flags import UflFlagsType
 from .font import UflFontType
 from .image import UflImageType
 from .integer import UflIntegerType
+from .iterable import UflIterableType
 from .list import UflListType
 from .nullable import UflNullableType
 from .object import UflObjectType, UflObjectAttribute
