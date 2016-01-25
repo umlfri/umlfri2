@@ -1,6 +1,6 @@
 import lxml.etree
 
-from umlfri2.ufl.types import UflObjectType, UflListType
+from umlfri2.ufl.types import UflObjectType, UflListType, UflFlagsType
 from ..constants import MODEL_NAMESPACE, MODEL_SAVE_VERSION, MODEL_SCHEMA
 
 
@@ -102,6 +102,8 @@ class ProjectSaver:
             self.__save_ufl_object(xml, value, type)
         elif isinstance(type, UflListType):
             self.__save_ufl_list(xml, value, type)
+        elif isinstance(type, UflFlagsType):
+            self.__save_ufl_flags(xml, value, type)
         else:
             xml.attrib['value'] = str(value)
     
@@ -114,10 +116,16 @@ class ProjectSaver:
                 self.__save_ufl_any(attr_xml, attr_value, attr.type)
                 xml.append(attr_xml)
     
-    
     def __save_ufl_list(self, xml, value, type):
         for item_value in value:
             item_xml = lxml.etree.Element('{{{0}}}Item'.format(MODEL_NAMESPACE))
             if not type.item_type.is_default_value(item_value):
                 self.__save_ufl_any(item_xml, item_value, type.item_type)
             xml.append(item_xml)
+    
+    def __save_ufl_flags(self, xml, value, type):
+        for possibility in type.possibilities:
+            if possibility.value in value:
+                item_xml = lxml.etree.Element('{{{0}}}Item'.format(MODEL_NAMESPACE))
+                item_xml.attrib['value'] = possibility.name
+                xml.append(item_xml)

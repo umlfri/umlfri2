@@ -36,7 +36,10 @@ class UflFlagsType(UflType):
         raise NotImplementedError
     
     def parse(self, value):
-        return tuple(self.__possibilities[item].value for item in value.split())
+        return UflFlags(self, set(self.__possibilities[item].value for item in value.split()))
+    
+    def parse_possibility(self, value):
+        return self.__possibilities[value].value
     
     def is_valid_possibility(self, value):
         for possibility in self.__possibilities.values():
@@ -45,7 +48,7 @@ class UflFlagsType(UflType):
         return False
     
     def is_default_value(self, value):
-        for possibility in self.__possibilities:
+        for possibility in self.__possibilities.values():
             if possibility in self.__default and possibility.value not in value:
                 return False
             if possibility not in self.__default and possibility.value in value:

@@ -83,6 +83,7 @@
                     <xs:sequence>
                         <xs:element name="Attribute" type="ufl_attribute" minOccurs="0" maxOccurs="unbounded"/>
                     </xs:sequence>
+                    <xs:attribute name="value" type="xs:string" use="optional"/>
                 </xs:complexType>
             </xs:element>
         </xs:choice>

@@ -3,7 +3,7 @@ from uuid import UUID
 import lxml.etree
 
 from umlfri2.types.geometry import Point, Size
-from umlfri2.ufl.types import UflObjectType, UflListType
+from umlfri2.ufl.types import UflObjectType, UflListType, UflFlagsType
 from ..constants import MODEL_NAMESPACE, MODEL_SCHEMA
 from umlfri2.model import Project
 
@@ -164,6 +164,13 @@ class ProjectLoader:
                 if child.tag == "{{{0}}}Item".format(MODEL_NAMESPACE):
                     new_value = ufl_object.append()
                     self.__load_ufl(ufl_type.item_type, child, new_value)
+                else:
+                    raise Exception
+            return None
+        elif isinstance(ufl_type, UflFlagsType):
+            for child in node:
+                if child.tag == "{{{0}}}Item".format(MODEL_NAMESPACE):
+                    ufl_object.set(ufl_type.parse_possibility(child.attrib['value']))
                 else:
                     raise Exception
             return None
