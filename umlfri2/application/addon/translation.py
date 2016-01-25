@@ -1,5 +1,6 @@
 from umlfri2.metamodel import DiagramType, ElementType, ConnectionType
-from umlfri2.ufl.types import UflObjectAttribute, UflObjectType, UflListType, UflEnumType, UflEnumPossibility
+from umlfri2.ufl.types import UflObjectAttribute, UflObjectType, UflListType, UflEnumType, UflEnumPossibility, \
+    UflFlagsType
 
 
 class AttributeTranslation:
@@ -32,7 +33,7 @@ class AttributeTranslation:
                 return self.translate(object.parent)
             else:
                 return None
-        elif isinstance(object, (UflObjectType, UflListType, UflEnumType)):
+        elif isinstance(object, (UflObjectType, UflListType, UflEnumType, UflFlagsType)):
             return self.translate(object.parent)
         elif isinstance(object, UflEnumPossibility):
             if object.name in self.__parents:
