@@ -268,7 +268,10 @@ class Selection:
     def is_selection_at(self, position):
         visual = self.__diagram.get_visual_at(self.__application.ruler, position)
         
-        return visual not in self.__selected
+        return visual in self.__selected
+    
+    def is_selected(self, visual):
+        return visual in self.__selected
     
     def get_bounds(self):
         bounds = [visual.get_bounds(self.__application.ruler) for visual in self.__selected]

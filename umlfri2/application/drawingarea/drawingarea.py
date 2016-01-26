@@ -1,9 +1,11 @@
 from umlfri2.application.events.application import ZoomChangedEvent
 from umlfri2.application.snippet import SnippetBuilder
-from umlfri2.types.geometry import Point
+from umlfri2.types.enums import LineStyle
+from umlfri2.types.geometry import Point, Vector
 from .drawingareacursor import DrawingAreaCursor
 from umlfri2.types.color import Colors
 from .actions import SelectManyAction
+from .alignment import Alignment
 from .selection import Selection
 
 
@@ -11,6 +13,11 @@ class DrawingArea:
     SELECTION_RECTANGLE_FILL = Colors.blue.add_alpha(5)
     SELECTION_RECTANGLE_BORDER = Colors.blue
     SELECTION_RECTANGLE_WIDTH = 3
+    
+    ALIGNMENT_INDICATOR_SIZE = 30
+    ALIGNMENT_INDICATOR_WIDTH = 3
+    ALIGNMENT_INDICATOR_COLOR = Colors.gray
+    ALIGNMENT_INDICATOR_STYLE = LineStyle.dot
     
     ZOOM_FACTOR = 1.25
     ZOOM_MIN = -3
@@ -53,6 +60,26 @@ class DrawingArea:
                     self.__current_action.path,
                     fg=self.SELECTION_RECTANGLE_BORDER,
                     line_width=self.SELECTION_RECTANGLE_WIDTH
+                )
+            
+            for indicator in self.__current_action.horizontal_alignment_indicators:
+                size_vector = Vector(0, self.ALIGNMENT_INDICATOR_SIZE / 2)
+                canvas.draw_line(
+                    indicator - size_vector,
+                    indicator + size_vector,
+                    self.ALIGNMENT_INDICATOR_COLOR,
+                    line_width=self.ALIGNMENT_INDICATOR_WIDTH,
+                    line_style=self.ALIGNMENT_INDICATOR_STYLE
+                )
+            
+            for indicator in self.__current_action.vertical_alignment_indicators:
+                size_vector = Vector(self.ALIGNMENT_INDICATOR_SIZE / 2, 0)
+                canvas.draw_line(
+                    indicator - size_vector,
+                    indicator + size_vector,
+                    self.ALIGNMENT_INDICATOR_COLOR,
+                    line_width=self.ALIGNMENT_INDICATOR_WIDTH,
+                    line_style=self.ALIGNMENT_INDICATOR_STYLE
                 )
     
     def mouse_down(self, point, control_pressed, shift_pressed):
@@ -120,7 +147,7 @@ class DrawingArea:
     def ensure_selection_at(self, point):
         point = self.__transform_position(point)
         
-        if self.__selection.is_selection_at(point):
+        if not self.__selection.is_selection_at(point):
             self.__selection.select_at(point)
     
     def __postprocess_action(self, point, shift_pressed):
@@ -140,6 +167,7 @@ class DrawingArea:
         if action is None:
             self.__cursor = DrawingAreaCursor.arrow
         else:
+            action.align_to(self.__create_alignment())
             action.associate(self.__application, self)
             self.__cursor = action.cursor
     
@@ -222,3 +250,17 @@ class DrawingArea:
             return False
         
         return self.__application.clipboard.can_be_duplicated_to(self.__diagram)
+
+    def __create_alignment(self):
+        rectangles = []
+        points = []
+        
+        for element in self.__diagram.elements:
+            if not self.__selection.is_selected(element):
+                rectangles.append(element.get_bounds(self.__application.ruler))
+        
+        for connection in self.__diagram.connections:
+            for point in connection.get_points(self.__application.ruler, False, False):
+                points.append(point)
+        
+        return Alignment(rectangles, points)

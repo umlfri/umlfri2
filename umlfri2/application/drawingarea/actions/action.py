@@ -18,6 +18,9 @@ class Action:
         self.__application = application
         self.__drawing_area = drawing_area
     
+    def align_to(self, alignment):
+        pass
+    
     def after_finish(self, callback):
         self.__callback = callback
         return self
@@ -37,6 +40,14 @@ class Action:
     @property
     def path(self):
         return None
+    
+    @property
+    def vertical_alignment_indicators(self):
+        return ()
+    
+    @property
+    def horizontal_alignment_indicators(self):
+        return ()
     
     @property
     def finished(self):

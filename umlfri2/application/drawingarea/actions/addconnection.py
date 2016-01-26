@@ -1,6 +1,6 @@
 from umlfri2.application.commands.diagram.adddiagramconnection import AddDiagramConnectionCommand
 from umlfri2.model.element import ElementVisual
-from umlfri2.types.geometry import PathBuilder
+from umlfri2.types.geometry import PathBuilder, Point
 from .action import Action
 
 
@@ -13,6 +13,8 @@ class AddConnectionAction(Action):
         self.__points = []
         self.__first_point = None
         self.__last_point = None
+        self.__alignment = None
+        self.__aligned = None
     
     @property
     def connection_type(self):
@@ -21,6 +23,19 @@ class AddConnectionAction(Action):
     @property
     def path(self):
         return self.__path
+    
+    @property
+    def horizontal_alignment_indicators(self):
+        if self.__aligned is not None:
+            yield from self.__aligned.horizontal_indicators
+    
+    @property
+    def vertical_alignment_indicators(self):
+        if self.__aligned is not None:
+            yield from self.__aligned.vertical_indicators
+    
+    def align_to(self, alignment):
+        self.__alignment = alignment
     
     def mouse_down(self, point):
         if self.__source_element is None:
@@ -47,12 +62,34 @@ class AddConnectionAction(Action):
                     self.drawing_area.selection.select(command.connection_visual)
                     self._finish()
                 else:
+                    if self.__alignment is not None:
+                        self.__aligned = self.__alignment.align_point(point)
+                        point = self.__aligned.result
+                    else:
+                        self.__aligned = None
+                    
                     self.__points.append(point)
+                    self.__alignment.add_point(point)
                     self.__last_point = None
                     self.__build_path()
     
     def mouse_move(self, point):
         if self.__source_element is not None:
+            x, y = point.x, point.y
+            
+            if x < 0:
+                x = 0
+            if y < 0:
+                y = 0
+            
+            point = Point(x, y)
+            
+            if self.__alignment is not None:
+                self.__aligned = self.__alignment.align_point(point)
+                point = self.__aligned.result
+            else:
+                self.__aligned = None
+            
             self.__last_point = point
             self.__build_path()
     

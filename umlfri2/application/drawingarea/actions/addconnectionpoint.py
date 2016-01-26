@@ -12,6 +12,8 @@ class AddConnectionPointAction(Action):
         self.__points = []
         self.__point = None
         self.__path = None
+        self.__alignment = None
+        self.__aligned = None
     
     @property
     def path(self):
@@ -20,6 +22,19 @@ class AddConnectionPointAction(Action):
     @property
     def cursor(self):
         return DrawingAreaCursor.cross
+    
+    @property
+    def horizontal_alignment_indicators(self):
+        if self.__aligned is not None:
+            yield from self.__aligned.horizontal_indicators
+    
+    @property
+    def vertical_alignment_indicators(self):
+        if self.__aligned is not None:
+            yield from self.__aligned.vertical_indicators
+    
+    def align_to(self, alignment):
+        self.__alignment = alignment
     
     def mouse_down(self, point):
         self.__points = list(self.__connection.get_points(self.application.ruler, element_centers=True))
@@ -33,7 +48,15 @@ class AddConnectionPointAction(Action):
         if y < 0:
             y = 0
         
-        self.__point = Point(x, y)
+        point = Point(x, y)
+        
+        if self.__alignment is not None:
+            self.__aligned = self.__alignment.align_point(point)
+            self.__point = self.__aligned.result
+        else:
+            self.__aligned = None
+            self.__point = point
+        
         self.__build_path()
     
     def mouse_up(self):
