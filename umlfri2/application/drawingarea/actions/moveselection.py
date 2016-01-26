@@ -5,7 +5,12 @@ from .action import Action
 
 
 class MoveSelectionAction(Action):
-    __box = None
+    def __init__(self):
+        super().__init__()
+        self.__old_box = None
+        self.__box = None
+        self.__alignment = None
+        self.__aligned = None
     
     @property
     def cursor(self):
@@ -15,18 +20,47 @@ class MoveSelectionAction(Action):
     def box(self):
         return self.__box
     
+    @property
+    def horizontal_alignment_indicators(self):
+        if self.__aligned is not None:
+            yield from self.__aligned.horizontal_indicators
+    
+    @property
+    def vertical_alignment_indicators(self):
+        if self.__aligned is not None:
+            yield from self.__aligned.vertical_indicators
+    
+    def align_to(self, alignment):
+        self.__alignment = alignment
+    
     def mouse_down(self, point):
-        self.__box = self.drawing_area.selection.get_bounds()
+        box = self.drawing_area.selection.get_bounds()
+        
+        if self.__alignment is not None:
+            self.__aligned = self.__alignment.align_rectangle(box)
+            self.__box = self.__aligned.result
+        else:
+            self.__aligned = None
+            self.__box = box
+        
+        self.__old_box = box
         self.__old_point = point
     
     def mouse_move(self, point):
         vector = point - self.__old_point
-        self.__box += vector
-        if self.__box.x1 < 0:
-            self.__box -= Vector(self.__box.x1, 0)
-        if self.__box.y1 < 0:
-            self.__box -= Vector(0, self.__box.y1)
-        self.__old_point = point
+        box = self.__old_box + vector
+        
+        if box.x1 < 0:
+            box -= Vector(box.x1, 0)
+        if box.y1 < 0:
+            box -= Vector(0, box.y1)
+        
+        if self.__alignment is not None:
+            self.__aligned = self.__alignment.align_rectangle(box)
+            self.__box = self.__aligned.result
+        else:
+            self.__aligned = None
+            self.__box = box
     
     def mouse_up(self):
         old_bounds = self.drawing_area.selection.get_bounds()
