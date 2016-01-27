@@ -31,14 +31,14 @@ class MoveSelectionAction(Action):
             yield from self.__aligned.vertical_indicators
     
     def align_to(self, alignment):
-        self.__alignment = alignment
+        self.__alignment = alignment.ignore_selection().build()
     
     def mouse_down(self, point):
         box = self.drawing_area.selection.get_bounds()
         
         if self.__alignment is not None:
             self.__aligned = self.__alignment.align_rectangle(box)
-            self.__box = self.__aligned.result
+            self.__box = self.__aligned.rectangle
         else:
             self.__aligned = None
             self.__box = box
@@ -57,7 +57,7 @@ class MoveSelectionAction(Action):
         
         if self.__alignment is not None:
             self.__aligned = self.__alignment.align_rectangle(box)
-            self.__box = self.__aligned.result
+            self.__box = self.__aligned.rectangle
         else:
             self.__aligned = None
             self.__box = box

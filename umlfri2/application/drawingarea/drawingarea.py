@@ -167,7 +167,8 @@ class DrawingArea:
         if action is None:
             self.__cursor = DrawingAreaCursor.arrow
         else:
-            action.align_to(self.__create_alignment())
+            action.align_to(Alignment(self.__application, self.__diagram.elements, self.__diagram.connections,
+                                      self.__selection.selected_elements))
             action.associate(self.__application, self)
             self.__cursor = action.cursor
     
@@ -250,17 +251,3 @@ class DrawingArea:
             return False
         
         return self.__application.clipboard.can_be_duplicated_to(self.__diagram)
-
-    def __create_alignment(self):
-        rectangles = []
-        points = []
-        
-        for element in self.__diagram.elements:
-            if not self.__selection.is_selected(element):
-                rectangles.append(element.get_bounds(self.__application.ruler))
-        
-        for connection in self.__diagram.connections:
-            for point in connection.get_points(self.__application.ruler, False, False):
-                points.append(point)
-        
-        return Alignment(rectangles, points)

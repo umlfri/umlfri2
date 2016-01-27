@@ -32,11 +32,10 @@ class MoveConnectionPointAction(Action):
             yield from self.__aligned.vertical_indicators
     
     def align_to(self, alignment):
-        self.__alignment = alignment
+        self.__alignment = alignment.ignore_point(self.__connection, self.__index).build()
     
     def mouse_down(self, point):
         self.__points = list(self.__connection.get_points(self.application.ruler, element_centers=True))
-        self.__alignment.ignore_point(self.__points[self.__index])
         self.__build_path()
     
     def mouse_move(self, point):
@@ -51,7 +50,7 @@ class MoveConnectionPointAction(Action):
         
         if self.__alignment is not None:
             self.__aligned = self.__alignment.align_point(point)
-            point = self.__aligned.result
+            point = self.__aligned.point
         else:
             self.__aligned = None
         

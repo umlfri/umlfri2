@@ -1,12 +1,9 @@
-from collections import namedtuple
-
+from .alignedpoint import AlignedPoint
+from .alignedrectangle import AlignedRectangle
 from umlfri2.types.geometry import Point, Vector
 
-Aligned = namedtuple("Aligned", ["result", "aligned_horizontally", "aligned_vertically", "horizontal_indicators",
-                                 "vertical_indicators"])
 
-
-class Alignment:
+class InitializedAlignment:
     MAXIMAL_DISTANCE = 10
     
     def __init__(self, rectangles, points):
@@ -25,10 +22,6 @@ class Alignment:
     
     def add_point(self, point):
         self.__center_guidelines.append(point)
-    
-    def ignore_point(self, point):
-        if point in self.__center_guidelines:
-            self.__center_guidelines.remove(point)
     
     def align_point(self, point):
         best_horizontal = None
@@ -68,13 +61,7 @@ class Alignment:
                     vertical_indicators.add(guideline)
             vertical_indicators.add(point)
         
-        return Aligned(
-            point,
-            bool(horizontal_indicators),
-            bool(vertical_indicators),
-            sorted(horizontal_indicators, key=lambda item: item.x),
-            sorted(vertical_indicators, key=lambda item: item.y)
-        )
+        return AlignedPoint(point, horizontal_indicators, vertical_indicators)
     
     def __align_point_horizontally(self, point):
         best = None
@@ -95,15 +82,9 @@ class Alignment:
                     indicators.add(guideline)
             indicators.add(point)
             
-            return Aligned(
-                point,
-                True,
-                False,
-                sorted(indicators, key=lambda item: item.x),
-                []
-            )
+            return AlignedPoint(point, horizontal_indicators=indicators)
         
-        return Aligned(point, False, False, [], [])
+        return AlignedPoint(point)
     
     def __align_point_vertically(self, point):
         best_vertical = None
@@ -124,15 +105,9 @@ class Alignment:
                     vertical_indicators.add(guideline)
             vertical_indicators.add(point)
             
-            return Aligned(
-                point,
-                False,
-                True,
-                [],
-                sorted(vertical_indicators, key=lambda item: item.y)
-            )
+            return AlignedPoint(point, vertical_indicators=vertical_indicators)
         
-        return Aligned(point, False, False, [], [])
+        return AlignedPoint(point)
     
     def align_rectangle(self, rectangle):
         aligned_vertically = []
@@ -141,19 +116,19 @@ class Alignment:
         center = rectangle.center
         aligned_center = self.align_point(center)
         if aligned_center.aligned_horizontally:
-            aligned_horizontally.append((aligned_center, (aligned_center.result - center)))
+            aligned_horizontally.append((aligned_center, (aligned_center.point - center)))
         if aligned_center.aligned_vertically:
-            aligned_vertically.append((aligned_center, (aligned_center.result - center)))
+            aligned_vertically.append((aligned_center, (aligned_center.point - center)))
         
         for point in rectangle.left_center, rectangle.right_center:
             aligned_point = self.__align_point_horizontally(point)
             if aligned_point.aligned_horizontally:
-                aligned_horizontally.append((aligned_point, (aligned_point.result - point)))
+                aligned_horizontally.append((aligned_point, (aligned_point.point - point)))
         
         for point in rectangle.top_center, rectangle.bottom_center:
             aligned_point = self.__align_point_vertically(point)
             if aligned_point.aligned_vertically:
-                aligned_vertically.append((aligned_point, (aligned_point.result - point)))
+                aligned_vertically.append((aligned_point, (aligned_point.point - point)))
         
         best_vertical_indicators = None
         best_vertical_delta = float('inf')
@@ -171,28 +146,20 @@ class Alignment:
                 best_horizontal_indicators = alignment.horizontal_indicators
         
         if best_horizontal_indicators is not None and best_vertical_indicators is not None:
-            return Aligned(
+            return AlignedRectangle(
                 rectangle + Vector(best_horizontal_delta, best_vertical_delta),
-                True,
-                True,
                 best_horizontal_indicators,
                 best_vertical_indicators
             )
         elif best_horizontal_indicators is not None:
-            return Aligned(
+            return AlignedRectangle(
                 rectangle + Vector(best_horizontal_delta, 0),
-                True,
-                False,
-                best_horizontal_indicators,
-                []
+                horizontal_indicators=best_horizontal_indicators
             )
         elif best_vertical_indicators is not None:
-            return Aligned(
+            return AlignedRectangle(
                 rectangle + Vector(0, best_vertical_delta),
-                False,
-                True,
-                [],
-                best_vertical_indicators
+                vertical_indicators=best_vertical_indicators
             )
         else:
-            return Aligned(rectangle, False, False, [], [])
+            return AlignedRectangle(rectangle)

@@ -35,7 +35,7 @@ class AddConnectionAction(Action):
             yield from self.__aligned.vertical_indicators
     
     def align_to(self, alignment):
-        self.__alignment = alignment
+        self.__alignment = alignment.build()
     
     def mouse_down(self, point):
         if self.__source_element is None:
@@ -64,7 +64,7 @@ class AddConnectionAction(Action):
                 else:
                     if self.__alignment is not None:
                         self.__aligned = self.__alignment.align_point(point)
-                        point = self.__aligned.result
+                        point = self.__aligned.point
                     else:
                         self.__aligned = None
                     
@@ -86,7 +86,7 @@ class AddConnectionAction(Action):
             
             if self.__alignment is not None:
                 self.__aligned = self.__alignment.align_point(point)
-                point = self.__aligned.result
+                point = self.__aligned.point
             else:
                 self.__aligned = None
             
