@@ -5,7 +5,7 @@ from umlfri2.types.geometry import Point, Vector
 from .drawingareacursor import DrawingAreaCursor
 from umlfri2.types.color import Colors
 from .actions import SelectManyAction
-from .alignment import Alignment
+from .snapping import Snapping
 from .selection import Selection
 
 
@@ -14,10 +14,10 @@ class DrawingArea:
     SELECTION_RECTANGLE_BORDER = Colors.blue
     SELECTION_RECTANGLE_WIDTH = 3
     
-    ALIGNMENT_INDICATOR_SIZE = 30
-    ALIGNMENT_INDICATOR_WIDTH = 3
-    ALIGNMENT_INDICATOR_COLOR = Colors.gray
-    ALIGNMENT_INDICATOR_STYLE = LineStyle.dot
+    SNAPPING_INDICATOR_SIZE = 30
+    SNAPPING_INDICATOR_WIDTH = 3
+    SNAPPING_INDICATOR_COLOR = Colors.gray
+    SNAPPING_INDICATOR_STYLE = LineStyle.dot
     
     ZOOM_FACTOR = 1.25
     ZOOM_MIN = -3
@@ -31,10 +31,19 @@ class DrawingArea:
         self.__current_action = None
         self.__cursor = DrawingAreaCursor.arrow
         self.__zoom = 0
+        self.__enable_snapping = True
     
     @property
     def diagram(self):
         return self.__diagram
+    
+    @property
+    def enable_snapping(self):
+        return self.__enable_snapping
+    
+    @enable_snapping.setter
+    def enable_snapping(self, value):
+        self.__enable_snapping = value
     
     @property
     def cursor(self):
@@ -62,24 +71,24 @@ class DrawingArea:
                     line_width=self.SELECTION_RECTANGLE_WIDTH
                 )
             
-            for indicator in self.__current_action.horizontal_alignment_indicators:
-                size_vector = Vector(0, self.ALIGNMENT_INDICATOR_SIZE / 2)
+            for indicator in self.__current_action.horizontal_snapping_indicators:
+                size_vector = Vector(0, self.SNAPPING_INDICATOR_SIZE / 2)
                 canvas.draw_line(
                     indicator - size_vector,
                     indicator + size_vector,
-                    self.ALIGNMENT_INDICATOR_COLOR,
-                    line_width=self.ALIGNMENT_INDICATOR_WIDTH,
-                    line_style=self.ALIGNMENT_INDICATOR_STYLE
+                    self.SNAPPING_INDICATOR_COLOR,
+                    line_width=self.SNAPPING_INDICATOR_WIDTH,
+                    line_style=self.SNAPPING_INDICATOR_STYLE
                 )
             
-            for indicator in self.__current_action.vertical_alignment_indicators:
-                size_vector = Vector(self.ALIGNMENT_INDICATOR_SIZE / 2, 0)
+            for indicator in self.__current_action.vertical_snapping_indicators:
+                size_vector = Vector(self.SNAPPING_INDICATOR_SIZE / 2, 0)
                 canvas.draw_line(
                     indicator - size_vector,
                     indicator + size_vector,
-                    self.ALIGNMENT_INDICATOR_COLOR,
-                    line_width=self.ALIGNMENT_INDICATOR_WIDTH,
-                    line_style=self.ALIGNMENT_INDICATOR_STYLE
+                    self.SNAPPING_INDICATOR_COLOR,
+                    line_width=self.SNAPPING_INDICATOR_WIDTH,
+                    line_style=self.SNAPPING_INDICATOR_STYLE
                 )
     
     def mouse_down(self, point, control_pressed, shift_pressed):
@@ -167,8 +176,9 @@ class DrawingArea:
         if action is None:
             self.__cursor = DrawingAreaCursor.arrow
         else:
-            action.align_to(Alignment(self.__application, self.__diagram.elements, self.__diagram.connections,
-                                      self.__selection.selected_elements))
+            if self.__enable_snapping:
+                action.snap_to(Snapping(self.__application, self.__diagram.elements, self.__diagram.connections,
+                                        self.__selection.selected_elements))
             action.associate(self.__application, self)
             self.__cursor = action.cursor
     

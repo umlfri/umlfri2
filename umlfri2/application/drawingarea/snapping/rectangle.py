@@ -1,19 +1,19 @@
-class AlignedPoint:
-    def __init__(self, point, horizontal_indicators=(), vertical_indicators=()):
-        self.__point = point
+class SnappedRectangle:
+    def __init__(self, rectangle, horizontal_indicators=(), vertical_indicators=()):
+        self.__rectangle = rectangle
         self.__horizontal_indicators = sorted(horizontal_indicators, key=lambda item: item.x)
         self.__vertical_indicators = sorted(vertical_indicators, key=lambda item: item.y)
     
     @property
-    def point(self):
-        return self.__point
+    def rectangle(self):
+        return self.__rectangle
     
     @property
-    def aligned_horizontally(self):
+    def snapped_horizontally(self):
         return bool(self.__horizontal_indicators)
     
     @property
-    def aligned_vertically(self):
+    def snapped_vertically(self):
         return bool(self.__vertical_indicators)
     
     @property

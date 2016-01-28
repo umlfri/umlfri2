@@ -9,8 +9,8 @@ class MoveSelectionAction(Action):
         super().__init__()
         self.__old_box = None
         self.__box = None
-        self.__alignment = None
-        self.__aligned = None
+        self.__snapping = None
+        self.__snapped = None
     
     @property
     def cursor(self):
@@ -21,26 +21,26 @@ class MoveSelectionAction(Action):
         return self.__box
     
     @property
-    def horizontal_alignment_indicators(self):
-        if self.__aligned is not None:
-            yield from self.__aligned.horizontal_indicators
+    def horizontal_snapping_indicators(self):
+        if self.__snapped is not None:
+            yield from self.__snapped.horizontal_indicators
     
     @property
-    def vertical_alignment_indicators(self):
-        if self.__aligned is not None:
-            yield from self.__aligned.vertical_indicators
+    def vertical_snapping_indicators(self):
+        if self.__snapped is not None:
+            yield from self.__snapped.vertical_indicators
     
-    def align_to(self, alignment):
-        self.__alignment = alignment.ignore_selection().build()
+    def snap_to(self, snapping):
+        self.__snapping = snapping.ignore_selection().build()
     
     def mouse_down(self, point):
         box = self.drawing_area.selection.get_bounds()
         
-        if self.__alignment is not None:
-            self.__aligned = self.__alignment.align_rectangle(box)
-            self.__box = self.__aligned.rectangle
+        if self.__snapping is not None:
+            self.__snapped = self.__snapping.snap_rectangle(box)
+            self.__box = self.__snapped.rectangle
         else:
-            self.__aligned = None
+            self.__snapped = None
             self.__box = box
         
         self.__old_box = box
@@ -55,11 +55,11 @@ class MoveSelectionAction(Action):
         if box.y1 < 0:
             box -= Vector(0, box.y1)
         
-        if self.__alignment is not None:
-            self.__aligned = self.__alignment.align_rectangle(box)
-            self.__box = self.__aligned.rectangle
+        if self.__snapping is not None:
+            self.__snapped = self.__snapping.snap_rectangle(box)
+            self.__box = self.__snapped.rectangle
         else:
-            self.__aligned = None
+            self.__snapped = None
             self.__box = box
     
     def mouse_up(self):

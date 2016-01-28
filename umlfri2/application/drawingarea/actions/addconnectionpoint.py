@@ -12,8 +12,8 @@ class AddConnectionPointAction(Action):
         self.__points = []
         self.__point = None
         self.__path = None
-        self.__alignment = None
-        self.__aligned = None
+        self.__snapping = None
+        self.__snapped = None
     
     @property
     def path(self):
@@ -24,17 +24,17 @@ class AddConnectionPointAction(Action):
         return DrawingAreaCursor.cross
     
     @property
-    def horizontal_alignment_indicators(self):
-        if self.__aligned is not None:
-            yield from self.__aligned.horizontal_indicators
+    def horizontal_snapping_indicators(self):
+        if self.__snapped is not None:
+            yield from self.__snapped.horizontal_indicators
     
     @property
-    def vertical_alignment_indicators(self):
-        if self.__aligned is not None:
-            yield from self.__aligned.vertical_indicators
+    def vertical_snapping_indicators(self):
+        if self.__snapped is not None:
+            yield from self.__snapped.vertical_indicators
     
-    def align_to(self, alignment):
-        self.__alignment = alignment.build()
+    def snap_to(self, snapping):
+        self.__snapping = snapping.build()
     
     def mouse_down(self, point):
         self.__points = list(self.__connection.get_points(self.application.ruler, element_centers=True))
@@ -50,11 +50,11 @@ class AddConnectionPointAction(Action):
         
         point = Point(x, y)
         
-        if self.__alignment is not None:
-            self.__aligned = self.__alignment.align_point(point)
-            self.__point = self.__aligned.point
+        if self.__snapping is not None:
+            self.__snapped = self.__snapping.snap_point(point)
+            self.__point = self.__snapped.point
         else:
-            self.__aligned = None
+            self.__snapped = None
             self.__point = point
         
         self.__build_path()

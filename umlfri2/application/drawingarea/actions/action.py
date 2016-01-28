@@ -18,7 +18,7 @@ class Action:
         self.__application = application
         self.__drawing_area = drawing_area
     
-    def align_to(self, alignment):
+    def snap_to(self, snapping):
         pass
     
     def after_finish(self, callback):
@@ -42,11 +42,11 @@ class Action:
         return None
     
     @property
-    def vertical_alignment_indicators(self):
+    def vertical_snapping_indicators(self):
         return ()
     
     @property
-    def horizontal_alignment_indicators(self):
+    def horizontal_snapping_indicators(self):
         return ()
     
     @property

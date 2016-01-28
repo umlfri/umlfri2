@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-19 10:21+0100\n"
-"PO-Revision-Date: 2016-01-19 10:26+0100\n"
+"POT-Creation-Date: 2016-01-28 10:53+0100\n"
+"PO-Revision-Date: 2016-01-28 13:31+0100\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -68,6 +68,21 @@ msgstr "Pridať diagram"
 msgid "Add Element"
 msgstr "Pridať element"
 
+msgid "Align Bottom"
+msgstr "Zarovnať dole"
+
+msgid "Align Left"
+msgstr "Zarovnať naľavo"
+
+msgid "Align Right"
+msgstr "Zarovnať vpravo"
+
+msgid "Align Top"
+msgstr "Zarovnať nahor"
+
+msgid "Snapping"
+msgstr "Zarovnanie"
+
 msgid "Application Exit"
 msgstr "Ukončenie aplikácie"
 
@@ -79,6 +94,12 @@ msgstr "Vy&strihnúť"
 
 msgid "Cancel"
 msgstr "Zrušiť"
+
+msgid "Center Horizontally"
+msgstr "Centrovať vodorovne"
+
+msgid "Center Vertically"
+msgstr "Centrovať zvisle"
 
 msgid "Change &Language"
 msgstr "Zmeniť &jazyk"
@@ -97,6 +118,9 @@ msgstr "Vytvoriť novú &solution"
 
 msgid "Cut"
 msgstr "Vystrihnúť"
+
+msgid "Data changed"
+msgstr "Dáta boli zmenené"
 
 msgid "Delete"
 msgstr "Odstrániť"
@@ -206,9 +230,6 @@ msgstr "Uložiť &ako"
 msgid "Save Project"
 msgstr "Uložiť projekt"
 
-msgid "Save needed"
-msgstr "Je potrebné uložiť dáta"
-
 msgid "Select"
 msgstr "Vybrať"
 
@@ -223,6 +244,9 @@ msgstr "Zobraziť na &celú obrazovku"
 
 msgid "Show in Diagram"
 msgstr "Zobraziť v diagrame"
+
+msgid "Snap to Other Objects"
+msgstr "Prichytávanie k iným objektom"
 
 msgid "System language"
 msgstr "Systémový jazyk"

@@ -1,9 +1,9 @@
-from .alignedpoint import AlignedPoint
-from .alignedrectangle import AlignedRectangle
+from .point import SnappedPoint
+from .rectangle import SnappedRectangle
 from umlfri2.types.geometry import Point, Vector
 
 
-class InitializedAlignment:
+class InitializedSnapping:
     MAXIMAL_DISTANCE = 10
     
     def __init__(self, rectangles, points):
@@ -23,7 +23,7 @@ class InitializedAlignment:
     def add_point(self, point):
         self.__center_guidelines.append(point)
     
-    def align_point(self, point):
+    def snap_point(self, point):
         best_horizontal = None
         best_horizontal_distance = self.MAXIMAL_DISTANCE
         best_vertical = None
@@ -61,9 +61,9 @@ class InitializedAlignment:
                     vertical_indicators.add(guideline)
             vertical_indicators.add(point)
         
-        return AlignedPoint(point, horizontal_indicators, vertical_indicators)
+        return SnappedPoint(point, horizontal_indicators, vertical_indicators)
     
-    def __align_point_horizontally(self, point):
+    def __snap_point_horizontally(self, point):
         best = None
         best_distance = self.MAXIMAL_DISTANCE
         
@@ -77,16 +77,16 @@ class InitializedAlignment:
         
         if best is not None:
             point = Point(best.x, point.y)
-            for guideline in self.__center_guidelines:
+            for guideline in self.__horizontal_guidelines:
                 if best.x == guideline.x:
                     indicators.add(guideline)
             indicators.add(point)
             
-            return AlignedPoint(point, horizontal_indicators=indicators)
+            return SnappedPoint(point, horizontal_indicators=indicators)
         
-        return AlignedPoint(point)
+        return SnappedPoint(point)
     
-    def __align_point_vertically(self, point):
+    def __snap_point_vertically(self, point):
         best_vertical = None
         best_vertical_distance = self.MAXIMAL_DISTANCE
         
@@ -100,66 +100,66 @@ class InitializedAlignment:
         
         if best_vertical is not None:
             point = Point(point.x, best_vertical.y)
-            for guideline in self.__center_guidelines:
+            for guideline in self.__vertical_guidelines:
                 if best_vertical.y == guideline.y:
                     vertical_indicators.add(guideline)
             vertical_indicators.add(point)
             
-            return AlignedPoint(point, vertical_indicators=vertical_indicators)
+            return SnappedPoint(point, vertical_indicators=vertical_indicators)
         
-        return AlignedPoint(point)
+        return SnappedPoint(point)
     
-    def align_rectangle(self, rectangle):
-        aligned_vertically = []
-        aligned_horizontally = []
+    def snap_rectangle(self, rectangle):
+        snapped_vertically = []
+        snapped_horizontally = []
         
         center = rectangle.center
-        aligned_center = self.align_point(center)
-        if aligned_center.aligned_horizontally:
-            aligned_horizontally.append((aligned_center, (aligned_center.point - center)))
-        if aligned_center.aligned_vertically:
-            aligned_vertically.append((aligned_center, (aligned_center.point - center)))
+        snapped_center = self.snap_point(center)
+        if snapped_center.snapped_horizontally:
+            snapped_horizontally.append((snapped_center, (snapped_center.point - center)))
+        if snapped_center.snapped_vertically:
+            snapped_vertically.append((snapped_center, (snapped_center.point - center)))
         
         for point in rectangle.left_center, rectangle.right_center:
-            aligned_point = self.__align_point_horizontally(point)
-            if aligned_point.aligned_horizontally:
-                aligned_horizontally.append((aligned_point, (aligned_point.point - point)))
+            snapped_point = self.__snap_point_horizontally(point)
+            if snapped_point.snapped_horizontally:
+                snapped_horizontally.append((snapped_point, (snapped_point.point - point)))
         
         for point in rectangle.top_center, rectangle.bottom_center:
-            aligned_point = self.__align_point_vertically(point)
-            if aligned_point.aligned_vertically:
-                aligned_vertically.append((aligned_point, (aligned_point.point - point)))
+            snapped_point = self.__snap_point_vertically(point)
+            if snapped_point.snapped_vertically:
+                snapped_vertically.append((snapped_point, (snapped_point.point - point)))
         
         best_vertical_indicators = None
         best_vertical_delta = float('inf')
         best_horizontal_indicators = None
         best_horizontal_delta = float('inf')
         
-        for alignment, vector in aligned_vertically:
+        for snapping, vector in snapped_vertically:
             if abs(vector.y) < abs(best_vertical_delta):
                 best_vertical_delta = vector.y
-                best_vertical_indicators = alignment.vertical_indicators
+                best_vertical_indicators = snapping.vertical_indicators
         
-        for alignment, vector in aligned_horizontally:
+        for snapping, vector in snapped_horizontally:
             if abs(vector.x) < abs(best_horizontal_delta):
                 best_horizontal_delta = vector.x
-                best_horizontal_indicators = alignment.horizontal_indicators
+                best_horizontal_indicators = snapping.horizontal_indicators
         
         if best_horizontal_indicators is not None and best_vertical_indicators is not None:
-            return AlignedRectangle(
+            return SnappedRectangle(
                 rectangle + Vector(best_horizontal_delta, best_vertical_delta),
                 best_horizontal_indicators,
                 best_vertical_indicators
             )
         elif best_horizontal_indicators is not None:
-            return AlignedRectangle(
+            return SnappedRectangle(
                 rectangle + Vector(best_horizontal_delta, 0),
                 horizontal_indicators=best_horizontal_indicators
             )
         elif best_vertical_indicators is not None:
-            return AlignedRectangle(
+            return SnappedRectangle(
                 rectangle + Vector(0, best_vertical_delta),
                 vertical_indicators=best_vertical_indicators
             )
         else:
-            return AlignedRectangle(rectangle)
+            return SnappedRectangle(rectangle)

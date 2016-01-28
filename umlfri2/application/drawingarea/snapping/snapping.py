@@ -1,7 +1,7 @@
-from .initialized import InitializedAlignment
+from .initialized import InitializedSnapping
 
 
-class Alignment:
+class Snapping:
     MAXIMAL_DISTANCE = 10
     
     def __init__(self, application, elements, connections, selected_elements):
@@ -37,4 +37,4 @@ class Alignment:
                         continue
                 points.append(point)
         
-        return InitializedAlignment(rectangles, points)
+        return InitializedSnapping(rectangles, points)

@@ -13,8 +13,8 @@ class AddConnectionAction(Action):
         self.__points = []
         self.__first_point = None
         self.__last_point = None
-        self.__alignment = None
-        self.__aligned = None
+        self.__snapping = None
+        self.__snapped = None
     
     @property
     def connection_type(self):
@@ -25,17 +25,17 @@ class AddConnectionAction(Action):
         return self.__path
     
     @property
-    def horizontal_alignment_indicators(self):
-        if self.__aligned is not None:
-            yield from self.__aligned.horizontal_indicators
+    def horizontal_snapping_indicators(self):
+        if self.__snapped is not None:
+            yield from self.__snapped.horizontal_indicators
     
     @property
-    def vertical_alignment_indicators(self):
-        if self.__aligned is not None:
-            yield from self.__aligned.vertical_indicators
+    def vertical_snapping_indicators(self):
+        if self.__snapped is not None:
+            yield from self.__snapped.vertical_indicators
     
-    def align_to(self, alignment):
-        self.__alignment = alignment.build()
+    def snap_to(self, snapping):
+        self.__snapping = snapping.build()
     
     def mouse_down(self, point):
         if self.__source_element is None:
@@ -62,14 +62,14 @@ class AddConnectionAction(Action):
                     self.drawing_area.selection.select(command.connection_visual)
                     self._finish()
                 else:
-                    if self.__alignment is not None:
-                        self.__aligned = self.__alignment.align_point(point)
-                        point = self.__aligned.point
+                    if self.__snapping is not None:
+                        self.__snapped = self.__snapping.snap_point(point)
+                        point = self.__snapped.point
                     else:
-                        self.__aligned = None
+                        self.__snapped = None
                     
                     self.__points.append(point)
-                    self.__alignment.add_point(point)
+                    self.__snapping.add_point(point)
                     self.__last_point = None
                     self.__build_path()
     
@@ -84,11 +84,11 @@ class AddConnectionAction(Action):
             
             point = Point(x, y)
             
-            if self.__alignment is not None:
-                self.__aligned = self.__alignment.align_point(point)
-                point = self.__aligned.point
+            if self.__snapping is not None:
+                self.__snapped = self.__snapping.snap_point(point)
+                point = self.__snapped.point
             else:
-                self.__aligned = None
+                self.__snapped = None
             
             self.__last_point = point
             self.__build_path()

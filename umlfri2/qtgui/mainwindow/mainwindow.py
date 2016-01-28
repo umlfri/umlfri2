@@ -11,7 +11,8 @@ from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent
 from umlfri2.constants.paths import GRAPHICS
 from umlfri2.model import Diagram
 from umlfri2.qtgui.base.clipboard import QtClipboardAdatper
-from umlfri2.qtgui.mainwindow.addontoolbar import AddOnToolBar
+from .addontoolbar import AddOnToolBar
+from .aligntoolbar import AlignToolBar
 from ..toolbox import MainToolBox
 from .menu import MainWindowMenu
 from .newproject import NewProjectDialog
@@ -54,6 +55,9 @@ class UmlFriMainWindow(QMainWindow):
         
         self.__tool_bar = MainToolBar(self)
         self.addToolBar(self.__tool_bar)
+        
+        self.__align_tool_bar = AlignToolBar()
+        self.addToolBar(self.__align_tool_bar)
         
         self.__addon_toolbars = []
         self.__create_addon_toolbars()
@@ -165,6 +169,7 @@ class UmlFriMainWindow(QMainWindow):
     
     def get_toolbar_actions(self):
         yield self.__tool_bar.toggleViewAction()
+        yield self.__align_tool_bar.toggleViewAction()
         
         for toolbar in self.__addon_toolbars:
             yield toolbar.toggleViewAction()
