@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-28 10:53+0100\n"
-"PO-Revision-Date: 2016-01-28 13:31+0100\n"
+"POT-Creation-Date: 2016-02-03 16:41+0100\n"
+"PO-Revision-Date: 2016-02-03 16:42+0100\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -68,6 +68,9 @@ msgstr "Pridať diagram"
 msgid "Add Element"
 msgstr "Pridať element"
 
+msgid "Add-ons"
+msgstr "Rozšírenia"
+
 msgid "Align Bottom"
 msgstr "Zarovnať dole"
 
@@ -79,9 +82,6 @@ msgstr "Zarovnať vpravo"
 
 msgid "Align Top"
 msgstr "Zarovnať nahor"
-
-msgid "Snapping"
-msgstr "Zarovnanie"
 
 msgid "Application Exit"
 msgstr "Ukončenie aplikácie"
@@ -103,6 +103,9 @@ msgstr "Centrovať zvisle"
 
 msgid "Change &Language"
 msgstr "Zmeniť &jazyk"
+
+msgid "Close"
+msgstr "Zatvoriť"
 
 msgid "Close without saving"
 msgstr "Zatvoriť bez uloženia"
@@ -247,6 +250,9 @@ msgstr "Zobraziť v diagrame"
 
 msgid "Snap to Other Objects"
 msgstr "Prichytávanie k iným objektom"
+
+msgid "Snapping"
+msgstr "Zarovnanie"
 
 msgid "System language"
 msgstr "Systémový jazyk"

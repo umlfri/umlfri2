@@ -21,4 +21,4 @@
 - [ ] addon management
 - [ ] printing
 - [x] fullscreen
-- [ ] fix bugs in discarding values in properties dialog
+- [x] fix bugs in discarding values in properties dialog

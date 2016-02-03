@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-28 10:53+0100\n"
+"POT-Creation-Date: 2016-02-03 16:41+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -68,6 +68,9 @@ msgstr ""
 msgid "Add Element"
 msgstr ""
 
+msgid "Add-ons"
+msgstr ""
+
 msgid "Align Bottom"
 msgstr ""
 
@@ -78,9 +81,6 @@ msgid "Align Right"
 msgstr ""
 
 msgid "Align Top"
-msgstr ""
-
-msgid "Snapping"
 msgstr ""
 
 msgid "Application Exit"
@@ -102,6 +102,9 @@ msgid "Center Vertically"
 msgstr ""
 
 msgid "Change &Language"
+msgstr ""
+
+msgid "Close"
 msgstr ""
 
 msgid "Close without saving"
@@ -246,6 +249,9 @@ msgid "Show in Diagram"
 msgstr ""
 
 msgid "Snap to Other Objects"
+msgstr ""
+
+msgid "Snapping"
 msgstr ""
 
 msgid "System language"

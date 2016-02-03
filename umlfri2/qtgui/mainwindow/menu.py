@@ -8,6 +8,7 @@ from umlfri2.application.events.application.languagechanged import LanguageChang
 from umlfri2.constants.keys import FULL_SCREEN, ZOOM_ORIGINAL, PASTE_DUPLICATE, COPY_IMAGE
 from umlfri2.constants.languages import AVAILABLE_LANGUAGES
 from umlfri2.qtgui.fullscreen import FullScreenDiagram
+from .addons import AddOnsDialog
 from umlfri2.qtgui.rendering import ImageExport, ExportDialog
 
 
@@ -45,6 +46,10 @@ class MainWindowMenu(QMenuBar):
         
         self.__edit_select_all = self.__add_menu_item(edit_menu, QKeySequence.SelectAll, "edit-select-all",
                                                       self.__edit_select_all_action)
+        
+        edit_menu.addSeparator()
+        
+        self.__edit_addons = self.__add_menu_item(edit_menu, None, None, self.__edit_addons_actions)
         
         self.__diagram, diagram_menu = self.__add_menu()
         self.__diagram_export = self.__add_menu_item(diagram_menu, None, None, self.__diagram_export_action)
@@ -204,6 +209,9 @@ class MainWindowMenu(QMenuBar):
     def __edit_select_all_action(self, checked=False):
         Application().tabs.current_tab.drawing_area.selection.select_all()
     
+    def __edit_addons_actions(self, checked=False):
+        AddOnsDialog(self.__main_window).exec_()
+    
     def __diagram_export_action(self, checked=False):
         dialog = ExportDialog(self.__main_window)
         
@@ -292,6 +300,7 @@ class MainWindowMenu(QMenuBar):
         self.__edit_paste.setText(_("&Paste"))
         self.__edit_duplicate.setText(_("Paste &Duplicate"))
         self.__edit_select_all.setText(_("Select &All"))
+        self.__edit_addons.setText(_("Add-ons"))
         
         self.__diagram.setText(_("&Diagram"))
         self.__diagram_export.setText(_("Export as &Image"))
