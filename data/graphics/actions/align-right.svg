@@ -77,7 +77,7 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:#cccccc;fill-opacity:1;stroke:none"
+       style="fill:#aaaaff;fill-opacity:1;stroke:none"
        id="rect6734"
        width="17.1"
        height="4.6363635"
@@ -85,7 +85,7 @@
        y="1"
        transform="scale(-1,1)" />
     <rect
-       style="fill:#999999;fill-opacity:1;stroke:none"
+       style="fill:#8080ff;fill-opacity:1;stroke:none"
        id="rect6738"
        width="19"
        height="7.7272725"
@@ -98,7 +98,7 @@
        height="7.7272725"
        width="11.4"
        id="rect6736"
-       style="fill:#666666;fill-opacity:1;stroke:none"
+       style="fill:#2a2aff;fill-opacity:1;stroke:none"
        transform="scale(-1,1)" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1;stroke-opacity:1"
