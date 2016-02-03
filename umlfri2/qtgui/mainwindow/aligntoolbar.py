@@ -1,8 +1,10 @@
 import os.path
+from functools import partial
 
 from PySide.QtGui import QToolBar, QAction, QIcon, QPixmap
 
 from umlfri2.application import Application
+from umlfri2.application.commands.diagram import AlignType, AlignSelectionCommand
 from umlfri2.application.events.application import LanguageChangedEvent
 from umlfri2.application.events.diagram import SelectionChangedEvent
 from umlfri2.application.events.tabs import ChangedCurrentTabEvent
@@ -13,15 +15,23 @@ class AlignToolBar(QToolBar):
     def __init__(self):
         super().__init__()
         
-        self.__align_left = self.__add_toolbar_item("align-left")
-        self.__align_center_horizontally = self.__add_toolbar_item("align-hcenter")
-        self.__align_right = self.__add_toolbar_item("align-right")
+        self.__align_left = self.__add_toolbar_item("align-left",
+                                                    partial(self.__align_action, horizontal=AlignType.Minimum))
+        self.__align_center_horizontally = self.__add_toolbar_item("align-hcenter",
+                                                                   partial(self.__align_action,
+                                                                           horizontal=AlignType.Center))
+        self.__align_right = self.__add_toolbar_item("align-right",
+                                                     partial(self.__align_action, horizontal=AlignType.Maximum))
         
         self.addSeparator()
         
-        self.__align_top = self.__add_toolbar_item("align-top")
-        self.__align_center_vertically = self.__add_toolbar_item("align-vcenter")
-        self.__align_bottom = self.__add_toolbar_item("align-bottom")
+        self.__align_top = self.__add_toolbar_item("align-top",
+                                                   partial(self.__align_action, vertical=AlignType.Minimum))
+        self.__align_center_vertically = self.__add_toolbar_item("align-vcenter",
+                                                                 partial(self.__align_action,
+                                                                         vertical=AlignType.Center))
+        self.__align_bottom = self.__add_toolbar_item("align-bottom",
+                                                      partial(self.__align_action, vertical=AlignType.Maximum))
         
         self.__alignments = [self.__align_left, self.__align_center_horizontally, self.__align_right,
                              self.__align_top, self.__align_center_vertically, self.__align_bottom]
@@ -64,6 +74,12 @@ class AlignToolBar(QToolBar):
             self.__enable_snapping.setChecked(event.tab.drawing_area.enable_snapping)
         else:
             self.__enable_snapping.setChecked(False)
+    
+    def __align_action(self, checked=False, horizontal=None, vertical=None):
+        tab = Application().tabs.current_tab
+        if tab is not None:
+            command = AlignSelectionCommand(tab.drawing_area.selection, horizontal=horizontal, vertical=vertical)
+            Application().commands.execute(command)
     
     def __enable_snapping_action(self, checked=False):
         tab = Application().tabs.current_tab

@@ -5,7 +5,7 @@
 - [x] "Show in project tree" content menu item
 - [x] reversing a connection
 - [x] z-order
-- [ ] alignment
+- [x] alignment
 - [ ] application preferences window - move language there
 - [ ] persisting application preferences (appdirs module)
 - [x] plugin system

@@ -273,10 +273,10 @@ class Selection:
     def is_selected(self, visual):
         return visual in self.__selected
     
-    def get_bounds(self):
+    def get_bounds(self, include_connections=True):
         bounds = [visual.get_bounds(self.__application.ruler) for visual in self.__selected]
         
-        if self.is_element_selected:
+        if include_connections and self.is_element_selected:
             for connection in self.__diagram.connections:
                 if connection.source in self.__selected and connection.destination in self.__selected:
                     bounds.append(connection.get_bounds(self.__application.ruler))

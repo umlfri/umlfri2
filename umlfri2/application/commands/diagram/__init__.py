@@ -11,3 +11,4 @@ from .hideelements import HideElementsCommand
 from .changezorder import ChangeZOrderCommand, ZOrderDirection
 from .pastesnippet import PasteSnippetCommand
 from .duplicatesnippet import DuplicateSnippetCommand
+from .alignselection import AlignSelectionCommand, AlignType
