@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-03 16:41+0100\n"
+"POT-Creation-Date: 2016-02-04 14:05+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -60,6 +60,9 @@ msgid "&Undo"
 msgstr ""
 
 msgid "&View"
+msgstr ""
+
+msgid "About..."
 msgstr ""
 
 msgid "Add Diagram"
@@ -158,6 +161,12 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
+msgid "Homepage"
+msgstr ""
+
+msgid "Install new..."
+msgstr ""
+
 msgid "Lower"
 msgstr ""
 
@@ -198,6 +207,9 @@ msgid "Paste &Duplicate"
 msgstr ""
 
 msgid "Paste Duplicate"
+msgstr ""
+
+msgid "Preferences..."
 msgstr ""
 
 msgid "Project"
@@ -254,6 +266,12 @@ msgstr ""
 msgid "Snapping"
 msgstr ""
 
+msgid "Start"
+msgstr ""
+
+msgid "Stop"
+msgstr ""
+
 msgid "System language"
 msgstr ""
 
@@ -276,6 +294,9 @@ msgid "UML .FRI 2 projects"
 msgstr ""
 
 msgid "Undo"
+msgstr ""
+
+msgid "Uninstall"
 msgstr ""
 
 msgid "Value"

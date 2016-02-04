@@ -1,6 +1,6 @@
 from PySide.QtCore import QSize, Qt
 from PySide.QtGui import QDialog, QDialogButtonBox, QVBoxLayout, QTableWidget, QHBoxLayout, QLabel, QWidget, \
-    QTableWidgetItem, QFont, QStyledItemDelegate, QStyle, QPushButton, QIcon
+    QTableWidgetItem, QFont, QStyledItemDelegate, QStyle, QPushButton, QIcon, QMenu
 from umlfri2.application import Application
 from ..base import image_loader
 
@@ -41,6 +41,8 @@ class AddOnsDialog(QDialog):
         self.__table.setShowGrid(False)
         self.__table.setIconSize(QSize(32, 32))
         self.__table.itemSelectionChanged.connect(self.__selection_changed)
+        self.__table.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.__table.customContextMenuRequested.connect(self.__context_menu_requested)
         layout.addWidget(self.__table)
         
         layout.addWidget(button_box)
@@ -52,11 +54,12 @@ class AddOnsDialog(QDialog):
         return QSize(600, 300)
     
     def __refresh(self):
-        addons = list(Application().addons)
+        addons = sorted(Application().addons, key=lambda item: item.name)
+        self.__addons = addons
         
         self.__table.setRowCount(len(addons))
         
-        for no, addon in enumerate(sorted(addons, key=lambda item: item.name)):
+        for no, addon in enumerate(addons):
             if addon.icon:
                 icon_item = QTableWidgetItem()
                 icon_item.setIcon(image_loader.load(addon.icon))
@@ -93,19 +96,19 @@ class AddOnsDialog(QDialog):
             addon_button_box.setContentsMargins(0, 5, 0, 0)
             
             start_button = QPushButton(QIcon.fromTheme("media-playback-start"), _("Start"))
+            start_button.setFocusPolicy(Qt.NoFocus)
             start_button.setEnabled(not addon.is_started)
             addon_button_box.addWidget(start_button)
             
             stop_button = QPushButton(QIcon.fromTheme("media-playback-stop"), _("Stop"))
+            stop_button.setFocusPolicy(Qt.NoFocus)
             stop_button.setEnabled(addon.is_started)
             addon_button_box.addWidget(stop_button)
             
             if addon.has_config:
-                preferences_button = QPushButton(QIcon.fromTheme("preferences-other"), _("Preferences"))
+                preferences_button = QPushButton(QIcon.fromTheme("preferences-other"), _("Preferences..."))
+                preferences_button.setFocusPolicy(Qt.NoFocus)
                 addon_button_box.addWidget(preferences_button)
-            
-            uninstall_button = QPushButton(QIcon.fromTheme("edit-delete"), _("Uninstall"))
-            addon_button_box.addWidget(uninstall_button)
             
             addon_button_box_widget = QWidget()
             addon_button_box_widget.setLayout(addon_button_box)
@@ -133,3 +136,31 @@ class AddOnsDialog(QDialog):
                 button_box.widget().hide()
         
         self.__table.resizeRowsToContents()
+    
+    def __context_menu_requested(self, point):
+        index = self.__table.indexAt(point)
+        
+        addon = self.__addons[index.row()]
+        
+        menu = QMenu(self.__table)
+        
+        start = menu.addAction(QIcon.fromTheme("media-playback-start"), _("Start"))
+        stop = menu.addAction(QIcon.fromTheme("media-playback-stop"), _("Stop"))
+        
+        if addon.is_started:
+            start.setEnabled(False)
+        else:
+            stop.setEnabled(False)
+        
+        menu.addSeparator()
+        
+        if addon.has_config:
+            menu.addAction(QIcon.fromTheme("preferences-other"), _("Preferences..."))
+        menu.addAction(QIcon.fromTheme("application-internet"), _("Homepage"))
+        menu.addAction(QIcon.fromTheme("help-about"), _("About..."))
+        
+        menu.addSeparator()
+        
+        menu.addAction(QIcon.fromTheme("edit-delete"), _("Uninstall"))
+        
+        menu.exec_(self.__table.viewport().mapToGlobal(point))

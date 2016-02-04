@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-03 16:41+0100\n"
-"PO-Revision-Date: 2016-02-03 16:42+0100\n"
+"POT-Creation-Date: 2016-02-04 14:03+0100\n"
+"PO-Revision-Date: 2016-02-04 14:05+0100\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -61,6 +61,9 @@ msgstr "&Späť"
 
 msgid "&View"
 msgstr "&Zobraziť"
+
+msgid "About..."
+msgstr "O zásuvnom module..."
 
 msgid "Add Diagram"
 msgstr "Pridať diagram"
@@ -158,6 +161,12 @@ msgstr "Všeobecné"
 msgid "Hide"
 msgstr "Skryť"
 
+msgid "Homepage"
+msgstr "Domovská stránka"
+
+msgid "Install new..."
+msgstr "Inštalovať nový..."
+
 msgid "Lower"
 msgstr "O jeden dozadu"
 
@@ -199,6 +208,9 @@ msgstr "Vložiť &ako kópiu"
 
 msgid "Paste Duplicate"
 msgstr "Vložiť ako kópiu"
+
+msgid "Preferences..."
+msgstr "Nastavenia..."
 
 msgid "Project"
 msgstr "Projekt"
@@ -254,6 +266,12 @@ msgstr "Prichytávanie k iným objektom"
 msgid "Snapping"
 msgstr "Zarovnanie"
 
+msgid "Start"
+msgstr "Spustiť"
+
+msgid "Stop"
+msgstr "Zastaviť"
+
 msgid "System language"
 msgstr "Systémový jazyk"
 
@@ -277,6 +295,9 @@ msgstr "Projekty UML .FRI 2"
 
 msgid "Undo"
 msgstr "Späť"
+
+msgid "Uninstall"
+msgstr "Odinštalovať"
 
 msgid "Value"
 msgstr "Hodnota"
