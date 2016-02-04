@@ -1,6 +1,6 @@
 from PySide.QtCore import QSize, Qt
 from PySide.QtGui import QDialog, QDialogButtonBox, QVBoxLayout, QTableWidget, QHBoxLayout, QLabel, QWidget, \
-    QTableWidgetItem, QFont, QStyledItemDelegate, QStyle
+    QTableWidgetItem, QFont, QStyledItemDelegate, QStyle, QPushButton, QIcon
 from umlfri2.application import Application
 from ..base import image_loader
 
@@ -21,6 +21,10 @@ class AddOnsDialog(QDialog):
         button_box = QDialogButtonBox(QDialogButtonBox.Close)
         button_box.button(QDialogButtonBox.Close).setText(_("Close"))
         
+        install_button = button_box.addButton(_("Install new..."), QDialogButtonBox.ActionRole)
+        install_button.setDefault(False)
+        install_button.setAutoDefault(False)
+        
         button_box.rejected.connect(self.reject)
         
         layout = QVBoxLayout()
@@ -36,6 +40,7 @@ class AddOnsDialog(QDialog):
         self.__table.setAlternatingRowColors(True)
         self.__table.setShowGrid(False)
         self.__table.setIconSize(QSize(32, 32))
+        self.__table.itemSelectionChanged.connect(self.__selection_changed)
         layout.addWidget(self.__table)
         
         layout.addWidget(button_box)
@@ -51,7 +56,7 @@ class AddOnsDialog(QDialog):
         
         self.__table.setRowCount(len(addons))
         
-        for no, addon in enumerate(addons):
+        for no, addon in enumerate(sorted(addons, key=lambda item: item.name)):
             if addon.icon:
                 icon_item = QTableWidgetItem()
                 icon_item.setIcon(image_loader.load(addon.icon))
@@ -83,9 +88,48 @@ class AddOnsDialog(QDialog):
                 description_label.setWordWrap(True)
                 layout.addWidget(description_label)
             
+            addon_button_box = QHBoxLayout()
+            addon_button_box.setAlignment(Qt.AlignRight)
+            addon_button_box.setContentsMargins(0, 5, 0, 0)
+            
+            start_button = QPushButton(QIcon.fromTheme("media-playback-start"), _("Start"))
+            start_button.setEnabled(not addon.is_started)
+            addon_button_box.addWidget(start_button)
+            
+            stop_button = QPushButton(QIcon.fromTheme("media-playback-stop"), _("Stop"))
+            stop_button.setEnabled(addon.is_started)
+            addon_button_box.addWidget(stop_button)
+            
+            if addon.has_config:
+                preferences_button = QPushButton(QIcon.fromTheme("preferences-other"), _("Preferences"))
+                addon_button_box.addWidget(preferences_button)
+            
+            uninstall_button = QPushButton(QIcon.fromTheme("edit-delete"), _("Uninstall"))
+            addon_button_box.addWidget(uninstall_button)
+            
+            addon_button_box_widget = QWidget()
+            addon_button_box_widget.setLayout(addon_button_box)
+            addon_button_box_widget.setVisible(False)
+            
+            layout.addWidget(addon_button_box_widget)
+            
             widget = QWidget()
             widget.setLayout(layout)
             self.__table.setCellWidget(no, 1, widget)
         
         self.__table.resizeColumnsToContents()
+        self.__table.resizeRowsToContents()
+    
+    def __selection_changed(self):
+        selection = set(item.row() for item in self.__table.selectedIndexes())
+        
+        for i in range(self.__table.rowCount()):
+            cell = self.__table.cellWidget(i, 1)
+            cellLayout = cell.layout()
+            button_box = cellLayout.itemAt(cellLayout.count() - 1)
+            if i in selection:
+                button_box.widget().show()
+            else:
+                button_box.widget().hide()
+        
         self.__table.resizeRowsToContents()

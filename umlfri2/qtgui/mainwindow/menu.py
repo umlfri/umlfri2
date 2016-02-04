@@ -49,7 +49,7 @@ class MainWindowMenu(QMenuBar):
         
         edit_menu.addSeparator()
         
-        self.__edit_addons = self.__add_menu_item(edit_menu, None, None, self.__edit_addons_actions)
+        self.__edit_addons = self.__add_menu_item(edit_menu, None, "preferences-plugin", self.__edit_addons_actions)
         
         self.__diagram, diagram_menu = self.__add_menu()
         self.__diagram_export = self.__add_menu_item(diagram_menu, None, None, self.__diagram_export_action)

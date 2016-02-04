@@ -18,8 +18,10 @@ class AddOn:
         self.__dependencies = tuple(dependencies)
         if config is None:
             self.__config_structure = UflObjectType({})
+            self.__has_config = False
         else:
             self.__config_structure = config
+            self.__has_config = True
         self.__config_structure.set_parent(None)
         self.__config = self.__config_structure.build_default(None)
         self.__translations = translations
@@ -79,6 +81,10 @@ class AddOn:
     @property
     def config(self):
         return self.__config
+    
+    @property
+    def has_config(self):
+        return self.__has_config
     
     @property
     def metamodel(self):

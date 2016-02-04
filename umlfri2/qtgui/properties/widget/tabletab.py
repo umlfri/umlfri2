@@ -8,6 +8,7 @@ class TableTab(QTableWidget):
         self.setColumnCount(2)
         self.verticalHeader().hide()
         self.setSelectionBehavior(QTableWidget.SelectRows)
+        self.setSelectionMode(QTableWidget.SingleSelection)
         self.horizontalHeader().setStretchLastSection(True)
         self.horizontalHeader().setHighlightSections(False)
         self.setAlternatingRowColors(True)
