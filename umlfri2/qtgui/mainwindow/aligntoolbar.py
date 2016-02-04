@@ -99,7 +99,7 @@ class AlignToolBar(QToolBar):
             self.__enable_snapping.setEnabled(True)
     
     def __reload_texts(self):
-        self.setWindowTitle(_("Snapping"))
+        self.setWindowTitle(_("Alignment"))
         self.__set_toolbar_item_text(self.__align_left, _("Align Left"))
         self.__set_toolbar_item_text(self.__align_center_horizontally, _("Center Horizontally"))
         self.__set_toolbar_item_text(self.__align_right, _("Align Right"))

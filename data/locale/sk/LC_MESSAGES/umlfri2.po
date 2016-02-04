@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-04 14:03+0100\n"
-"PO-Revision-Date: 2016-02-04 14:05+0100\n"
+"POT-Creation-Date: 2016-02-04 14:19+0100\n"
+"PO-Revision-Date: 2016-02-04 14:20+0100\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -85,6 +85,9 @@ msgstr "Zarovnať vpravo"
 
 msgid "Align Top"
 msgstr "Zarovnať nahor"
+
+msgid "Alignment"
+msgstr "Zarovnanie"
 
 msgid "Application Exit"
 msgstr "Ukončenie aplikácie"
@@ -262,9 +265,6 @@ msgstr "Zobraziť v diagrame"
 
 msgid "Snap to Other Objects"
 msgstr "Prichytávanie k iným objektom"
-
-msgid "Snapping"
-msgstr "Zarovnanie"
 
 msgid "Start"
 msgstr "Spustiť"

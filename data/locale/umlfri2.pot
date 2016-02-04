@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-04 14:05+0100\n"
+"POT-Creation-Date: 2016-02-04 14:19+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -84,6 +84,9 @@ msgid "Align Right"
 msgstr ""
 
 msgid "Align Top"
+msgstr ""
+
+msgid "Alignment"
 msgstr ""
 
 msgid "Application Exit"
@@ -261,9 +264,6 @@ msgid "Show in Diagram"
 msgstr ""
 
 msgid "Snap to Other Objects"
-msgstr ""
-
-msgid "Snapping"
 msgstr ""
 
 msgid "Start"
