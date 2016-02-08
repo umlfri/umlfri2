@@ -11,6 +11,7 @@ from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent
 from umlfri2.constants.paths import GRAPHICS
 from umlfri2.model import Diagram
 from umlfri2.qtgui.base.clipboard import QtClipboardAdatper
+from umlfri2.qtgui.startpage import StartPage
 from .addontoolbar import AddOnToolBar
 from .aligntoolbar import AlignToolBar
 from ..toolbox import MainToolBox
@@ -18,7 +19,7 @@ from .menu import MainWindowMenu
 from .newproject import NewProjectDialog
 from .toolbar import MainToolBar
 from ..base import image_loader
-from ..canvas import ScrolledCanvasWidget
+from ..canvas import ScrolledCanvasWidget, CanvasWidget
 from ..projecttree import ProjectTree
 from ..properties import PropertiesWidget
 
@@ -83,16 +84,31 @@ class UmlFriMainWindow(QMainWindow):
         Application().event_dispatcher.subscribe(PluginStoppedEvent, self.__plugin_stopped)
         
         self.__reload_texts()
+        
+        self.__open_start_page()
+    
+    def __open_start_page(self):
+        self.__tabs.addTab(StartPage(), _("Start Page"))
     
     def __tab_changed(self, index):
         if self.__ignore_change_tab:
             return
         
         if index >= 0:
-            Application().tabs.select_tab(self.__tabs.widget(index).diagram)
+            widget = self.__tabs.widget(index)
+            
+            if isinstance(widget, (ScrolledCanvasWidget, CanvasWidget)):
+                Application().tabs.select_tab(widget.diagram)
     
     def __tab_close_requested(self, index):
-        Application().tabs.close_tab(self.__tabs.widget(index).diagram)
+        widget = self.__tabs.widget(index)
+        if isinstance(widget, (ScrolledCanvasWidget, CanvasWidget)):
+            Application().tabs.close_tab(widget.diagram)
+            if self.__tabs.count() == 0:
+                self.__open_start_page()
+        elif isinstance(widget, StartPage):
+            if self.__tabs.count() > 1:
+                self.__tabs.removeTab(self.__tabs.indexOf(widget))
     
     def __open_tab(self, event):
         canvas = ScrolledCanvasWidget(self, event.tab.drawing_area)
@@ -105,7 +121,8 @@ class UmlFriMainWindow(QMainWindow):
         for widget_id in range(self.__tabs.count()):
             widget = self.__tabs.widget(widget_id)
             
-            if widget.diagram is event.tab.drawing_area.diagram:
+            if isinstance(widget, (ScrolledCanvasWidget, CanvasWidget))\
+                    and widget.diagram is event.tab.drawing_area.diagram:
                 self.__tabs.setCurrentWidget(widget)
                 return
     
@@ -113,7 +130,8 @@ class UmlFriMainWindow(QMainWindow):
         for widget_id in range(self.__tabs.count()):
             widget = self.__tabs.widget(widget_id)
             
-            if widget.diagram is event.tab.drawing_area.diagram:
+            if isinstance(widget, (ScrolledCanvasWidget, CanvasWidget))\
+                    and widget.diagram is event.tab.drawing_area.diagram:
                 self.__ignore_change_tab = True
                 try:
                     self.__tabs.removeTab(widget_id)
@@ -128,7 +146,8 @@ class UmlFriMainWindow(QMainWindow):
         for widget_id in range(self.__tabs.count()):
             widget = self.__tabs.widget(widget_id)
             
-            if widget.diagram is event.object:
+            if isinstance(widget, (ScrolledCanvasWidget, CanvasWidget))\
+                    and widget.diagram is event.object:
                 self.__tabs.setTabText(widget_id, widget.diagram.get_display_name())
                 return
     

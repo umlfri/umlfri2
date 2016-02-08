@@ -28,6 +28,10 @@ class Version:
     def suffix(self):
         return self.__suffix
     
+    @property
+    def major_minor_string(self):
+        return "{0}.{1}".format(self.__version[0], self.__version[1])
+    
     def __get_comparable(self):
         return self.__version, self.__suffix or ('full', )
     
