@@ -1,10 +1,10 @@
 import os
 
-from PySide.QtCore import QPoint
-from PySide.QtGui import QWidget, QPixmap, QPainter, QColor, QFont, QPen, QPainterPath, QBrush
-
+from PySide.QtCore import QPoint, Qt
+from PySide.QtGui import QWidget, QPixmap, QPainter, QColor, QFont, QPen, QPainterPath, QBrush, QHBoxLayout
 from umlfri2.application import Application
 from umlfri2.constants.paths import GRAPHICS
+from .startpageframe import StartPageFrame
 
 
 class StartPage(QWidget):
@@ -13,6 +13,19 @@ class StartPage(QWidget):
         
         self.__background = QPixmap()
         self.__background.load(os.path.join(GRAPHICS, "startpage", "startpage.png"))
+        
+        layout = QHBoxLayout()
+        layout.setSpacing(40)
+        layout.setContentsMargins(0, 300, 0, 0)
+        layout.setAlignment(Qt.AlignHCenter | Qt.AlignTop)
+        
+        actions_frame = StartPageFrame()
+        layout.addWidget(actions_frame)
+        
+        recent_files_frame = StartPageFrame()
+        layout.addWidget(recent_files_frame)
+        
+        self.setLayout(layout)
     
     def paintEvent(self, event):
         painter = QPainter()
