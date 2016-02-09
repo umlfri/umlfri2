@@ -89,7 +89,7 @@ class UmlFriMainWindow(QMainWindow):
     
     def __handle_last_tab(self):
         if self.__tabs.count() == 0:
-            self.__tabs.addTab(StartPage(), _("Start Page"))
+            self.__tabs.addTab(StartPage(self), _("Start Page"))
         
         if self.__tabs.count() == 1 and isinstance(self.__tabs.widget(0), StartPage):
             tab_close_enabled = False

@@ -3,13 +3,16 @@ import os
 from PySide.QtCore import QPoint, Qt
 from PySide.QtGui import QWidget, QPixmap, QPainter, QColor, QFont, QPen, QPainterPath, QBrush, QHBoxLayout
 from umlfri2.application import Application
+from umlfri2.application.events.application import LanguageChangedEvent
 from umlfri2.constants.paths import GRAPHICS
 from .startpageframe import StartPageFrame
 
 
 class StartPage(QWidget):
-    def __init__(self):
+    def __init__(self, main_window):
         super().__init__()
+        
+        self.__main_window = main_window
         
         self.__background = QPixmap()
         self.__background.load(os.path.join(GRAPHICS, "startpage", "startpage.png"))
@@ -19,13 +22,19 @@ class StartPage(QWidget):
         layout.setContentsMargins(100, 250, 100, 0)
         layout.setAlignment(Qt.AlignLeft | Qt.AlignTop)
         
-        actions_frame = StartPageFrame()
-        layout.addWidget(actions_frame)
+        self.__actions_frame = StartPageFrame()
+        layout.addWidget(self.__actions_frame)
         
-        recent_files_frame = StartPageFrame()
-        layout.addWidget(recent_files_frame)
+        self.__new_project = self.__actions_frame.add_frame_action(self.__main_window.new_project)
+        self.__open_project = self.__actions_frame.add_frame_action(self.__main_window.open_solution)
+        
+        self.__recent_files_frame = StartPageFrame()
+        layout.addWidget(self.__recent_files_frame)
         
         self.setLayout(layout)
+        
+        Application().event_dispatcher.subscribe(LanguageChangedEvent, lambda event: self.__reload_texts())
+        self.__reload_texts()
     
     def paintEvent(self, event):
         painter = QPainter()
@@ -58,3 +67,7 @@ class StartPage(QWidget):
         painter.setBrush(QBrush(QColor(255, 255, 255)))
         painter.setPen(QPen(QColor(72, 124, 194), 1.5))
         painter.drawPath(path)
+    
+    def __reload_texts(self):
+        self.__actions_frame.set_frame_action_label(self.__new_project, _("New Project"))
+        self.__actions_frame.set_frame_action_label(self.__open_project, _("Open Project"))
