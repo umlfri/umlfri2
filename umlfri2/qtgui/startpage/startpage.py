@@ -25,26 +25,15 @@ class StartPage(QWidget):
         
         painter.drawPixmap(QPoint(0, 0), self.__background)
         
-        self.__paint_outlined_text(
-            painter,
-            QPoint(150, 110),
-            QFont("Arial", 40, QFont.Bold, False),
-            "UML"
-        )
+        qfont = QFont("Arial")
+        qfont.setPixelSize(72)
+        qfont.setBold(QFont.Bold)
+        self.__paint_outlined_text(painter, QPoint(150, 110), qfont, "UML")
         
-        self.__paint_outlined_text(
-            painter,
-            QPoint(330, 110),
-            QFont("Arial", 25, QFont.Bold, False),
-            ".FRI"
-        )
+        qfont.setPixelSize(45)
+        self.__paint_outlined_text(painter, QPoint(330, 110), qfont, ".FRI")
         
-        self.__paint_outlined_text(
-            painter,
-            QPoint(450, 110),
-            QFont("Arial", 25, QFont.Bold, False),
-            Application().VERSION.major_minor_string
-        )
+        self.__paint_outlined_text(painter, QPoint(450, 110), qfont, Application().VERSION.major_minor_string)
         
         painter.end()
         
