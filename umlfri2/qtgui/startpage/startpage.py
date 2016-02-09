@@ -15,9 +15,9 @@ class StartPage(QWidget):
         self.__background.load(os.path.join(GRAPHICS, "startpage", "startpage.png"))
         
         layout = QHBoxLayout()
-        layout.setSpacing(40)
-        layout.setContentsMargins(0, 300, 0, 0)
-        layout.setAlignment(Qt.AlignHCenter | Qt.AlignTop)
+        layout.setSpacing(50)
+        layout.setContentsMargins(100, 250, 100, 0)
+        layout.setAlignment(Qt.AlignLeft | Qt.AlignTop)
         
         actions_frame = StartPageFrame()
         layout.addWidget(actions_frame)
