@@ -17,6 +17,7 @@ from umlfri2.model import Solution
 from umlfri2.types.version import Version
 from .commandprocessor import CommandProcessor
 from .dispatcher import EventDispatcher
+from .recentfiles import RecentFiles
 
 
 class MetaApplication(type):
@@ -40,6 +41,8 @@ class Application(metaclass=MetaApplication):
         self.__addons = AddOnManager(self)
         
         self.__load_addons()
+        
+        self.__recent_files = RecentFiles(self)
         
         self.__tabs = TabList(self)
         self.__solution = None
@@ -134,6 +137,10 @@ class Application(metaclass=MetaApplication):
                 yield from addon.metamodel.templates
     
     @property
+    def recent_files(self):
+        yield from self.__recent_files
+    
+    @property
     def solution_name(self):
         if self.__solution_storage_ref is None:
             return None
@@ -184,6 +191,8 @@ class Application(metaclass=MetaApplication):
         self.__commands.mark_unchanged()
         
         self.__event_dispatcher.dispatch(SaveSolutionEvent(self.__solution))
+        
+        self.__recent_files.add_file(filename)
 
     def open_solution(self, filename):
         with Storage.read_storage(filename) as storage:
@@ -195,6 +204,8 @@ class Application(metaclass=MetaApplication):
         self.__event_dispatcher.dispatch(OpenSolutionEvent(self.__solution))
         self.tabs.close_all()
         self.select_item(None)
+        
+        self.__recent_files.add_file(filename)
     
     def change_language(self, language):
         self.__language = language

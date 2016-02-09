@@ -2,4 +2,5 @@ from .changestatuschanged import ChangeStatusChangedEvent
 from .clipboardchanged import ClipboardSnippetChangedEvent
 from .elementselected import ItemSelectedEvent
 from .languagechanged import LanguageChangedEvent
+from .recentfileschanged import RecentFilesChangedEvent
 from .zoomchanged import ZoomChangedEvent

@@ -228,9 +228,12 @@ class UmlFriMainWindow(QMainWindow):
             filter=_("UML .FRI 2 projects") + "(*.frip2)"
         )
         if file_name:
-            if self.__check_save(_("Open Project")):
-                Application().open_solution(file_name)
-    
+            self.open_solution_from_file(file_name)
+
+    def open_solution_from_file(self, file_name):
+        if self.__check_save(_("Open Project")):
+            Application().open_solution(file_name)
+
     def save_solution(self):
         if Application().should_save_as:
             return self.save_solution_as()

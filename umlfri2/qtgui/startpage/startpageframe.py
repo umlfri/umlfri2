@@ -1,6 +1,6 @@
 from html import escape
 
-from PySide.QtCore import QSize, QRect
+from PySide.QtCore import QSize, QRect, Qt
 from PySide.QtGui import QWidget, QPainter, QBrush, QPen, QColor, QVBoxLayout, QLabel
 
 
@@ -13,6 +13,7 @@ class StartPageFrame(QWidget):
         super().__init__()
         
         self.__layout = QVBoxLayout()
+        self.__layout.setAlignment(Qt.AlignTop | Qt.AlignLeft)
         self.__layout.setContentsMargins(20, 20, 20, 20)
         self.setLayout(self.__layout)
     
@@ -46,12 +47,15 @@ class StartPageFrame(QWidget):
         
         return self.__layout.count() - 1
     
-    def set_frame_action_label(self, no, text):
+    def set_frame_action_label(self, no, text, tooltip=None):
         widget = self.__layout.itemAt(no).widget()
         widget.setText('<a href="action" style="color: black">{0}</a>'.format(escape(text)))
+        
+        if tooltip is not None:
+            widget.setToolTip(tooltip)
     
     def clear(self):
         for no in range(self.__layout.count()):
-            item = self.__layout.itemAt(no)
-            self.__layout.removeWidget(item.widget())
-            item.widget().deleteLater()
+            widget = self.__layout.itemAt(0).widget()
+            widget.setParent(None)
+            self.__layout.removeWidget(widget)

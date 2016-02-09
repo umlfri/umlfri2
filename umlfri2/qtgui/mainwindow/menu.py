@@ -23,6 +23,10 @@ class MainWindowMenu(QMenuBar):
 
         self.__file_new = self.__add_menu_item(file_menu, QKeySequence.New, "document-new", self.__file_new_action)
         self.__file_open = self.__add_menu_item(file_menu, QKeySequence.Open, "document-open", self.__file_open_action)
+
+        self.__file_recent_files, self.__recent_files_menu = self.__add_menu(file_menu)
+        self.__recent_files_menu.aboutToShow.connect(self.__recent_files_menu_populate)
+        
         self.__file_save = self.__add_menu_item(file_menu, QKeySequence.Save, "document-save", self.__file_save_action)
         self.__file_save_as = self.__add_menu_item(file_menu, QKeySequence.SaveAs, "document-save-as", self.__file_save_as_action)
         file_menu.addSeparator()
@@ -87,9 +91,12 @@ class MainWindowMenu(QMenuBar):
         self.__reload_texts()
         self.__refresh_enable()
 
-    def __add_menu(self):
+    def __add_menu(self, parent_menu=None):
         menu_item = QAction(None)
-        self.addAction(menu_item)
+        if parent_menu is None:
+            self.addAction(menu_item)
+        else:
+            parent_menu.addAction(menu_item)
         menu = QMenu()
         menu_item.setMenu(menu)
         return menu_item, menu
@@ -153,6 +160,12 @@ class MainWindowMenu(QMenuBar):
     
     def __file_open_action(self, checked=False):
         self.__main_window.open_solution()
+    
+    def __recent_files_menu_populate(self):
+        self.__recent_files_menu.clear()
+        for no, file in enumerate(reversed(list(Application().recent_files))):
+            action = self.__recent_files_menu.addAction("&{0}. {1}".format(no, file))
+            action.triggered.connect(partial(self.__main_window.open_solution_from_file, file))
     
     def __file_save_action(self, checked=False):
         self.__main_window.save_solution()
@@ -287,6 +300,7 @@ class MainWindowMenu(QMenuBar):
         self.__file.setText(_("&File"))
         self.__file_new.setText(_("&New"))
         self.__file_open.setText(_("&Open"))
+        self.__file_recent_files.setText(_("&Recent Files"))
         self.__file_save.setText(_("&Save"))
         self.__file_save_as.setText(_("Save &as"))
         self.__file_exit.setText(_("&Quit"))

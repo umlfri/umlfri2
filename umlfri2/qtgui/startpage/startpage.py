@@ -1,9 +1,10 @@
-import os
+import os.path
+from functools import partial
 
 from PySide.QtCore import QPoint, Qt
 from PySide.QtGui import QWidget, QPixmap, QPainter, QColor, QFont, QPen, QPainterPath, QBrush, QHBoxLayout
 from umlfri2.application import Application
-from umlfri2.application.events.application import LanguageChangedEvent
+from umlfri2.application.events.application import LanguageChangedEvent, RecentFilesChangedEvent
 from umlfri2.constants.paths import GRAPHICS
 from .startpageframe import StartPageFrame
 
@@ -34,7 +35,9 @@ class StartPage(QWidget):
         self.setLayout(layout)
         
         Application().event_dispatcher.subscribe(LanguageChangedEvent, lambda event: self.__reload_texts())
+        Application().event_dispatcher.subscribe(RecentFilesChangedEvent, lambda event: self.__reload_recent_files())
         self.__reload_texts()
+        self.__reload_recent_files()
     
     def paintEvent(self, event):
         painter = QPainter()
@@ -71,3 +74,10 @@ class StartPage(QWidget):
     def __reload_texts(self):
         self.__actions_frame.set_frame_action_label(self.__new_project, _("New Project"))
         self.__actions_frame.set_frame_action_label(self.__open_project, _("Open Project"))
+    
+    def __reload_recent_files(self):
+        self.__recent_files_frame.clear()
+        
+        for file in reversed(list(Application().recent_files)[:5]):
+            no = self.__recent_files_frame.add_frame_action(partial(self.__main_window.open_solution_from_file, file))
+            self.__recent_files_frame.set_frame_action_label(no, os.path.basename(file), tooltip=file)
