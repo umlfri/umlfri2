@@ -22,6 +22,11 @@ class TabList:
         return None
     
     def select_tab(self, diagram):
+        if diagram is None:
+            self.__current_tab = None
+            self.__application.event_dispatcher.dispatch(ChangedCurrentTabEvent(None))
+            return
+        
         for tab in self.__tabs:
             if tab.drawing_area.diagram is diagram:
                 if self.__current_tab is not tab:
