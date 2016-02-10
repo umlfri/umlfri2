@@ -1,6 +1,14 @@
-from umlfri2.application.events.addon import PluginStartedEvent, PluginStoppedEvent
+from umlfri2.application.events.addon import PluginStateChangedEvent
 from umlfri2.ufl.types import UflObjectType
 from .translation import POSIX_TRANSLATION
+
+
+class AddOnState:
+    none = 0
+    stopped = 1
+    starting = 2
+    started = 3
+    stopping = 4
 
 
 class AddOn:
@@ -28,7 +36,6 @@ class AddOn:
         self.__metamodel = metamodel
         if self.__metamodel is not None:
             self.__metamodel._set_addon(self)
-        self.__started = False
         self.__gui_injection = gui_injection
         self.__gui_injection._set_addon(self)
         self.__patch_plugin = patch_plugin
@@ -37,6 +44,10 @@ class AddOn:
         self.__plugin = plugin
         if self.__plugin is not None:
             self.__plugin._set_addon(self)
+        if self.__patch_plugin is None and self.__plugin is None:
+            self.__state = AddOnState.none
+        else:
+            self.__state = AddOnState.stopped
     
     @property
     def identifier(self):
@@ -90,6 +101,10 @@ class AddOn:
     def metamodel(self):
         return self.__metamodel
     
+    @property
+    def application(self):
+        return self.__application
+    
     def get_translation(self, language):
         ret = self.__get_translation(language)
         if ret is not None:
@@ -120,36 +135,49 @@ class AddOn:
             self.__metamodel.compile()
     
     @property
-    def is_started(self):
-        return self.__started
+    def state(self):
+        return self.__state
     
     @property
     def gui_injection(self):
         return self.__gui_injection
     
     def start(self):
-        if self.__started:
+        if self.__state == AddOnState.none:
+            return
+        if self.__state != AddOnState.stopped:
             raise Exception
-        self.__started = True
         if self.__patch_plugin is not None:
             self.__patch_plugin.start()
         if self.__plugin is not None:
             self.__plugin.start()
-        self.__application.event_dispatcher.dispatch(PluginStartedEvent(self))
+            self.__state = AddOnState.starting
+        else:
+            self.__state = AddOnState.started
+        self.__application.event_dispatcher.dispatch(PluginStateChangedEvent(self, self.__state))
+    
+    def _plugin_started(self):
+        self.__state = AddOnState.started
+        self.__application.event_dispatcher.dispatch(PluginStateChangedEvent(self, self.__state))
     
     def stop(self):
-        if not self.__started:
+        if self.__state == AddOnState.none:
+            return
+        if self.__state != AddOnState.started:
             raise Exception
-        self.__started = False
         if self.__patch_plugin is not None:
             self.__patch_plugin.stop()
         if self.__plugin is not None:
             self.__plugin.stop()
+            self.__state = AddOnState.stopping
+        else:
+            self.__state = AddOnState.stopped
+        self.__application.event_dispatcher.dispatch(PluginStateChangedEvent(self, self.__state))
     
     def _plugin_stopped(self):
-        self.__started = False
-        if self.__patch_plugin is not None:
-            self.__patch_plugin.stop_if_needed()
-        if self.__plugin is not None:
-            self.__plugin.stop_if_needed()
-        self.__application.event_dispatcher.dispatch(PluginStoppedEvent(self))
+        if self.__patch_plugin is not None and self.__patch_plugin.running:
+            self.__patch_plugin.stop()
+        if self.__plugin is not None and self.__plugin.running:
+            self.__plugin.stop()
+        self.__state = AddOnState.stopped
+        self.__application.event_dispatcher.dispatch(PluginStateChangedEvent(self, self.__state))

@@ -53,6 +53,7 @@ class Application(metaclass=MetaApplication):
         self.change_language(None)
         self.__selected_item = None
         self.__clipboard = None
+        self.__thread_manager = None
 
     def __load_addons(self):
         with Storage.read_storage(ADDONS) as addon_storage:
@@ -95,6 +96,7 @@ class Application(metaclass=MetaApplication):
         self.__addons.start_all() # TODO: start in splash screen
     
     def stop(self):
+        self.__event_dispatcher.clear()
         self.__addons.stop_all()
     
     def use_ruler(self, ruler):
@@ -102,9 +104,18 @@ class Application(metaclass=MetaApplication):
             raise Exception("Cannot change used ruler")
         self.__ruler = ruler
     
+    def use_thread_manager(self, thread_manager):
+        if self.__thread_manager is not None:
+            raise Exception("Cannot change used thread manager")
+        self.__thread_manager = thread_manager
+    
     @property
     def ruler(self):
         return self.__ruler
+    
+    @property
+    def thread_manager(self):
+        return self.__thread_manager
     
     @property
     def event_dispatcher(self):

@@ -1,3 +1,4 @@
+from umlfri2.application.addon import AddOnState
 from umlfri2.datalayer import AddOnLoader
 
 
@@ -20,7 +21,7 @@ class AddOnManager:
     
     def start_all(self):
         def recursion(addon):
-            if addon.is_started:
+            if addon.state != AddOnState.stopped:
                 return
             
             for dependency in addon.dependencies:
@@ -39,7 +40,7 @@ class AddOnManager:
                 reverse_dependencies.setdefault(dependency, []).append(addon.identifier)
         
         def recursion(addon):
-            if not addon.is_started:
+            if addon.state != AddOnState.started:
                 return
             
             for dependency in reverse_dependencies.get(addon.identifier, ()):

@@ -1,5 +1,4 @@
 import inspect
-import threading
 import traceback
 from base64 import b64encode
 from collections import Iterable
@@ -8,9 +7,10 @@ from ..interfaces import IApplication, Interface
 
 
 class PluginExecutor:
-    def __init__(self, addon, channel):
+    def __init__(self, addon, channel, thread_manager):
         self.__channel = channel
         self.__addon = addon
+        self.__thread_manager = thread_manager
         application = IApplication(self)
         self.__objects = {
             application.id: application
@@ -35,7 +35,6 @@ class PluginExecutor:
                 if data is not None:
                     self.__execute(data)
         finally:
-            self.__started = False
             self.__addon._plugin_stopped()
     
     def __execute(self, data):
@@ -81,6 +80,9 @@ class PluginExecutor:
     def __execute_special(self, target, selector, arguments):
         if target == 'system' and selector == 'stopped':
             self.send_stop()
+            return True
+        elif target == 'system' and selector == 'started':
+            self.__thread_manager.execute_in_main_thread(self.__addon._plugin_started)
             return True
         else:
             return False
@@ -154,7 +156,7 @@ class PluginExecutor:
         return not self.__channel.closed
     
     def start(self):
-        threading.Thread(target = self.__main).start()
+        self.__thread = self.__thread_manager.start_thread(self.__main)
     
     def send_stop(self):
         self.__channel.write(

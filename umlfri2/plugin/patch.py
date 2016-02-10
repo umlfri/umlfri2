@@ -56,7 +56,3 @@ class PatchPlugin:
         
         self.__obj.stop()
         self.__obj = None
-    
-    def stop_if_needed(self):
-        if self.running:
-            self.stop()

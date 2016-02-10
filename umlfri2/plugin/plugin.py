@@ -26,7 +26,7 @@ class Plugin:
         starter = STARTER_LIST[self.__starter]
         self.__started_starter = starter(os.path.join(self.__addon_path, self.__path))
         channel = self.__started_starter.start()
-        self.__executor = PluginExecutor(self.__addon, channel)
+        self.__executor = PluginExecutor(self.__addon, channel, self.__addon.application.thread_manager)
         self.__executor.start()
     
     @property
@@ -38,10 +38,6 @@ class Plugin:
     def stop(self):
         if self.__executor is not None and self.__executor.running:
             self.__executor.send_stop()
-    
-    def stop_if_needed(self):
-        if self.running:
-            self.stop()
     
     def terminate(self):
         self.__started_starter.terminate()

@@ -3,7 +3,8 @@ import os.path
 from PySide.QtCore import Qt, QSettings
 from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget, QMessageBox, QFileDialog, QIcon, QToolBar, QTabBar
 from umlfri2.application import Application
-from umlfri2.application.events.addon import PluginStoppedEvent, PluginStartedEvent
+from umlfri2.application.addon import AddOnState
+from umlfri2.application.events.addon import PluginStateChangedEvent
 from umlfri2.application.events.application import LanguageChangedEvent, ChangeStatusChangedEvent
 from umlfri2.application.events.model import ObjectDataChangedEvent
 from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent
@@ -85,8 +86,7 @@ class UmlFriMainWindow(QMainWindow):
         Application().event_dispatcher.subscribe(SaveSolutionEvent, self.__solution_file_changed)
         Application().event_dispatcher.subscribe(ChangeStatusChangedEvent, self.__change_status_changed)
         Application().event_dispatcher.subscribe(LanguageChangedEvent, lambda event: self.__reload_texts())
-        Application().event_dispatcher.subscribe(PluginStartedEvent, self.__plugin_started)
-        Application().event_dispatcher.subscribe(PluginStoppedEvent, self.__plugin_stopped)
+        Application().event_dispatcher.subscribe(PluginStateChangedEvent, self.__plugin_state_changed)
         
         self.__reload_texts()
         
@@ -275,25 +275,34 @@ class UmlFriMainWindow(QMainWindow):
     
     def __create_addon_toolbars(self):
         for addon in Application().addons:
-            for toolbar in addon.gui_injection.toolbars:
-                qt_toolbar = AddOnToolBar(toolbar)
-                qt_toolbar.setObjectName(str(toolbar.label))
-                self.addToolBar(qt_toolbar)
-                self.__addon_toolbars.append(qt_toolbar)
-    
-    def __plugin_started(self, event):
-        for toolbar in event.addon.gui_injection.toolbars:
+            self.__create_toolbars_for(addon)
+
+    def __plugin_state_changed(self, event):
+        if event.addon_state == AddOnState.started:
+            self.__create_toolbars_for(event.addon)
+        elif event.addon_state == AddOnState.stopped:
+            self.__remove_toolbars_for(event.addon)
+
+    def __create_toolbars_for(self, addon):
+        if addon.state != AddOnState.started:
+            return
+        
+        for toolbar in addon.gui_injection.toolbars:
             qt_toolbar = AddOnToolBar(toolbar)
+            qt_toolbar.setObjectName(toolbar.label)
             self.addToolBar(qt_toolbar)
             self.__addon_toolbars.append(qt_toolbar)
-    
-    def __plugin_stopped(self, event):
+
+    def __remove_toolbars_for(self, addon):
+        if addon.state != AddOnState.stopped:
+            return
+        
         for toolbar in self.__addon_toolbars[:]:
-            if toolbar.toolbar.addon is event.addon:
+            if toolbar.toolbar.addon is addon:
                 self.removeToolBar(toolbar)
                 toolbar.deleteLater()
                 self.__addon_toolbars.remove(toolbar)
-    
+
     def __reload_window_title(self):
         title = _("UML .FRI 2")
         if Application().solution_name is not None:

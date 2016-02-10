@@ -27,3 +27,6 @@ class EventDispatcher:
     def dispatch_all(self, events):
         for event in events:
             self.dispatch(event)
+    
+    def clear(self):
+        self.__events.clear()

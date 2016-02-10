@@ -2,6 +2,7 @@ from PySide.QtCore import QSize, Qt
 from PySide.QtGui import QDialog, QDialogButtonBox, QVBoxLayout, QTableWidget, QHBoxLayout, QLabel, QWidget, \
     QTableWidgetItem, QFont, QStyledItemDelegate, QStyle, QPushButton, QIcon, QMenu
 from umlfri2.application import Application
+from umlfri2.application.addon import AddOnState
 from ..base import image_loader
 
 
@@ -95,15 +96,16 @@ class AddOnsDialog(QDialog):
             addon_button_box.setAlignment(Qt.AlignRight)
             addon_button_box.setContentsMargins(0, 5, 0, 0)
             
-            start_button = QPushButton(QIcon.fromTheme("media-playback-start"), _("Start"))
-            start_button.setFocusPolicy(Qt.NoFocus)
-            start_button.setEnabled(not addon.is_started)
-            addon_button_box.addWidget(start_button)
-            
-            stop_button = QPushButton(QIcon.fromTheme("media-playback-stop"), _("Stop"))
-            stop_button.setFocusPolicy(Qt.NoFocus)
-            stop_button.setEnabled(addon.is_started)
-            addon_button_box.addWidget(stop_button)
+            if addon.state != AddOnState.none:
+                start_button = QPushButton(QIcon.fromTheme("media-playback-start"), _("Start"))
+                start_button.setFocusPolicy(Qt.NoFocus)
+                start_button.setEnabled(addon.state == AddOnState.stopped)
+                addon_button_box.addWidget(start_button)
+                
+                stop_button = QPushButton(QIcon.fromTheme("media-playback-stop"), _("Stop"))
+                stop_button.setFocusPolicy(Qt.NoFocus)
+                stop_button.setEnabled(addon.state == AddOnState.started)
+                addon_button_box.addWidget(stop_button)
             
             if addon.has_config:
                 preferences_button = QPushButton(QIcon.fromTheme("preferences-other"), _("Preferences..."))
@@ -144,15 +146,17 @@ class AddOnsDialog(QDialog):
         
         menu = QMenu(self.__table)
         
-        start = menu.addAction(QIcon.fromTheme("media-playback-start"), _("Start"))
-        stop = menu.addAction(QIcon.fromTheme("media-playback-stop"), _("Stop"))
-        
-        if addon.is_started:
-            start.setEnabled(False)
-        else:
-            stop.setEnabled(False)
-        
-        menu.addSeparator()
+        if addon.state != AddOnState.none:
+            start = menu.addAction(QIcon.fromTheme("media-playback-start"), _("Start"))
+            stop = menu.addAction(QIcon.fromTheme("media-playback-stop"), _("Stop"))
+            
+            if addon.state == AddOnState.stopped:
+                start.setEnabled(False)
+            
+            if addon.state == AddOnState.started:
+                stop.setEnabled(False)
+            
+            menu.addSeparator()
         
         if addon.has_config:
             menu.addAction(QIcon.fromTheme("preferences-other"), _("Preferences..."))

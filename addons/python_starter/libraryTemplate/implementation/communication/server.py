@@ -34,6 +34,12 @@ class Server:
         self.__main_loop.start(self.__serve)
     
     def main_loop(self):
+        self.__channel.write(
+            {
+                'target': 'system',
+                'selector': 'started'
+            }
+        )
         self.__main_loop.main_loop()
         if not self.__channel.closed:
             self.__channel.write(
