@@ -1,6 +1,6 @@
 import os.path
 
-from PySide.QtCore import Qt
+from PySide.QtCore import Qt, QSettings
 from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget, QMessageBox, QFileDialog, QIcon, QToolBar, QTabBar
 from umlfri2.application import Application
 from umlfri2.application.events.addon import PluginStoppedEvent, PluginStartedEvent
@@ -8,7 +8,7 @@ from umlfri2.application.events.application import LanguageChangedEvent, ChangeS
 from umlfri2.application.events.model import ObjectDataChangedEvent
 from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent
 from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent
-from umlfri2.constants.paths import GRAPHICS
+from umlfri2.constants.paths import GRAPHICS, CONFIG
 from umlfri2.model import Diagram
 from umlfri2.qtgui.base.clipboard import QtClipboardAdatper
 from umlfri2.qtgui.startpage import StartPage
@@ -39,25 +39,30 @@ class UmlFriMainWindow(QMainWindow):
         self.__tabs.tabCloseRequested.connect(self.__tab_close_requested)
         
         self.__toolbox_dock = QDockWidget()
+        self.__toolbox_dock.setObjectName("tools")
         self.addDockWidget(Qt.LeftDockWidgetArea, self.__toolbox_dock)
         self.__toolbox = MainToolBox()
         self.__toolbox_dock.setWidget(self.__toolbox)
         
         self.__project_dock = QDockWidget()
+        self.__project_dock.setObjectName("project")
         self.addDockWidget(Qt.RightDockWidgetArea, self.__project_dock)
         self.__project_tree = ProjectTree(self)
         self.__project_tree.reload()
         self.__project_dock.setWidget(self.__project_tree)
         
         self.__properties_dock = QDockWidget()
+        self.__properties_dock.setObjectName("tools")
         self.addDockWidget(Qt.RightDockWidgetArea, self.__properties_dock)
         self.__properties = PropertiesWidget(self)
         self.__properties_dock.setWidget(self.__properties)
         
         self.__tool_bar = MainToolBar(self)
+        self.__tool_bar.setObjectName("toolbar")
         self.addToolBar(self.__tool_bar)
         
         self.__align_tool_bar = AlignToolBar()
+        self.__align_tool_bar.setObjectName("alignment")
         self.addToolBar(self.__align_tool_bar)
         
         self.__addon_toolbars = []
@@ -86,6 +91,8 @@ class UmlFriMainWindow(QMainWindow):
         self.__reload_texts()
         
         self.__handle_last_tab()
+        
+        self.__restore_window_state()
     
     def __handle_last_tab(self):
         if self.__tabs.count() == 0:
@@ -173,9 +180,20 @@ class UmlFriMainWindow(QMainWindow):
     
     def closeEvent(self, event):
         if self.__check_save(_("Application Exit")):
+            self.__save_window_state()
             event.accept()
         else:
             event.ignore()
+    
+    def __save_window_state(self):
+        settings = QSettings(os.path.join(CONFIG, 'qt.ini'), QSettings.IniFormat)
+        settings.setValue("geometry", self.saveGeometry())
+        settings.setValue("window_state", self.saveState())
+    
+    def __restore_window_state(self):
+        settings = QSettings(os.path.join(CONFIG, 'qt.ini'), QSettings.IniFormat)
+        self.restoreGeometry(settings.value("geometry"))
+        self.restoreState(settings.value("window_state"))
 
     def __check_save(self, title):
         if Application().unsaved:
@@ -259,6 +277,7 @@ class UmlFriMainWindow(QMainWindow):
         for addon in Application().addons:
             for toolbar in addon.gui_injection.toolbars:
                 qt_toolbar = AddOnToolBar(toolbar)
+                qt_toolbar.setObjectName(str(toolbar.label))
                 self.addToolBar(qt_toolbar)
                 self.__addon_toolbars.append(qt_toolbar)
     
