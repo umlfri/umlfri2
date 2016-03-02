@@ -63,7 +63,10 @@ class ConnectionLabel:
                 new_distance = cur_distance
                 new_index = idx
                 if point.x == old_point.x:
-                    new_position = (point_on_line.y - old_point.y) / (point.y - old_point.y)
+                    if point.y == old_point.y:
+                        new_position = 0
+                    else:
+                        new_position = (point_on_line.y - old_point.y) / (point.y - old_point.y)
                 else:
                     new_position = (point_on_line.x - old_point.x) / (point.x - old_point.x)
                 
