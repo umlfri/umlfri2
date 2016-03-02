@@ -26,7 +26,13 @@ class Storage:
     def create_substorage(self, path):
         raise NotImplementedError
     
+    def make_dir(self, path):
+        raise NotImplementedError
+    
     def get_all_files(self):
+        raise NotImplementedError
+    
+    def copy_from(self, storage):
         raise NotImplementedError
     
     def remember_reference(self):

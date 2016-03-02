@@ -8,7 +8,7 @@ from umlfri2.application.commands.solution import NewProjectCommand
 from umlfri2.application.events.application import LanguageChangedEvent, ItemSelectedEvent, ClipboardSnippetChangedEvent
 from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent
 from umlfri2.application.tablist import TabList
-from umlfri2.constants.paths import ADDONS, LOCALE_DIR, LOCAL_ADDONS
+from umlfri2.constants.paths import LOCALE_DIR
 from umlfri2.datalayer import Storage
 from umlfri2.datalayer.loaders import ProjectLoader, WholeSolutionLoader
 from umlfri2.datalayer.savers import WholeSolutionSaver
@@ -40,7 +40,7 @@ class Application(metaclass=MetaApplication):
         
         self.__addons = AddOnManager(self)
         
-        self.__load_addons()
+        self.__addons.load_addons()
         
         self.__recent_files = RecentFiles(self)
         
@@ -54,14 +54,7 @@ class Application(metaclass=MetaApplication):
         self.__selected_item = None
         self.__clipboard = None
         self.__thread_manager = None
-
-    def __load_addons(self):
-        with Storage.read_storage(ADDONS) as addon_storage:
-            self.__addons.load_addons(addon_storage)
-        if os.path.exists(LOCAL_ADDONS):
-            with Storage.read_storage(LOCAL_ADDONS) as addon_storage:
-                self.__addons.load_addons(addon_storage)
-
+    
     def __find_out_language(self):
         for e in 'LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG':
             if e in os.environ:

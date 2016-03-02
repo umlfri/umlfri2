@@ -109,13 +109,23 @@ class ZipStorage(Storage):
     
     def create_substorage(self, path):
         if self.__dir_exists(path):
-            return ZipStorage(self.__zip_path, self.__zip_file, self.__fix_path_list(path))
+            return ZipStorage(self.__zip_path, self.__zip_file, self.__fix_path_list(path), self.__mode)
+
+    def make_dir(self, path):
+        return ZipStorage(self.__zip_path, self.__zip_file, self.__fix_path_list(path), self.__mode)
     
     def get_all_files(self):
         path = self.__fix_path('')
         for name in self.__zip_file.namelist():
             if name.startswith(path) and not name.endswith('/'):
                 yield name[len(path):]
+    
+    def copy_from(self, storage):
+        if self.__mode == 'r':
+            raise ValueError("Storage is opened for read only")
+        for path in storage.get_all_files():
+            with storage.open(path) as source_file:
+                self.__zip_file.writestr(self.__fix_path(path), source_file.read())
     
     def remember_reference(self):
         return ZipStorageReference(self.__zip_path, self.__path, self.__mode)
