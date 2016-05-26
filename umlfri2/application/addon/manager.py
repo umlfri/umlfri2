@@ -45,12 +45,19 @@ class AddOnManager:
                 return addon
     
     def start_all(self):
+        dependencies = {}
+
+        for addon in self.__addons:
+            for provision in addon.provisions:
+                dependencies.setdefault(provision, []).append(addon)
+        
         def recursion(addon):
             if addon.state != AddOnState.stopped:
                 return
-            
-            for dependency in addon.dependencies:
-                recursion(self.get_addon(dependency))
+
+            for requirement in addon.requirements:
+                for dependency in dependencies.get(requirement):
+                    recursion(dependency)
             
             addon.start()
         
@@ -61,15 +68,16 @@ class AddOnManager:
         reverse_dependencies = {}
         
         for addon in self.__addons:
-            for dependency in addon.dependencies:
-                reverse_dependencies.setdefault(dependency, []).append(addon.identifier)
+            for requirement in addon.requirements:
+                reverse_dependencies.setdefault(requirement, []).append(addon)
         
         def recursion(addon):
             if addon.state != AddOnState.started:
                 return
             
-            for dependency in reverse_dependencies.get(addon.identifier, ()):
-                recursion(self.get_addon(dependency))
+            for provision in addon.provisions:
+                for dependency in reverse_dependencies.get(provision):
+                    recursion(dependency)
             
             addon.stop()
         

@@ -6,9 +6,13 @@
         <Author name="Jan Janech"/>
         <Homepage url="http://umlfri.org"/>
         <CommonLicense name="MIT"/>
-        <Icon path="icons/python-logo.png" />
+        <Icon path="icons/python-logo.png"/>
         <Description>Python starter plugin.</Description>
     </AddOnInfo>
+    
+    <Provides>
+        <Starter id="python"/>
+    </Provides>
     
     <Patch module="starter"/>
 </AddOn>

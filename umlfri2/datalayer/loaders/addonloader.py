@@ -72,8 +72,8 @@ class AddOnLoader:
             plugin = Plugin(self.__storage.path, info.plugin_info.starter, info.plugin_info.path)
         
         ret = AddOn(self.__application, info.identifier, info.name, info.version, info.author, info.homepage,
-                     info.license, icon, info.description, info.dependencies, info.config, translations,
-                     metamodel, gui_injection, patch, plugin)
+                    info.license, icon, info.description, info.requirements, info.provisions, info.config, translations,
+                    metamodel, gui_injection, patch, plugin)
         
         ret.compile()
         

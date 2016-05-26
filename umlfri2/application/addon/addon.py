@@ -13,7 +13,7 @@ class AddOnState:
 
 class AddOn:
     def __init__(self, application, identifier, name, version, author, homepage, license, icon, description,
-                 dependencies, config, translations, metamodel, gui_injection, patch_plugin, plugin):
+                 requirements, provisions, config, translations, metamodel, gui_injection, patch_plugin, plugin):
         self.__application = application
         self.__identifier = identifier
         self.__name = name
@@ -23,7 +23,8 @@ class AddOn:
         self.__license = license
         self.__icon = icon
         self.__description = description
-        self.__dependencies = tuple(dependencies)
+        self.__requirements = tuple(requirements)
+        self.__provisions = tuple(provisions)
         if config is None:
             self.__config_structure = UflObjectType({})
             self.__has_config = False
@@ -82,8 +83,12 @@ class AddOn:
         return self.__description
     
     @property
-    def dependencies(self):
-        yield from self.__dependencies
+    def requirements(self):
+        yield from self.__requirements
+    
+    @property
+    def provisions(self):
+        yield from self.__provisions
     
     @property
     def config_structure(self):

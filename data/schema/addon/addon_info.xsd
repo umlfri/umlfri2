@@ -44,10 +44,27 @@
                     </xs:complexType>
                 </xs:element>
                 
-                <xs:element name="Dependencies" minOccurs="0">
+                <xs:element name="Requires" minOccurs="0">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="AddOn" maxOccurs="unbounded">
+                            <xs:element name="Interface" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attribute name="id" type="xs:string" use="required" />
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                
+                <xs:element name="Provides" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Starter" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attribute name="id" type="xs:string" use="required" />
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="Interface" minOccurs="0" maxOccurs="unbounded">
                                 <xs:complexType>
                                     <xs:attribute name="id" type="xs:string" use="required" />
                                 </xs:complexType>
