@@ -41,7 +41,7 @@
         <code>
             delegate
             {% if root.return_type %}
-                {{ link_to(root.return_type.type }}
+                {{ link_to(root.return_type.type) }}
                 {% if root.return_type.iterable %}
                     []
                 {% endif %}
