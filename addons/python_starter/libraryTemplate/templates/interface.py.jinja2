@@ -6,21 +6,21 @@
     {%- endif -%}
 {%- endmacro %}
 
-{% macro return_type(return_type) -%}
-    {%- if return_type.type_name == 'PrimitiveType' -%}
-        {{- return_type.name -}}()
-    {%- elif return_type.type_name == 'KeyValueType' -%}
-        {%- if return_type.key_type.type_name == 'PrimitiveType' and return_type.value_type.type_name == 'PrimitiveType' -%}
-            keyvalue_{{ return_type.key_type.name }}_{{ return_type.value_type.name }}()
-        {%- elif return_type.key_type.type_name == 'PrimitiveType' -%}
-            keyvalue_{{ return_type.key_type.name }}_object({{ return_type_api_name(return_type.value_type) }})
-        {%- elif return_type.value_type.type_name == 'PrimitiveType' -%}
-            keyvalue_object_{{ return_type.value_type.name }}({{ return_type_api_name(return_type.key_type) }})
+{% macro return_type(return_type, allow_nullable) -%}
+    {%- if return_type.type.type_name == 'PrimitiveType' -%}
+        {{- return_type.type.name -}}({% if allow_nullable %}{{ return_type.nullable }}{% endif %})
+    {%- elif return_type.type.type_name == 'KeyValueType' -%}
+        {%- if return_type.type.key_type.type_name == 'PrimitiveType' and return_type.type.value_type.type_name == 'PrimitiveType' -%}
+            keyvalue_{{ return_type.type.key_type.name }}_{{ return_type.type.value_type.name }}({% if allow_nullable %}{{ return_type.nullable }}{% endif %})
+        {%- elif return_type.type.key_type.type_name == 'PrimitiveType' -%}
+            keyvalue_{{ return_type.type.key_type.name }}_object({{ return_type_api_name(return_type.type.value_type) }}{% if allow_nullable %}, {{ return_type.nullable }}{% endif %})
+        {%- elif return_type.type.value_type.type_name == 'PrimitiveType' -%}
+            keyvalue_object_{{ return_type.type.value_type.name }}({{ return_type_api_name(return_type.type.key_type) }}{% if allow_nullable %}, {{ return_type.nullable }}{% endif %})
         {%- else -%}
-            keyvalue_object_object({{ return_type_api_name(return_type.key_type) }}), {{ return_type_api_name(return_type.value_type) }})
+            keyvalue_object_object({{ return_type_api_name(return_type.type.key_type) }}), {{ return_type_api_name(return_type.type.value_type) }}{% if allow_nullable %}, {{ return_type.nullable }}{% endif %})
         {%- endif -%}
     {%- else -%}
-        object({{ return_type_api_name(return_type) }})
+        object({{ return_type_api_name(return_type.type) }}{% if allow_nullable %}, {{ return_type.nullable }}{% endif %})
     {%- endif -%}
 {%- endmacro %}
 
@@ -62,9 +62,9 @@
 {% if not method.return_type %}
                 .return_void()
 {% elif method.return_type.iterable %}
-                .iterate_{{ return_type(method.return_type.type) }}
+                .iterate_{{ return_type(method.return_type, False) }}
 {% else %}
-                .return_{{ return_type(method.return_type.type) }}
+                .return_{{ return_type(method.return_type, True) }}
 {% endif %}
 {% endif %}
         )
