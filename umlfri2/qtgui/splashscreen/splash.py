@@ -13,18 +13,26 @@ from umlfri2.qtgui.mainwindow import UmlFriMainWindow
 class SplashScreen(QSplashScreen):
     def __init__(self):
         super().__init__(QPixmap(os.path.join(GRAPHICS, "splash", "splash.png")))
+        
+        self.__init_application()
+        
         self.__timer = QTimer(self)
         self.__timer.timeout.connect(self.__timer_event)
         self.__timeout = time() + SPLASH_TIMEOUT / 1000
         self.__timer.start(100)
         self.__timer_event()
     
+    def __init_application(self):
+        self.__starter = Application().addons.start_all()
+    
     def __timer_event(self):
-        if self.__timeout < time():
+        if self.__timeout < time() and self.__starter.finished:
             self.__timer.stop()
             main_window = UmlFriMainWindow()
             main_window.showMaximized()
             self.finish(main_window)
+        else:
+            self.__starter.do()
     
     def drawContents(self, painter):
         qfont = QFont("Arial")

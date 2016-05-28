@@ -1,14 +1,8 @@
+from .starter import AddOnStarter
+from .state import AddOnState
 from umlfri2.application.events.addon import PluginStateChangedEvent
 from umlfri2.ufl.types import UflObjectType
 from .translation import POSIX_TRANSLATION
-
-
-class AddOnState:
-    none = 0
-    stopped = 1
-    starting = 2
-    started = 3
-    stopping = 4
 
 
 class AddOn:
@@ -148,6 +142,9 @@ class AddOn:
         return self.__gui_injection
     
     def start(self):
+        return AddOnStarter(self.__application.addons, self)
+    
+    def _start(self):
         if self.__state == AddOnState.none:
             return
         if self.__state != AddOnState.stopped:

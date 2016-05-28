@@ -86,7 +86,7 @@ class Application(metaclass=MetaApplication):
         return 'POSIX'
     
     def start(self):
-        self.__addons.start_all() # TODO: start in splash screen
+        return self.__addons.start_all()
     
     def stop(self):
         self.__event_dispatcher.clear()
