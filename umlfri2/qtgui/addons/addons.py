@@ -4,7 +4,7 @@ from PySide.QtGui import QDialog, QDialogButtonBox, QVBoxLayout, QTableWidget, Q
 from umlfri2.application import Application
 from umlfri2.application.addon import AddOnState
 from umlfri2.datalayer import Storage
-from ..base import image_loader
+from umlfri2.qtgui.base import image_loader
 
 
 class AddOnsDialog(QDialog):

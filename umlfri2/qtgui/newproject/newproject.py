@@ -4,7 +4,7 @@ from PySide.QtCore import Qt, QSize
 from PySide.QtGui import QDialog, QDialogButtonBox, QVBoxLayout, QListWidget, QLabel, QFont, QPalette, QSizePolicy, \
     QListWidgetItem, QScrollArea, QCheckBox, QLineEdit, QFormLayout
 from umlfri2.application import Application
-from ..base import image_loader
+from umlfri2.qtgui.base import image_loader
 
 
 class TemplateItem(QListWidgetItem):

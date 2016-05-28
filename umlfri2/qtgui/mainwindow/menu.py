@@ -2,13 +2,14 @@ import os.path
 from functools import partial
 
 from PySide.QtGui import QMenuBar, QAction, QMenu, QKeySequence, QIcon, QFileDialog
+
 from umlfri2.application import Application
 from umlfri2.application.commands.diagram import HideElementsCommand, PasteSnippetCommand, DuplicateSnippetCommand
 from umlfri2.application.events.application.languagechanged import LanguageChangedEvent
 from umlfri2.constants.keys import FULL_SCREEN, ZOOM_ORIGINAL, PASTE_DUPLICATE, COPY_IMAGE
 from umlfri2.constants.languages import AVAILABLE_LANGUAGES
+from umlfri2.qtgui.addons import AddOnsDialog
 from umlfri2.qtgui.fullscreen import FullScreenDiagram
-from .addons import AddOnsDialog
 from umlfri2.qtgui.rendering import ImageExport, ExportDialog
 
 

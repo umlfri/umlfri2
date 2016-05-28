@@ -1,7 +1,8 @@
 import os.path
 
 from PySide.QtCore import Qt, QSettings
-from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget, QMessageBox, QFileDialog, QIcon, QToolBar, QTabBar
+from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget, QMessageBox, QFileDialog, QIcon, QTabBar
+
 from umlfri2.application import Application
 from umlfri2.application.addon import AddOnState
 from umlfri2.application.events.addon import PluginStateChangedEvent
@@ -12,17 +13,17 @@ from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent
 from umlfri2.constants.paths import GRAPHICS, CONFIG
 from umlfri2.model import Diagram
 from umlfri2.qtgui.base.clipboard import QtClipboardAdatper
+from umlfri2.qtgui.newproject import NewProjectDialog
 from umlfri2.qtgui.startpage import StartPage
 from .addontoolbar import AddOnToolBar
 from .aligntoolbar import AlignToolBar
-from ..toolbox import MainToolBox
 from .menu import MainWindowMenu
-from .newproject import NewProjectDialog
 from .toolbar import MainToolBar
 from ..base import image_loader
 from ..canvas import ScrolledCanvasWidget, CanvasWidget
 from ..projecttree import ProjectTree
 from ..properties import PropertiesWidget
+from ..toolbox import MainToolBox
 
 
 class UmlFriMainWindow(QMainWindow):
