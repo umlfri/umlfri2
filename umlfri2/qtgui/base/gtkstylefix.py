@@ -35,12 +35,9 @@ def set_gtk_icon_theme():
                 QIcon.setThemeName(value)
                 return
 
+    QIcon.setThemeName("gnome")
+
 
 def set_gtk_icon_theme_if_needed():
-    try:
-        from PySide.QtGui import QGtkStyle
-    except ImportError:
-        return
-    
-    if isinstance(QApplication.instance().style(), QGtkStyle):
+    if QApplication.instance().style().objectName() == 'gtk+':
         set_gtk_icon_theme()
