@@ -1,1 +1,1 @@
-from .mainwindow import UmlFriMainWindow
+from .splashscreen import SplashScreen
