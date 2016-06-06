@@ -101,7 +101,7 @@ class AddOnsDialog(QDialog):
             if addon.state != AddOnState.none:
                 start_button = QPushButton(QIcon.fromTheme("media-playback-start"), _("Start"))
                 start_button.setFocusPolicy(Qt.NoFocus)
-                start_button.setEnabled(addon.state == AddOnState.stopped)
+                start_button.setEnabled(addon.state in (AddOnState.stopped, AddOnState.error))
                 addon_button_box.addWidget(start_button)
                 
                 stop_button = QPushButton(QIcon.fromTheme("media-playback-stop"), _("Stop"))
@@ -152,7 +152,7 @@ class AddOnsDialog(QDialog):
             start = menu.addAction(QIcon.fromTheme("media-playback-start"), _("Start"))
             stop = menu.addAction(QIcon.fromTheme("media-playback-stop"), _("Stop"))
             
-            if addon.state == AddOnState.stopped:
+            if addon.state in (AddOnState.stopped, AddOnState.error):
                 start.setEnabled(False)
             
             if addon.state == AddOnState.started:

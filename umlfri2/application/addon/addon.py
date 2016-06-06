@@ -147,7 +147,7 @@ class AddOn:
     def _start(self):
         if self.__state == AddOnState.none:
             return
-        if self.__state != AddOnState.stopped:
+        if self.__state not in (AddOnState.stopped, AddOnState.error):
             raise Exception
         if self.__patch_plugin is not None:
             self.__patch_plugin.start()
@@ -181,5 +181,8 @@ class AddOn:
             self.__patch_plugin.stop()
         if self.__plugin is not None and self.__plugin.running:
             self.__plugin.stop()
-        self.__state = AddOnState.stopped
+        if self.__state == AddOnState.starting:
+            self.__state = AddOnState.error
+        else:
+            self.__state = AddOnState.stopped
         self.__application.event_dispatcher.dispatch(PluginStateChangedEvent(self, self.__state))

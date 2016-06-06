@@ -4,3 +4,4 @@ class AddOnState:
     starting = 2
     started = 3
     stopping = 4
+    error = 5
