@@ -1,5 +1,6 @@
 from .starter import AddOnStarter
 from .state import AddOnState
+from .stopper import AddOnStopper
 from umlfri2.application.events.addon import PluginStateChangedEvent
 from umlfri2.ufl.types import UflObjectType
 from .translation import POSIX_TRANSLATION
@@ -143,6 +144,9 @@ class AddOn:
     
     def start(self):
         return AddOnStarter(self.__application.addons, self)
+
+    def stop(self):
+        return AddOnStopper(self.__application.addons, self)
     
     def _start(self):
         if self.__state == AddOnState.none:
@@ -162,7 +166,7 @@ class AddOn:
         self.__state = AddOnState.started
         self.__application.event_dispatcher.dispatch(PluginStateChangedEvent(self, self.__state))
     
-    def stop(self):
+    def _stop(self):
         if self.__state == AddOnState.none:
             return
         if self.__state != AddOnState.started:

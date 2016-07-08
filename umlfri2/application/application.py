@@ -89,8 +89,9 @@ class Application(metaclass=MetaApplication):
         return self.__addons.start_all()
     
     def stop(self):
+        # TODO: execute in correct order
         self.__event_dispatcher.clear()
-        self.__addons.stop_all()
+        return self.__addons.stop_all()
     
     def use_ruler(self, ruler):
         if self.__ruler is not None:

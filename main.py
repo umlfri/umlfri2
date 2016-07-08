@@ -37,8 +37,6 @@ def main(args):
     
     no = app.exec_()
     
-    Application().stop()
-    
     return no
 
 

@@ -12,9 +12,10 @@ from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionE
 from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent
 from umlfri2.constants.paths import GRAPHICS, CONFIG
 from umlfri2.model import Diagram
-from umlfri2.qtgui.base.clipboard import QtClipboardAdatper
-from umlfri2.qtgui.newproject import NewProjectDialog
-from umlfri2.qtgui.startpage import StartPage
+from ..base.clipboard import QtClipboardAdatper
+from ..newproject import NewProjectDialog
+from ..splashscreen.exitscreen import ExitScreen
+from ..startpage import StartPage
 from .addontoolbar import AddOnToolBar
 from .aligntoolbar import AlignToolBar
 from .menu import MainWindowMenu
@@ -182,9 +183,11 @@ class UmlFriMainWindow(QMainWindow):
     def closeEvent(self, event):
         if self.__check_save(_("Application Exit")):
             self.__save_window_state()
-            event.accept()
-        else:
-            event.ignore()
+            #event.accept()
+            global exit_screen # Needed to keep the window open
+            exit_screen = ExitScreen()
+            exit_screen.show()
+        event.ignore()
     
     def __save_window_state(self):
         settings = QSettings(os.path.join(CONFIG, 'qt.ini'), QSettings.IniFormat)

@@ -1,8 +1,8 @@
 import os.path
 import uuid
 
-from .state import AddOnState
 from .starter import AddOnStarter
+from .stopper import AddOnStopper
 from umlfri2.constants.paths import ADDONS, LOCAL_ADDONS
 from umlfri2.datalayer import AddOnLoader, Storage
 from umlfri2.datalayer.storages import DirectoryStorage
@@ -49,24 +49,7 @@ class AddOnManager:
         return AddOnStarter(self, *self.__addons)
     
     def stop_all(self):
-        reverse_dependencies = {}
-        
-        for addon in self.__addons:
-            for requirement in addon.requirements:
-                reverse_dependencies.setdefault(requirement, []).append(addon)
-        
-        def recursion(addon):
-            if addon.state != AddOnState.started:
-                return
-            
-            for provision in addon.provisions:
-                for dependency in reverse_dependencies.get(provision):
-                    recursion(dependency)
-            
-            addon.stop()
-        
-        for addon in self.__addons:
-            recursion(addon)
+        return AddOnStopper(self, *self.__addons)
     
     def __iter__(self):
         yield from self.__addons
