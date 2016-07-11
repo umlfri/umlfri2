@@ -30,12 +30,16 @@ def main(args):
     
     Application().use_thread_manager(QTThreadManager())
     Application().use_ruler(QTRuler())
+    
+    Application().start()
 
     splash = SplashScreen()
     
     splash.start()
     
     no = app.exec_()
+    
+    Application().stop()
     
     return no
 
