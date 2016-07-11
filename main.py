@@ -33,7 +33,7 @@ def main(args):
 
     splash = SplashScreen()
     
-    splash.show()
+    splash.start()
     
     no = app.exec_()
     

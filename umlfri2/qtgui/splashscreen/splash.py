@@ -19,8 +19,11 @@ class SplashScreen(QSplashScreen):
         self.__timer = QTimer(self)
         self.__timer.timeout.connect(self.__timer_event)
         self.__timeout = time() + SPLASH_TIMEOUT / 1000
+    
+    def start(self):
         self.__timer.start(100)
         self.__timer_event()
+        self.show()
     
     def __init_application(self):
         self.__starter = Application().addons.start_all()

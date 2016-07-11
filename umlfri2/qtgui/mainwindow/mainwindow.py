@@ -184,9 +184,9 @@ class UmlFriMainWindow(QMainWindow):
         if self.__check_save(_("Application Exit")):
             self.__save_window_state()
             #event.accept()
-            global exit_screen # Needed to keep the window open
             exit_screen = ExitScreen()
-            exit_screen.show()
+            self.setEnabled(False)
+            exit_screen.start()
         event.ignore()
     
     def __save_window_state(self):
