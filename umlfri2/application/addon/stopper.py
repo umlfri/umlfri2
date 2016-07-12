@@ -1,15 +1,43 @@
+from collections import namedtuple
+
+import itertools
+
 from .state import AddOnState
 
 
 class AddOnStopper:
     class __StopErrorException(Exception):
         pass
+    
+    __AddonWithDep = namedtuple('AddonDependency', ['addon', 'dependencies'])
 
     def __init__(self, manager, *addons):
         self.__manager = manager
-        self.__addons = addons
         self.__stopped = False
         self.__has_error = False
+        
+        reverse_dependencies = {}
+
+        for addon in addons:
+            for requirement in addon.requirements:
+                reverse_dependencies.setdefault(requirement, []).append(addon)
+        
+        self.__addons = self.__recursive_compute_deps(addons, reverse_dependencies)
+    
+    def __recursive_compute_deps(self, addons, reverse_dependencies):
+        ret = []
+        
+        for addon in addons:
+            if addon.state in (AddOnState.stopped, AddOnState.none):
+                continue
+            
+            deps = itertools.chain(*(reverse_dependencies.get(provision) for provision in addon.provisions))
+            
+            ret.append(
+                self.__AddonWithDep(addon, self.__recursive_compute_deps(deps, reverse_dependencies))
+            )
+        
+        return ret
 
     @property
     def finished(self):
@@ -18,41 +46,40 @@ class AddOnStopper:
     @property
     def has_error(self):
         return self.__has_error
+    
+    def addons(self):
+        return set(*self.__iterate_addons(self.__addons))
+    
+    def __iterate_addons(self, addons):
+        for addon_with_dep in addons:
+            yield addon_with_dep.addon
+            yield from self.__iterate_addons(addon_with_dep.dependencies)
 
     def do(self):
-        reverse_dependencies = {}
-
-        for addon in self.__addons:
-            for requirement in addon.requirements:
-                reverse_dependencies.setdefault(requirement, []).append(addon)
-
         all_stopped = True
         for addon in self.__addons:
             try:
-                stopped = self.__recursion(reverse_dependencies, addon)
+                stopped = self.__recursive_stop(addon)
                 all_stopped = all_stopped and stopped
             except AddOnStopper.__StopErrorException:
                 self.__has_error = True
-
+        
         self.__stopped = all_stopped
 
-    def __recursion(self, reverse_dependencies, addon):
-        if addon.state != AddOnState.started:
-            if addon.state == AddOnState.error:
+    def __recursive_stop(self, addon_with_dep):
+        if addon_with_dep.addon.state != AddOnState.started:
+            if addon_with_dep.addon.state == AddOnState.error:
                 raise AddOnStopper.__StopErrorException()
-            return addon.state in (AddOnState.stopped, AddOnState.none)
-
+            return addon_with_dep.addon.state in (AddOnState.stopped, AddOnState.error)
+        
         dependencies_stopped = True
-
-        for provision in addon.provisions:
-            for dependency in reverse_dependencies.get(provision):
-                stopped = self.__recursion(reverse_dependencies, dependency)
-                dependencies_stopped = dependencies_stopped and stopped
-
+        
+        for dep in addon_with_dep.dependencies:
+            stopped = self.__recursive_stop(dep)
+            dependencies_stopped = dependencies_stopped and stopped
+        
         if dependencies_stopped:
-            addon._stop()
-            if addon.state == AddOnState.error:
-                raise AddOnStopper.__StopErrorException()
-            return addon.state == AddOnState.stopped
+            addon_with_dep.addon._stop()
+            return addon_with_dep.addon.state in (AddOnState.stopped, AddOnState.error)
         else:
             return False
