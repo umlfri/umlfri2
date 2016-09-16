@@ -156,8 +156,8 @@ class AddOn:
         if self.__patch_plugin is not None:
             self.__patch_plugin.start()
         if self.__plugin is not None:
-            self.__plugin.start()
             self.__state = AddOnState.starting
+            self.__plugin.start()
         else:
             self.__state = AddOnState.started
         self.__application.event_dispatcher.dispatch(PluginStateChangedEvent(self, self.__state))
@@ -174,8 +174,8 @@ class AddOn:
         if self.__patch_plugin is not None:
             self.__patch_plugin.stop()
         if self.__plugin is not None:
-            self.__plugin.stop()
             self.__state = AddOnState.stopping
+            self.__plugin.stop()
         else:
             self.__state = AddOnState.stopped
         self.__application.event_dispatcher.dispatch(PluginStateChangedEvent(self, self.__state))
