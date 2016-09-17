@@ -16,25 +16,25 @@ class AddOnStopper:
         self.__stopped = False
         self.__has_error = False
         
-        reverse_dependencies = {}
+        self.__reverse_dependencies = {}
 
-        for addon in addons:
+        for addon in self.__manager:
             for requirement in addon.requirements:
-                reverse_dependencies.setdefault(requirement, []).append(addon)
+                self.__reverse_dependencies.setdefault(requirement, []).append(addon)
         
-        self.__addons = self.__recursive_compute_deps(addons, reverse_dependencies)
+        self.__addons = self.__recursive_compute_deps(addons)
     
-    def __recursive_compute_deps(self, addons, reverse_dependencies):
+    def __recursive_compute_deps(self, addons):
         ret = []
         
         for addon in addons:
             if addon.state in (AddOnState.stopped, AddOnState.none):
                 continue
             
-            deps = itertools.chain(*(reverse_dependencies.get(provision) for provision in addon.provisions))
+            deps = itertools.chain(*(self.__reverse_dependencies.get(provision) for provision in addon.provisions))
             
             ret.append(
-                self.__AddonWithDep(addon, self.__recursive_compute_deps(deps, reverse_dependencies))
+                self.__AddonWithDep(addon, self.__recursive_compute_deps(deps))
             )
         
         return ret
