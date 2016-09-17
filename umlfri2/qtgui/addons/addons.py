@@ -1,6 +1,6 @@
 from functools import partial
 
-from PySide.QtCore import QSize, Qt, QUrl
+from PySide.QtCore import QSize, Qt, QUrl, QTimer
 from PySide.QtGui import QDialog, QDialogButtonBox, QVBoxLayout, QTableWidget, QHBoxLayout, QLabel, QWidget, \
     QTableWidgetItem, QFont, QStyledItemDelegate, QStyle, QPushButton, QIcon, QMenu, QFileDialog, QDesktopServices
 from umlfri2.application import Application
@@ -52,11 +52,20 @@ class AddOnsDialog(QDialog):
         
         layout.addWidget(button_box)
         self.setLayout(layout)
+
+        self.__timer = QTimer(self)
+        self.__timer.timeout.connect(self.__timer_event)
         
         self.__refresh()
     
     def sizeHint(self):
         return QSize(600, 300)
+    
+    def closeEvent(self, event):
+        if self.isEnabled():
+            event.accept()
+        else:
+            event.ignore()
     
     def __refresh(self):
         addons = sorted(Application().addons, key=lambda item: item.name)
@@ -104,11 +113,13 @@ class AddOnsDialog(QDialog):
                 start_button = QPushButton(QIcon.fromTheme("media-playback-start"), _("Start"))
                 start_button.setFocusPolicy(Qt.NoFocus)
                 start_button.setEnabled(addon.state in (AddOnState.stopped, AddOnState.error))
+                start_button.clicked.connect(partial(self.__start_addon, addon))
                 addon_button_box.addWidget(start_button)
                 
                 stop_button = QPushButton(QIcon.fromTheme("media-playback-stop"), _("Stop"))
                 stop_button.setFocusPolicy(Qt.NoFocus)
                 stop_button.setEnabled(addon.state == AddOnState.started)
+                stop_button.clicked.connect(partial(self.__stop_addon, addon))
                 addon_button_box.addWidget(stop_button)
             
             if addon.has_config:
@@ -153,11 +164,14 @@ class AddOnsDialog(QDialog):
         if addon.state != AddOnState.none:
             start = menu.addAction(QIcon.fromTheme("media-playback-start"), _("Start"))
             stop = menu.addAction(QIcon.fromTheme("media-playback-stop"), _("Stop"))
-            
-            if addon.state in (AddOnState.stopped, AddOnState.error):
-                start.setEnabled(False)
+
+            start.triggered.connect(partial(self.__start_addon, addon))
+            stop.triggered.connect(partial(self.__stop_addon, addon))
             
             if addon.state == AddOnState.started:
+                start.setEnabled(False)
+
+            if addon.state in (AddOnState.stopped, AddOnState.error):
                 stop.setEnabled(False)
             
             menu.addSeparator()
@@ -186,3 +200,22 @@ class AddOnsDialog(QDialog):
     
     def __show_homepage(self, addon, checked=False):
         QDesktopServices.openUrl(QUrl(addon.homepage))
+    
+    def __start_addon(self, addon, checked=False):
+        self.__run_process(addon.start())
+
+    def __stop_addon(self, addon, checked=False):
+        self.__run_process(addon.stop())
+    
+    def __run_process(self, starter_stopper):
+        self.__starter_stopper = starter_stopper
+        self.__timer.start(100)
+        self.__timer_event()
+        self.setEnabled(False)
+        
+    def __timer_event(self):
+        if self.__starter_stopper.finished:
+            self.__timer.stop()
+            self.setEnabled(True)
+        else:
+            self.__starter_stopper.do()

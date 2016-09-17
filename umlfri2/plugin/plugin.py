@@ -21,7 +21,7 @@ class Plugin:
         return self.__started_starter is not None and self.__started_starter.is_alive
     
     def start(self):
-        if self.__executor is not None:
+        if self.__executor is not None and self.__executor.running:
             raise Exception
         starter = STARTER_LIST[self.__starter]
         self.__started_starter = starter(os.path.join(self.__addon_path, self.__path))
