@@ -1,6 +1,8 @@
-from PySide.QtCore import QSize, Qt
+from functools import partial
+
+from PySide.QtCore import QSize, Qt, QUrl
 from PySide.QtGui import QDialog, QDialogButtonBox, QVBoxLayout, QTableWidget, QHBoxLayout, QLabel, QWidget, \
-    QTableWidgetItem, QFont, QStyledItemDelegate, QStyle, QPushButton, QIcon, QMenu, QFileDialog
+    QTableWidgetItem, QFont, QStyledItemDelegate, QStyle, QPushButton, QIcon, QMenu, QFileDialog, QDesktopServices
 from umlfri2.application import Application
 from umlfri2.application.addon import AddOnState
 from umlfri2.datalayer import Storage
@@ -162,7 +164,9 @@ class AddOnsDialog(QDialog):
         
         if addon.has_config:
             menu.addAction(QIcon.fromTheme("preferences-other"), _("Preferences..."))
-        menu.addAction(QIcon.fromTheme("application-internet"), _("Homepage"))
+        if addon.homepage:
+            homepage = menu.addAction(QIcon.fromTheme("application-internet"), _("Homepage"))
+            homepage.triggered.connect(partial(self.__show_homepage, addon))
         menu.addAction(QIcon.fromTheme("help-about"), _("About..."))
         
         menu.addSeparator()
@@ -179,3 +183,6 @@ class AddOnsDialog(QDialog):
         )
         if file_name:
             Application().addons.install_addon(Storage.read_storage(file_name))
+    
+    def __show_homepage(self, addon, checked=False):
+        QDesktopServices.openUrl(QUrl(addon.homepage))

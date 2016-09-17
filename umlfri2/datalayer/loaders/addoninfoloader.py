@@ -49,7 +49,7 @@ class AddOnInfoLoader:
                     elif childchild.tag == "{{{0}}}Author".format(ADDON_NAMESPACE):
                         author = childchild.attrib["name"]
                     elif childchild.tag == "{{{0}}}Homepage".format(ADDON_NAMESPACE):
-                        author = childchild.attrib["url"]
+                        homepage = childchild.attrib["url"]
                     elif childchild.tag == "{{{0}}}CommonLicense".format(ADDON_NAMESPACE):
                         license = childchild.attrib["name"]
                     elif childchild.tag == "{{{0}}}Icon".format(ADDON_NAMESPACE):
