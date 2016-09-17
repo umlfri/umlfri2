@@ -63,7 +63,7 @@ class AddOnsDialog(QDialog):
     
     def closeEvent(self, event):
         if self.isEnabled():
-            event.accept()
+            super().closeEvent(event)
         else:
             event.ignore()
     
