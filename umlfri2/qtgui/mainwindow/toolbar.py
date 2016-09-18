@@ -46,7 +46,10 @@ class MainToolBar(QToolBar):
         
         self.__reload_texts()
         
-        Application().event_dispatcher.subscribe(None, lambda event: self.__refresh_enable())
+        Application().event_dispatcher.subscribe(None, self.__event_dispatched)
+        self.__refresh_enable()
+
+    def __event_dispatched(self, event):
         self.__refresh_enable()
     
     def __language_changed(self, event):

@@ -86,10 +86,13 @@ class MainWindowMenu(QMenuBar):
         for action in main_window.get_toolbar_actions():
             view_menu.addAction(action)
         
-        Application().event_dispatcher.subscribe(None, lambda event: self.__refresh_enable())
+        Application().event_dispatcher.subscribe(None, self.__event_dispatched)
         Application().event_dispatcher.subscribe(LanguageChangedEvent, self.__language_changed)
         
         self.__reload_texts()
+        self.__refresh_enable()
+    
+    def __event_dispatched(self, event):
         self.__refresh_enable()
     
     def __language_changed(self, event):
