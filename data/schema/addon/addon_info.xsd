@@ -19,7 +19,7 @@
                                     <xs:attribute name="version" type="xs:string" use="required"/>
                                 </xs:complexType>
                             </xs:element>
-                            <xs:element name="Author" minOccurs="0">
+                            <xs:element name="Author">
                                 <xs:complexType>
                                     <xs:attribute name="name" type="xs:string" use="required"/>
                                 </xs:complexType>
@@ -29,7 +29,7 @@
                                     <xs:attribute name="url" type="xs:string" use="required"/>
                                 </xs:complexType>
                             </xs:element>
-                            <xs:element name="CommonLicense" minOccurs="0">
+                            <xs:element name="CommonLicense">
                                 <xs:complexType>
                                     <xs:attribute name="name" type="xs:string" use="required"/>
                                 </xs:complexType>

@@ -9,6 +9,7 @@ from umlfri2.application.addon import AddOnState
 from umlfri2.application.events.addon import AddonStateChangedEvent
 from umlfri2.datalayer import Storage
 from umlfri2.qtgui.base import image_loader
+from .info import AddOnInfo
 
 
 class AddOnsDialog(QDialog):
@@ -196,7 +197,8 @@ class AddOnsDialog(QDialog):
         if addon.homepage:
             homepage = menu.addAction(QIcon.fromTheme("application-internet"), _("Homepage"))
             homepage.triggered.connect(partial(self.__show_homepage, addon))
-        menu.addAction(QIcon.fromTheme("help-about"), _("About..."))
+        about = menu.addAction(QIcon.fromTheme("help-about"), _("About..."))
+        about.triggered.connect(partial(self.__show_info, addon))
         
         menu.addSeparator()
         
@@ -215,6 +217,10 @@ class AddOnsDialog(QDialog):
     
     def __show_homepage(self, addon, checked=False):
         QDesktopServices.openUrl(QUrl(addon.homepage))
+    
+    def __show_info(self, addon, checked=False):
+        dialog = AddOnInfo(self, addon)
+        dialog.exec_()
     
     def __start_addon(self, addon, checked=False):
         self.__run_process(addon.start())

@@ -3,6 +3,7 @@ from collections import namedtuple
 import re
 
 from umlfri2.application.addon import AddOnDependency, AddOnDependencyType
+from umlfri2.application.addon.license import CommonLicense
 from ..constants import ADDON_NAMESPACE, ADDON_SCHEMA
 from .structureloader import UflStructureLoader
 from umlfri2.types.version import Version
@@ -51,7 +52,7 @@ class AddOnInfoLoader:
                     elif childchild.tag == "{{{0}}}Homepage".format(ADDON_NAMESPACE):
                         homepage = childchild.attrib["url"]
                     elif childchild.tag == "{{{0}}}CommonLicense".format(ADDON_NAMESPACE):
-                        license = childchild.attrib["name"]
+                        license = CommonLicense(childchild.attrib["name"])
                     elif childchild.tag == "{{{0}}}Icon".format(ADDON_NAMESPACE):
                         icon = childchild.attrib["path"]
                     elif childchild.tag == "{{{0}}}Description".format(ADDON_NAMESPACE):
