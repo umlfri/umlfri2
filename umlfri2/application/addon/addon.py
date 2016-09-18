@@ -1,7 +1,7 @@
 from .starter import AddOnStarter
 from .state import AddOnState
 from .stopper import AddOnStopper
-from umlfri2.application.events.addon import PluginStateChangedEvent
+from umlfri2.application.events.addon import AddonStateChangedEvent
 from umlfri2.ufl.types import UflObjectType
 from .translation import POSIX_TRANSLATION
 
@@ -160,11 +160,11 @@ class AddOn:
             self.__plugin.start()
         else:
             self.__state = AddOnState.started
-        self.__application.event_dispatcher.dispatch(PluginStateChangedEvent(self, self.__state))
+        self.__application.event_dispatcher.dispatch(AddonStateChangedEvent(self, self.__state))
     
     def _plugin_started(self):
         self.__state = AddOnState.started
-        self.__application.event_dispatcher.dispatch(PluginStateChangedEvent(self, self.__state))
+        self.__application.event_dispatcher.dispatch(AddonStateChangedEvent(self, self.__state))
     
     def _stop(self):
         if self.__state == AddOnState.none:
@@ -178,7 +178,7 @@ class AddOn:
             self.__plugin.stop()
         else:
             self.__state = AddOnState.stopped
-        self.__application.event_dispatcher.dispatch(PluginStateChangedEvent(self, self.__state))
+        self.__application.event_dispatcher.dispatch(AddonStateChangedEvent(self, self.__state))
     
     def _plugin_stopped(self):
         if self.__patch_plugin is not None and self.__patch_plugin.running:
@@ -189,4 +189,4 @@ class AddOn:
             self.__state = AddOnState.error
         else:
             self.__state = AddOnState.stopped
-        self.__application.event_dispatcher.dispatch(PluginStateChangedEvent(self, self.__state))
+        self.__application.event_dispatcher.dispatch(AddonStateChangedEvent(self, self.__state))

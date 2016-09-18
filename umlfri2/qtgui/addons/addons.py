@@ -1,3 +1,4 @@
+from collections import namedtuple
 from functools import partial
 
 from PySide.QtCore import QSize, Qt, QUrl, QTimer
@@ -5,6 +6,7 @@ from PySide.QtGui import QDialog, QDialogButtonBox, QVBoxLayout, QTableWidget, Q
     QTableWidgetItem, QFont, QStyledItemDelegate, QStyle, QPushButton, QIcon, QMenu, QFileDialog, QDesktopServices
 from umlfri2.application import Application
 from umlfri2.application.addon import AddOnState
+from umlfri2.application.events.addon import AddonStateChangedEvent
 from umlfri2.datalayer import Storage
 from umlfri2.qtgui.base import image_loader
 
@@ -15,6 +17,8 @@ class AddOnsDialog(QDialog):
             super().initStyleOption(option, index)
             
             option.state = option.state & ~QStyle.State_HasFocus
+    
+    __AddonButtons = namedtuple('AddonButtons', ['start', 'stop'])
     
     def __init__(self, main_window):
         super().__init__(main_window)
@@ -56,6 +60,8 @@ class AddOnsDialog(QDialog):
         self.__timer = QTimer(self)
         self.__timer.timeout.connect(self.__timer_event)
         
+        Application().event_dispatcher.subscribe(AddonStateChangedEvent, self.__addon_state_changed)
+        
         self.__refresh()
     
     def sizeHint(self):
@@ -70,6 +76,7 @@ class AddOnsDialog(QDialog):
     def __refresh(self):
         addons = sorted(Application().addons, key=lambda item: item.name)
         self.__addons = addons
+        self.__addon_buttons = {}
         
         self.__table.setRowCount(len(addons))
         
@@ -121,6 +128,8 @@ class AddOnsDialog(QDialog):
                 stop_button.setEnabled(addon.state == AddOnState.started)
                 stop_button.clicked.connect(partial(self.__stop_addon, addon))
                 addon_button_box.addWidget(stop_button)
+                
+                self.__addon_buttons[addon.identifier] = self.__AddonButtons(start_button, stop_button)
             
             if addon.has_config:
                 preferences_button = QPushButton(QIcon.fromTheme("preferences-other"), _("Preferences..."))
@@ -139,6 +148,12 @@ class AddOnsDialog(QDialog):
         
         self.__table.resizeColumnsToContents()
         self.__table.resizeRowsToContents()
+    
+    def __addon_state_changed(self, event):
+        if event.addon.identifier in self.__addon_buttons:
+            buttons = self.__addon_buttons[event.addon.identifier]
+            buttons.start.setEnabled(event.addon.state in (AddOnState.stopped, AddOnState.error))
+            buttons.stop.setEnabled(event.addon.state == AddOnState.started)
     
     def __selection_changed(self):
         selection = set(item.row() for item in self.__table.selectedIndexes())

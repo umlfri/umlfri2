@@ -1,3 +1,3 @@
 from .actionenablestatuschanged import ActionEnableStatusChangedEvent
 from .actiontriggered import ActionTriggeredEvent
-from .pluginstatechanged import PluginStateChangedEvent
+from .addonstatechanged import AddonStateChangedEvent

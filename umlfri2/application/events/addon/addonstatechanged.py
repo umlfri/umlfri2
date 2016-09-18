@@ -1,7 +1,7 @@
 from ..base import Event
 
 
-class PluginStateChangedEvent(Event):
+class AddonStateChangedEvent(Event):
     def __init__(self, addon, state):
         self.__addon = addon
         self.__state = state

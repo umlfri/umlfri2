@@ -5,7 +5,7 @@ from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget, QMessageBox, QFil
 
 from umlfri2.application import Application
 from umlfri2.application.addon import AddOnState
-from umlfri2.application.events.addon import PluginStateChangedEvent
+from umlfri2.application.events.addon import AddonStateChangedEvent
 from umlfri2.application.events.application import LanguageChangedEvent, ChangeStatusChangedEvent
 from umlfri2.application.events.model import ObjectDataChangedEvent
 from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent
@@ -88,7 +88,7 @@ class UmlFriMainWindow(QMainWindow):
         Application().event_dispatcher.subscribe(SaveSolutionEvent, self.__solution_file_changed)
         Application().event_dispatcher.subscribe(ChangeStatusChangedEvent, self.__change_status_changed)
         Application().event_dispatcher.subscribe(LanguageChangedEvent, self.__language_changed)
-        Application().event_dispatcher.subscribe(PluginStateChangedEvent, self.__plugin_state_changed)
+        Application().event_dispatcher.subscribe(AddonStateChangedEvent, self.__plugin_state_changed)
         
         self.__reload_texts()
         
