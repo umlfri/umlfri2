@@ -3,6 +3,7 @@ from functools import partial
 from PySide.QtCore import Qt
 from PySide.QtGui import QTableWidgetItem
 
+from umlfri2.qtgui.base.colorwidget import ColorSelectionWidget
 from umlfri2.qtgui.base.multiselectcombobox import MultiSelectComboBox
 from ..dialog import PropertiesDialog
 from .selectionchangingwidgets import QSelectionChangingCheckBox, QSelectionChangingPushButton,\
@@ -31,7 +32,8 @@ class ObjectTab(TableTab):
                 qt_widget = QSelectionChangingPushButton(self, no)
                 qt_widget.clicked.connect(partial(self.__show_dialog, widget))
             elif isinstance(widget, UflDialogColorWidget):
-                qt_widget = QSelectionChangingPushButton(self, no) # TODO: color selection widget
+                qt_widget = ColorSelectionWidget(btn_class=partial(QSelectionChangingPushButton, self, no))
+                qt_widget.color_changed.connect(partial(self.__color_changed, widget))
             elif isinstance(widget, UflDialogComboWidget):
                 qt_widget = QSelectionChangingComboBox(self, no)
                 qt_widget.setEditable(True)
@@ -96,6 +98,10 @@ class ObjectTab(TableTab):
         widget.value = qt_widget.text()
         self.__widget.apply()
     
+    def __color_changed(self, widget, color):
+        widget.value = color
+        self.__widget.apply()
+    
     def reload_data(self):
         for no, widget in enumerate(self.__tab.widgets):
             qt_widget = self.cellWidget(no, 1)
@@ -104,7 +110,7 @@ class ObjectTab(TableTab):
             elif isinstance(widget, UflDialogChildWidget):
                 pass
             elif isinstance(widget, UflDialogColorWidget):
-                pass
+                qt_widget.color = widget.value
             elif isinstance(widget, UflDialogComboWidget):
                 qt_widget.setEditText(widget.value)
             elif isinstance(widget, UflDialogFontWidget):

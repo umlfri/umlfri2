@@ -3,6 +3,7 @@ from functools import partial
 from PySide.QtCore import Qt
 from PySide.QtGui import QWidget, QFormLayout, QCheckBox, QPushButton, QComboBox, QTextEdit, QLabel
 
+from umlfri2.qtgui.base.colorwidget import ColorSelectionWidget
 from umlfri2.qtgui.base.multiselectcombobox import MultiSelectComboBox
 from umlfri2.qtgui.base.selectalllineedit import SelectAllLineEdit
 from umlfri2.qtgui.base.selectallspinbox import SelectAllSpinBox
@@ -37,7 +38,8 @@ class PropertyTab(QWidget):
                 qt_widget.clicked.connect(partial(self.__show_dialog, widget))
                 ret.addRow(widget.label, qt_widget)
             elif isinstance(widget, UflDialogColorWidget):
-                qt_widget = QPushButton() # TODO: color selection widget
+                qt_widget = ColorSelectionWidget()
+                qt_widget.color_changed.connect(partial(self.__color_changed, widget))
                 self.__qt_widgets[widget.id] = qt_widget
                 ret.addRow(widget.label, qt_widget)
             elif isinstance(widget, UflDialogComboWidget):
@@ -119,6 +121,11 @@ class PropertyTab(QWidget):
             return
         widget.value = qt_widget.toPlainText()
 
+    def __color_changed(self, widget, color):
+        if not self.__enabled:
+            return
+        widget.value = color
+
     def _update_values(self):
         self.__enabled = False
         try:
@@ -131,6 +138,8 @@ class PropertyTab(QWidget):
                     qt_widget.setEnabled(True)
                     if isinstance(widget, UflDialogCheckWidget):
                         qt_widget.setChecked(widget.value)
+                    elif isinstance(widget, UflDialogColorWidget):
+                        qt_widget.color = widget.value
                     elif isinstance(widget, UflDialogComboWidget):
                         qt_widget.setEditText(widget.value)
                     elif isinstance(widget, UflDialogIntegerWidget):
