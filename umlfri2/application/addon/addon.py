@@ -157,10 +157,11 @@ class AddOn:
             self.__patch_plugin.start()
         if self.__plugin is not None:
             self.__state = AddOnState.starting
+            self.__application.event_dispatcher.dispatch(AddonStateChangedEvent(self, self.__state))
             self.__plugin.start()
         else:
             self.__state = AddOnState.started
-        self.__application.event_dispatcher.dispatch(AddonStateChangedEvent(self, self.__state))
+            self.__application.event_dispatcher.dispatch(AddonStateChangedEvent(self, self.__state))
     
     def _plugin_started(self):
         self.__gui_injection.reset();
@@ -176,10 +177,11 @@ class AddOn:
             self.__patch_plugin.stop()
         if self.__plugin is not None:
             self.__state = AddOnState.stopping
+            self.__application.event_dispatcher.dispatch(AddonStateChangedEvent(self, self.__state))
             self.__plugin.stop()
         else:
             self.__state = AddOnState.stopped
-        self.__application.event_dispatcher.dispatch(AddonStateChangedEvent(self, self.__state))
+            self.__application.event_dispatcher.dispatch(AddonStateChangedEvent(self, self.__state))
     
     def _plugin_stopped(self):
         if self.__patch_plugin is not None and self.__patch_plugin.running:
