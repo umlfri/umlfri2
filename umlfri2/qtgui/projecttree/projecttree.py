@@ -5,7 +5,7 @@ from umlfri2.application.commands.model.movenode import MoveNodeCommand
 from umlfri2.application.events.application import ItemSelectedEvent
 from umlfri2.application.events.model import ElementCreatedEvent, ObjectDataChangedEvent, DiagramCreatedEvent, \
     ProjectChangedEvent, ElementDeletedEvent, DiagramDeletedEvent, NodeMovedEvent
-from umlfri2.application.events.solution import OpenProjectEvent, OpenSolutionEvent
+from umlfri2.application.events.solution import OpenProjectEvent, OpenSolutionEvent, RemoveProjectEvent
 from umlfri2.model import Diagram, ElementObject, Project
 from .mimedata import ProjectMimeData
 from .treeitem import ProjectTreeItem
@@ -35,6 +35,7 @@ class ProjectTree(QTreeWidget):
         Application().event_dispatcher.subscribe(ObjectDataChangedEvent, self.__object_changed)
         Application().event_dispatcher.subscribe(ProjectChangedEvent, self.__project_changed)
         Application().event_dispatcher.subscribe(OpenProjectEvent, self.__project_open)
+        Application().event_dispatcher.subscribe(RemoveProjectEvent, self.__project_removed)
         Application().event_dispatcher.subscribe(OpenSolutionEvent, self.__solution_open)
         Application().event_dispatcher.subscribe(ItemSelectedEvent, self.__element_selected)
         Application().event_dispatcher.subscribe(NodeMovedEvent, self.__node_moved)
@@ -208,6 +209,10 @@ class ProjectTree(QTreeWidget):
     
     def __project_open(self, event):
         self.__reload_project(event.project)
+
+    def __project_removed(self, event):
+        node = self.__get_item(event.project)
+        self.invisibleRootItem().removeChild(node)
     
     def __get_item(self, element):
         if element.parent is None:

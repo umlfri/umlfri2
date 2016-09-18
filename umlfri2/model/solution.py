@@ -15,6 +15,9 @@ class Solution:
     def add_project(self, project):
         self.__projects.append(project)
     
+    def remove_project(self, project):
+        self.__projects.remove(project)
+    
     @property
     def children(self):
         yield from self.__projects
