@@ -65,11 +65,11 @@ class AddConnectionAction(Action):
                     if self.__snapping is not None:
                         self.__snapped = self.__snapping.snap_point(point)
                         point = self.__snapped.point
+                        self.__snapping.add_point(point)
                     else:
                         self.__snapped = None
                     
                     self.__points.append(point)
-                    self.__snapping.add_point(point)
                     self.__last_point = None
                     self.__build_path()
     
