@@ -40,7 +40,7 @@ class AlignToolBar(QToolBar):
         
         self.__enable_snapping = self.__add_toolbar_item("enable-snapping", self.__enable_snapping_action, toggle=True)
         
-        Application().event_dispatcher.subscribe(LanguageChangedEvent, lambda event: self.__reload_texts())
+        Application().event_dispatcher.subscribe(LanguageChangedEvent, self.__language_changed)
         
         self.__reload_texts()
         
@@ -61,6 +61,9 @@ class AlignToolBar(QToolBar):
             ret.setCheckable(True)
         self.addAction(ret)
         return ret
+    
+    def __language_changed(self, event):
+        self.__reload_texts()
     
     def __changed_selection(self, event):
         tab = Application().tabs.current_tab

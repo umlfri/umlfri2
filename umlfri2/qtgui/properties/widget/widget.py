@@ -22,7 +22,7 @@ class PropertiesWidget(QTabWidget):
         
         self.setTabPosition(QTabWidget.South)
         
-        Application().event_dispatcher.subscribe(LanguageChangedEvent, lambda event: self.__reload_texts())
+        Application().event_dispatcher.subscribe(LanguageChangedEvent, self.__language_changed)
         Application().event_dispatcher.subscribe(ItemSelectedEvent, lambda event: self.__select_item(event.item))
         Application().event_dispatcher.subscribe(ObjectDataChangedEvent,
                                                  lambda event: self.__item_changed(event.object))
@@ -34,6 +34,9 @@ class PropertiesWidget(QTabWidget):
         self.__item = None
         self.__dialog = None
         self.__select_item(None)
+
+    def __language_changed(self, event):
+        self.__reload_texts()
     
     def __item_changed(self, item):
         if item is self.__item:

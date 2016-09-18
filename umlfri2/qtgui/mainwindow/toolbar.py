@@ -42,12 +42,15 @@ class MainToolBar(QToolBar):
         self.__zoom_in = self.__add_toolbar_item(QKeySequence.ZoomIn, "zoom-in", self.__zoom_in_action)
         self.__zoom_out = self.__add_toolbar_item(QKeySequence.ZoomOut, "zoom-out", self.__zoom_out_action)
         
-        Application().event_dispatcher.subscribe(LanguageChangedEvent, lambda event: self.__reload_texts())
+        Application().event_dispatcher.subscribe(LanguageChangedEvent, self.__language_changed)
         
         self.__reload_texts()
         
         Application().event_dispatcher.subscribe(None, lambda event: self.__refresh_enable())
         self.__refresh_enable()
+    
+    def __language_changed(self, event):
+        self.__reload_texts()
     
     def __add_toolbar_item(self, shortcut, icon, action=None, menu=None):
         ret = QAction(None)

@@ -34,10 +34,13 @@ class StartPage(QWidget):
         
         self.setLayout(layout)
         
-        Application().event_dispatcher.subscribe(LanguageChangedEvent, lambda event: self.__reload_texts())
+        Application().event_dispatcher.subscribe(LanguageChangedEvent, self.__language_changed)
         Application().event_dispatcher.subscribe(RecentFilesChangedEvent, lambda event: self.__reload_recent_files())
         self.__reload_texts()
         self.__reload_recent_files()
+    
+    def __language_changed(self, event):
+        self.__reload_texts()
     
     def paintEvent(self, event):
         painter = QPainter()

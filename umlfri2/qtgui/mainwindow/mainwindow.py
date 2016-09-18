@@ -87,7 +87,7 @@ class UmlFriMainWindow(QMainWindow):
         Application().event_dispatcher.subscribe(OpenSolutionEvent, self.__solution_file_changed)
         Application().event_dispatcher.subscribe(SaveSolutionEvent, self.__solution_file_changed)
         Application().event_dispatcher.subscribe(ChangeStatusChangedEvent, self.__change_status_changed)
-        Application().event_dispatcher.subscribe(LanguageChangedEvent, lambda event: self.__reload_texts())
+        Application().event_dispatcher.subscribe(LanguageChangedEvent, self.__language_changed)
         Application().event_dispatcher.subscribe(PluginStateChangedEvent, self.__plugin_state_changed)
         
         self.__reload_texts()
@@ -170,6 +170,9 @@ class UmlFriMainWindow(QMainWindow):
                     and widget.diagram is event.object:
                 self.__tabs.setTabText(widget_id, widget.diagram.get_display_name())
                 return
+    
+    def __language_changed(self, event):
+        self.__reload_texts()
     
     def __change_status_changed(self, event):
         self.__reload_window_title()
