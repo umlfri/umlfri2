@@ -10,6 +10,10 @@ class GuiInjection:
         for toolbar in self.__toolbars:
             toolbar._set_addon(addon)
     
+    def reset(self):
+        for action in self.__actions.values():
+            action.enabled = True
+    
     @property
     def actions(self):
         yield from self.__actions.values()

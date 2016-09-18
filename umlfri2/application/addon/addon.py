@@ -163,6 +163,7 @@ class AddOn:
         self.__application.event_dispatcher.dispatch(AddonStateChangedEvent(self, self.__state))
     
     def _plugin_started(self):
+        self.__gui_injection.reset();
         self.__state = AddOnState.started
         self.__application.event_dispatcher.dispatch(AddonStateChangedEvent(self, self.__state))
     
