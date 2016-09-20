@@ -51,3 +51,6 @@ class Font:
         family = ' '.join(tmp)
         
         return Font(family, size, style)
+
+class Fonts:
+    default = Font('Arial', 10)

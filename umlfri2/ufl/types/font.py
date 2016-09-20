@@ -2,13 +2,13 @@ from .type import UflType, UflMethodDescription
 from .integer import UflIntegerType
 from .string import UflStringType
 from .typedenum import UflTypedEnumType
-from umlfri2.types.font import FontStyle, Font
+from umlfri2.types.font import FontStyle, Font, Fonts
 from umlfri2.ufl.types import UflBoolType
 
 
 class UflFontType(UflType):
     def __init__(self, default=None):
-        self.__default = default or Font('Arial', 10)
+        self.__default = default or Fonts.default
     
     @property
     def default(self):
