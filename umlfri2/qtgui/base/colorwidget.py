@@ -1,4 +1,4 @@
-from PySide.QtCore import Signal, Qt
+from PySide.QtCore import Signal
 from PySide.QtGui import QWidget, QHBoxLayout, QLabel, QPushButton, QColor, QColorDialog
 
 from umlfri2.types.color import Color, Colors
@@ -27,11 +27,11 @@ class ColorSelectionWidget(QWidget):
         self.__refresh_label()
     
     @property
-    def color(self):
+    def selected_color(self):
         return self.__color
     
-    @color.setter
-    def color(self, value):
+    @selected_color.setter
+    def selected_color(self, value):
         self.__color = value
 
         self.__refresh_label()

@@ -110,7 +110,7 @@ class ObjectTab(TableTab):
             elif isinstance(widget, UflDialogChildWidget):
                 pass
             elif isinstance(widget, UflDialogColorWidget):
-                qt_widget.color = widget.value
+                qt_widget.selected_color = widget.value
             elif isinstance(widget, UflDialogComboWidget):
                 qt_widget.setEditText(widget.value)
             elif isinstance(widget, UflDialogFontWidget):
