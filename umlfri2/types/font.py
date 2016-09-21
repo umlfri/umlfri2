@@ -30,7 +30,7 @@ class Font:
     
     def __str__(self):
         if self.__style:
-            return "{0} {1} {2}".format(self.__family, ' '.join(str(i) for i in self.__style), self.__size)
+            return "{0} {1} {2}".format(self.__family, ' '.join(FontStyle.to_string(i) for i in self.__style), self.__size)
         else:
             return "{0} {1}".format(self.__family, self.__size)
     

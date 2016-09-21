@@ -4,6 +4,7 @@ from PySide.QtCore import Qt
 from PySide.QtGui import QWidget, QFormLayout, QCheckBox, QPushButton, QComboBox, QTextEdit, QLabel
 
 from umlfri2.qtgui.base.colorwidget import ColorSelectionWidget
+from umlfri2.qtgui.base.fontwidget import FontSelectionWidget
 from umlfri2.qtgui.base.multiselectcombobox import MultiSelectComboBox
 from umlfri2.qtgui.base.selectalllineedit import SelectAllLineEdit
 from umlfri2.qtgui.base.selectallspinbox import SelectAllSpinBox
@@ -39,7 +40,7 @@ class PropertyTab(QWidget):
                 ret.addRow(widget.label, qt_widget)
             elif isinstance(widget, UflDialogColorWidget):
                 qt_widget = ColorSelectionWidget()
-                qt_widget.color_changed.connect(partial(self.__color_changed, widget))
+                qt_widget.color_changed.connect(partial(self.__value_changed, widget))
                 self.__qt_widgets[widget.id] = qt_widget
                 ret.addRow(widget.label, qt_widget)
             elif isinstance(widget, UflDialogComboWidget):
@@ -51,7 +52,8 @@ class PropertyTab(QWidget):
                 qt_widget.currentIndexChanged[str].connect(partial(self.__value_changed, widget))
                 ret.addRow(widget.label, qt_widget)
             elif isinstance(widget, UflDialogFontWidget):
-                qt_widget = QPushButton() # TODO: font selection widget
+                qt_widget = FontSelectionWidget()
+                qt_widget.font_changed.connect(partial(self.__value_changed, widget))
                 self.__qt_widgets[widget.id] = qt_widget
                 ret.addRow(widget.label, qt_widget)
             elif isinstance(widget, UflDialogIntegerWidget):
@@ -121,11 +123,6 @@ class PropertyTab(QWidget):
             return
         widget.value = qt_widget.toPlainText()
 
-    def __color_changed(self, widget, color):
-        if not self.__enabled:
-            return
-        widget.value = color
-
     def _update_values(self):
         self.__enabled = False
         try:
@@ -142,6 +139,8 @@ class PropertyTab(QWidget):
                         qt_widget.selected_color = widget.value
                     elif isinstance(widget, UflDialogComboWidget):
                         qt_widget.setEditText(widget.value)
+                    elif isinstance(widget, UflDialogFontWidget):
+                        qt_widget.selected_color = widget.value
                     elif isinstance(widget, UflDialogIntegerWidget):
                         qt_widget.setValue(widget.value)
                     elif isinstance(widget, UflDialogMultiSelectWidget):
