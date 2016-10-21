@@ -1,5 +1,6 @@
 import inspect
 import traceback
+import sys
 from base64 import b64encode
 from collections import Iterable
 
@@ -149,9 +150,21 @@ class PluginExecutor:
                     'line': record[1],
                     'function': record[2]
                 }
-                for record in traceback.extract_tb(ex.__traceback__)
+                for record in traceback.extract_tb(self.__filter_tb(ex.__traceback__))
             ]
         }
+    
+    def __filter_tb(self, tb):
+        filename = sys._getframe().f_code.co_filename
+        
+        def filter_tb_recursive(current):
+            if current is None:
+                return tb
+            if current.tb_frame.f_code.co_filename == filename:
+                return filter_tb_recursive(current.tb_next)
+            return current
+        
+        return filter_tb_recursive(tb)
     
     def fire_event(self, target, selector, **arguments):
         self.__channel.write(
