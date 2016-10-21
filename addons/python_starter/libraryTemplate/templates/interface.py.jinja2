@@ -59,6 +59,7 @@
 {% for exception in method.throws %}
                 .throws_exception('{{ exception.exception.api_name }}', {{ exception.exception.identifier.upper_camel_case }})
 {% endfor %}
+                .check_unknown_exceptions()
 {% if not method.return_type %}
                 .return_void()
 {% elif method.return_type.iterable %}

@@ -16,75 +16,61 @@ class MessageResult:
             raise exception()
         return self
     
-    def __control_exception(self):
+    def check_unknown_exceptions(self):
         if 'exception' in self.__data:
             raise Exception("Unknown exception {0}".format(self.__data['exception']['type']))
+        
+        return self
     
     def __control_null(self, allow_null):
         return allow_null and 'return' not in self.__data
     
     def return_void(self):
-        self.__control_exception()
+        pass
         
     def return_boolean(self, allow_null=False):
-        self.__control_exception()
-        
         if self.__control_null(allow_null):
             return None
         
         return bool(self.__data['return'])
         
     def return_inputstream(self, allow_null=False):
-        self.__control_exception()
-        
         if self.__control_null(allow_null):
             return None
         
         return _inputstream(self.__data['return'])
     
     def return_int32(self, allow_null=False):
-        self.__control_exception()
-        
         if self.__control_null(allow_null):
             return None
         
         return int(self.__data['return'])
     
     def return_float(self, allow_null=False):
-        self.__control_exception()
-        
         if self.__control_null(allow_null):
             return None
         
         return float(self.__data['return'])
     
     def return_variant(self, allow_null=False):
-        self.__control_exception()
-        
         if self.__control_null(allow_null):
             return None
         
         return self.__data['return']
     
     def return_string(self, allow_null=False):
-        self.__control_exception()
-        
         if self.__control_null(allow_null):
             return None
         
         return str(self.__data['return'])
     
     def return_xy(self, allow_null=False):
-        self.__control_exception()
-        
         if self.__control_null(allow_null):
             return None
         
         return (int(self.__data['return'][0]), int(self.__data['return'][1]))
     
     def return_xywh(self, allow_null=False):
-        self.__control_exception()
-        
         if self.__control_null(allow_null):
             return None
         
@@ -92,16 +78,12 @@ class MessageResult:
                 int(self.__data['return'][3]))
     
     def return_wh(self, allow_null=False):
-        self.__control_exception()
-        
         if self.__control_null(allow_null):
             return None
         
         return (int(self.__data['return'][0]), int(self.__data['return'][1]))
     
     def return_object(self, type, allow_null=False):
-        self.__control_exception()
-        
         if self.__control_null(allow_null):
             return None
         
@@ -114,62 +96,42 @@ class MessageResult:
             return self.__factory.get_instance(type, self.__data['return'])
         
     def iterate_boolean(self):
-        self.__control_exception()
-        
         for item in self.__data['return']:
             yield bool(item)
     
     def iterate_int32(self):
-        self.__control_exception()
-        
         for item in self.__data['return']:
             yield int(item)
     
     def iterate_float(self):
-        self.__control_exception()
-        
         for item in self.__data['return']:
             yield float(item)
     
     def iterate_variant(self):
-        self.__control_exception()
-        
         for item in self.__data['return']:
             yield item
     
     def iterate_string(self):
-        self.__control_exception()
-        
         for item in self.__data['return']:
             yield str(item)
     
     def iterate_xy(self):
-        self.__control_exception()
-        
         for item in self.__data['return']:
             yield (int(item[0]), int(item[1]))
     
     def iterate_xywh(self):
-        self.__control_exception()
-        
         for item in self.__data['return']:
             yield (int(item[0]), int(item[1]), int(item[2]), int(item[3]))
     
     def iterate_wh(self):
-        self.__control_exception()
-        
         for item in self.__data['return']:
             yield (int(item[0]), int(item[1]))
     
     def iterate_keyvalue_string_variant(self):
-        self.__control_exception()
-        
         for key, value in self.__data['return']:
             yield (str(key), value)
     
     def iterate_object(self, type):
-        self.__control_exception()
-        
         for item in self.__data['return']:
             if type is None:
                 yield self.__factory.get_instance(item[0], item[1])
