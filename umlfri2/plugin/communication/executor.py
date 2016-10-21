@@ -140,7 +140,18 @@ class PluginExecutor:
             return data
     
     def __encode_exception(self, ex):
-        return {'type': ex.__class__.__name__}
+        return {
+            'type': ex.__class__.__name__,
+            'message': str(ex),
+            'traceback': [
+                {
+                    'file': record[0],
+                    'line': record[1],
+                    'function': record[2]
+                }
+                for record in traceback.extract_tb(ex.__traceback__)
+            ]
+        }
     
     def fire_event(self, target, selector, **arguments):
         self.__channel.write(
