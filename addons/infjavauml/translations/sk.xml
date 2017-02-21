@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Translation lang="sk" xmlns="http://umlfri.org/v2/addon.xsd">
     <Element id="activity" label="Aktivita"/>
+    <Element id="actor" label="Aktor"/>
     <Element id="initial_activity" label="Začiatok"/>
     <Element id="final_activity" label="Koniec"/>
     <Element id="decision" label="Vetvenie"/>
@@ -11,6 +12,7 @@
     
     <Diagram id="class_diagram" label="Diagram tried"/>
     <Diagram id="activity_diagram" label="Diagram aktivít"/>
+    <Diagram id="use_case_diagram" label="Diagram prípadov použitia"/>
     
     <Connection id="association" label="Asociácia"/>
     <Connection id="composition" label="Kompozícia"/>

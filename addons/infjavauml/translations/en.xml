@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Translation lang="en" xmlns="http://umlfri.org/v2/addon.xsd">
     <Element id="activity" label="Activity"/>
+    <Element id="actor" label="Actor"/>
     <Element id="initial_activity" label="Initial"/>
     <Element id="final_activity" label="Final"/>
     <Element id="decision" label="Decision"/>
@@ -9,15 +10,16 @@
     <Element id="package" label="Package"/>
     <Element id="note" label="Note"/>
     
-    <Diagram id="class_diagram" label="Class diagram"/>
-    <Diagram id="activity_diagram" label="Activity diagram"/>
+    <Diagram id="class_diagram" label="Class Diagram"/>
+    <Diagram id="activity_diagram" label="Activity Diagram"/>
+    <Diagram id="use_case_diagram" label="Use Case Diagram"/>
     
     <Connection id="association" label="Association"/>
     <Connection id="composition" label="Composition"/>
     <Connection id="generalisation" label="Generalisation"/>
     <Connection id="implementation" label="Implementation"/>
-    <Connection id="activity_control_flow" label="Control flow"/>
-    <Connection id="note_link" label="Note link"/>
+    <Connection id="activity_control_flow" label="Control Flow"/>
+    <Connection id="note_link" label="Note Link"/>
     
     <Attribute path="**/name" label="Name"/>
     <Attribute path="**/type" label="Type"/>
@@ -34,16 +36,16 @@
     <Attribute path="class/attributes" label="Attributes"/>
     <Attribute path="class/operations" label="Operations"/>
     
-    <Attribute path="class/attributes/default" label="Default value"/>
+    <Attribute path="class/attributes/default" label="Default Value"/>
     
-    <Attribute path="class/operations/rtype" label="Return type"/>
+    <Attribute path="class/operations/rtype" label="Return Type"/>
     <Attribute path="class/operations/parameters" label="Parameters"/>
-    <Attribute path="class/operations/parameters/default" label="Default value"/>
+    <Attribute path="class/operations/parameters/default" label="Default Value"/>
     
     <Attribute path="association/direction" label="Direction"/>
     <EnumItem path="association/direction/unspecified" label=""/>
-    <EnumItem path="association/direction/toDestination" label="To destination"/>
-    <EnumItem path="association/direction/toSource" label="To source"/>
+    <EnumItem path="association/direction/toDestination" label="To Destination"/>
+    <EnumItem path="association/direction/toSource" label="To Source"/>
     <EnumItem path="association/direction/bidirectional" label="Bidirectional"/>
     <Attribute path="association/source" label="Source"/>
     <Attribute path="association/destination" label="Destination"/>

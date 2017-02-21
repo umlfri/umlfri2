@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ElementType id="actor" xmlns="http://umlfri.org/v2/addon.xsd">
+    <Icon path="icons/actor.png" />
+
+    <Structure>
+        <Attribute id="name" type="str">
+            <Template>
+                <Text text="Actor"/>
+                <Text text="#no"/>
+            </Template>
+        </Attribute>
+        <Attribute id="stereotype" type="str"/>
+        <Attribute id="note" type="text"/>
+    </Structure>
+
+    <DisplayName>
+        <Text text="#self.name"/>
+    </DisplayName>
+
+    <Appearance>
+        <VBox>
+            <Shadow padding="5" color="#cfg.element.shadow">
+                <Rectangle fill="#cfg.element.fill" border="#cfg.element.line" left="rounded" right="rounded">
+                    <Sizer width="20" height="100"/>
+                </Rectangle>
+            </Shadow>
+            <Align horizontal="center">
+                <TextBox text="#self.name" font="#cfg.element.textfont" color="#cfg.element.text"/>
+            </Align>
+        </VBox>
+    </Appearance>
+</ElementType>
