@@ -4,6 +4,8 @@ from ..constants import ADDON_NAMESPACE
 from umlfri2.components.common import COMMON_COMPONENTS, SWITCH_COMPONENTS
 from umlfri2.components.connectionline import CONNECTION_LINE_COMPONENTS
 from umlfri2.components.expressions import UflExpression, ConstantExpression
+from umlfri2.components.graphic import GRAPHIC_COMPONENTS
+from umlfri2.components.pathpart import PATH_COMPONENTS
 from umlfri2.components.text import TEXT_COMPONENTS
 from umlfri2.components.visual import VISUAL_COMPONENTS, TABLE_COMPONENTS
 from umlfri2.ufl.types import UflDefinedEnumType, UflNullableType
@@ -16,6 +18,8 @@ class ComponentLoader:
     
     __components['visual'] = COMMON_COMPONENTS.copy()
     __components['table'] = COMMON_COMPONENTS.copy()
+    __components['graphic'] = COMMON_COMPONENTS.copy()
+    __components['pathpart'] = COMMON_COMPONENTS.copy()
     __components['text'] = COMMON_COMPONENTS.copy()
     __components['connection'] = COMMON_COMPONENTS.copy()
     
@@ -23,6 +27,8 @@ class ComponentLoader:
     
     __components['visual'].update(VISUAL_COMPONENTS)
     __components['text'].update(TEXT_COMPONENTS)
+    __components['graphic'].update(GRAPHIC_COMPONENTS)
+    __components['pathpart'].update(PATH_COMPONENTS)
     __components['connection'].update(CONNECTION_LINE_COMPONENTS)
     __components['table'].update(TABLE_COMPONENTS)
     

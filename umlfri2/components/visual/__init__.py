@@ -2,6 +2,7 @@ from .align import AlignComponent
 from .diamond import DiamondComponent
 from .ellipse import EllipseComponent
 from .empty import EmptyComponent
+from .graphics import GraphicsComponent
 from .hbox import HBoxComponent
 from .image import ImageComponent
 from .line import LineComponent
@@ -19,6 +20,7 @@ VISUAL_COMPONENTS = {
     'Diamond': DiamondComponent,
     'Ellipse': EllipseComponent,
     'Empty': EmptyComponent,
+    'Graphics': GraphicsComponent,
     'HBox': HBoxComponent,
     'Image': ImageComponent,
     'Line': LineComponent,
