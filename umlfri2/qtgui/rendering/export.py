@@ -1,7 +1,11 @@
 from PyQt5.QtCore import QSize, QSizeF, QRect, Qt, QPoint
 from PyQt5.QtGui import QPixmap, QPainter
 from PyQt5.QtWidgets import QApplication
-from PyQt5.QtPrintSupport import QPrinter
+
+try:
+    from PyQt5.QtPrintSupport import QPrinter
+except ImportError:
+    QPrinter = None
 
 try:
     from PyQt5.QtSvg import QSvgGenerator
@@ -25,7 +29,8 @@ class ImageExport:
         if not self.__transparent:
             yield 'bmp',
             yield 'jpg', 'jpeg'
-        yield 'pdf',
+        if QPrinter is not None:
+            yield 'pdf',
         yield 'png',
         if QSvgGenerator is not None:
             yield 'svg',
