@@ -1,4 +1,4 @@
-from PySide.QtCore import Signal, QThread, QObject
+from PyQt5.QtCore import pyqtSignal, QThread, QObject
 
 from umlfri2.application.threadmanager import ThreadManager
 
@@ -12,7 +12,7 @@ class QTThreadManager(QObject, ThreadManager):
         def run(self):
             self.__callback()
     
-    __execute = Signal(object, object)
+    __execute = pyqtSignal(object, object)
     
     def __init__(self):
         super().__init__()

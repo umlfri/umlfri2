@@ -1,4 +1,4 @@
-from PySide.QtGui import QSpinBox
+from PyQt5.QtWidgets import QSpinBox
 
 
 class SelectAllSpinBox(QSpinBox):

@@ -1,7 +1,8 @@
 import os.path
 
-from PySide.QtCore import Qt
-from PySide.QtGui import QWidget, QVBoxLayout, QIcon, QPushButton
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QPushButton
 
 from umlfri2.application import Application
 from umlfri2.application.drawingarea.actions import AddElementAction, AddConnectionAction

@@ -1,6 +1,6 @@
 from functools import partial
 
-from PySide.QtGui import QToolBar
+from PyQt5.QtWidgets import QToolBar
 
 from umlfri2.application import Application
 from umlfri2.application.events.addon import ActionEnableStatusChangedEvent

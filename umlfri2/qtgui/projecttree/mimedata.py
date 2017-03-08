@@ -1,4 +1,4 @@
-from PySide.QtCore import QMimeData
+from PyQt5.QtCore import QMimeData
 
 
 class ProjectMimeData(QMimeData):

@@ -1,11 +1,12 @@
-from PySide.QtCore import Signal
-from PySide.QtGui import QWidget, QHBoxLayout, QLabel, QPushButton, QColor, QColorDialog
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtGui import QColor
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLabel, QPushButton, QColorDialog
 
 from umlfri2.types.color import Color, Colors
 
 
 class ColorSelectionWidget(QWidget):
-    color_changed = Signal(Color)
+    color_changed = pyqtSignal(Color)
     
     def __init__(self, btn_class=QPushButton):
         super().__init__()

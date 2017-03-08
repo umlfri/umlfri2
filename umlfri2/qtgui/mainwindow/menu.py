@@ -1,7 +1,8 @@
 import os.path
 from functools import partial
 
-from PySide.QtGui import QMenuBar, QAction, QMenu, QKeySequence, QIcon, QFileDialog
+from PyQt5.QtGui import QKeySequence, QIcon
+from PyQt5.QtWidgets import QMenuBar, QAction, QMenu, QFileDialog
 
 from umlfri2.application import Application
 from umlfri2.application.commands.diagram import HideElementsCommand, PasteSnippetCommand, DuplicateSnippetCommand
@@ -254,7 +255,7 @@ class MainWindowMenu(QMenuBar):
             self,
             caption=_("Export Diagram"),
             filter=";;".join(text for text, format in filters),
-            selectedFilter=default_filter
+            initialFilter=default_filter
         )
         
         if file_name:

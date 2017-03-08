@@ -1,8 +1,8 @@
 import html
 
-from PySide.QtCore import Qt, QSize
-from PySide.QtGui import QDialog, QDialogButtonBox, QVBoxLayout, QListWidget, QLabel, QFont, QPalette, QSizePolicy, \
-    QListWidgetItem, QScrollArea, QCheckBox, QLineEdit, QFormLayout
+from PyQt5.QtCore import Qt, QSize
+from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QListWidget, QLabel, QSizePolicy, \
+    QListWidgetItem, QCheckBox, QLineEdit, QFormLayout
 from umlfri2.application import Application
 from umlfri2.qtgui.base import image_loader
 

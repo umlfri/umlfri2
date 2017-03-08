@@ -1,9 +1,10 @@
 from collections import namedtuple
 from functools import partial
 
-from PySide.QtCore import QSize, Qt, QUrl, QTimer
-from PySide.QtGui import QDialog, QDialogButtonBox, QVBoxLayout, QTableWidget, QHBoxLayout, QLabel, QWidget, \
-    QTableWidgetItem, QFont, QStyledItemDelegate, QStyle, QPushButton, QIcon, QMenu, QFileDialog, QDesktopServices
+from PyQt5.QtCore import QSize, Qt, QUrl, QTimer
+from PyQt5.QtGui import QFont, QIcon, QDesktopServices
+from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QTableWidget, QHBoxLayout, QLabel, QWidget, \
+    QTableWidgetItem, QStyledItemDelegate, QStyle, QPushButton, QMenu, QFileDialog
 from umlfri2.application import Application
 from umlfri2.application.addon import AddOnState
 from umlfri2.application.events.addon import AddonStateChangedEvent
@@ -84,7 +85,7 @@ class AddOnsDialog(QDialog):
         for no, addon in enumerate(addons):
             if addon.icon:
                 icon_item = QTableWidgetItem()
-                icon_item.setIcon(image_loader.load(addon.icon))
+                icon_item.setIcon(QIcon(image_loader.load(addon.icon)))
                 self.__table.setItem(no, 0, icon_item)
             
             layout = QVBoxLayout()

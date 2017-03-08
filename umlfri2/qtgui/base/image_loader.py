@@ -1,6 +1,6 @@
 from weakref import WeakKeyDictionary
 
-from PySide.QtGui import QPixmap, QIcon
+from PyQt5.QtGui import QPixmap, QIcon
 
 
 icon_cache = WeakKeyDictionary()

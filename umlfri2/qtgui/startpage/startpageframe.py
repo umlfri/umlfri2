@@ -1,7 +1,8 @@
 from html import escape
 
-from PySide.QtCore import QSize, QRect, Qt
-from PySide.QtGui import QWidget, QPainter, QBrush, QPen, QColor, QVBoxLayout, QLabel
+from PyQt5.QtCore import QSize, QRect, Qt
+from PyQt5.QtGui import QPainter, QBrush, QPen, QColor
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel
 
 
 class StartPageFrame(QWidget):

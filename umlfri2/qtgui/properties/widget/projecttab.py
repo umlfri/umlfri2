@@ -1,5 +1,5 @@
-from PySide.QtCore import Qt
-from PySide.QtGui import QTableWidgetItem
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QTableWidgetItem
 
 from umlfri2.application import Application
 from umlfri2.application.commands.model import ChangeProjectNameCommand

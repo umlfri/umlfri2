@@ -1,4 +1,4 @@
-from PySide.QtGui import QKeySequence
+from PyQt5.QtGui import QKeySequence
 
 from umlfri2.application import Application
 from umlfri2.application.commands.diagram import PasteSnippetCommand, DuplicateSnippetCommand

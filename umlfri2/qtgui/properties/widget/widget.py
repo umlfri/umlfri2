@@ -1,4 +1,4 @@
-from PySide.QtGui import QTableWidget, QTabWidget
+from PyQt5.QtWidgets import QTabWidget
 
 from umlfri2.application import Application
 from umlfri2.application.commands.model import ApplyPatchCommand

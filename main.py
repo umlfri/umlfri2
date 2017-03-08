@@ -3,7 +3,8 @@
 import os
 import sys
 
-from PySide.QtGui import QApplication, QIcon
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QApplication
 
 from umlfri2.application import Application
 from umlfri2.constants.paths import NT_ICON_THEME_PATH, NT_ICON_THEME

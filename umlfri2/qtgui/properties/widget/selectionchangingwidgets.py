@@ -1,5 +1,5 @@
-from PySide.QtCore import Signal
-from PySide.QtGui import QCheckBox, QPushButton, QComboBox, QSpinBox, QLineEdit
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QCheckBox, QPushButton, QComboBox, QSpinBox, QLineEdit
 
 
 class QSelectionChangingCheckBox(QCheckBox):
@@ -27,7 +27,7 @@ class QSelectionChangingPushButton(QPushButton):
 
 
 class QSelectionChangingComboBox(QComboBox):
-    lostFocus = Signal(str)
+    lostFocus = pyqtSignal(str)
     
     def __init__(self, table, row):
         super().__init__()
@@ -58,7 +58,7 @@ class QSelectionChangingSpinBox(QSpinBox):
 
 
 class QSelectionChangingLineEdit(QLineEdit):
-    lostFocus = Signal(str)
+    lostFocus = pyqtSignal(str)
     
     def __init__(self, table, row):
         super().__init__()

@@ -1,7 +1,8 @@
 import os.path
 
-from PySide.QtCore import Qt, QSettings
-from PySide.QtGui import QMainWindow, QTabWidget, QDockWidget, QMessageBox, QFileDialog, QIcon, QTabBar
+from PyQt5.QtCore import Qt, QSettings
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QMainWindow, QTabWidget, QDockWidget, QMessageBox, QFileDialog, QTabBar
 
 from umlfri2.application import Application
 from umlfri2.application.addon import AddOnState

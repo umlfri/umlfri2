@@ -1,7 +1,8 @@
 import os.path
 
-from PySide.QtCore import QTimer, Qt
-from PySide.QtGui import QLabel, QPixmap, QApplication
+from PyQt5.QtCore import QTimer, Qt
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QLabel, QApplication
 
 from umlfri2.application import Application
 from umlfri2.constants.paths import GRAPHICS

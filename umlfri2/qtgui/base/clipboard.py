@@ -1,5 +1,6 @@
-from PySide.QtCore import QMimeData
-from PySide.QtGui import QApplication, QClipboard
+from PyQt5.QtCore import QMimeData
+from PyQt5.QtGui import QClipboard
+from PyQt5.QtWidgets import QApplication
 
 from umlfri2.application import Application
 from umlfri2.application.events.application import ClipboardSnippetChangedEvent

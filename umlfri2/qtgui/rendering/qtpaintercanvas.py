@@ -1,5 +1,5 @@
-from PySide.QtCore import Qt, QPoint, QRect
-from PySide.QtGui import QPainter, QPen, QBrush, QColor, QFont, QFontMetrics, QPainterPath
+from PyQt5.QtCore import Qt, QPoint, QRect
+from PyQt5.QtGui import QPainter, QPen, QBrush, QColor, QFont, QFontMetrics, QPainterPath
 
 from umlfri2.components.visual.canvas import Canvas
 from umlfri2.qtgui.base import image_loader
@@ -11,9 +11,9 @@ from umlfri2.types.geometry import PathLineTo, PathCubicTo, Vector
 
 class QTPainterCanvas(Canvas):
     __line_styles = {
-        LineStyle.solid: Qt.PenStyle.SolidLine,
-        LineStyle.dot: Qt.PenStyle.DotLine,
-        LineStyle.dashdot: Qt.PenStyle.DashDotLine
+        LineStyle.solid: Qt.SolidLine,
+        LineStyle.dot: Qt.DotLine,
+        LineStyle.dashdot: Qt.DashDotLine
     }
     
     def __init__(self, painter):
@@ -40,17 +40,17 @@ class QTPainterCanvas(Canvas):
             if style:
                 qstyle = self.__line_styles[style]
             else:
-                qstyle = Qt.PenStyle.SolidLine
+                qstyle = Qt.SolidLine
             self.__painter.setPen(QPen(self.__create_brush(color), width or 1, qstyle))
         else:
-            self.__painter.setPen(Qt.PenStyle.NoPen)
+            self.__painter.setPen(Qt.NoPen)
     
     def __create_brush(self, color=None):
         if color:
             qcolor = self.__convert_color(color)
             return QBrush(qcolor)
         else:
-            return Qt.BrushStyle.NoBrush
+            return Qt.NoBrush
     
     def __set_brush(self, color=None):
         self.__painter.setBrush(self.__create_brush(color))

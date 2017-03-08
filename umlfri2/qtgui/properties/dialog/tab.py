@@ -1,7 +1,7 @@
 from functools import partial
 
-from PySide.QtCore import Qt
-from PySide.QtGui import QWidget, QFormLayout, QCheckBox, QPushButton, QComboBox, QTextEdit, QLabel
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QWidget, QFormLayout, QCheckBox, QPushButton, QComboBox, QTextEdit, QLabel
 
 from umlfri2.qtgui.base.colorwidget import ColorSelectionWidget
 from umlfri2.qtgui.base.fontwidget import FontSelectionWidget

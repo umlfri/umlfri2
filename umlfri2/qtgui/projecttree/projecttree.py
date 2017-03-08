@@ -1,5 +1,6 @@
-from PySide.QtCore import Qt
-from PySide.QtGui import QTreeWidget
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QTreeWidget
+
 from umlfri2.application import Application
 from umlfri2.application.commands.model.movenode import MoveNodeCommand
 from umlfri2.application.events.application import ItemSelectedEvent
@@ -26,7 +27,7 @@ class ProjectTree(QTreeWidget):
         self.itemSelectionChanged.connect(self.__item_selected)
         self.itemActivated.connect(self.__item_activated)
         self.setDragDropMode(QTreeWidget.DragDrop)
-        self.invisibleRootItem().setFlags(0)
+        self.invisibleRootItem().setFlags(Qt.NoItemFlags)
         
         Application().event_dispatcher.subscribe(ElementCreatedEvent, self.__element_created)
         Application().event_dispatcher.subscribe(DiagramCreatedEvent, self.__diagram_created)

@@ -1,6 +1,7 @@
 from functools import partial
 
-from PySide.QtGui import QMenu, QIcon, QKeySequence, QAction
+from PyQt5.QtGui import QIcon, QKeySequence
+from PyQt5.QtWidgets import QMenu, QAction
 
 from umlfri2.application import Application
 from umlfri2.qtgui.base import image_loader

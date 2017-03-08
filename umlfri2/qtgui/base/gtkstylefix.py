@@ -1,6 +1,7 @@
 import os.path
 
-from PySide.QtGui import QApplication, QIcon
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QApplication
 
 
 def find_gtk_rc():

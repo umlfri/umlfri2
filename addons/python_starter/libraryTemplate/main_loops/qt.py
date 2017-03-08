@@ -1,13 +1,12 @@
-from queue import Queue
-
 import sys
-from PySide.QtCore import QThread, Signal
-from PySide.QtGui import QApplication
+
+from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt5.QtWidgets import QApplication
 
 
 class QtMainLoop:
     class __MainThread(QThread):
-        call = Signal(object, object)
+        call = pyqtSignal(object, object)
         
         def __init__(self, callback):
             super().__init__()

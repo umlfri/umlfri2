@@ -1,12 +1,13 @@
-from PySide.QtCore import Signal, Qt
-from PySide.QtGui import QWidget, QHBoxLayout, QLabel, QPushButton, QFont, QFontDialog, QFontMetrics
+from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtGui import QFont, QFontMetrics
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLabel, QPushButton, QFontDialog
 
 from umlfri2.types.enums import FontStyle
 from umlfri2.types.font import Font, Fonts
 
 
 class FontSelectionWidget(QWidget):
-    font_changed = Signal(Font)
+    font_changed = pyqtSignal(Font)
 
     def __init__(self, btn_class=QPushButton):
         super().__init__()

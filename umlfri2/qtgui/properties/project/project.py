@@ -1,5 +1,5 @@
-from PySide.QtCore import QSize
-from PySide.QtGui import QDialog, QDialogButtonBox, QVBoxLayout, QFormLayout, QLineEdit
+from PyQt5.QtCore import QSize
+from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QFormLayout, QLineEdit
 
 from umlfri2.application import Application
 from umlfri2.application.commands.model import ChangeProjectNameCommand

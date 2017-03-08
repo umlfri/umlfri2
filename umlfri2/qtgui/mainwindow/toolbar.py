@@ -1,6 +1,8 @@
 from functools import partial
 
-from PySide.QtGui import QToolBar, QAction, QKeySequence, QIcon, QMenu
+from PyQt5.QtGui import QKeySequence, QIcon
+from PyQt5.QtWidgets import QToolBar, QAction, QMenu
+
 from umlfri2.application import Application
 from umlfri2.application.commands.diagram import HideElementsCommand, PasteSnippetCommand
 from umlfri2.application.events.application import LanguageChangedEvent

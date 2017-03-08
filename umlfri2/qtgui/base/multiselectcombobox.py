@@ -1,10 +1,10 @@
-from PySide.QtCore import Qt, Signal
-from PySide.QtGui import QComboBox, QStandardItemModel, QStyledItemDelegate, QStyle, QStandardItem, QStylePainter, \
-    QPalette, QStyleOptionComboBox
+from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtGui import QStandardItemModel, QStandardItem
+from PyQt5.QtWidgets import QComboBox, QStyledItemDelegate, QStyle, QStylePainter, QStyleOptionComboBox
 
 
 class MultiSelectComboBox(QComboBox):
-    check_changed = Signal(int, bool)
+    check_changed = pyqtSignal(int, bool)
     
     class __CheckingStyledItemDelegate(QStyledItemDelegate):
         def paint(self, painter, option, index):

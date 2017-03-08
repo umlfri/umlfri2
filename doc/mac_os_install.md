@@ -4,7 +4,7 @@ Dependency installation for Mac OS X
 1. Install Python for Mac
 -------------------------
 
-Version required for the UML .FRI project is **3.4**. Version 3.5 is not yet supported by the PySide library.
+Version required for the UML .FRI project is **3.4**. Version 3.5 is not yet supported by the PyQt5 library.
 You can download correct Python version from this link:
 https://www.python.org/downloads/release/python-343/
 
@@ -24,10 +24,10 @@ UML .FRI is written using the QT library. The library is needed to be installed 
 
     brew install qt
 
-Python wrapper for QT library used in UML .FRI is PySide. It can be installed using pip package manageer.
+Python wrapper for QT library used in UML .FRI is PyQt5. It can be installed using pip package manageer.
 
     brew install cmake
-    pip install PySide
+    pip install PyQt5
 
 4. Install other dependencies
 -----------------------------
@@ -54,10 +54,10 @@ If you only want to update existing source code to the newest version, use the f
 6. Starting the application
 ---------------------------
 
-I have to say, I have no idea why the following is required, but it is. PySide is not working without the following
+I have to say, I have no idea why the following is required, but it is. PyQt5 is not working without the following
 command executed before the application start:
 
-    export DYLD_LIBRARY_PATH=/Library/Frameworks/Python.framework/Versions/3.4/lib/python3.4/site-packages/PySide
+    export DYLD_LIBRARY_PATH=/Library/Frameworks/Python.framework/Versions/3.4/lib/python3.4/site-packages/PyQt5
 
 After that, you can start UML .FRI by executing this inside the working directory:
 

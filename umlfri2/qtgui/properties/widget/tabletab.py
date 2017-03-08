@@ -1,4 +1,4 @@
-from PySide.QtGui import QTableWidget, QTableWidgetItem
+from PyQt5.QtWidgets import QTableWidget
 
 
 class TableTab(QTableWidget):

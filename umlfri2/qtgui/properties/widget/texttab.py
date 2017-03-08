@@ -1,4 +1,4 @@
-from PySide.QtGui import QTextEdit
+from PyQt5.QtWidgets import QTextEdit
 
 
 class TextTab(QTextEdit):

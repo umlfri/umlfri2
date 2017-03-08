@@ -1,4 +1,5 @@
-from PySide.QtGui import QWidget, QHBoxLayout, QShortcut, QKeySequence
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QShortcut
 
 from umlfri2.qtgui.canvas import ScrolledCanvasWidget
 from umlfri2.qtgui.toolbox import ToolBox

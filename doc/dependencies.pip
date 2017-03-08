@@ -1,6 +1,7 @@
-PySide
+PyQt5
 appdirs
-ipython==3.2.1
+ipython
+qtconsole
 jinja2
 pyzmq
 lxml

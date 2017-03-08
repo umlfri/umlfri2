@@ -1,8 +1,9 @@
 import os.path
 from time import time
 
-from PySide.QtCore import QTimer
-from PySide.QtGui import QSplashScreen, QPixmap, QFont, QColor, QPen
+from PyQt5.QtCore import QTimer
+from PyQt5.QtGui import QPixmap, QFont, QColor, QPen
+from PyQt5.QtWidgets import QSplashScreen
 
 from umlfri2.application import Application
 from umlfri2.constants.paths import GRAPHICS

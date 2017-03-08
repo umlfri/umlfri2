@@ -1,5 +1,5 @@
-from PySide.QtCore import QSize, Qt
-from PySide.QtGui import QDialog, QDialogButtonBox, QVBoxLayout, QTabWidget
+from PyQt5.QtCore import QSize, Qt
+from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QTabWidget
 
 from umlfri2.application import Application
 from umlfri2.application.commands.model import ApplyPatchCommand

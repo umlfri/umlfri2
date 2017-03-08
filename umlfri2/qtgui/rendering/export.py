@@ -1,8 +1,10 @@
-from PySide.QtCore import QSize, QRect, Qt, QPoint
-from PySide.QtGui import QPixmap, QPainter, QPrinter, QApplication
+from PyQt5.QtCore import QSize, QSizeF, QRect, Qt, QPoint
+from PyQt5.QtGui import QPixmap, QPainter
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtPrintSupport import QPrinter
 
 try:
-    from PySide.QtSvg import QSvgGenerator
+    from PyQt5.QtSvg import QSvgGenerator
 except ImportError:
     QSvgGenerator = None
 
@@ -48,7 +50,7 @@ class ImageExport:
         elif format == 'pdf':
             output = QPrinter()
             output.setOutputFormat(QPrinter.PdfFormat)
-            output.setPaperSize(size, QPrinter.DevicePixel)
+            output.setPaperSize(QSizeF(size), QPrinter.DevicePixel)
             output.setPageMargins(0, 0, 0, 0, QPrinter.DevicePixel)
             output.setOutputFileName(file)
         else:
@@ -68,7 +70,7 @@ class ImageExport:
         output.fill(Qt.transparent)
 
         self.__draw(bounds, output)
-        
+
         QApplication.clipboard().setPixmap(output)
     
     def __get_bounds(self):

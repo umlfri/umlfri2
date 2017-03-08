@@ -1,7 +1,7 @@
 from html import escape
 
-from PySide.QtCore import Qt
-from PySide.QtGui import QDialog, QVBoxLayout, QDialogButtonBox, QHBoxLayout, QLabel, QFormLayout, QSizePolicy
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QDialog, QVBoxLayout, QDialogButtonBox, QHBoxLayout, QLabel, QFormLayout
 
 from umlfri2.qtgui.base import image_loader
 

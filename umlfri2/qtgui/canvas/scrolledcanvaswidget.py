@@ -1,5 +1,7 @@
-from PySide.QtCore import Qt
-from PySide.QtGui import QScrollArea, QFrame, QWheelEvent
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QWheelEvent
+from PyQt5.QtWidgets import QScrollArea
+
 from .canvaswidget import CanvasWidget
 
 

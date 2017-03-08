@@ -1,4 +1,4 @@
-from PySide.QtGui import QDialog, QFormLayout, QSpinBox, QCheckBox, QDialogButtonBox, QVBoxLayout
+from PyQt5.QtWidgets import QDialog, QFormLayout, QSpinBox, QCheckBox, QDialogButtonBox, QVBoxLayout
 
 
 class ExportDialog(QDialog):

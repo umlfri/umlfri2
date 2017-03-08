@@ -1,7 +1,8 @@
 import os.path
 from functools import partial
 
-from PySide.QtGui import QToolBar, QAction, QIcon, QPixmap
+from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtWidgets import QToolBar, QAction
 
 from umlfri2.application import Application
 from umlfri2.application.commands.diagram import AlignType, AlignSelectionCommand
