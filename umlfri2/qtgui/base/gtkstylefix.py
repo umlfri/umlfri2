@@ -40,5 +40,5 @@ def set_gtk_icon_theme():
 
 
 def set_gtk_icon_theme_if_needed():
-    if QApplication.instance().style().objectName() == 'gtk+':
+    if QApplication.instance().style().objectName() == 'gtk':
         set_gtk_icon_theme()
