@@ -47,7 +47,7 @@ void append_path(PyObject *sys_path, wchar_t* base_path, wchar_t* name)
 	Py_DECREF(python_path);
 }
 
-void fill_sys_path(wchar_t base_path[260])
+void fill_sys_path(wchar_t* base_path, bool plugin)
 {
 	PyObject *sys_path = PySys_GetObject("path");
 
@@ -55,7 +55,14 @@ void fill_sys_path(wchar_t base_path[260])
 	append_path(sys_path, base_path, L"python.zip");
 	append_path(sys_path, base_path, L"dlls");
 	append_path(sys_path, base_path, L"sp.zip");
-	append_path(sys_path, base_path, L"umlfri.zip");
+	if (plugin)
+	{
+		append_path(sys_path, base_path, L"pl_runner.zip");
+	}
+	else
+	{
+		append_path(sys_path, base_path, L"umlfri.zip");
+	}
 }
 
 void finalize_python()
@@ -85,7 +92,7 @@ int main(int argc, char** argv)
 
 	initialize_python(base_path, argc, _argv);
 
-	fill_sys_path(base_path);
+	fill_sys_path(base_path, false);
 
 	int exc = PyRun_SimpleString("import sys; import main; sys.exit(main.main(sys.argv))");
 
