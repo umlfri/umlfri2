@@ -66,6 +66,8 @@ class ObjectTab(TableTab):
                 raise Exception()
             self.setCellWidget(no, 1, qt_widget)
         
+        self.content_updated()
+        
         self.__tab = tab
     
     def __cell_changed(self, row, column, prev_row, prev_column):
@@ -124,6 +126,8 @@ class ObjectTab(TableTab):
                 qt_widget.setText(widget.value)
             else:
                 raise Exception()
+        
+        self.content_updated()
     
     def reload_texts(self):
         super().reload_texts()
@@ -142,6 +146,8 @@ class ObjectTab(TableTab):
             elif isinstance(widget, UflDialogMultiSelectWidget):
                 for no, (checked, possibility) in enumerate(widget.possibilities):
                     qt_widget.set_item_text(no, possibility)
+        
+        self.content_updated()
     
     @property
     def label(self):

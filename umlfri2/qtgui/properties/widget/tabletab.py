@@ -20,6 +20,9 @@ class TableTab(QTableWidget):
     def reload_data(self):
         pass
     
+    def content_updated(self):
+        self.resizeRowsToContents()
+    
     @property
     def label(self):
         raise Exception
