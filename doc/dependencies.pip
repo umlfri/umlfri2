@@ -3,6 +3,4 @@ appdirs
 ipython
 qtconsole
 jinja2
-pyzmq
 lxml
-pygments

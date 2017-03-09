@@ -15,7 +15,7 @@
 - [x] icon visual object
 - [x] accessing project tree from ufl
 - [x] rendering package content in "Package" element visual
-- [ ] canvas visual object
+- [x] canvas visual object
 - [x] copy as image
 - [x] export image
 - [ ] addon management
