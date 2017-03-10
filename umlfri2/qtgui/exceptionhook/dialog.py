@@ -48,7 +48,8 @@ class ExceptionDialog(QDialog):
         lineno_format.setForeground(QColor(Qt.darkGreen))
         
         code_format = cursor.charFormat()
-        code_format.setFont(QFontDatabase.systemFont(QFontDatabase.FixedFont))
+        font = QFontDatabase.systemFont(QFontDatabase.FixedFont)
+        code_format.setFontFamily(font.family())
         
         for filename, lineno, function, text in traceback.extract_tb(exc.__traceback__):
             if filename.startswith(ROOT_DIR):
