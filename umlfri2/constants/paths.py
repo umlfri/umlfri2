@@ -3,7 +3,7 @@ import appdirs
 
 APP_DIRS = appdirs.AppDirs('umlfri2')
 
-ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+ROOT_DIR = os.path.normpath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
 XML_SCHEMAS = os.path.join(ROOT_DIR, 'data', 'schema')
 GRAPHICS = os.path.join(ROOT_DIR, 'data', 'graphics')

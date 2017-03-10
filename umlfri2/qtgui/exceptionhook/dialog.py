@@ -1,4 +1,7 @@
+import os.path
 import traceback
+
+import sys
 from PyQt5.QtCore import Qt
 
 from PyQt5.QtGui import QColor, QFont, QFontDatabase, QTextCursor
@@ -29,55 +32,103 @@ class ExceptionDialog(QDialog):
         
         layout.addWidget(button_box)
         self.setLayout(layout)
-        
+
+        self.__cursor = QTextCursor(self.__exception_text.document())
+
+        self.__normal_format = self.__cursor.charFormat()
+
+        self.__bold_format = self.__cursor.charFormat()
+        self.__bold_format.setFontWeight(QFont.Bold)
+
+        self.__file_format = self.__cursor.charFormat()
+        self.__file_format.setFontUnderline(True)
+        self.__file_format.setForeground(QColor(Qt.blue))
+
+        self.__lineno_format = self.__cursor.charFormat()
+        self.__lineno_format.setForeground(QColor(Qt.darkGreen))
+
+        self.__code_format = self.__cursor.charFormat()
+        font = QFontDatabase.systemFont(QFontDatabase.FixedFont)
+        self.__code_format.setFontFamily(font.family())
+
         self.__add_exception(exc)
     
     def __add_exception(self, exc):
-        cursor = QTextCursor(self.__exception_text.document())
-        
-        normal_format = cursor.charFormat()
-        
-        bold_format = cursor.charFormat()
-        bold_format.setFontWeight(QFont.Bold)
-
-        file_format = cursor.charFormat()
-        file_format.setFontUnderline(True)
-        file_format.setForeground(QColor(Qt.blue))
-
-        lineno_format = cursor.charFormat()
-        lineno_format.setForeground(QColor(Qt.darkGreen))
-        
-        code_format = cursor.charFormat()
-        font = QFontDatabase.systemFont(QFontDatabase.FixedFont)
-        code_format.setFontFamily(font.family())
-        
         for filename, lineno, function, text in traceback.extract_tb(exc.__traceback__):
-            if filename.startswith(ROOT_DIR):
-                filename = filename[len(ROOT_DIR) + 1:]
+            module = self.__path_to_module(filename)
             
-            cursor.setCharFormat(bold_format)
-            cursor.insertText("File ")
-            cursor.setCharFormat(file_format)
-            cursor.insertText(filename)
-            cursor.setCharFormat(bold_format)
-            cursor.insertText(" line ")
-            cursor.setCharFormat(lineno_format)
-            cursor.insertText(str(lineno))
-            cursor.setCharFormat(bold_format)
-            cursor.insertText(" in ")
-            cursor.setCharFormat(normal_format)
-            cursor.insertText(function)
-            if text:
-                cursor.insertText(":\n")
-                cursor.setCharFormat(code_format)
-                cursor.insertText("  ")
-                cursor.insertText(text)
-                cursor.insertText("\n\n")
+            if module is not None:
+                self.__add_module_line(module, lineno, function)
             else:
-                cursor.insertText("\n")
+                self.__add_file_line(filename, lineno, function)
+            
+            if text:
+                self.__add_code_line(text)
+            
+            self.__cursor.insertText("\n")
         
-        cursor.setCharFormat(bold_format)
-        cursor.insertText(type(exc).__name__)
-        cursor.insertText(": ")
-        cursor.setCharFormat(normal_format)
-        cursor.insertText(str(exc))
+        self.__add_exc_description_line(type(exc).__name__, str(exc))
+    
+    def __add_module_line(self, module, lineno, function):
+        self.__cursor.setCharFormat(self.__bold_format)
+        self.__cursor.insertText("Module ")
+        self.__cursor.setCharFormat(self.__file_format)
+        self.__cursor.insertText(module)
+        self.__cursor.setCharFormat(self.__bold_format)
+        self.__cursor.insertText(" line ")
+        self.__cursor.setCharFormat(self.__lineno_format)
+        self.__cursor.insertText(str(lineno))
+        self.__cursor.setCharFormat(self.__bold_format)
+        self.__cursor.insertText(" in ")
+        self.__cursor.setCharFormat(self.__normal_format)
+        self.__cursor.insertText(function)
+        self.__cursor.insertText("\n")
+    
+    def __add_file_line(self, filename, lineno, function):
+        if filename.startswith(ROOT_DIR):
+            filename = filename[len(ROOT_DIR) + 1:]
+        self.__cursor.setCharFormat(self.__bold_format)
+        self.__cursor.insertText("File ")
+        self.__cursor.setCharFormat(self.__file_format)
+        self.__cursor.insertText(filename)
+        self.__cursor.setCharFormat(self.__bold_format)
+        self.__cursor.insertText(" line ")
+        self.__cursor.setCharFormat(self.__lineno_format)
+        self.__cursor.insertText(str(lineno))
+        self.__cursor.setCharFormat(self.__bold_format)
+        self.__cursor.insertText(" in ")
+        self.__cursor.setCharFormat(self.__normal_format)
+        self.__cursor.insertText(function)
+        self.__cursor.insertText("\n")
+    
+    def __add_code_line(self, code):
+        self.__cursor.setCharFormat(self.__code_format)
+        self.__cursor.insertText("  ")
+        self.__cursor.insertText(code)
+        self.__cursor.insertText("\n")
+    
+    def __add_exc_description_line(self, type, description):
+        self.__cursor.setCharFormat(self.__bold_format)
+        self.__cursor.insertText(type)
+        self.__cursor.insertText(": ")
+        self.__cursor.setCharFormat(self.__normal_format)
+        self.__cursor.insertText(description)
+        self.__cursor.insertText("\n")
+    
+    def __path_to_module(self, path):
+        try:
+            npath = os.path.normpath(path)
+        except:
+            return None
+        
+        for name, module in sys.modules.items():
+            if hasattr(module, '__file__'):
+                try:
+                    mpath = os.path.normpath(module.__file__)
+                except:
+                    continue
+                
+                if mpath == npath:
+                    return name
+        
+        return None
