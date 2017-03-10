@@ -77,6 +77,8 @@ class UmlFriMainWindow(QMainWindow):
         
         self.setUnifiedTitleAndToolBarOnMac(True)
         
+        self.setAcceptDrops(True)
+        
         self.__clipboard_adapter = QtClipboardAdatper()
         
         self.__ignore_change_tab = False
@@ -192,6 +194,14 @@ class UmlFriMainWindow(QMainWindow):
             self.setEnabled(False)
             exit_screen.start()
         event.ignore()
+    
+    def dragEnterEvent(self, event):
+        if len(event.mimeData().urls()) == 1 and event.mimeData().urls()[0].isLocalFile():
+            event.acceptProposedAction()
+    
+    def dropEvent(self, event):
+        file = event.mimeData().urls()[0].toLocalFile()
+        self.open_solution_from_file(file)
     
     def __save_window_state(self):
         settings = QSettings(os.path.join(CONFIG, 'qt.ini'), QSettings.IniFormat)
