@@ -13,6 +13,7 @@ class Storage:
             ret = subclass.read_storage(path)
             if ret is not None:
                 return ret
+        raise Exception("Storage {0} not found".format(path))
     
     def list(self, path=None):
         raise NotImplementedError
