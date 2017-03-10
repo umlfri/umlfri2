@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-04 14:19+0100\n"
-"PO-Revision-Date: 2016-02-04 14:20+0100\n"
+"POT-Creation-Date: 2017-03-10 17:35+0100\n"
+"PO-Revision-Date: 2017-03-10 17:38+0100\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.8.5\n"
 
 msgid "&Copy"
 msgstr "&Kopírovať"
@@ -46,6 +46,9 @@ msgstr "&Vložiť"
 
 msgid "&Quit"
 msgstr "U&končiť"
+
+msgid "&Recent Files"
+msgstr "Na&posledy otvorené"
 
 msgid "&Redo"
 msgstr "&Znova"
@@ -95,6 +98,9 @@ msgstr "Ukončenie aplikácie"
 msgid "Apply"
 msgstr "Použiť"
 
+msgid "Author"
+msgstr "Autor"
+
 msgid "C&ut"
 msgstr "Vy&strihnúť"
 
@@ -134,6 +140,9 @@ msgstr "Dáta boli zmenené"
 msgid "Delete"
 msgstr "Odstrániť"
 
+msgid "Description"
+msgstr "Popis"
+
 msgid "Discard"
 msgstr "Zrušiť zmeny"
 
@@ -145,6 +154,9 @@ msgstr "Chcete uložiť rozpracovaný projekt?"
 
 msgid "Edit..."
 msgstr "Upraviť..."
+
+msgid "Exception occured"
+msgstr "Nastala výnimka"
 
 msgid "Export Diagram"
 msgstr "Exportovať diagram"
@@ -167,8 +179,14 @@ msgstr "Skryť"
 msgid "Homepage"
 msgstr "Domovská stránka"
 
+msgid "Install AddOn From File"
+msgstr "Nainštaluj rozšírenie zo súboru"
+
 msgid "Install new..."
-msgstr "Inštalovať nový..."
+msgstr "Inštalovať nové..."
+
+msgid "License"
+msgstr "Licencia"
 
 msgid "Lower"
 msgstr "O jeden dozadu"
@@ -269,6 +287,9 @@ msgstr "Prichytávanie k iným objektom"
 msgid "Start"
 msgstr "Spustiť"
 
+msgid "Start Page"
+msgstr "Štart"
+
 msgid "Stop"
 msgstr "Zastaviť"
 
@@ -289,6 +310,9 @@ msgstr "Nástroje"
 
 msgid "UML .FRI 2"
 msgstr "UML .FRI 2"
+
+msgid "UML .FRI 2 addons"
+msgstr "Zásuvné moduly UML .FRI 2"
 
 msgid "UML .FRI 2 projects"
 msgstr "Projekty UML .FRI 2"
