@@ -101,7 +101,7 @@ class UmlFriMainWindow(QMainWindow):
     
     def __handle_last_tab(self):
         if self.__tabs.count() == 0:
-            self.__tabs.addTab(StartPage(self), _("Start Page"))
+            self.__tabs.addTab(StartPage(self), self.__get_start_page_text())
         
         if self.__tabs.count() == 1 and isinstance(self.__tabs.widget(0), StartPage):
             tab_close_enabled = False
@@ -336,6 +336,13 @@ class UmlFriMainWindow(QMainWindow):
     def __reload_texts(self):
         self.__reload_window_title()
         
+        for tabno in range(self.__tabs.count()):
+            if isinstance(self.__tabs.widget(tabno), StartPage):
+                self.__tabs.setTabText(tabno, self.__get_start_page_text())
+        
         self.__toolbox_dock.setWindowTitle(_("Tools"))
         self.__project_dock.setWindowTitle(_("Project"))
         self.__properties_dock.setWindowTitle(_("Properties"))
+    
+    def __get_start_page_text(self):
+        return _("Start Page")
