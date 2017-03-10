@@ -8,6 +8,7 @@ from umlfri2.application import Application
 from umlfri2.qtgui import SplashScreen
 from umlfri2.qtgui.base.gtkstylefix import set_gtk_icon_theme_if_needed
 from umlfri2.qtgui.base.qtthreadmanager import QTThreadManager
+from umlfri2.qtgui.exceptionhook import install_exception_hook
 from umlfri2.qtgui.rendering import QTRuler
 from umlfri2.qtgui.osspecials import apply_os_specials
 
@@ -22,7 +23,9 @@ def main(args):
     Application().use_ruler(QTRuler())
     
     Application().start()
-
+    
+    install_exception_hook()
+    
     splash = SplashScreen()
     
     splash.start()
