@@ -14,3 +14,7 @@ tools/win32exe/stub/*.suo
 tools/win32exe/stub/*.filters
 tools/win32exe/stub/*.user
 addons/python_starter/library/*
+
+**/_ReSharper.Caches
+**/*.VC.db
+**/*.VC.VC.opendb
