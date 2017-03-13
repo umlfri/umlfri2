@@ -1,5 +1,6 @@
 from lib.checker.parameter import UmlFriInterfaceMethodParameter
 from lib.model.primitivetype import PrimitiveType
+from lib.model.keyvaluetype import KeyValueType
 
 
 class UmlFriInterfaceMethod:
@@ -65,7 +66,7 @@ class UmlFriInterfaceMethod:
                     changed = True
                     break
         
-        if new_method.return_type is None or isinstance(new_method.return_type.type, PrimitiveType):
+        if new_method.return_type is None or isinstance(new_method.return_type.type, PrimitiveType) or isinstance(new_method.return_type.type, KeyValueType):
             polymorfic = False
         else:
             polymorfic = new_method.return_type.type.is_abstract
