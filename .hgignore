@@ -13,8 +13,8 @@ tools/win32exe/stub/*.sdf
 tools/win32exe/stub/*.suo
 tools/win32exe/stub/*.filters
 tools/win32exe/stub/*.user
+tools/win32exe/stub/_ReSharper.Caches
+tools/win32exe/stub/*.VC.db
+tools/win32exe/stub/*.VC.VC.opendb
+tools/win32exe/stub/*.vs
 addons/python_starter/library/*
-
-**/_ReSharper.Caches
-**/*.VC.db
-**/*.VC.VC.opendb
