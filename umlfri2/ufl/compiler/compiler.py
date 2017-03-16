@@ -18,4 +18,4 @@ def compile_ufl(expression, expected_type, variables, enums={}):
     
     code = 'lambda {0}: {1}'.format(", ".join(variables.keys()), code)
     
-    return return_type, eval(code, enums)
+    return return_type, eval(code, enums.copy())

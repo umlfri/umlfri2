@@ -5,9 +5,7 @@ from .enumpossibility import UflEnumPossibility
 class UflTypedEnumType(UflEnumType):
     def __init__(self, type, default=None):
         self.__type = type
-        
-        items = tuple(i for i in dir(type) if not i.startswith('_'))
-        super().__init__((UflEnumPossibility(self, item, getattr(type, item)) for item in items), default)
+        super().__init__((UflEnumPossibility(self, name, value) for name, value in type.__members__.items()), default)
     
     @property
     def name(self):
