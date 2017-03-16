@@ -1,7 +1,11 @@
-class AddOnState:
-    none = 0
-    stopped = 1
-    starting = 2
-    started = 3
-    stopping = 4
-    error = 5
+from enum import Enum, unique
+
+
+@unique
+class AddOnState(Enum):
+    none = 1
+    stopped = 2
+    starting = 3
+    started = 4
+    stopping = 5
+    error = 6

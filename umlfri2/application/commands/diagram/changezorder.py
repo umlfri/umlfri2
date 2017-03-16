@@ -1,12 +1,15 @@
+from enum import Enum, unique
+
 from umlfri2.application.events.diagram import ElementResizedMovedEvent
 from ..base import Command, CommandNotDone
 
 
-class ZOrderDirection:
-    bellow = 0
-    above = 1
-    bottom = 2
-    top = 3
+@unique
+class ZOrderDirection(Enum):
+    bellow = 1
+    above = 2
+    bottom = 3
+    top = 4
 
 
 class ChangeZOrderCommand(Command):

@@ -1,4 +1,8 @@
-class SelectionPointPosition:
-    first = 0
-    center = 1
-    last = 2
+from enum import Enum, unique
+
+
+@unique
+class SelectionPointPosition(Enum):
+    first = 1
+    center = 2
+    last = 3

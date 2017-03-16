@@ -1,9 +1,11 @@
 from collections import namedtuple
+from enum import Enum, unique
 
 
-class AddOnDependencyType:
-    starter = 0
-    interface = 1
+@unique
+class AddOnDependencyType(Enum):
+    starter = 1
+    interface = 2
 
 
 AddOnDependency = namedtuple('Dependency', ('type', 'id'))
