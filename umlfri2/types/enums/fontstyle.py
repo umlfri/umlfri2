@@ -1,4 +1,8 @@
-class FontStyle:
+from enum import Enum, unique
+
+
+@unique
+class FontStyle(Enum):
     @staticmethod
     def to_string(style):
         if style == FontStyle.italic:
