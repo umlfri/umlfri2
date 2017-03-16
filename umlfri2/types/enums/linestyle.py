@@ -1,5 +1,8 @@
-# TODO: replace with enum in Python 3.4.x
-class LineStyle:
+from enum import Enum, unique
+
+
+@unique
+class LineStyle(Enum):
     solid = 1
     dot = 2
     dashdot = 3

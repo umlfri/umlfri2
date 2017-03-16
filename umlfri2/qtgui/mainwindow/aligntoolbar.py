@@ -17,22 +17,22 @@ class AlignToolBar(QToolBar):
         super().__init__()
         
         self.__align_left = self.__add_toolbar_item("align-left",
-                                                    partial(self.__align_action, horizontal=AlignType.Minimum))
+                                                    partial(self.__align_action, horizontal=AlignType.minimum))
         self.__align_center_horizontally = self.__add_toolbar_item("align-hcenter",
                                                                    partial(self.__align_action,
-                                                                           horizontal=AlignType.Center))
+                                                                           horizontal=AlignType.center))
         self.__align_right = self.__add_toolbar_item("align-right",
-                                                     partial(self.__align_action, horizontal=AlignType.Maximum))
+                                                     partial(self.__align_action, horizontal=AlignType.maximum))
         
         self.addSeparator()
         
         self.__align_top = self.__add_toolbar_item("align-top",
-                                                   partial(self.__align_action, vertical=AlignType.Minimum))
+                                                   partial(self.__align_action, vertical=AlignType.minimum))
         self.__align_center_vertically = self.__add_toolbar_item("align-vcenter",
                                                                  partial(self.__align_action,
-                                                                         vertical=AlignType.Center))
+                                                                         vertical=AlignType.center))
         self.__align_bottom = self.__add_toolbar_item("align-bottom",
-                                                      partial(self.__align_action, vertical=AlignType.Maximum))
+                                                      partial(self.__align_action, vertical=AlignType.maximum))
         
         self.__alignments = [self.__align_left, self.__align_center_horizontally, self.__align_right,
                              self.__align_top, self.__align_center_vertically, self.__align_bottom]
