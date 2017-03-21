@@ -43,4 +43,4 @@ class SplashScreen(QSplashScreen):
         qfont.setPixelSize(12.5)
         painter.setPen(QPen(QColor(255, 255, 255)))
         painter.setFont(qfont)
-        painter.drawText(300, 150, "Version: {0}".format(Application().VERSION))
+        painter.drawText(300, 150, "Version: {0}".format(Application().about.version))

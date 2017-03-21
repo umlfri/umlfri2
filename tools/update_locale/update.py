@@ -13,8 +13,8 @@ import subprocess
 from umlfri2.application import Application
 
 xgettext = subprocess.Popen(['xgettext', '-f-', '-o', os.path.join(LOCALE_PATH, 'umlfri2.pot'), '-s', '--no-location',
-                             '--package-name={0}'.format(Application().NAME),
-                             '--package-version={0}'.format(Application().VERSION),
+                             '--package-name={0}'.format(Application().about.name),
+                             '--package-version={0}'.format(Application().about.version),
                              '--from-code=UTF-8'],
                             stdin=subprocess.PIPE)
 

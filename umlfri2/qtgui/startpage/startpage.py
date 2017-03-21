@@ -65,7 +65,7 @@ class StartPage(QWidget):
         qfont.setPixelSize(45)
         self.__paint_outlined_text(painter, QPoint(330, 110), qfont, ".FRI")
         
-        self.__paint_outlined_text(painter, QPoint(450, 110), qfont, Application().VERSION.major_minor_string)
+        self.__paint_outlined_text(painter, QPoint(450, 110), qfont, Application().about.version.major_minor_string)
         
         painter.end()
         

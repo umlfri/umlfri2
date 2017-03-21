@@ -8,4 +8,4 @@ def apply():
                                                       None)
 
     if SetCurrentProcessExplicitAppUserModelID is not None:
-        SetCurrentProcessExplicitAppUserModelID("FriUniza.UmlFri.{0}".format(Application().VERSION))
+        SetCurrentProcessExplicitAppUserModelID("FriUniza.UmlFri.{0}".format(Application().about.version.major_minor_string))

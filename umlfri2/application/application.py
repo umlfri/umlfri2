@@ -3,6 +3,7 @@ import gettext
 import locale
 import os
 
+from umlfri2.application.about import AboutUmlFri
 from umlfri2.application.addon import AddOnManager
 from umlfri2.application.commands.solution import NewProjectCommand
 from umlfri2.application.events.application import LanguageChangedEvent, ItemSelectedEvent, ClipboardSnippetChangedEvent
@@ -14,7 +15,6 @@ from umlfri2.datalayer.loaders import ProjectLoader, WholeSolutionLoader
 from umlfri2.datalayer.savers import WholeSolutionSaver
 from umlfri2.datalayer.storages import ZipStorage
 from umlfri2.model import Solution
-from umlfri2.types.version import Version
 from .commandprocessor import CommandProcessor
 from .dispatcher import EventDispatcher
 from .recentfiles import RecentFiles
@@ -31,8 +31,7 @@ class MetaApplication(type):
 
 
 class Application(metaclass=MetaApplication):
-    VERSION = Version("2.0")
-    NAME = "UML .FRI"
+    about = AboutUmlFri()
     
     def __init__(self):
         self.__event_dispatcher = EventDispatcher()

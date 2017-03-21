@@ -12,6 +12,7 @@ from umlfri2.constants.languages import AVAILABLE_LANGUAGES
 from umlfri2.qtgui.addons import AddOnsDialog
 from umlfri2.qtgui.fullscreen import FullScreenDiagram
 from umlfri2.qtgui.rendering import ImageExport, ExportDialog
+from .aboutdialog import About
 
 
 class MainWindowMenu(QMenuBar):
@@ -86,6 +87,11 @@ class MainWindowMenu(QMenuBar):
             
         for action in main_window.get_toolbar_actions():
             view_menu.addAction(action)
+        
+        # HELP MENU
+        self.__help, help_menu = self.__add_menu()
+
+        self.__help_about = self.__add_menu_item(help_menu, None, "help-about", self.__help_about_action)
         
         Application().event_dispatcher.subscribe(None, self.__event_dispatched)
         Application().event_dispatcher.subscribe(LanguageChangedEvent, self.__language_changed)
@@ -304,6 +310,10 @@ class MainWindowMenu(QMenuBar):
     def __view_zoom_original_action(self, checked=False):
         Application().tabs.current_tab.drawing_area.zoom_original()
     
+    def __help_about_action(self):
+        dlg = About(self.__main_window)
+        dlg.exec_()
+    
     def __reload_texts(self):
         self.__file.setText(_("&File"))
         self.__file_new.setText(_("&New"))
@@ -335,3 +345,6 @@ class MainWindowMenu(QMenuBar):
         self.__view_zoom_in.setText(_("Zoom &In"))
         self.__view_zoom_out.setText(_("Zoom &Out"))
         self.__view_zoom_original.setText(_("O&riginal Zoom"))
+        
+        self.__help.setText(_("&Help"))
+        self.__help_about.setText(_("&About"))
