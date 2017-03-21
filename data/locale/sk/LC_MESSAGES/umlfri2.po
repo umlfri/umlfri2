@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-10 17:35+0100\n"
-"PO-Revision-Date: 2017-03-10 17:38+0100\n"
+"POT-Creation-Date: 2017-03-21 13:58+0100\n"
+"PO-Revision-Date: 2017-03-21 14:00+0100\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -16,6 +16,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.5\n"
+
+msgid "&About"
+msgstr "&O programe"
 
 msgid "&Copy"
 msgstr "&Kopírovať"
@@ -34,6 +37,9 @@ msgstr "&Upraviť"
 
 msgid "&File"
 msgstr "&Súbor"
+
+msgid "&Help"
+msgstr "&Nápoveda"
 
 msgid "&New"
 msgstr "&Nový"
@@ -64,6 +70,9 @@ msgstr "&Späť"
 
 msgid "&View"
 msgstr "&Zobraziť"
+
+msgid "About UML .FRI"
+msgstr "O programe UML .FRI"
 
 msgid "About..."
 msgstr "O zásuvnom module..."
@@ -169,6 +178,9 @@ msgstr "Exportovať ako &obrázok"
 
 msgid "Find in the Project Tree"
 msgstr "Nájsť v projektovom strome"
+
+msgid "Free Python-based DSM CASE tool targeted on computer sciences education"
+msgstr "Slobodný DSM CASE nástroj založený na platforme Python a cielený na výučbu informatických predmetov"
 
 msgid "General"
 msgstr "Všeobecné"
@@ -323,8 +335,14 @@ msgstr "Späť"
 msgid "Uninstall"
 msgstr "Odinštalovať"
 
+msgid "Used libraries"
+msgstr "Použité knižnice"
+
 msgid "Value"
 msgstr "Hodnota"
+
+msgid "Version"
+msgstr "Verzia"
 
 msgid "Z-Order"
 msgstr "Poradie"
@@ -353,3 +371,7 @@ msgstr "neuložený"
 #, python-brace-format
 msgid "{0} image"
 msgstr "Obrázok {0}"
+
+#, python-brace-format
+msgid "{0} version"
+msgstr "Verzia {0}"

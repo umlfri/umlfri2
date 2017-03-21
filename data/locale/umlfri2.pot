@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-10 17:31+0100\n"
+"POT-Creation-Date: 2017-03-21 13:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+msgid "&About"
+msgstr ""
 
 msgid "&Copy"
 msgstr ""
@@ -33,6 +36,9 @@ msgid "&Edit"
 msgstr ""
 
 msgid "&File"
+msgstr ""
+
+msgid "&Help"
 msgstr ""
 
 msgid "&New"
@@ -63,6 +69,9 @@ msgid "&Undo"
 msgstr ""
 
 msgid "&View"
+msgstr ""
+
+msgid "About UML .FRI"
 msgstr ""
 
 msgid "About..."
@@ -168,6 +177,9 @@ msgid "Export as &Image"
 msgstr ""
 
 msgid "Find in the Project Tree"
+msgstr ""
+
+msgid "Free Python-based DSM CASE tool targeted on computer sciences education"
 msgstr ""
 
 msgid "General"
@@ -323,7 +335,13 @@ msgstr ""
 msgid "Uninstall"
 msgstr ""
 
+msgid "Used libraries"
+msgstr ""
+
 msgid "Value"
+msgstr ""
+
+msgid "Version"
 msgstr ""
 
 msgid "Z-Order"
@@ -352,4 +370,8 @@ msgstr ""
 
 #, python-brace-format
 msgid "{0} image"
+msgstr ""
+
+#, python-brace-format
+msgid "{0} version"
 msgstr ""
