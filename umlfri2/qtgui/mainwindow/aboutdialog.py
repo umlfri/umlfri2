@@ -76,7 +76,7 @@ class About(QDialog):
         version_1_widget.setLayout(version_1_layout)
         version_1_scroll = QScrollArea()
         version_1_scroll.setWidget(version_1_widget)
-        tabs.addTab(version_1_scroll, _("Old version contributions"))
+        tabs.addTab(version_1_scroll, _("Version 1.0 contributions"))
 
         button_box = QDialogButtonBox(QDialogButtonBox.Ok)
         button_box.button(QDialogButtonBox.Ok).setText(_("Ok"))

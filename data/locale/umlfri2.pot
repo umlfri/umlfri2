@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-21 13:54+0100\n"
+"POT-Creation-Date: 2017-03-21 15:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -342,6 +342,9 @@ msgid "Value"
 msgstr ""
 
 msgid "Version"
+msgstr ""
+
+msgid "Version 1.0 contributions"
 msgstr ""
 
 msgid "Z-Order"
