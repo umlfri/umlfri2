@@ -130,8 +130,9 @@ class CanvasWidget(QWidget):
         PropertiesDialog.open_for(self.__main_window, visual.object)
     
     def wheelEvent(self, event):
-        if event.orientation() == Qt.Vertical and event.modifiers() == Qt.ControlModifier:
-            if event.delta() > 0:
+        delta = event.angleDelta()
+        if delta.x() == 0 and delta.y() != 0 and event.modifiers() == Qt.ControlModifier:
+            if delta.y() > 0:
                 self.__drawing_area.zoom_in()
             else:
                 self.__drawing_area.zoom_out()
