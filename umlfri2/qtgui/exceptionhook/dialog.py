@@ -37,6 +37,9 @@ class ExceptionDialog(QDialog):
 
         self.__normal_format = self.__cursor.charFormat()
 
+        self.__separator_format = self.__cursor.charFormat()
+        self.__separator_format.setFontWeight(QFont.Bold)
+
         self.__bold_format = self.__cursor.charFormat()
         self.__bold_format.setFontWeight(QFont.Bold)
 
@@ -54,6 +57,13 @@ class ExceptionDialog(QDialog):
         self.__add_exception(exc)
     
     def __add_exception(self, exc):
+        if exc.__cause__ is not None:
+            self.__add_exception(exc.__cause__)
+            self.__add_separator_line(traceback._cause_message.strip())
+        elif exc.__context__ is not None:
+            self.__add_exception(exc.__context__)
+            self.__add_separator_line(traceback._context_message.strip())
+        
         for filename, lineno, function, text in traceback.extract_tb(exc.__traceback__):
             module = self.__path_to_module(filename)
             
@@ -68,6 +78,12 @@ class ExceptionDialog(QDialog):
             self.__cursor.insertText("\n")
         
         self.__add_exc_description_line(type(exc).__name__, str(exc))
+    
+    def __add_separator_line(self, text):
+        self.__cursor.setCharFormat(self.__separator_format)
+        self.__cursor.insertText("\n")
+        self.__cursor.insertText(text)
+        self.__cursor.insertText("\n")
     
     def __add_module_line(self, module, lineno, function):
         self.__cursor.setCharFormat(self.__bold_format)

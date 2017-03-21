@@ -5,7 +5,8 @@ from .dialog import ExceptionDialog
 
 
 def exception_hook(exc_class, exc, tb):
-    traceback.print_exception(exc_class, exc, tb)
+    if __debug__:
+        traceback.print_exception(exc_class, exc, tb)
     
     dialog = ExceptionDialog(exc)
     dialog.exec_()
