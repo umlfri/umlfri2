@@ -1,1 +1,1 @@
-from .splashscreen import SplashScreen
+from .qtmain import qt_main
