@@ -11,6 +11,8 @@ class AboutUmlFri:
     name = "UML .FRI"
     version = Version("2.0")
     
+    is_debug_version = __debug__
+    
     @property
     def author(self):
         yield "Ján Janech", (2015, 2017)

@@ -1,6 +1,8 @@
 import os.path
 
+from PyQt5.QtCore import QSize
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QLabel, QSpacerItem, QDialogButtonBox, QTabWidget,\
     QTextEdit
@@ -77,6 +79,15 @@ class About(QDialog):
         version_1_scroll = QScrollArea()
         version_1_scroll.setWidget(version_1_widget)
         tabs.addTab(version_1_scroll, _("Version 1.0 contributions"))
+        
+        if Application().about.is_debug_version:
+            debug_layout = QHBoxLayout()
+            debug_icon = QLabel()
+            debug_icon.setPixmap(QIcon.fromTheme("dialog-warning").pixmap(QSize(16, 16)))
+            debug_layout.addWidget(debug_icon)
+            debug_text = QLabel(_("You are running UML .FRI in the debug mode"))
+            debug_layout.addWidget(debug_text, 1)
+            main_layout.addLayout(debug_layout)
 
         button_box = QDialogButtonBox(QDialogButtonBox.Ok)
         button_box.button(QDialogButtonBox.Ok).setText(_("Ok"))
