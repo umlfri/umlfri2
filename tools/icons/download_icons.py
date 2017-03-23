@@ -2,6 +2,7 @@
 
 import os
 import os.path
+import platform
 import re
 import tarfile
 import urllib.request
@@ -9,6 +10,8 @@ import zipfile
 from io import BytesIO
 
 import shutil
+
+import sys
 
 TOOLS_PATH = os.path.dirname(__file__)
 
@@ -52,15 +55,19 @@ class ZipReader:
 
 
 def extract_theme(theme_dir, url, reader, remove_dirs):
+    print("Downloading and extracting theme", theme_dir)
     re_underscored = re.compile(b'^_', re.MULTILINE)
-
+    
+    print("- Downloading...")
     tar = urllib.request.urlopen(url)
-
+    
     out = os.path.join(TOOLS_PATH, "..", "..", "data", "icons", theme_dir)
     if os.path.isdir(out):
         shutil.rmtree(out)
-
+    
     tar = BytesIO(tar.read())
+    print("    DONE")
+    print("- Extracting...")
     with reader(tar) as tar:
         for file in tar.get_names():
             if file.endswith('.png'):
@@ -78,6 +85,7 @@ def extract_theme(theme_dir, url, reader, remove_dirs):
                 content = re_underscored.sub(b'', content)
                 with open(os.path.join(out, 'index.theme'), 'wb') as index:
                     index.write(content)
+    print("    DONE")
 
 
 def extract_tango_theme():
@@ -93,4 +101,20 @@ def extract_oxygen_theme():
     extract_theme("oxygen", "https://github.com/pasnox/oxygen-icons-png/archive/master.zip", ZipReader, 2)
 
 
-extract_oxygen_theme()
+def extract_mac_mint():
+    extract_theme("macMint", "https://dl.opendesktop.org/api/files/download/id/1485256986/macMint.tar.gz", TarReader, 1)
+
+
+platform_name = [platform.system()]
+
+if 'win' in sys.argv:
+    platform = ['Windows']
+    if 'mac' in sys.argv:
+        platform.append('Darwin')
+elif 'mac' in sys.argv:
+    platform = ['Darwin']
+
+if 'Windows' in platform:
+    extract_oxygen_theme()
+if 'Darwin' in platform:
+    extract_mac_mint()
