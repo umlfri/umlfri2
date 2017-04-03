@@ -43,6 +43,7 @@ class StartPageFrame(QWidget):
     
     def add_frame_action(self, callback):
         action_label = QLabel()
+        action_label.setContextMenuPolicy(Qt.NoContextMenu)
         action_label.linkActivated.connect(lambda url: callback())
         self.__layout.addWidget(action_label)
         
