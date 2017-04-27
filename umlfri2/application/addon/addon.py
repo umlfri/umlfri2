@@ -8,7 +8,8 @@ from .translation import POSIX_TRANSLATION
 
 class AddOn:
     def __init__(self, application, identifier, name, version, author, homepage, license, icon, description,
-                 requirements, provisions, config, translations, metamodel, gui_injection, patch_plugin, plugin):
+                 requirements, provisions, config, translations, metamodel, gui_injection, patch_plugin, plugin,
+                 system_addon):
         self.__application = application
         self.__identifier = identifier
         self.__name = name
@@ -44,6 +45,8 @@ class AddOn:
             self.__state = AddOnState.none
         else:
             self.__state = AddOnState.stopped
+        
+        self.__system_addon = system_addon
     
     @property
     def identifier(self):
@@ -100,6 +103,10 @@ class AddOn:
     @property
     def metamodel(self):
         return self.__metamodel
+    
+    @property
+    def is_system_addon(self):
+        return self.__system_addon
     
     @property
     def application(self):

@@ -13,9 +13,10 @@ from ..constants import ADDON_NAMESPACE, ADDON_ADDON_FILE, ADDON_DISABLE_FILE
 
 
 class AddOnLoader:
-    def __init__(self, application, storage):
+    def __init__(self, application, storage, system_addon):
         self.__storage = storage
         self.__application = application
+        self.__system_addon = system_addon
     
     def is_addon(self):
         return self.__storage.exists(ADDON_ADDON_FILE)
@@ -73,7 +74,7 @@ class AddOnLoader:
         
         ret = AddOn(self.__application, info.identifier, info.name, info.version, info.author, info.homepage,
                     info.license, icon, info.description, info.requirements, info.provisions, info.config, translations,
-                    metamodel, gui_injection, patch, plugin)
+                    metamodel, gui_injection, patch, plugin, self.__system_addon)
         
         ret.compile()
         

@@ -202,8 +202,9 @@ class AddOnsDialog(QDialog):
         about.triggered.connect(partial(self.__show_info, addon))
         
         menu.addSeparator()
-        
-        menu.addAction(QIcon.fromTheme("edit-delete"), _("Uninstall"))
+
+        if not addon.is_system_addon:
+            menu.addAction(QIcon.fromTheme("edit-delete"), _("Uninstall"))
         
         menu.exec_(self.__table.viewport().mapToGlobal(point))
     
