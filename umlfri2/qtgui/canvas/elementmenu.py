@@ -1,8 +1,10 @@
+from functools import partial
+
 from PyQt5.QtGui import QKeySequence
 
 from umlfri2.application import Application
 from umlfri2.application.commands.diagram import HideElementsCommand, ChangeZOrderCommand, ZOrderDirection, \
-    PasteSnippetCommand, DuplicateSnippetCommand
+    PasteSnippetCommand, DuplicateSnippetCommand, ShowConnectionCommand
 from umlfri2.application.commands.model import DeleteElementsCommand
 from umlfri2.constants.keys import DELETE_FROM_PROJECT, Z_ORDER_RAISE, Z_ORDER_LOWER, Z_ORDER_TO_BOTTOM, Z_ORDER_TO_TOP, \
     PASTE_DUPLICATE
@@ -51,6 +53,30 @@ class CanvasElementMenu(ContextMenu):
         
         self._add_menu_item(None, _("Hide"), QKeySequence.Delete, self.__hide)
         self._add_menu_item("edit-delete", _("Delete"), DELETE_FROM_PROJECT, self.__delete)
+
+
+        connections_to_show = []
+        if len(self.__elements) == 1:
+            for connection in self.__elements[0].object.connections:
+                if not self.__diagram.contains(connection):
+                    other = connection.get_other_end(self.__elements[0].object)
+                    if self.__diagram.contains(other):
+                        connections_to_show.append((connection, other))
+        if connections_to_show:
+            show_menu = self._add_sub_menu_item(_("Show Connection"))
+
+            translation = self.__diagram.type.metamodel.addon.get_translation(Application().language)
+            
+            for connection, element in connections_to_show:
+                self._add_menu_item(
+                    None,
+                    _("{0} to '{1}'").format(translation.translate(connection.type), element.get_display_name()),
+                    None,
+                    partial(self.__show_connection, connection),
+                    show_menu
+                )
+        else:
+            show_menu = self._add_sub_menu_item(_("Show Connection"), enabled=False)
         
         self.addSeparator()
         
@@ -119,6 +145,11 @@ class CanvasElementMenu(ContextMenu):
     def __delete(self, checked=False):
         command = DeleteElementsCommand(tuple(element.object for element in self.__elements))
         
+        Application().commands.execute(command)
+        
+    def __show_connection(self, connection, checked):
+        command = ShowConnectionCommand(self.__diagram, connection)
+
         Application().commands.execute(command)
     
     def __show_in_project(self, checked=False):

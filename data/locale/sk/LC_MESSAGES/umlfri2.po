@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-23 13:28+0100\n"
-"PO-Revision-Date: 2017-03-23 13:29+0100\n"
+"POT-Creation-Date: 2017-05-01 12:49+0200\n"
+"PO-Revision-Date: 2017-05-01 12:50+0200\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -286,6 +286,9 @@ msgstr "Vybrať"
 msgid "Select &All"
 msgstr "Vybrať &všetko"
 
+msgid "Show Connection"
+msgstr "Zobraz spojenie"
+
 msgid "Show Diagram"
 msgstr "Zobraziť diagram"
 
@@ -379,6 +382,10 @@ msgstr "neuložený"
 #, python-brace-format
 msgid "{0} image"
 msgstr "Obrázok {0}"
+
+#, python-brace-format
+msgid "{0} to '{1}'"
+msgstr "{0} k '{1}'"
 
 #, python-brace-format
 msgid "{0} version"
