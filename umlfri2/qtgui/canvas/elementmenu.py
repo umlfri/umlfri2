@@ -63,14 +63,14 @@ class CanvasElementMenu(ContextMenu):
             z_order_menu = self._add_sub_menu_item(_("Z-Order"))
             
             if something_below:
-                self._add_menu_item("go-down", _("Raise"), Z_ORDER_RAISE, self.__z_order_back, z_order_menu)
+                self._add_menu_item("go-down", _("Lower"), Z_ORDER_LOWER, self.__z_order_back, z_order_menu)
             else:
-                self._add_menu_item("go-down", _("Raise"), Z_ORDER_RAISE, None, z_order_menu)
+                self._add_menu_item("go-down", _("Lower"), Z_ORDER_LOWER, None, z_order_menu)
             
             if something_above:
-                self._add_menu_item("go-up", _("Lower"), Z_ORDER_LOWER, self.__z_order_forward, z_order_menu)
+                self._add_menu_item("go-up", _("Raise"), Z_ORDER_RAISE, self.__z_order_forward, z_order_menu)
             else:
-                self._add_menu_item("go-up", _("Lower"), Z_ORDER_LOWER, None, z_order_menu)
+                self._add_menu_item("go-up", _("Raise"), Z_ORDER_RAISE, None, z_order_menu)
             
             if something_below:
                 self._add_menu_item("go-bottom", _("Lower to Bottom"), Z_ORDER_TO_BOTTOM, self.__z_order_bottom, z_order_menu)

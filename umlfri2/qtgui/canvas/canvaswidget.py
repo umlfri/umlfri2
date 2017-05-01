@@ -42,8 +42,8 @@ class CanvasWidget(QWidget):
         
         QShortcut(QKeySequence(QKeySequence.Delete), self).activated.connect(self.__hide_object)
         QShortcut(QKeySequence(DELETE_FROM_PROJECT), self).activated.connect(self.__delete_object)
-        QShortcut(QKeySequence(Z_ORDER_RAISE), self).activated.connect(self.__z_order_back)
-        QShortcut(QKeySequence(Z_ORDER_LOWER), self).activated.connect(self.__z_order_forward)
+        QShortcut(QKeySequence(Z_ORDER_LOWER), self).activated.connect(self.__z_order_back)
+        QShortcut(QKeySequence(Z_ORDER_RAISE), self).activated.connect(self.__z_order_forward)
         QShortcut(QKeySequence(Z_ORDER_TO_BOTTOM), self).activated.connect(self.__z_order_bottom)
         QShortcut(QKeySequence(Z_ORDER_TO_TOP), self).activated.connect(self.__z_order_top)
     
