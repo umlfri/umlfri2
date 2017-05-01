@@ -115,7 +115,12 @@ class ElementVisual:
         self.__cached_appearance = self.__object.create_appearance_object(ruler)
         self.__cached_appearance.move(self.__position)
         min_size = self.__cached_appearance.get_minimal_size()
-        if self.__size is None or self.__size.width < min_size.width or self.__size.height < min_size.height:
+        if self.__size is None or (self.__size.width < min_size.width and self.__size.height < min_size.height):
             self.__size = min_size
         else:
+            if self.__size.width < min_size.width:
+                self.__size = Size(min_size.width, self.__size.height)
+            elif self.__size.height < min_size.height:
+                self.__size = Size(self.__size.width, min_size.height)
+            
             self.__cached_appearance.resize(self.__size)
