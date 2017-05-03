@@ -30,8 +30,8 @@ class AddOnStopper:
         for addon in addons:
             if addon.state in (AddOnState.stopped, AddOnState.none):
                 continue
-            
-            deps = itertools.chain(*(self.__reverse_dependencies.get(provision) for provision in addon.provisions))
+
+            deps = itertools.chain(*(self.__reverse_dependencies.get(provision, ()) for provision in addon.provisions))
             
             ret.append(
                 self.__AddonWithDep(addon, self.__recursive_compute_deps(deps))
