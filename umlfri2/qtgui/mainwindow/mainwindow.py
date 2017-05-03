@@ -210,8 +210,10 @@ class UmlFriMainWindow(QMainWindow):
     
     def __restore_window_state(self):
         settings = QSettings(os.path.join(CONFIG, 'qt.ini'), QSettings.IniFormat)
-        self.restoreGeometry(settings.value("geometry"))
-        self.restoreState(settings.value("window_state"))
+        if settings.contains("geometry"):
+            self.restoreGeometry(settings.value("geometry"))
+        if settings.contains("window_state"):
+            self.restoreState(settings.value("window_state"))
 
     def __check_save(self, title):
         if Application().unsaved:
