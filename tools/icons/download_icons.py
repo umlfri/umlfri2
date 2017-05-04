@@ -108,13 +108,13 @@ def extract_mac_mint():
 platform_name = [platform.system()]
 
 if 'win' in sys.argv:
-    platform = ['Windows']
+    platform_name = ['Windows']
     if 'mac' in sys.argv:
-        platform.append('Darwin')
+        platform_name.append('Darwin')
 elif 'mac' in sys.argv:
-    platform = ['Darwin']
+    platform_name = ['Darwin']
 
-if 'Windows' in platform:
+if 'Windows' in platform_name:
     extract_oxygen_theme()
-if 'Darwin' in platform:
+if 'Darwin' in platform_name:
     extract_mac_mint()

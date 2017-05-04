@@ -4,3 +4,4 @@ ipython
 qtconsole
 jinja2
 lxml
+pyparsing
