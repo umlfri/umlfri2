@@ -50,16 +50,7 @@ class AddConnectionAction(Action):
             element = self.drawing_area.diagram.get_visual_at(self.application.ruler, point)
             if self.__source_element is not element or self.__points: 
                 if isinstance(element, ElementVisual):
-                    type = self.drawing_area.diagram.parent.project.metamodel.get_connection_type(self.__type)
-                    command = AddDiagramConnectionCommand(
-                        self.drawing_area.diagram,
-                        type,
-                        self.__source_element,
-                        element,
-                        self.__points
-                    )
-                    self.application.commands.execute(command)
-                    self.drawing_area.selection.select(command.connection_visual)
+                    self.__create_connection(element)
                     self._finish()
                 else:
                     if self.__snapping is not None:
@@ -94,7 +85,23 @@ class AddConnectionAction(Action):
             self.__build_path()
     
     def mouse_up(self):
-        pass
+        if self.__last_point is not None:
+            element = self.drawing_area.diagram.get_visual_at(self.application.ruler, self.__last_point)
+            if self.__source_element is not element and not self.__points and isinstance(element, ElementVisual):
+                self.__create_connection(element)
+                self._finish()
+    
+    def __create_connection(self, destination_element):
+        type = self.drawing_area.diagram.parent.project.metamodel.get_connection_type(self.__type)
+        command = AddDiagramConnectionCommand(
+            self.drawing_area.diagram,
+            type,
+            self.__source_element,
+            destination_element,
+            self.__points
+        )
+        self.application.commands.execute(command)
+        self.drawing_area.selection.select(command.connection_visual)
     
     def __build_path(self):
         path = PathBuilder()
