@@ -4,6 +4,7 @@ import appdirs
 import lxml.etree
 from PyQt5 import Qt
 
+from .updates import UmlFriUpdates
 from umlfri2.types.version import Version
 
 
@@ -12,6 +13,14 @@ class AboutUmlFri:
     version = Version("2.0")
     
     is_debug_version = __debug__
+    
+    def __init__(self, application):
+        self.__updates = UmlFriUpdates(self, application)
+
+    @property
+    def urls(self):
+        yield 'http://www.umlfri.org/'
+        yield 'https://github.com/umlfri/'
     
     @property
     def author(self):
@@ -59,3 +68,7 @@ class AboutUmlFri:
         yield 'Jozef Paľa', (2012, 2015)
         yield 'Miroslav Louma', (2013, 2015)
         yield 'Vincent Jurčišin-Kukľa', (2014, 2016)
+    
+    @property
+    def updates(self):
+        return self.__updates

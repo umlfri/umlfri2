@@ -4,11 +4,8 @@ from PyQt5.QtCore import QSize
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QLabel, QSpacerItem, QDialogButtonBox, QTabWidget,\
-    QTextEdit
-from PyQt5.QtWidgets import QFormLayout
-from PyQt5.QtWidgets import QScrollArea
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QLabel, QSpacerItem, QDialogButtonBox, QTabWidget, \
+    QTextEdit, QGridLayout, QFormLayout, QScrollArea, QWidget, QPushButton
 
 from umlfri2.application import Application
 from umlfri2.constants.paths import GRAPHICS, LICENSE_FILE
@@ -79,6 +76,35 @@ class About(QDialog):
         version_1_scroll = QScrollArea()
         version_1_scroll.setWidget(version_1_widget)
         tabs.addTab(version_1_scroll, _("Version 1.0 contributions"))
+        
+        updates_layout = QGridLayout()
+        updates_widget = QWidget()
+        updates_widget.setLayout(updates_layout)
+        
+        check_updates = QPushButton(_("Check for updates"))
+        updates_layout.addWidget(check_updates, 0, 0)
+
+        updates_layout.addWidget(QLabel(_("Latest version available:")), 1, 0)
+        if Application().about.updates.latest_version is None:
+            updates_layout.addWidget(QLabel("-"), 1, 1)
+        else:
+            updates_layout.addWidget(QLabel(str(Application().about.updates.latest_version)), 1, 1)
+        
+        if Application().about.updates.has_newer_version:
+            updates_layout.addWidget(QLabel("<a href=\"{0}\">{1}</a>".format(
+                Application().about.updates.version_update_url, _("download update")
+            )), 1, 2)
+
+        if Application().about.updates.latest_prerelease is not None:
+            updates_layout.addWidget(QLabel(_("Latest unstable version available:")), 2, 0)
+            updates_layout.addWidget(QLabel(str(Application().about.updates.latest_prerelease)), 2, 1)
+    
+            if Application().about.updates.has_newer_version:
+                updates_layout.addWidget(QLabel("<a href=\"{0}\">{1}</a>".format(
+                    Application().about.updates.prerelease_update_url, _("download update")
+                )), 2, 2)
+        
+        tabs.addTab(updates_widget, _("Updates"))
         
         if Application().about.is_debug_version:
             debug_layout = QHBoxLayout()

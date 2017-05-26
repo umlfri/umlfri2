@@ -8,7 +8,7 @@ class Version:
         parsed = self.__RE_VERSION.search(value)
         
         if parsed is None:
-            raise Exception("Invalid version number")
+            raise Exception("Invalid version number {0}".format(value))
         else:
             ver = tuple(int(i) for i in parsed.group('version').split('.'))
             ver = (ver + (0, 0, 0))[:3]

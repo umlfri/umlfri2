@@ -31,8 +31,6 @@ class MetaApplication(type):
 
 
 class Application(metaclass=MetaApplication):
-    about = AboutUmlFri()
-    
     def __init__(self):
         self.__event_dispatcher = EventDispatcher()
         self.__commands = CommandProcessor(self)
@@ -53,6 +51,8 @@ class Application(metaclass=MetaApplication):
         self.__selected_item = None
         self.__clipboard = None
         self.__thread_manager = None
+        
+        self.__about = AboutUmlFri(self)
     
     def __find_out_language(self):
         for e in 'LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG':
@@ -83,6 +83,10 @@ class Application(metaclass=MetaApplication):
             return lang
         
         return 'POSIX'
+    
+    @property
+    def about(self):
+        return self.__about
     
     def start(self):
         pass
