@@ -2,6 +2,7 @@ import sys
 
 import appdirs
 import lxml.etree
+import pyparsing
 from PyQt5 import Qt
 
 from .updates import UmlFriUpdates
@@ -37,6 +38,7 @@ class AboutUmlFri:
         yield 'PyQt', Qt.PYQT_VERSION_STR
         yield 'AppDirs', appdirs.__version__
         yield 'lxml', lxml.etree.__version__
+        yield 'Pyparsing', pyparsing.__version__
     
     @property
     def version_1_contributions(self):
