@@ -42,6 +42,9 @@ class About(QDialog):
         for author, year in Application().about.author:
             desc_text_layout.addWidget(QLabel("<small>{0}</small>".format(self.__about_line(author, year))))
         
+        for url in Application().about.urls:
+            desc_text_layout.addWidget(self.__create_link(url))
+        
         desc_layout.addLayout(desc_text_layout, 1)
         
         main_layout.addLayout(desc_layout)
@@ -136,12 +139,17 @@ class About(QDialog):
                 updates_layout.addWidget(self.__create_download_link(Application().about.updates.prerelease_update_url), 2, 2)
         updates_widget.setVisible(True)
         return self.__updates_tab
-
+    
+    def __create_link(self, url):
+        ret = QLabel("<a href=\"{0}\">{1}</a>".format(url, url))
+        ret.setOpenExternalLinks(True)
+        return ret
+    
     def __create_download_link(self, url):
         ret = QLabel("<a href=\"{0}\">{1}</a>".format(url, _("download update")))
         ret.setOpenExternalLinks(True)
         return ret
-
+    
     def __about_line(self, author, year):
         line = "© "
         if isinstance(year, tuple):
