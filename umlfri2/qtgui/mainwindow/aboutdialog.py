@@ -46,6 +46,7 @@ class About(QDialog):
         main_layout.addLayout(desc_layout)
         
         tabs = QTabWidget()
+        tabs.setUsesScrollButtons(False)
         main_layout.addWidget(tabs, 1)
         
         tabs.addTab(self.__create_used_libraries_tab(), _("Used libraries"))
