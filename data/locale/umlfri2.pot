@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-01 12:49+0200\n"
+"POT-Creation-Date: 2017-05-29 13:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -125,6 +125,9 @@ msgstr ""
 msgid "Change &Language"
 msgstr ""
 
+msgid "Check for updates"
+msgstr ""
+
 msgid "Close"
 msgstr ""
 
@@ -195,6 +198,12 @@ msgid "Install AddOn From File"
 msgstr ""
 
 msgid "Install new..."
+msgstr ""
+
+msgid "Latest unstable version available:"
+msgstr ""
+
+msgid "Latest version available:"
 msgstr ""
 
 msgid "License"
@@ -338,6 +347,9 @@ msgstr ""
 msgid "Uninstall"
 msgstr ""
 
+msgid "Updates"
+msgstr ""
+
 msgid "Used libraries"
 msgstr ""
 
@@ -372,6 +384,9 @@ msgid "Zoom In"
 msgstr ""
 
 msgid "Zoom Out"
+msgstr ""
+
+msgid "download update"
 msgstr ""
 
 msgid "unsaved"

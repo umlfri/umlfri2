@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-01 12:49+0200\n"
-"PO-Revision-Date: 2017-05-01 12:50+0200\n"
+"POT-Creation-Date: 2017-05-29 13:13+0200\n"
+"PO-Revision-Date: 2017-05-29 13:14+0200\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -125,6 +125,9 @@ msgstr "Centrovať zvisle"
 msgid "Change &Language"
 msgstr "Zmeniť &jazyk"
 
+msgid "Check for updates"
+msgstr "Skontroluj aktualizácie"
+
 msgid "Close"
 msgstr "Zatvoriť"
 
@@ -198,6 +201,12 @@ msgstr "Nainštaluj rozšírenie zo súboru"
 
 msgid "Install new..."
 msgstr "Inštalovať nové..."
+
+msgid "Latest unstable version available:"
+msgstr "Posledná dostupná testovacia verzia:"
+
+msgid "Latest version available:"
+msgstr "Posledná dostupná verzia:"
 
 msgid "License"
 msgstr "Licencia"
@@ -340,6 +349,9 @@ msgstr "Späť"
 msgid "Uninstall"
 msgstr "Odinštalovať"
 
+msgid "Updates"
+msgstr "Aktualizácie"
+
 msgid "Used libraries"
 msgstr "Použité knižnice"
 
@@ -375,6 +387,9 @@ msgstr "Zväčšiť"
 
 msgid "Zoom Out"
 msgstr "Zmenšiť"
+
+msgid "download update"
+msgstr "stiahnuť aktualizáciu"
 
 msgid "unsaved"
 msgstr "neuložený"
