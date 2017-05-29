@@ -1,17 +1,18 @@
 import os.path
 
-from PyQt5.QtCore import QSize
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import QSize, pyqtSignal, Qt
+from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QLabel, QSpacerItem, QDialogButtonBox, QTabWidget, \
     QTextEdit, QGridLayout, QFormLayout, QScrollArea, QWidget, QPushButton
 
 from umlfri2.application import Application
+from umlfri2.application.events.application import UpdateCheckStartedEvent, UpdateCheckFinishedEvent
 from umlfri2.constants.paths import GRAPHICS, LICENSE_FILE
 
 
 class About(QDialog):
+    __update_finished_evt = pyqtSignal()
+    
     def __init__(self, main_window):
         super().__init__(main_window)
         
@@ -48,6 +49,8 @@ class About(QDialog):
         tabs = QTabWidget()
         tabs.setUsesScrollButtons(False)
         main_layout.addWidget(tabs, 1)
+
+        self.__updates_tab = None
         
         tabs.addTab(self.__create_used_libraries_tab(), _("Used libraries"))
         
@@ -74,6 +77,11 @@ class About(QDialog):
         main_layout.addWidget(button_box)
         
         self.setLayout(main_layout)
+        
+        self.__update_finished_evt.connect(self.__create_updates_tab)
+        
+        Application().event_dispatcher.subscribe(UpdateCheckStartedEvent, self.__update_started)
+        Application().event_dispatcher.subscribe(UpdateCheckFinishedEvent, self.__update_finished)
     
     def __create_used_libraries_tab(self):
         versions_layout = QFormLayout()
@@ -102,11 +110,17 @@ class About(QDialog):
         return version_1_scroll
     
     def __create_updates_tab(self):
+        if self.__updates_tab is None:
+            self.__updates_tab = QWidget()
+        else:
+            self.__updates_tab.children()[0].deleteLater()
+        
         updates_layout = QGridLayout()
-        updates_widget = QWidget()
+        updates_widget = QWidget(self.__updates_tab)
         updates_widget.setLayout(updates_layout)
-        check_updates = QPushButton(_("Check for updates"))
-        updates_layout.addWidget(check_updates, 0, 0)
+        self.__check_updates = QPushButton(_("Check for updates"))
+        self.__check_updates.clicked.connect(lambda checked=False: Application().about.updates.recheck_update())
+        updates_layout.addWidget(self.__check_updates, 0, 0, 1, 3, Qt.AlignLeft)
         updates_layout.addWidget(QLabel(_("Latest version available:")), 1, 0)
         if Application().about.updates.latest_version is None:
             updates_layout.addWidget(QLabel("-"), 1, 1)
@@ -120,7 +134,8 @@ class About(QDialog):
 
             if Application().about.updates.has_newer_prerelease:
                 updates_layout.addWidget(self.__create_download_link(Application().about.updates.prerelease_update_url), 2, 2)
-        return updates_widget
+        updates_widget.setVisible(True)
+        return self.__updates_tab
 
     def __create_download_link(self, url):
         ret = QLabel("<a href=\"{0}\">{1}</a>".format(url, _("download update")))
@@ -135,3 +150,9 @@ class About(QDialog):
             line += "{0} ".format(author[1])
         line += author
         return line
+    
+    def __update_started(self, event):
+        self.__check_updates.setEnabled(False)
+
+    def __update_finished(self, event):
+        self.__update_finished_evt.emit()

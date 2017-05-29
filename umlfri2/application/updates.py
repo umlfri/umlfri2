@@ -4,6 +4,8 @@ from urllib.request import urlopen
 
 from umlfri2.types.version import Version
 
+from .events.application import UpdateCheckStartedEvent, UpdateCheckFinishedEvent
+
 
 class UmlFriUpdates:
     __GITHUB_RELEASES = "https://api.github.com/repos/umlfri/umlfri2/releases"
@@ -55,6 +57,8 @@ class UmlFriUpdates:
         self.__checking_update = True
         self.__check_error = False
         
+        self.__application.event_dispatcher.dispatch(UpdateCheckStartedEvent())
+        
         try:
             Thread(target=self.__update_check_thread).start()
         except:
@@ -101,3 +105,5 @@ class UmlFriUpdates:
             raise
         finally:
             self.__checking_update = False
+        
+        self.__application.event_dispatcher.dispatch(UpdateCheckFinishedEvent(self))

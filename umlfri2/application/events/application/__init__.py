@@ -3,4 +3,6 @@ from .clipboardchanged import ClipboardSnippetChangedEvent
 from .elementselected import ItemSelectedEvent
 from .languagechanged import LanguageChangedEvent
 from .recentfileschanged import RecentFilesChangedEvent
+from .updatecheckfinished import UpdateCheckFinishedEvent
+from .updatecheckstarted import UpdateCheckStartedEvent
 from .zoomchanged import ZoomChangedEvent
