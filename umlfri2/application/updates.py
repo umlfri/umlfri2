@@ -71,7 +71,7 @@ class UmlFriUpdates:
             latest_version = None
             
             for release in data:
-                version = Version(release['name'])
+                version = Version(release['name'] or release['tag_name'])
                 
                 if release.get('prerelease', False):
                     if latest_prerelease is None or version > latest_prerelease[0]:
@@ -80,7 +80,7 @@ class UmlFriUpdates:
                     if latest_version is None or version > latest_version[0]:
                         latest_version = version, release
             
-            if latest_prerelease is not None and latest_version is not None and latest_prerelease[0] > latest_version[0]:
+            if latest_prerelease is not None and latest_version is not None and latest_prerelease[0] < latest_version[0]:
                 latest_prerelease = None
             
             if latest_version is None:

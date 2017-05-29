@@ -48,14 +48,14 @@ class About(QDialog):
         tabs = QTabWidget()
         main_layout.addWidget(tabs, 1)
         
-        tabs.addTab(self.create_used_libraries_tab(), _("Used libraries"))
+        tabs.addTab(self.__create_used_libraries_tab(), _("Used libraries"))
         
         if os.path.exists(LICENSE_FILE):
-            tabs.addTab(self.create_license_tab(), _("License"))
+            tabs.addTab(self.__create_license_tab(), _("License"))
         
-        tabs.addTab(self.create_version_1_0_tab(), _("Version 1.0 contributions"))
+        tabs.addTab(self.__create_version_1_0_tab(), _("Version 1.0 contributions"))
 
-        tabs.addTab(self.create_updates_tab(), _("Updates"))
+        tabs.addTab(self.__create_updates_tab(), _("Updates"))
         
         if Application().about.is_debug_version:
             debug_layout = QHBoxLayout()
@@ -74,7 +74,7 @@ class About(QDialog):
         
         self.setLayout(main_layout)
     
-    def create_used_libraries_tab(self):
+    def __create_used_libraries_tab(self):
         versions_layout = QFormLayout()
         for depencency, version in Application().about.dependency_versions:
             versions_layout.addRow(_("{0} version").format(depencency), QLabel(version))
@@ -82,7 +82,7 @@ class About(QDialog):
         versions_widget.setLayout(versions_layout)
         return versions_widget
     
-    def create_license_tab(self):
+    def __create_license_tab(self):
         license_text = QTextEdit()
         with open(LICENSE_FILE, 'rt') as license_file:
             license_text.setPlainText(license_file.read())
@@ -90,7 +90,7 @@ class About(QDialog):
         license_text.setLineWrapMode(QTextEdit.NoWrap)
         return license_text
     
-    def create_version_1_0_tab(self):
+    def __create_version_1_0_tab(self):
         version_1_layout = QVBoxLayout()
         for author, year in Application().about.version_1_contributions:
             version_1_layout.addWidget(QLabel(self.__about_line(author, year)))
@@ -100,7 +100,7 @@ class About(QDialog):
         version_1_scroll.setWidget(version_1_widget)
         return version_1_scroll
     
-    def create_updates_tab(self):
+    def __create_updates_tab(self):
         updates_layout = QGridLayout()
         updates_widget = QWidget()
         updates_widget.setLayout(updates_layout)
@@ -112,19 +112,20 @@ class About(QDialog):
         else:
             updates_layout.addWidget(QLabel(str(Application().about.updates.latest_version)), 1, 1)
         if Application().about.updates.has_newer_version:
-            updates_layout.addWidget(QLabel("<a href=\"{0}\">{1}</a>".format(
-                Application().about.updates.version_update_url, _("download update")
-            )), 1, 2)
+            updates_layout.addWidget(self.__create_download_link(Application().about.updates.version_update_url), 1, 2)
         if Application().about.updates.latest_prerelease is not None:
             updates_layout.addWidget(QLabel(_("Latest unstable version available:")), 2, 0)
             updates_layout.addWidget(QLabel(str(Application().about.updates.latest_prerelease)), 2, 1)
 
-            if Application().about.updates.has_newer_version:
-                updates_layout.addWidget(QLabel("<a href=\"{0}\">{1}</a>".format(
-                    Application().about.updates.prerelease_update_url, _("download update")
-                )), 2, 2)
+            if Application().about.updates.has_newer_prerelease:
+                updates_layout.addWidget(self.__create_download_link(Application().about.updates.prerelease_update_url), 2, 2)
         return updates_widget
-    
+
+    def __create_download_link(self, url):
+        ret = QLabel("<a href=\"{0}\">{1}</a>".format(url, _("download update")))
+        ret.setOpenExternalLinks(True)
+        return ret
+
     def __about_line(self, author, year):
         line = "© "
         if isinstance(year, tuple):
