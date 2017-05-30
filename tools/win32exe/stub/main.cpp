@@ -100,7 +100,7 @@ int main(int argc, char** argv)
 
 	fill_sys_path(base_path, false);
 
-	int exc = PyRun_SimpleString("import sys; import main; sys.exit(main.main(sys.argv))");
+	int exc = PyRun_SimpleString("import sys; from umlfri2.qtgui import qt_main; sys.exit(qt_main(sys.argv))");
 
 	if (exc < 0)
 	{
