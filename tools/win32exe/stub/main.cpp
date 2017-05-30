@@ -85,18 +85,13 @@ void free_args(int argc, wchar_t** _argv)
 	free(_argv);
 }
 
-int main(int argc, char** argv)
+void common_main(int argc, wchar_t** argv, bool console)
 {
-	HWND console = GetConsoleWindow();
-	ShowWindow(console, SW_HIDE);
-
 	wchar_t base_path[MAX_PATH];
 
 	get_base_path(base_path);
 
-	wchar_t** _argv = convert_args(argc, argv);
-
-	initialize_python(base_path, argc, _argv);
+	initialize_python(base_path, argc, argv);
 
 	fill_sys_path(base_path, false);
 
@@ -104,12 +99,36 @@ int main(int argc, char** argv)
 
 	if (exc < 0)
 	{
-		ShowWindow(console, SW_SHOW);
-		printf("\n\nError occured. Press ENTER to continue.");
-		getchar();
+		if (console) {
+			printf("\n\nError occured. Press ENTER to continue.");
+			getchar();
+		} else {
+			MessageBox(nullptr, L"Error occured.", L"An error occured while running the UML .FRI app.", MB_OK);
+		}
 	}
 
 	finalize_python();
 
-	free_args(argc, _argv);
+	free_args(argc, argv);
+}
+
+
+int main(int argc, char** argv)
+{
+	wchar_t** _argv = convert_args(argc, argv);
+
+	common_main(argc, _argv, false);
+}
+
+int CALLBACK WinMain(
+	_In_ HINSTANCE hInstance,
+	_In_ HINSTANCE hPrevInstance,
+	_In_ LPSTR     lpCmdLine,
+	_In_ int       nCmdShow
+)
+{
+	int argc;
+	wchar_t** _argv = CommandLineToArgvW(GetCommandLineW(), &argc);
+
+	common_main(argc, _argv, false);
 }
