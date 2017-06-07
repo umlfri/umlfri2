@@ -1,13 +1,10 @@
-import os.path
 import traceback
 
-import sys
 from PyQt5.QtCore import Qt
-
 from PyQt5.QtGui import QColor, QFont, QFontDatabase, QTextCursor
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QTextEdit
 
-from umlfri2.constants.paths import ROOT_DIR
+from .info import ExceptionInfo
 
 
 class ExceptionDialog(QDialog):
@@ -57,27 +54,28 @@ class ExceptionDialog(QDialog):
         self.__add_exception(exc)
     
     def __add_exception(self, exc):
-        if exc.__cause__ is not None:
-            self.__add_exception(exc.__cause__)
+        if isinstance(exc, Exception):
+            exc = ExceptionInfo.from_exception(exc)
+        
+        if exc.cause is not None:
+            self.__add_exception(exc.cause)
             self.__add_separator_line(traceback._cause_message.strip())
-        elif exc.__context__ is not None:
-            self.__add_exception(exc.__context__)
+        elif exc.context is not None:
+            self.__add_exception(exc.context)
             self.__add_separator_line(traceback._context_message.strip())
         
-        for filename, lineno, function, text in traceback.extract_tb(exc.__traceback__):
-            module = self.__path_to_module(filename)
-            
-            if module is not None:
-                self.__add_module_line(module, lineno, function)
+        for line in exc.traceback:
+            if line.module is not None:
+                self.__add_module_line(line.module, line.lineno, line.function)
             else:
-                self.__add_file_line(filename, lineno, function)
+                self.__add_file_line(line.filename, line.lineno, line.function)
             
-            if text:
-                self.__add_code_line(text)
+            if line.text:
+                self.__add_code_line(line.text)
             
             self.__cursor.insertText("\n")
         
-        self.__add_exc_description_line(type(exc).__name__, str(exc))
+        self.__add_exc_description_line(exc.type_name, exc.description)
     
     def __add_separator_line(self, text):
         self.__cursor.setCharFormat(self.__separator_format)
@@ -101,8 +99,6 @@ class ExceptionDialog(QDialog):
         self.__cursor.insertText("\n")
     
     def __add_file_line(self, filename, lineno, function):
-        if filename.startswith(ROOT_DIR):
-            filename = filename[len(ROOT_DIR) + 1:]
         self.__cursor.setCharFormat(self.__bold_format)
         self.__cursor.insertText("File ")
         self.__cursor.setCharFormat(self.__file_format)
@@ -130,21 +126,3 @@ class ExceptionDialog(QDialog):
         self.__cursor.setCharFormat(self.__normal_format)
         self.__cursor.insertText(description)
         self.__cursor.insertText("\n")
-    
-    def __path_to_module(self, path):
-        try:
-            npath = os.path.normpath(path)
-        except:
-            return None
-        
-        for name, module in sys.modules.items():
-            if hasattr(module, '__file__'):
-                try:
-                    mpath = os.path.normpath(module.__file__)
-                except:
-                    continue
-                
-                if mpath == npath:
-                    return name
-        
-        return None
