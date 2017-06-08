@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QLabel, QSpacerIt
 from umlfri2.application import Application
 from umlfri2.application.events.application import UpdateCheckStartedEvent, UpdateCheckFinishedEvent
 from umlfri2.constants.paths import GRAPHICS, LICENSE_FILE
+from umlfri2.qtgui.exceptionhook import ExceptionDialog
 
 
 class About(QDialog):
@@ -137,8 +138,17 @@ class About(QDialog):
 
             if Application().about.updates.has_newer_prerelease:
                 updates_layout.addWidget(self.__create_download_link(Application().about.updates.prerelease_update_url), 2, 2)
+        if Application().about.updates.has_error:
+            updates_layout.addWidget(QLabel("<b>{0}</b>".format(_("Error while checking update:"))), 3, 0)
+            more_info = QPushButton(_("More info"))
+            more_info.clicked.connect(self.__show_update_error)
+            updates_layout.addWidget(more_info, 3, 1)
+            
         updates_widget.setVisible(True)
         return self.__updates_tab
+    
+    def __show_update_error(self, checked=False):
+        ExceptionDialog(Application().about.updates.error).exec()
     
     def __create_link(self, url):
         ret = QLabel("<a href=\"{0}\">{1}</a>".format(url, url))

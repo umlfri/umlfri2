@@ -2,6 +2,7 @@ import json
 from threading import Thread
 from urllib.request import urlopen
 
+from umlfri2.qtgui.exceptionhook import ExceptionInfo
 from umlfri2.types.version import Version
 
 from .events.application import UpdateCheckStartedEvent, UpdateCheckFinishedEvent
@@ -15,7 +16,7 @@ class UmlFriUpdates:
         self.__application = application
         self.__latest_version = None
         self.__latest_prerelease = None
-        self.__check_error = False
+        self.__check_error = None
         self.__checking_update = False
         self.__version_url = None
         self.__prerelease_url = None
@@ -50,12 +51,20 @@ class UmlFriUpdates:
     def prerelease_update_url(self):
         return self.__prerelease_url
     
+    @property
+    def has_error(self):
+        return self.__check_error is not None
+
+    @property
+    def error(self):
+        return self.__check_error
+    
     def recheck_update(self):
         if self.__checking_update:
             raise Exception("Cannot check for updates while checking")
         
         self.__checking_update = True
-        self.__check_error = False
+        self.__check_error = None
         
         self.__application.event_dispatcher.dispatch(UpdateCheckStartedEvent())
         
@@ -100,10 +109,10 @@ class UmlFriUpdates:
             else:
                 self.__latest_prerelease = latest_prerelease[0]
                 self.__prerelease_url = latest_prerelease[1]['html_url']
-        except:
-            self.__check_error = True
-            raise
+        except Exception as ex:
+            self.__check_error = ExceptionInfo.from_exception(ex)
+            if __debug__:
+                raise
         finally:
             self.__checking_update = False
-        
-        self.__application.event_dispatcher.dispatch(UpdateCheckFinishedEvent(self))
+            self.__application.event_dispatcher.dispatch(UpdateCheckFinishedEvent(self))
