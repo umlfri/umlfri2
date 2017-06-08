@@ -2,7 +2,7 @@ import json
 from threading import Thread
 from urllib.request import urlopen
 
-from umlfri2.qtgui.exceptionhook import ExceptionInfo
+from umlfri2.types.exceptioninfo import ExceptionInfo
 from umlfri2.types.version import Version
 
 from .events.application import UpdateCheckStartedEvent, UpdateCheckFinishedEvent

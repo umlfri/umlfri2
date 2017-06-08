@@ -4,7 +4,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor, QFont, QFontDatabase, QTextCursor
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QTextEdit
 
-from .info import ExceptionInfo
+from umlfri2.types.exceptioninfo import ExceptionInfo
 
 
 class ExceptionDialog(QDialog):
