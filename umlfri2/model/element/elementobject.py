@@ -1,9 +1,10 @@
 from uuid import uuid4
 from weakref import ref, WeakSet
+
 from umlfri2.ufl.dialog import UflDialog, UflDialogOptions
+from umlfri2.ufl.uniquevaluegenerator import UniqueValueGenerator
 from ..cache import ModelTemporaryDataCache
 from ..connection.connectionobject import ConnectionObject
-from umlfri2.ufl.types.uniquevaluegenerator import UniqueValueGenerator
 
 
 class ElementValueGenerator(UniqueValueGenerator):

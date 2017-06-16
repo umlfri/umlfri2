@@ -1,5 +1,5 @@
+from umlfri2.ufl.uniquevaluegenerator import UniqueValueGenerator
 from .mutable import UflMutable
-from umlfri2.ufl.types.uniquevaluegenerator import UniqueValueGenerator
 from ..patch import UflListPatch
 
 

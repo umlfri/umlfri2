@@ -1,11 +1,12 @@
 from itertools import chain
 from uuid import uuid4
 from weakref import ref
+
 from umlfri2.types.geometry import Rectangle
 from umlfri2.ufl.dialog import UflDialog, UflDialogOptions
+from umlfri2.ufl.uniquevaluegenerator import UniqueValueGenerator
 from .connection import ConnectionObject, ConnectionVisual
 from .element import ElementObject, ElementVisual
-from umlfri2.ufl.types.uniquevaluegenerator import UniqueValueGenerator
 
 
 class DiagramValueGenerator(UniqueValueGenerator):
