@@ -34,6 +34,7 @@ class MainWindowMenu(QMenuBar):
         self.__file_save_as = self.__add_menu_item(file_menu, QKeySequence.SaveAs, "document-save-as", self.__file_save_as_action)
         file_menu.addSeparator()
         self.__file_exit = self.__add_menu_item(file_menu, QKeySequence.Quit, "application-exit", self.__file_exit_action)
+        self.__file_exit.setMenuRole(QAction.QuitRole)
         
         # VIEW MENU
         self.__edit, edit_menu = self.__add_menu()
@@ -92,6 +93,7 @@ class MainWindowMenu(QMenuBar):
         self.__help, help_menu = self.__add_menu()
 
         self.__help_about = self.__add_menu_item(help_menu, None, "help-about", self.__help_about_action)
+        self.__help_about.setMenuRole(QAction.AboutRole)
         
         Application().event_dispatcher.subscribe(None, self.__event_dispatched)
         Application().event_dispatcher.subscribe(LanguageChangedEvent, self.__language_changed)
