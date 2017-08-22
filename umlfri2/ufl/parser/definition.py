@@ -2,7 +2,7 @@ import pyparsing as pp
 
 EXPRESSION = pp.Forward()
 
-VARIABLE = pp.Word(pp.alphas)
+VARIABLE = pp.pyparsing_common.identifier
 
 TARGET = VARIABLE ^ ('(' + EXPRESSION + ')')
 
@@ -16,8 +16,8 @@ METHODORATTRORENUM = TARGET + (
     pp.Optional('::' + pp.Word(pp.alphanums))
 )
 
-STRING = pp.Regex("'[^']*'")
-NUMBER = pp.Regex("[0-9]+(\\.[0-9]+)?")
+STRING = pp.QuotedString(quoteChar="'", escChar="\\")
+NUMBER = pp.pyparsing_common.real
 
 VALUE = METHODORATTRORENUM ^ STRING ^ NUMBER
 
