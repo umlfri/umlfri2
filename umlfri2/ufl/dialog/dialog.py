@@ -1,7 +1,8 @@
 from .options import UflDialogOptions
 from ..objects.mutable import UflMutable
 from .tabs import *
-from umlfri2.ufl.dialog.widgets import *
+from .columns import *
+from .widgets import *
 from ..types import *
 
 
@@ -49,8 +50,10 @@ class UflDialog:
         
         if isinstance(type.item_type, UflObjectType):
             for attr in type.item_type.attributes:
+                tab.add_column(self.__make_column(attr, attr.type))
                 tab.add_widget(self.__make_widget(tab, attr, attr.type))
         else:
+            tab.add_column(self.__make_column(None, type))
             tab.add_widget(self.__make_widget(tab, None, type))
         
         return tab
@@ -72,6 +75,9 @@ class UflDialog:
         
         return tab
 
+    def __make_column(self, attr, type):
+        return UflDialogValuedColumn(attr)
+        
     def __make_widget(self, tab, attr, type):
         if isinstance(type, UflBoolType):
             return UflDialogCheckWidget(tab, attr)

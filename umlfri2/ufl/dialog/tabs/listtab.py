@@ -1,4 +1,3 @@
-from ..widgets import UflDialogChildWidget, UflDialogValuedWidget
 from .tab import UflDialogTab
 
 
@@ -9,26 +8,23 @@ class UflDialogListTab(UflDialogTab):
         self.__list = None
         self.__current_index = None
         self.__is_new = False
+        self.__columns = []
+    
+    def add_column(self, column):
+        self.__columns.append(column)
     
     @property
     def columns(self):
-        if self.__list_type.item_type.is_immutable:
-            yield None
-        else:
-            for attr in self.__list_type.item_type.attributes:
-                yield attr.name
+        for column in self.__columns:
+            yield column.title
     
     @property
     def rows(self):
-        if self.__list_type.item_type.is_immutable:
-            for value in self.__list:
-                yield [str(value)]
-        else:
-            for object in self.__list:
-                row = []
-                for attr in self.__list_type.item_type.attributes:
-                    row.append(str(object.get_value(attr.name)))
-                yield row
+        for object in self.__list:
+            row = []
+            for column in self.__columns:
+                row.append(column.get_value(object))
+            yield row
     
     @property
     def can_new(self):
@@ -102,3 +98,9 @@ class UflDialogListTab(UflDialogTab):
     
     def finish(self):
         pass
+    
+    def translate(self, translation):
+        super().translate(translation)
+
+        for column in self.__columns:
+            column.translate(translation)
