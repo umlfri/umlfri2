@@ -44,6 +44,9 @@ class UflMutableList(UflMutable):
     def __iter__(self):
         for index, value in self.__values:
             yield value
+
+    def __bool__(self):
+        return bool(self.__values)
     
     def __eq__(self, other):
         if not isinstance(other, UflMutableList):

@@ -76,7 +76,16 @@ class UflDialog:
         return tab
 
     def __make_column(self, attr, type):
-        return UflDialogValuedColumn(attr)
+        if isinstance(type, UflBoolType):
+            return UflDialogCheckColumn(attr)
+        elif isinstance(type, UflEnumType):
+            return UflDialogEnumColumn(attr)
+        elif isinstance(type, (UflObjectType, UflListType)):
+            return UflDialogComplexColumn(attr)
+        elif isinstance(type, UflStringType) and type.multiline:
+            return UflDialogComplexColumn(attr)
+        else:
+            return UflDialogValuedColumn(attr)
         
     def __make_widget(self, tab, attr, type):
         if isinstance(type, UflBoolType):
@@ -87,8 +96,6 @@ class UflDialog:
             return UflDialogSelectWidget(tab, attr)
         elif isinstance(type, UflFlagsType):
             return UflDialogMultiSelectWidget(tab, attr)
-        elif isinstance(type, UflFontType):
-            return UflDialogFontWidget(tab, attr)
         elif isinstance(type, UflFontType):
             return UflDialogFontWidget(tab, attr)
         elif isinstance(type, (UflObjectType, UflListType)):
