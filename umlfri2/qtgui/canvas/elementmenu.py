@@ -1,6 +1,7 @@
 from functools import partial
 
 from PyQt5.QtGui import QKeySequence
+from PyQt5.QtWidgets import QAction
 
 from umlfri2.application import Application
 from umlfri2.application.commands.diagram import HideElementsCommand, ChangeZOrderCommand, ZOrderDirection, \
@@ -8,6 +9,7 @@ from umlfri2.application.commands.diagram import HideElementsCommand, ChangeZOrd
 from umlfri2.application.commands.model import DeleteElementsCommand
 from umlfri2.constants.keys import DELETE_FROM_PROJECT, Z_ORDER_RAISE, Z_ORDER_LOWER, Z_ORDER_TO_BOTTOM, Z_ORDER_TO_TOP, \
     PASTE_DUPLICATE
+from umlfri2.qtgui.base import image_loader
 from ..base.contextmenu import ContextMenu
 from ..properties import PropertiesDialog
 
@@ -21,6 +23,8 @@ class CanvasElementMenu(ContextMenu):
         self.__drawing_area = drawing_area
         self.__diagram = drawing_area.diagram
         
+        translation = self.__diagram.type.metamodel.addon.get_translation(Application().language)
+        
         something_above = False
         something_below = False
         for element in self.__elements:
@@ -28,6 +32,21 @@ class CanvasElementMenu(ContextMenu):
                 something_above = True
             if self.__diagram.get_visual_below(Application().ruler, element) is not None:
                 something_below = True
+        
+        if any(element.object.diagram_count > 0 for element in self.__elements):
+            diagrams_menu = self._add_sub_menu_item(_("Show Diagram"))
+            
+            for element in self.__elements:
+                for diagram in element.object.diagrams:
+                    if diagram is not self.__diagram:
+                        diagram_item = QAction(diagram.get_display_name(), diagrams_menu)
+                        diagram_item.setIcon(image_loader.load_icon(diagram.type.icon))
+                        diagram_item.triggered.connect(partial(self.__show_diagram, diagram))
+                        diagrams_menu.addAction(diagram_item)
+        else:
+            self._add_sub_menu_item(_("Show Diagram"), enabled=False)
+
+        self.addSeparator()
         
         if drawing_area.can_copy_snippet:
             self._add_menu_item("edit-cut", _("Cut"), QKeySequence.Cut, self.__cut_action)
@@ -65,8 +84,6 @@ class CanvasElementMenu(ContextMenu):
         if connections_to_show:
             show_menu = self._add_sub_menu_item(_("Show Connection"))
 
-            translation = self.__diagram.type.metamodel.addon.get_translation(Application().language)
-            
             for connection, element in connections_to_show:
                 self._add_menu_item(
                     None,
@@ -117,6 +134,9 @@ class CanvasElementMenu(ContextMenu):
             default = self._add_menu_item(None, _("Properties..."), None)
         
         self.setDefaultAction(default)
+    
+    def __show_diagram(self, diagram, checked=False):
+        Application().tabs.select_tab(diagram)
     
     def __cut_action(self, checked=False):
         self.__drawing_area.copy_snippet()
