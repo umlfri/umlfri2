@@ -9,6 +9,7 @@ from umlfri2.application.commands.diagram import HideElementsCommand, ChangeZOrd
 from umlfri2.application.commands.model import DeleteElementsCommand
 from umlfri2.constants.keys import DELETE_FROM_PROJECT, Z_ORDER_RAISE, Z_ORDER_LOWER, Z_ORDER_TO_BOTTOM, Z_ORDER_TO_TOP, \
     PASTE_DUPLICATE
+from umlfri2.metamodel import DefaultElementAction
 from umlfri2.qtgui.base import image_loader
 from ..base.contextmenu import ContextMenu
 from ..properties import PropertiesDialog
@@ -33,6 +34,8 @@ class CanvasElementMenu(ContextMenu):
             if self.__diagram.get_visual_below(Application().ruler, element) is not None:
                 something_below = True
         
+        first_diagram_item = None
+        
         if any(element.object.diagram_count > 0 for element in self.__elements):
             diagrams_menu = self._add_sub_menu_item(_("Show Diagram"))
             
@@ -43,6 +46,8 @@ class CanvasElementMenu(ContextMenu):
                         diagram_item.setIcon(image_loader.load_icon(diagram.type.icon))
                         diagram_item.triggered.connect(partial(self.__show_diagram, diagram))
                         diagrams_menu.addAction(diagram_item)
+                        if first_diagram_item is None:
+                            first_diagram_item = diagram_item
         else:
             self._add_sub_menu_item(_("Show Diagram"), enabled=False)
 
@@ -126,14 +131,20 @@ class CanvasElementMenu(ContextMenu):
                 self._add_menu_item("go-top", _("Raise to Top"), Z_ORDER_TO_TOP, None, z_order_menu)
         else:
             self._add_sub_menu_item(_("Z-order"), False)
-            
         
         if len(self.__elements) == 1 and self.__elements[0].object.has_ufl_dialog:
-            default = self._add_menu_item(None, _("Properties..."), None, self.__edit_properties)
+            properties = self._add_menu_item(None, _("Properties..."), None, self.__edit_properties)
         else:
-            default = self._add_menu_item(None, _("Properties..."), None)
+            properties = self._add_menu_item(None, _("Properties..."), None)
         
-        self.setDefaultAction(default)
+        if len(self.__elements) == 1:
+            if self.__elements[0].object.type.default_action == DefaultElementAction.subdiagram:
+                if first_diagram_item is not None:
+                    diagrams_menu.setDefaultAction(first_diagram_item)
+                else:
+                    self.setDefaultAction(properties)
+            else:
+                self.setDefaultAction(properties)
     
     def __show_diagram(self, diagram, checked=False):
         Application().tabs.select_tab(diagram)

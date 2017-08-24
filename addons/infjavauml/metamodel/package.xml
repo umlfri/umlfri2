@@ -17,6 +17,10 @@
         <Text text="#self.name"/>
     </DisplayName>
     
+    <Config>
+        <DefaultAction action="subdiagram"/>
+    </Config>
+    
     <Appearance>
         <Shadow padding="5" color="#cfg.element.shadow">
             <VBox>

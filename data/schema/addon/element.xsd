@@ -16,6 +16,25 @@
                 <xs:element name="Structure" type="ufl_object"/>
                 
                 <xs:element name="DisplayName" type="text_component"/>
+
+                <xs:element name="Config" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="DefaultAction" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:attribute name="action" use="required">
+                                        <xs:simpleType>
+                                            <xs:restriction base="xs:string">
+                                                <xs:enumeration value="subdiagram"/>
+                                                <xs:enumeration value="properties"/>
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                    </xs:attribute>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
                 
                 <xs:element name="Appearance" type="visual_component"/>
             </xs:sequence>

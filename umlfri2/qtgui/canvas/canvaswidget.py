@@ -11,6 +11,7 @@ from umlfri2.application.events.application import ZoomChangedEvent
 from umlfri2.application.events.diagram import DiagramChangedEvent, SelectionChangedEvent
 from umlfri2.application.events.model import ObjectDataChangedEvent, ConnectionChangedEvent
 from umlfri2.constants.keys import DELETE_FROM_PROJECT, Z_ORDER_RAISE, Z_ORDER_LOWER, Z_ORDER_TO_BOTTOM, Z_ORDER_TO_TOP
+from umlfri2.metamodel import DefaultElementAction
 from umlfri2.model import ElementObject
 from umlfri2.types.geometry import Point
 from .connectionmenu import CanvasConnectionMenu
@@ -126,8 +127,17 @@ class CanvasWidget(QWidget):
             return
         
         self.__drawing_area.set_action(None)
+
         self.unsetCursor()
-        PropertiesDialog.open_for(self.__main_window, visual.object)
+        
+        if visual.object.type.default_action == DefaultElementAction.properties:
+            PropertiesDialog.open_for(self.__main_window, visual.object)
+        elif visual.object.type.default_action == DefaultElementAction.subdiagram:
+            for diagram in visual.object.diagrams:
+                Application().tabs.select_tab(diagram)
+                break
+            else:
+                PropertiesDialog.open_for(self.__main_window, visual.object)
     
     def wheelEvent(self, event):
         delta = event.angleDelta()

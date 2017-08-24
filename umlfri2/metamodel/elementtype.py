@@ -34,7 +34,7 @@ class UflNode:
 
 
 class ElementType:
-    def __init__(self, id, icon, ufl_type, display_name, appearance):
+    def __init__(self, id, icon, ufl_type, display_name, appearance, default_action):
         self.__metamodel = None
         self.__id = id
         self.__icon = icon
@@ -42,6 +42,7 @@ class ElementType:
         self.__ufl_type.set_parent(self)
         self.__display_name = display_name
         self.__appearance = appearance
+        self.__default_action = default_action
     
     def _set_metamodel(self, metamodel):
         self.__metamodel = ref(metamodel)
@@ -61,6 +62,10 @@ class ElementType:
     @property
     def ufl_type(self):
         return self.__ufl_type
+    
+    @property
+    def default_action(self):
+        return self.__default_action
     
     def compile(self):
         variables = {
