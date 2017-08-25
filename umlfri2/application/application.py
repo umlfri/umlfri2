@@ -7,7 +7,7 @@ from umlfri2.application.about import AboutUmlFri
 from umlfri2.application.addon import AddOnManager
 from umlfri2.application.commands.solution import NewProjectCommand
 from umlfri2.application.events.application import LanguageChangedEvent, ItemSelectedEvent, ClipboardSnippetChangedEvent
-from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent
+from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent, CloseSolutionEvent
 from umlfri2.application.tablist import TabList
 from umlfri2.constants.paths import LOCALE_DIR
 from umlfri2.datalayer import Storage
@@ -155,13 +155,13 @@ class Application(metaclass=MetaApplication):
     
     def new_project(self, template, new_solution=True, project_name="Project"):
         if new_solution:
+            self.__event_dispatcher.dispatch(CloseSolutionEvent(self.__solution))
             project = ProjectLoader(template.load(), self.__ruler, True, project_name, addon=template.addon).load()
             self.__solution = Solution(project)
             self.__solution_storage_ref = None
             self.__commands.clear_buffers()
             self.__commands.mark_unchanged()
             self.__event_dispatcher.dispatch(OpenSolutionEvent(self.__solution))
-            self.tabs.close_all()
         else:
             command = NewProjectCommand(self.__solution, template, project_name)
             self.__commands.execute(command)

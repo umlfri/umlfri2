@@ -1,3 +1,4 @@
+from umlfri2.application.events.solution import CloseSolutionEvent
 from .events.model import DiagramDeletedEvent
 from .events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent
 from .tab import Tab
@@ -10,9 +11,13 @@ class TabList:
         self.__current_tab = None
         
         application.event_dispatcher.subscribe(DiagramDeletedEvent, self.__diagram_deleted)
+        application.event_dispatcher.subscribe(CloseSolutionEvent, self.__solution_closed)
     
     def __diagram_deleted(self, event):
         self.close_tab(event.diagram)
+    
+    def __solution_closed(self, event):
+        self.close_all()
     
     def get_tab_for(self, diagram):
         for tab in self.__tabs:

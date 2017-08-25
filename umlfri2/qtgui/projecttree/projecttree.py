@@ -6,7 +6,8 @@ from umlfri2.application.commands.model.movenode import MoveNodeCommand
 from umlfri2.application.events.application import ItemSelectedEvent
 from umlfri2.application.events.model import ElementCreatedEvent, ObjectDataChangedEvent, DiagramCreatedEvent, \
     ProjectChangedEvent, ElementDeletedEvent, DiagramDeletedEvent, NodeMovedEvent
-from umlfri2.application.events.solution import OpenProjectEvent, OpenSolutionEvent, RemoveProjectEvent
+from umlfri2.application.events.solution import OpenProjectEvent, OpenSolutionEvent, RemoveProjectEvent, \
+    CloseSolutionEvent
 from umlfri2.model import Diagram, ElementObject, Project
 from .mimedata import ProjectMimeData
 from .treeitem import ProjectTreeItem
@@ -37,6 +38,7 @@ class ProjectTree(QTreeWidget):
         Application().event_dispatcher.subscribe(ProjectChangedEvent, self.__project_changed)
         Application().event_dispatcher.subscribe(OpenProjectEvent, self.__project_open)
         Application().event_dispatcher.subscribe(RemoveProjectEvent, self.__project_removed)
+        Application().event_dispatcher.subscribe(CloseSolutionEvent, self.__solution_close)
         Application().event_dispatcher.subscribe(OpenSolutionEvent, self.__solution_open)
         Application().event_dispatcher.subscribe(ItemSelectedEvent, self.__element_selected)
         Application().event_dispatcher.subscribe(NodeMovedEvent, self.__node_moved)
@@ -206,6 +208,9 @@ class ProjectTree(QTreeWidget):
                     menu.exec_(self.viewport().mapToGlobal(position))
     
     def __solution_open(self, event):
+        self.reload()
+
+    def __solution_close(self, event):
         self.reload()
     
     def __project_open(self, event):

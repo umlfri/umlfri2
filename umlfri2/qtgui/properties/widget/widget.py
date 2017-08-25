@@ -5,6 +5,7 @@ from umlfri2.application.commands.model import ApplyPatchCommand
 from umlfri2.application.events.application import LanguageChangedEvent, ItemSelectedEvent
 from umlfri2.application.events.diagram import SelectionChangedEvent
 from umlfri2.application.events.model import ObjectDataChangedEvent, ProjectChangedEvent
+from umlfri2.application.events.solution import CloseSolutionEvent
 from umlfri2.application.events.tabs import ChangedCurrentTabEvent
 from umlfri2.model import Project
 from umlfri2.ufl.dialog import UflDialogOptions, UflDialogObjectTab, UflDialogValueTab
@@ -28,6 +29,7 @@ class PropertiesWidget(QTabWidget):
         Application().event_dispatcher.subscribe(ProjectChangedEvent, self.__project_changed)
         Application().event_dispatcher.subscribe(SelectionChangedEvent, self.__selection_changed)
         Application().event_dispatcher.subscribe(ChangedCurrentTabEvent, self.__tab_changed)
+        Application().event_dispatcher.subscribe(CloseSolutionEvent, self.__solution_closed)
         
         self.__item = None
         self.__dialog = None
@@ -35,6 +37,9 @@ class PropertiesWidget(QTabWidget):
 
     def __language_changed(self, event):
         self.__reload_texts()
+    
+    def __solution_closed(self, event):
+        self.__select_item(None)
     
     def __item_selected(self, event):
         self.__select_item(event.item)
