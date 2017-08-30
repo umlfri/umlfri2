@@ -34,7 +34,7 @@ class ListPropertyTab(PropertyTab):
         buttons.addWidget(self.__new_button)
         layout.addLayout(buttons)
         
-        layout.addWidget(self.__list)
+        layout.addWidget(self.__list, stretch=1)
         self.setLayout(layout)
         self.__update_list()
         self._update_values()

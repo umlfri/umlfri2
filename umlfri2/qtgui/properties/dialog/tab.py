@@ -1,7 +1,7 @@
 from functools import partial
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QFormLayout, QCheckBox, QPushButton, QComboBox, QTextEdit, QLabel
+from PyQt5.QtWidgets import QWidget, QFormLayout, QCheckBox, QPushButton, QComboBox, QLabel, QSizePolicy
 
 from umlfri2.qtgui.base.colorwidget import ColorSelectionWidget
 from umlfri2.qtgui.base.fontwidget import FontSelectionWidget
@@ -9,6 +9,8 @@ from umlfri2.qtgui.base.multiselectcombobox import MultiSelectComboBox
 from umlfri2.qtgui.base.selectalllineedit import SelectAllLineEdit
 from umlfri2.qtgui.base.selectallspinbox import SelectAllSpinBox
 from umlfri2.ufl.dialog import *
+
+from .smalltextedit import SmallTextEdit
 
 
 class PropertyTab(QWidget):
@@ -26,6 +28,7 @@ class PropertyTab(QWidget):
     def _create_layout(self):
         self.__qt_widgets = {}
         ret = QFormLayout()
+        ret.setFieldGrowthPolicy(QFormLayout.AllNonFixedFieldsGrow)
         
         for widget in self.__tab.widgets:
             if isinstance(widget, UflDialogCheckWidget):
@@ -83,7 +86,10 @@ class PropertyTab(QWidget):
             elif isinstance(widget, UflDialogTextAreaWidget):
                 if widget.label is not None:
                     ret.addRow(QLabel(widget.label))
-                qt_widget = QTextEdit()
+                qt_widget = SmallTextEdit()
+                policy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+                policy.setVerticalStretch(1)
+                qt_widget.setSizePolicy(policy)
                 qt_widget.setTabChangesFocus(True)
                 self.__qt_widgets[widget.id] = qt_widget
                 qt_widget.textChanged.connect(partial(self.__text_changed, widget, qt_widget))
