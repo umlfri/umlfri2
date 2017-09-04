@@ -23,7 +23,7 @@ class RemoveConnectionPointCommand(Command):
         self.__connection.remove_point(ruler, self.__index)
     
     def _undo(self, ruler):
-        self.__connection.add_point(self.__index, self.__point_position)
+        self.__connection.add_point(ruler, self.__index, self.__point_position)
     
     def get_updates(self):
         yield ConnectionMovedEvent(self.__connection)
