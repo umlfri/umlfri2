@@ -2,7 +2,7 @@ import os.path
 
 from PyQt5.QtCore import Qt, QSettings
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMainWindow, QTabWidget, QDockWidget, QMessageBox, QFileDialog, QTabBar
+from PyQt5.QtWidgets import QMainWindow, QTabWidget, QDockWidget, QMessageBox, QFileDialog, QTabBar, QStyle
 
 from umlfri2.application import Application
 from umlfri2.application.addon import AddOnState
@@ -109,8 +109,11 @@ class UmlFriMainWindow(QMainWindow):
         else:
             tab_close_enabled = True
         
+        tabbar = self.__tabs.tabBar()
+        close_button_position = tabbar.style().styleHint(QStyle.SH_TabBar_CloseButtonPosition, None, tabbar)
+        
         for no in range(self.__tabs.count()):
-            self.__tabs.tabBar().tabButton(no, QTabBar.RightSide).setEnabled(tab_close_enabled)
+            tabbar.tabButton(no, close_button_position).setEnabled(tab_close_enabled)
     
     def __tab_changed(self, index):
         if self.__ignore_change_tab:
