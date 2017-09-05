@@ -77,7 +77,10 @@ class ListPropertyTab(PropertyTab):
         
         if self._tab.should_save:
             if not self.handle_needed_save():
-                self.__list.setCurrentItem(self.__list.topLevelItem(self._tab.current_index))
+                if self._tab.current_index is None:
+                    self.__list.setCurrentItem(None)
+                else:
+                    self.__list.setCurrentItem(self.__list.topLevelItem(self._tab.current_index))
                 return
         
         self._tab.change_current_index(index)
