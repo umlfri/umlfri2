@@ -222,6 +222,7 @@ class UmlFriMainWindow(QMainWindow):
     def __check_save(self, title):
         if Application().unsaved:
             message_box = QMessageBox(self)
+            message_box.setWindowModality(Qt.WindowModal)
             message_box.setIcon(QMessageBox.Question)
             message_box.setWindowTitle(title)
             message_box.setText(_("The model has been modified."))

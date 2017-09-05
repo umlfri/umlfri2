@@ -1,3 +1,4 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QVBoxLayout, QTreeWidget, QHBoxLayout, QPushButton, QTreeWidgetItem, QMessageBox
 
@@ -120,6 +121,7 @@ class ListPropertyTab(PropertyTab):
     
     def handle_needed_save(self):
         message_box = QMessageBox(self)
+        message_box.setWindowModality(Qt.WindowModal)
         message_box.setIcon(QMessageBox.Question)
         message_box.setWindowTitle(_("Data changed"))
         message_box.setText(_("The data on this tab has been modified."))
