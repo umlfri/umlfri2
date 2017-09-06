@@ -2,7 +2,7 @@ from collections import namedtuple
 from functools import partial
 
 from PyQt5.QtCore import QSize, Qt, QUrl, QTimer
-from PyQt5.QtGui import QFont, QIcon, QDesktopServices
+from PyQt5.QtGui import QFont, QIcon, QDesktopServices, QPalette
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QTableWidget, QHBoxLayout, QLabel, QWidget, \
     QTableWidgetItem, QStyledItemDelegate, QStyle, QPushButton, QMenu, QFileDialog
 from umlfri2.application import Application
@@ -84,18 +84,31 @@ class AddOnsDialog(QDialog):
         
         for no, addon in enumerate(addons):
             if addon.icon:
-                icon_item = QTableWidgetItem()
-                icon_item.setIcon(QIcon(image_loader.load(addon.icon)))
-                self.__table.setItem(no, 0, icon_item)
+                icon_widget = QWidget()
+                icon_layout = QVBoxLayout()
+                icon_layout.setSpacing(0)
+                icon_widget.setLayout(icon_layout)
+                icon_label = QLabel()
+                icon_label.setAutoFillBackground(False)
+                icon_label.setPixmap(image_loader.load(addon.icon))
+                icon_label.setAlignment(Qt.AlignTop)
+                icon_layout.addWidget(icon_label)
+                
+                lp, tp, rp, bp = icon_layout.getContentsMargins()
+                icon_layout.setContentsMargins(lp, tp, 0, bp)
+                
+                self.__table.setCellWidget(no, 0, icon_widget)
             
             layout = QVBoxLayout()
             layout.setSpacing(0)
+            layout.setAlignment(Qt.AlignTop)
             
             name_layout = QHBoxLayout()
             name_layout.setSpacing(20)
             name_layout.setAlignment(Qt.AlignLeft)
             
             name_label = QLabel(addon.name)
+            name_label.setAutoFillBackground(False)
             name_label.setTextFormat(Qt.PlainText)
             font = name_label.font()
             font.setWeight(QFont.Bold)
@@ -103,6 +116,7 @@ class AddOnsDialog(QDialog):
             name_layout.addWidget(name_label)
             
             version_label = QLabel(str(addon.version))
+            version_label.setAutoFillBackground(False)
             version_label.setTextFormat(Qt.PlainText)
             name_layout.addWidget(version_label)
             
@@ -110,13 +124,14 @@ class AddOnsDialog(QDialog):
             
             if addon.description:
                 description_label = QLabel(addon.description)
+                description_label.setAutoFillBackground(False)
                 description_label.setTextFormat(Qt.PlainText)
                 description_label.setWordWrap(True)
                 layout.addWidget(description_label)
             
             addon_button_box = QHBoxLayout()
             addon_button_box.setAlignment(Qt.AlignRight)
-            addon_button_box.setContentsMargins(0, 5, 0, 0)
+            #addon_button_box.setContentsMargins(0, 5, 0, 0)
             
             if addon.state != AddOnState.none:
                 start_button = QPushButton(QIcon.fromTheme("media-playback-start"), _("Start"))
@@ -147,6 +162,8 @@ class AddOnsDialog(QDialog):
             widget = QWidget()
             widget.setLayout(layout)
             self.__table.setCellWidget(no, 1, widget)
+
+            self.__refresh_selection_colors(widget, False)
         
         self.__table.resizeColumnsToContents()
         self.__table.resizeRowsToContents()
@@ -164,12 +181,24 @@ class AddOnsDialog(QDialog):
             cell = self.__table.cellWidget(i, 1)
             cellLayout = cell.layout()
             button_box = cellLayout.itemAt(cellLayout.count() - 1)
+            
             if i in selection:
                 button_box.widget().show()
             else:
                 button_box.widget().hide()
+            
+            self.__refresh_selection_colors(cell, i in selection)
         
         self.__table.resizeRowsToContents()
+    
+    def __refresh_selection_colors(self, cell_widget, selected):
+        if selected:
+            color = self.__table.palette().color(QPalette.Active, QPalette.HighlightedText)
+        else:
+            color = self.__table.palette().color(QPalette.Active, QPalette.Text)
+            
+        for lbl in cell_widget.findChildren(QLabel):
+            lbl.setStyleSheet("QLabel {{ color : {0}; }}".format(color.name()))
     
     def __context_menu_requested(self, point):
         index = self.__table.indexAt(point)
