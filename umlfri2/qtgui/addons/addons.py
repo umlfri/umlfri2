@@ -131,7 +131,6 @@ class AddOnsDialog(QDialog):
             
             addon_button_box = QHBoxLayout()
             addon_button_box.setAlignment(Qt.AlignRight)
-            #addon_button_box.setContentsMargins(0, 5, 0, 0)
             
             if addon.state != AddOnState.none:
                 start_button = QPushButton(QIcon.fromTheme("media-playback-start"), _("Start"))
