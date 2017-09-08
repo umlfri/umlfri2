@@ -3,6 +3,7 @@
 data/icons
 tools/mkaddonlib/addonlibdoc/documentation/*
 tools/mkaddonlib/checked_api/*
+tools/win32exe/installer/*.exe
 tools/win32exe/out
 tools/win32exe/stub/Debug
 tools/win32exe/stub/Release

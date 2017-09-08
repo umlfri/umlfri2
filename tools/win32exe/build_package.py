@@ -14,8 +14,8 @@ import compileall
 
 ########################################
 # Config
-version = 'Debug'
-#version = 'Release'
+#version = 'Debug'
+version = 'Release'
 ########################################
 
 print("Initialization")
@@ -118,7 +118,13 @@ shutil.copy(os.path.join(DIR, 'stub', version, 'umlfri2.exe'), os.path.join(OUT_
 print("- Python dlls")
 shutil.copy(os.path.join(sys.base_prefix, 'python36.dll'), os.path.join(OUT_DIR, 'python36.dll'))
 shutil.copy(os.path.join(sys.base_prefix, 'python3.dll'), os.path.join(OUT_DIR, 'python3.dll'))
-shutil.copy(os.path.join(sys.base_prefix, 'vcruntime140.dll'), os.path.join(OUT_DIR, 'vcruntime140.dll'))
+
+if version == 'Debug':
+    shutil.copy(os.path.join('c:', 'Windows', 'SysWOW64', 'vcruntime140d.dll'), os.path.join(OUT_DIR, 'vcruntime140d.dll'))
+    shutil.copy(os.path.join('c:', 'Windows', 'SysWOW64', 'ucrtbased.dll'), os.path.join(OUT_DIR, 'ucrtbased.dll'))
+else:
+    shutil.copy(os.path.join('c:', 'Windows', 'SysWOW64', 'vcruntime140.dll'), os.path.join(OUT_DIR, 'vcruntime140.dll'))
+    shutil.copy(os.path.join('c:', 'Windows', 'SysWOW64', 'ucrtbase.dll'), os.path.join(OUT_DIR, 'ucrtbase.dll'))
 
 print("Python standard library")
 print("=======================")
@@ -149,6 +155,7 @@ print("==================")
 print("Copying UML .FRI data")
 print("---------------------")
 shutil.copytree(os.path.join(UML_FRI_DIR, 'data'), os.path.join(OUT_DIR, 'data'), ignore=shutil.ignore_patterns("128x128", "256x256", "api", "*.svg"))
+shutil.copy(os.path.join(UML_FRI_DIR, 'LICENSE.txt'), os.path.join(OUT_DIR, 'LICENSE.txt'))
 
 print("Appdirs lib")
 print("-----------")
@@ -193,7 +200,7 @@ shutil.copytree(os.path.join(UML_FRI_DIR, 'addons', 'infjavauml'), os.path.join(
 
 print("Python starter")
 print("----------")
-shutil.copytree(os.path.join(UML_FRI_DIR, 'addons', 'python_starter'), os.path.join(OUT_DIR, 'addons', 'python_starter'), ignore=shutil.ignore_patterns("__pycache__", "python_runner.py"))
+shutil.copytree(os.path.join(UML_FRI_DIR, 'addons', 'python_starter'), os.path.join(OUT_DIR, 'addons', 'python_starter'), ignore=shutil.ignore_patterns('__pycache__', 'python_runner.py', 'libraryTemplate'))
 
 print("Compiling addons")
 print("----------------")
