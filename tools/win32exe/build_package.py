@@ -12,6 +12,12 @@ import zipfile
 import shutil
 import compileall
 
+########################################
+# Config
+version = 'Debug'
+#version = 'Release'
+########################################
+
 print("Initialization")
 print("==============")
 
@@ -83,21 +89,31 @@ print("Compilation")
 print("-----------")
 compileall.compile_dir(os.path.join(UML_FRI_DIR, 'umlfri2'), optimize=2)
 
+print()
+print("Paths modification")
+print("------------------")
 paths_path = os.path.join(UML_FRI_DIR, 'umlfri2', 'constants', 'paths.py')
 paths_file = open(paths_path, 'r').read()
 paths_file = re.sub('^ROOT_DIR = .*$', 'import sys; ROOT_DIR = os.path.normpath(os.path.dirname(sys.executable))', paths_file, flags=re.MULTILINE)
 
-print()
 print("Packing")
 print("-------")
 with UmlFriZip('umlfri.zip', UML_FRI_DIR) as zip:
     zip.process_python_directory('umlfri2', ignore=shutil.ignore_patterns("paths.*"))
     zip.add_compiled_to_zip('umlfri2/constants/paths.pyc', paths_file)
 
+print("pl_runner packing")
+print("-----------------")
+pl_runner_path = os.path.join(UML_FRI_DIR, 'addons', 'python_starter', 'starter', 'python_runner.py')
+pl_runner_file = open(pl_runner_path, 'r').read()
+with UmlFriZip('pl_runner.zip', UML_FRI_DIR) as zip:
+    zip.add_compiled_to_zip('python_runner.pyc', pl_runner_file)
+
 print("Python binaries processing")
 print("==========================")
 print("- UML .FRI binary")
-shutil.copy(os.path.join(DIR, 'stub', 'Release', 'umlfri2.exe'), os.path.join(OUT_DIR, 'umlfri2.exe'))
+print("  - Using " + version)
+shutil.copy(os.path.join(DIR, 'stub', version, 'umlfri2.exe'), os.path.join(OUT_DIR, 'umlfri2.exe'))
 
 print("- Python dlls")
 shutil.copy(os.path.join(sys.base_prefix, 'python36.dll'), os.path.join(OUT_DIR, 'python36.dll'))
@@ -174,3 +190,11 @@ os.mkdir(os.path.join(OUT_DIR, 'addons'))
 print("Infjavauml")
 print("----------")
 shutil.copytree(os.path.join(UML_FRI_DIR, 'addons', 'infjavauml'), os.path.join(OUT_DIR, 'addons', 'infjavauml'))
+
+print("Python starter")
+print("----------")
+shutil.copytree(os.path.join(UML_FRI_DIR, 'addons', 'python_starter'), os.path.join(OUT_DIR, 'addons', 'python_starter'), ignore=shutil.ignore_patterns("__pycache__", "python_runner.py"))
+
+print("Compiling addons")
+print("----------------")
+compileall.compile_dir(os.path.join(OUT_DIR, 'addons'), optimize=2)

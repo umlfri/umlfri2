@@ -34,12 +34,19 @@ if hasattr(plugin, 'get_main_loop'):
 else:
     main_loop = None
 
-server.start(main_loop)
 
-adapter=Application(server, 'app')
-plugin.plugin_main(adapter)
+def main(args):
+    server.start(main_loop)
 
-try:
-    server.main_loop()
-except KeyboardInterrupt:
-    pass
+    adapter=Application(server, 'app')
+    plugin.plugin_main(adapter)
+
+    try:
+        server.main_loop()
+    except KeyboardInterrupt:
+        pass
+
+    return 0
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv))
