@@ -35,10 +35,17 @@ void initialize_python(wchar_t* base_path, int argc, wchar_t** _argv)
 	wcscpy(python_zip, base_path);
 	wcsncat(python_zip, L"\\python.zip", MAX_PATH);
 
+#ifndef _DEBUG
+	Py_OptimizeFlag = 2;
+#endif
+
 	Py_SetProgramName(_argv[0]);
 	Py_SetPath(python_zip);
 	Py_InitializeEx(0);
 	PySys_SetArgv(argc, _argv);
+
+	// mark as frozen
+	PySys_SetObject("frozen", Py_True);
 }
 
 void append_path(PyObject *sys_path, wchar_t* base_path, wchar_t* name)
@@ -51,6 +58,16 @@ void append_path(PyObject *sys_path, wchar_t* base_path, wchar_t* name)
 	PyObject* python_path = PyUnicode_FromWideChar(dir, -1);
 	PyList_Append(sys_path, python_path);
 	Py_DECREF(python_path);
+}
+
+bool is_plugin(int argc, wchar_t** argv)
+{
+	bool plugin = false;
+
+	if (argc == 2 && wcscmp(argv[1], L"--plugin") == 0)
+		plugin = true;
+
+	return plugin;
 }
 
 void fill_sys_path(wchar_t* base_path, bool plugin)
@@ -68,6 +85,20 @@ void fill_sys_path(wchar_t* base_path, bool plugin)
 	else
 	{
 		append_path(sys_path, base_path, L"umlfri.zip");
+	}
+}
+
+bool run(bool plugin)
+{
+	if (plugin)
+	{
+		int exc = PyRun_SimpleString("import sys; from python_runner import main; sys.exit(main(sys.argv))");
+		return exc < 0;
+	}
+	else
+	{
+		int exc = PyRun_SimpleString("import sys; from umlfri2.qtgui import qt_main; sys.exit(qt_main(sys.argv))");
+		return exc < 0;
 	}
 }
 
@@ -93,11 +124,13 @@ void common_main(int argc, wchar_t** argv, bool console)
 
 	initialize_python(base_path, argc, argv);
 
-	fill_sys_path(base_path, false);
+	bool plugin = is_plugin(argc, argv);
 
-	int exc = PyRun_SimpleString("import sys; from umlfri2.qtgui import qt_main; sys.exit(qt_main(sys.argv))");
+	fill_sys_path(base_path, plugin);
 
-	if (exc < 0)
+	bool was_exc = run(plugin);
+
+	if (was_exc)
 	{
 		if (console) {
 			printf("\n\nError occured. Press ENTER to continue.");
@@ -117,7 +150,7 @@ int main(int argc, char** argv)
 {
 	wchar_t** _argv = convert_args(argc, argv);
 
-	common_main(argc, _argv, false);
+	common_main(argc, _argv, true);
 }
 
 int CALLBACK WinMain(
