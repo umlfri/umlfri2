@@ -35,6 +35,10 @@ void initialize_python(wchar_t* base_path, int argc, wchar_t** _argv)
 	wcscpy(python_zip, base_path);
 	wcsncat(python_zip, L"\\python.zip", MAX_PATH);
 
+#ifndef _DEBUG
+	Py_OptimizeFlag = 2;
+#endif
+
 	Py_SetProgramName(_argv[0]);
 	Py_SetPath(python_zip);
 	Py_InitializeEx(0);
