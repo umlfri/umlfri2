@@ -9,21 +9,33 @@
 #include <Windows.h>
 #include <Shlwapi.h>
 
+#define MAX_SYSTEM_PATH 10000
+
 void get_base_path(wchar_t* base_path)
 {
 	GetModuleFileName(nullptr, base_path, MAX_PATH);
 	PathRemoveFileSpec(base_path);
+#ifdef _DEBUG
+	printf("* Base path is: %ls\n", base_path);
+#endif
 }
 
 wchar_t** convert_args(int argc, char** argv)
 {
 	wchar_t** _argv = static_cast<wchar_t **>(calloc(argc, sizeof(wchar_t *)));
 
+#ifdef _DEBUG
+	printf("* Argument count: %d\n", argc);
+#endif
+
 	for (int i = 0; i < argc; i++)
 	{
 		int len = strlen(argv[i]);
 		_argv[i] = static_cast<wchar_t*>(calloc(len + 1, sizeof(wchar_t)));
 		mbstowcs(_argv[i], argv[i], len);
+#ifdef _DEBUG
+		printf("* Argument[%d]: %ls\n", i, _argv[i]);
+#endif
 	}
 
 	return _argv;
@@ -46,18 +58,28 @@ void initialize_python(wchar_t* base_path, int argc, wchar_t** _argv)
 
 	// mark as frozen
 	PySys_SetObject("frozen", Py_True);
+#ifdef _DEBUG
+	printf("* Python initialized correctly\n");
+#endif
 }
 
 void append_path(PyObject *sys_path, wchar_t* base_path, wchar_t* name)
 {
 	wchar_t dir[MAX_PATH];
 	wcscpy(dir, base_path);
-	wcsncat(dir, L"\\", MAX_PATH);
-	wcsncat(dir, name, MAX_PATH);
+	if (name != nullptr)
+	{
+		wcsncat(dir, L"\\", MAX_PATH);
+		wcsncat(dir, name, MAX_PATH);
+	}
 
 	PyObject* python_path = PyUnicode_FromWideChar(dir, -1);
 	PyList_Append(sys_path, python_path);
 	Py_DECREF(python_path);
+
+#ifdef _DEBUG
+	printf("* sys.path extended by: %ls\n", dir);
+#endif
 }
 
 bool is_plugin(int argc, wchar_t** argv)
@@ -67,6 +89,13 @@ bool is_plugin(int argc, wchar_t** argv)
 	if (argc == 2 && wcscmp(argv[1], L"--plugin") == 0)
 		plugin = true;
 
+#ifdef _DEBUG
+	if (plugin)
+		printf("* Started as plugin\n");
+	else
+		printf("* Started as main app\n");
+#endif
+
 	return plugin;
 }
 
@@ -75,6 +104,7 @@ void fill_sys_path(wchar_t* base_path, bool plugin)
 	PyObject *sys_path = PySys_GetObject("path");
 
 	PySequence_DelSlice(sys_path, 0, PySequence_Length(sys_path));
+	append_path(sys_path, base_path, nullptr);
 	append_path(sys_path, base_path, L"python.zip");
 	append_path(sys_path, base_path, L"dlls");
 	append_path(sys_path, base_path, L"sp.zip");
@@ -88,18 +118,47 @@ void fill_sys_path(wchar_t* base_path, bool plugin)
 	}
 }
 
+void add_to_system_path(wchar_t *base_path)
+{
+	wchar_t new_system_path[MAX_SYSTEM_PATH];
+
+	wchar_t old_system_path[MAX_SYSTEM_PATH];
+	size_t old_size;
+	old_size = MAX_SYSTEM_PATH;
+	_wgetenv_s(&old_size, old_system_path, MAX_SYSTEM_PATH, L"PATH");
+
+	wcscpy(new_system_path, base_path);
+	wcsncat(new_system_path, L";", MAX_SYSTEM_PATH);
+	wcsncat(new_system_path, old_system_path, MAX_SYSTEM_PATH);
+
+	_wputenv_s(L"PATH", new_system_path);
+
+#ifdef _DEBUG
+	printf("* New PATH: %ls\n", new_system_path);
+#endif
+}
+
+bool run(const char *code)
+{
+#ifdef _DEBUG
+	printf("Executing: %s\n", code);
+#endif
+
+	int exc = PyRun_SimpleString(code);
+
+#ifdef _DEBUG
+	printf("* Exception no: %d\n", exc);
+#endif
+
+	return exc < 0;
+}
+
 bool run(bool plugin)
 {
 	if (plugin)
-	{
-		int exc = PyRun_SimpleString("import sys; from python_runner import main; sys.exit(main(sys.argv))");
-		return exc < 0;
-	}
+		return run("import sys; from python_runner import main; sys.exit(main(sys.argv))");
 	else
-	{
-		int exc = PyRun_SimpleString("import sys; from umlfri2.qtgui import qt_main; sys.exit(qt_main(sys.argv))");
-		return exc < 0;
-	}
+		return run("import sys; from umlfri2.qtgui import qt_main; sys.exit(qt_main(sys.argv))");
 }
 
 void finalize_python()
@@ -121,6 +180,8 @@ void common_main(int argc, wchar_t** argv, bool console)
 	wchar_t base_path[MAX_PATH];
 
 	get_base_path(base_path);
+
+	add_to_system_path(base_path);
 
 	initialize_python(base_path, argc, argv);
 
