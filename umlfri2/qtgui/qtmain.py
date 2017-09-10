@@ -13,6 +13,8 @@ def qt_main(args):
     apply_os_specials()
 
     app = QApplication(args)
+    
+    Application().use_args(args[1:])
 
     Application().use_thread_manager(QTThreadManager())
     Application().use_ruler(QTRuler())

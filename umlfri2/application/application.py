@@ -2,22 +2,25 @@ import ctypes
 import gettext
 import locale
 import os
+import os.path
 
-from umlfri2.application.about import AboutUmlFri
-from umlfri2.application.addon import AddOnManager
-from umlfri2.application.commands.solution import NewProjectCommand
-from umlfri2.application.events.application import LanguageChangedEvent, ItemSelectedEvent, ClipboardSnippetChangedEvent
-from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent, CloseSolutionEvent
-from umlfri2.application.tablist import TabList
+from .about import AboutUmlFri
+from .addon import AddOnManager
+from .commands.solution import NewProjectCommand
+from .events.application import LanguageChangedEvent, ItemSelectedEvent, ClipboardSnippetChangedEvent
+from .events.solution import OpenSolutionEvent, SaveSolutionEvent, CloseSolutionEvent
+from .startupoptions import StartupOptions
+from .tablist import TabList
+from .commandprocessor import CommandProcessor
+from .dispatcher import EventDispatcher
+from .recentfiles import RecentFiles
+
 from umlfri2.constants.paths import LOCALE_DIR
 from umlfri2.datalayer import Storage
 from umlfri2.datalayer.loaders import ProjectLoader, WholeSolutionLoader
 from umlfri2.datalayer.savers import WholeSolutionSaver
 from umlfri2.datalayer.storages import ZipStorage
 from umlfri2.model import Solution
-from .commandprocessor import CommandProcessor
-from .dispatcher import EventDispatcher
-from .recentfiles import RecentFiles
 
 
 class MetaApplication(type):
@@ -51,6 +54,7 @@ class Application(metaclass=MetaApplication):
         self.__selected_item = None
         self.__clipboard = None
         self.__thread_manager = None
+        self.__startup_options = None
         
         self.__about = AboutUmlFri(self)
     
@@ -89,10 +93,13 @@ class Application(metaclass=MetaApplication):
         return self.__about
     
     def start(self):
-        pass
+        self.__startup_options.apply()
     
     def stop(self):
         self.__event_dispatcher.clear()
+
+    def use_args(self, args):
+        self.__startup_options = StartupOptions(self, args)
     
     def use_ruler(self, ruler):
         if self.__ruler is not None:
@@ -201,6 +208,7 @@ class Application(metaclass=MetaApplication):
         self.__recent_files.add_file(filename)
 
     def open_solution(self, filename):
+        filename = os.path.abspath(filename)
         with Storage.read_storage(filename) as storage:
             self.__solution = WholeSolutionLoader(storage, self.__ruler, self.__addons).load()
             self.__solution_storage_ref = storage.remember_reference()
