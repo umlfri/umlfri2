@@ -28,7 +28,7 @@ class ConnectionTypeLabel:
     def compile(self):
         variables = {
             'self': self.__connection_type().ufl_type,
-            'cfg': self.__connection_type().metamodel.addon.config_structure
+            'cfg': self.__connection_type().metamodel.config_structure
         }
         
         self.__appearance.compile(variables)
@@ -36,5 +36,5 @@ class ConnectionTypeLabel:
     def create_appearance_object(self, connection, ruler):
         context = Context()\
             .extend(connection.data, 'self')\
-            .extend(self.__connection_type().metamodel.addon.config, 'cfg')
+            .extend(self.__connection_type().metamodel.config, 'cfg')
         return self.__appearance.create_visual_object(context, ruler)

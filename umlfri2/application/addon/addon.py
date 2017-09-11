@@ -7,7 +7,7 @@ from umlfri2.ufl.types import UflObjectType
 
 class AddOn:
     def __init__(self, application, identifier, name, version, author, homepage, license, icon, description,
-                 requirements, provisions, config, metamodel, gui_injection, patch_plugin, plugin,
+                 requirements, provisions, metamodel, gui_injection, patch_plugin, plugin,
                  system_addon):
         self.__application = application
         self.__identifier = identifier
@@ -20,14 +20,6 @@ class AddOn:
         self.__description = description
         self.__requirements = tuple(requirements)
         self.__provisions = tuple(provisions)
-        if config is None:
-            self.__config_structure = UflObjectType({})
-            self.__has_config = False
-        else:
-            self.__config_structure = config
-            self.__has_config = True
-        self.__config_structure.set_parent(None)
-        self.__config = self.__config_structure.build_default(None)
         self.__metamodel = metamodel
         if self.__metamodel is not None:
             self.__metamodel._set_addon(self)
@@ -85,18 +77,6 @@ class AddOn:
     @property
     def provisions(self):
         yield from self.__provisions
-    
-    @property
-    def config_structure(self):
-        return self.__config_structure
-    
-    @property
-    def config(self):
-        return self.__config
-    
-    @property
-    def has_config(self):
-        return self.__has_config
     
     @property
     def metamodel(self):

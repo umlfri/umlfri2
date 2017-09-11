@@ -147,16 +147,13 @@ class AddOnsDialog(QDialog):
                 
                 self.__addon_buttons[addon.identifier] = self.__AddonButtons(start_button, stop_button)
             
-            if addon.has_config:
-                preferences_button = QPushButton(QIcon.fromTheme("preferences-other"), _("Preferences..."))
-                preferences_button.setFocusPolicy(Qt.NoFocus)
-                addon_button_box.addWidget(preferences_button)
-            
-            addon_button_box_widget = QWidget()
-            addon_button_box_widget.setLayout(addon_button_box)
-            addon_button_box_widget.setVisible(False)
-            
-            layout.addWidget(addon_button_box_widget)
+            if addon_button_box.count() > 0:
+                addon_button_box_widget = QWidget()
+                addon_button_box_widget.setLayout(addon_button_box)
+                addon_button_box_widget.setVisible(False)
+                addon_button_box_widget.setObjectName("button_box")
+                
+                layout.addWidget(addon_button_box_widget)
             
             widget = QWidget()
             widget.setLayout(layout)
@@ -178,13 +175,13 @@ class AddOnsDialog(QDialog):
         
         for i in range(self.__table.rowCount()):
             cell = self.__table.cellWidget(i, 1)
-            cellLayout = cell.layout()
-            button_box = cellLayout.itemAt(cellLayout.count() - 1)
+            button_box = cell.findChild(QWidget, "button_box")
             
-            if i in selection:
-                button_box.widget().show()
-            else:
-                button_box.widget().hide()
+            if button_box is not None: # no button box present
+                if i in selection:
+                    button_box.show()
+                else:
+                    button_box.hide()
             
             self.__refresh_selection_colors(cell, i in selection)
         
@@ -221,8 +218,6 @@ class AddOnsDialog(QDialog):
             
             menu.addSeparator()
         
-        if addon.has_config:
-            menu.addAction(QIcon.fromTheme("preferences-other"), _("Preferences..."))
         if addon.homepage:
             homepage = menu.addAction(QIcon.fromTheme("application-internet"), _("Homepage"))
             homepage.triggered.connect(partial(self.__show_homepage, addon))

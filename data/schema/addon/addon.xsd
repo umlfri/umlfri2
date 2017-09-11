@@ -2,6 +2,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://umlfri.org/v2/addon.xsd"
            targetNamespace="http://umlfri.org/v2/addon.xsd" elementFormDefault="qualified"
            attributeFormDefault="unqualified">
+    <xs:include schemaLocation="config.xsd"/>
     <xs:include schemaLocation="definitions.xsd"/>
     <xs:include schemaLocation="element.xsd"/>
     <xs:include schemaLocation="connection.xsd"/>

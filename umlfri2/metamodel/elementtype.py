@@ -70,7 +70,7 @@ class ElementType:
     def compile(self):
         variables = {
             'self': self.__ufl_type,
-            'cfg': self.__metamodel().addon.config_structure,
+            'cfg': self.__metamodel().config_structure,
         }
         
         appearance_variables = variables.copy()
@@ -82,12 +82,12 @@ class ElementType:
     def create_appearance_object(self, element, ruler):
         context = Context()\
             .extend(element.data, 'self')\
-            .extend(self.__metamodel().addon.config, 'cfg')\
+            .extend(self.__metamodel().config, 'cfg')\
             .extend(UflNode(element), 'node')
         return self.__appearance.create_visual_object(context, ruler)
     
     def get_display_name(self, element):
         context = Context()\
             .extend(element.data, 'self')\
-            .extend(self.__metamodel().addon.config, 'cfg')
+            .extend(self.__metamodel().config, 'cfg')
         return self.__display_name.get_text(context)

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Config xmlns="http://umlfri.org/v2/addon.xsd">
+    <Attribute id="element" type="object">
+        <Attribute id="line" type="color" default="black" />
+        <Attribute id="fill" type="color" default="lightyellow" />
+        <Attribute id="fill2" type="color" default="lightyellow" />
+        <Attribute id="fill3" type="color" default="black" />
+        <Attribute id="shadow" type="color" default="#B0000000" />
+        <Attribute id="heading" type="color" default="black" />
+        <Attribute id="text" type="color" default="black" />
+        <Attribute id="headingfont" type="font" default="Arial 15" />
+        <Attribute id="textfont" type="font" default="Arial 15" />
+    </Attribute>
+    <Attribute id="connection" type="object">
+        <Attribute id="line" type="color" default="black"/>
+        <Attribute id="arrow" type="color" default="black"/>
+        <Attribute id="fill" type="color" default="white"/>
+        <Attribute id="heading" type="color" default="black"/>
+        <Attribute id="text" type="color" default="black"/>
+        <Attribute id="headingfont" type="font" default="Arial 15" />
+        <Attribute id="textfont" type="font" default="Arial 15" />
+    </Attribute>
+    <Attribute id="background" type="color" default="white" />
+</Config>

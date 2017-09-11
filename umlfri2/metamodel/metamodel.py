@@ -5,7 +5,7 @@ from .translation import TranslationList
 
 
 class Metamodel:
-    def __init__(self, diagrams, elements, connections, templates, translations):
+    def __init__(self, diagrams, elements, connections, templates, translations, config):
         self.__diagrams = OrderedDict(item for item in sorted(diagrams.items()))
         self.__elements = OrderedDict(item for item in sorted(elements.items()))
         self.__connections = OrderedDict(item for item in sorted(connections.items()))
@@ -13,8 +13,16 @@ class Metamodel:
         self.__templates.sort(key=lambda item: item.name)
         self.__translations = TranslationList(translations)
         
+        if config is None:
+            self.__config_structure = UflObjectType({})
+            self.__has_config = False
+        else:
+            self.__config_structure = config
+            self.__has_config = True
+        self.__config_structure.set_parent(None)
+        self.__config = self.__config_structure.build_default(None)
+        
         self.__addon = None
-        self.__config_structure = None
     
     def _set_addon(self, addon):
         self.__addon = ref(addon)
@@ -62,6 +70,18 @@ class Metamodel:
 
     def get_translation(self, language):
         return self.__translations.get_translation(language)
+    
+    @property
+    def config_structure(self):
+        return self.__config_structure
+    
+    @property
+    def config(self):
+        return self.__config
+    
+    @property
+    def has_config(self):
+        return self.__has_config
     
     def compile(self):
         for diagram in self.__diagrams.values():

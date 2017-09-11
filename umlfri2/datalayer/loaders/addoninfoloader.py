@@ -5,12 +5,11 @@ import re
 from umlfri2.application.addon import AddOnDependency, AddOnDependencyType
 from umlfri2.application.addon.license import CommonLicense
 from ..constants import ADDON_NAMESPACE, ADDON_SCHEMA
-from .structureloader import UflStructureLoader
 from umlfri2.types.version import Version
 
 
 AddOnInfo = namedtuple('AddOnInfo', ('identifier', 'name', 'version', 'author', 'homepage', 'license', 'icon',
-                                     'description', 'requirements', 'provisions', 'config', 'metamodel',
+                                     'description', 'requirements', 'provisions', 'metamodel',
                                      'toolbars', 'patch_module', 'plugin_info'))
 PluginInfo = namedtuple('PluginInfo', ('path', 'starter'))
 
@@ -33,7 +32,6 @@ class AddOnInfoLoader:
         description = None
         requirements = set()
         provisions = set()
-        config = None
         metamodel = None
         patch_module = None
         plugin_info = None
@@ -62,8 +60,6 @@ class AddOnInfoLoader:
                 requirements = self.__load_dependencies(child)
             elif child.tag == "{{{0}}}Provides".format(ADDON_NAMESPACE):
                 provisions = self.__load_dependencies(child)
-            elif child.tag == "{{{0}}}Config".format(ADDON_NAMESPACE):
-                config = UflStructureLoader(child).load()
             elif child.tag == "{{{0}}}ToolBar".format(ADDON_NAMESPACE):
                 toolbars.append(child.attrib["path"])
             elif child.tag == "{{{0}}}Metamodel".format(ADDON_NAMESPACE):
@@ -77,7 +73,7 @@ class AddOnInfoLoader:
                 raise Exception
         
         return AddOnInfo(identifier, name, version, author, homepage, license, icon, description, requirements,
-                         provisions, config, metamodel, toolbars, patch_module, plugin_info)
+                         provisions, metamodel, toolbars, patch_module, plugin_info)
     
     def __format_text(self, text):
         current_text = []

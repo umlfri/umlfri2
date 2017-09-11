@@ -46,11 +46,11 @@ class DiagramType:
     def get_background_color(self, diagram):
         context = Context()\
             .extend(diagram.data, 'self')\
-            .extend(self.__metamodel().addon.config, 'cfg')
+            .extend(self.__metamodel().config, 'cfg')
         return self.__background_color(context)
     
     def compile(self):
-        variables = {'self': self.__ufl_type, 'cfg': self.__metamodel().addon.config_structure}
+        variables = {'self': self.__ufl_type, 'cfg': self.__metamodel().config_structure}
         
         self.__display_name.compile(variables)
         self.__background_color.compile(variables, Color)
@@ -58,5 +58,5 @@ class DiagramType:
     def get_display_name(self, diagram):
         context = Context()\
             .extend(diagram.data, 'self')\
-            .extend(self.__metamodel().addon.config, 'cfg')
+            .extend(self.__metamodel().config, 'cfg')
         return self.__display_name.get_text(context)

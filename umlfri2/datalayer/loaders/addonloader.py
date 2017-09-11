@@ -8,7 +8,7 @@ from .metamodelloader import MetamodelLoader
 from umlfri2.types.image import Image
 from .addoninfoloader import AddOnInfoLoader
 from umlfri2.application.addon import AddOn
-from ..constants import ADDON_NAMESPACE, ADDON_ADDON_FILE, ADDON_DISABLE_FILE
+from ..constants import ADDON_ADDON_FILE, ADDON_DISABLE_FILE
 
 
 class AddOnLoader:
@@ -67,7 +67,7 @@ class AddOnLoader:
             plugin = Plugin(self.__storage.path, info.plugin_info.starter, info.plugin_info.path)
         
         ret = AddOn(self.__application, info.identifier, info.name, info.version, info.author, info.homepage,
-                    info.license, icon, info.description, info.requirements, info.provisions, info.config,
+                    info.license, icon, info.description, info.requirements, info.provisions,
                     metamodel, gui_injection, patch, plugin, self.__system_addon)
         
         ret.compile()
