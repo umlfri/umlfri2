@@ -1,5 +1,6 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QTabWidget, QStyle
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtWidgets import QTabWidget, QStyle, QShortcut
 
 from umlfri2.application import Application
 from umlfri2.application.events.model import ObjectDataChangedEvent
@@ -33,6 +34,8 @@ class Tabs(QTabWidget):
         Application().event_dispatcher.subscribe(ChangedCurrentTabEvent, self.__change_tab)
         Application().event_dispatcher.subscribe(ClosedTabEvent, self.__close_tab)
         Application().event_dispatcher.subscribe(ObjectDataChangedEvent, self.__object_changed)
+        
+        QShortcut(QKeySequence(QKeySequence.Close), self).activated.connect(self.__close_tab_shortcut)
         
         self.__reload_texts()
         self.__handle_last_tab()
@@ -83,7 +86,11 @@ class Tabs(QTabWidget):
 
         menu = TabContextMenu(tab_bar, index, widget)
         menu.exec(tab_bar.mapToGlobal(point))
-
+    
+    def __close_tab_shortcut(self):
+        index = self.currentIndex()
+        self.__tab_close_requested(index)
+    
     def __open_tab(self, event):
         canvas = ScrolledCanvasWidget(self.__main_window, event.tab.drawing_area)
         self.addTab(canvas, image_loader.load_icon(event.tab.icon), event.tab.name)
