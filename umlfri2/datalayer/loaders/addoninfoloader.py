@@ -10,7 +10,7 @@ from umlfri2.types.version import Version
 
 AddOnInfo = namedtuple('AddOnInfo', ('identifier', 'name', 'version', 'author', 'homepage', 'license', 'icon',
                                      'description', 'requirements', 'provisions', 'metamodel',
-                                     'toolbars', 'patch_module', 'plugin_info'))
+                                     'injections', 'patch_module', 'plugin_info'))
 PluginInfo = namedtuple('PluginInfo', ('path', 'starter'))
 
 
@@ -35,7 +35,7 @@ class AddOnInfoLoader:
         metamodel = None
         patch_module = None
         plugin_info = None
-        toolbars = []
+        injections = None
         
         for child in self.__xmlroot:
             if child.tag == "{{{0}}}AddOnInfo".format(ADDON_NAMESPACE):
@@ -60,8 +60,8 @@ class AddOnInfoLoader:
                 requirements = self.__load_dependencies(child)
             elif child.tag == "{{{0}}}Provides".format(ADDON_NAMESPACE):
                 provisions = self.__load_dependencies(child)
-            elif child.tag == "{{{0}}}ToolBar".format(ADDON_NAMESPACE):
-                toolbars.append(child.attrib["path"])
+            elif child.tag == "{{{0}}}Injections".format(ADDON_NAMESPACE):
+                injections = child.attrib["path"]
             elif child.tag == "{{{0}}}Metamodel".format(ADDON_NAMESPACE):
                 metamodel = child.attrib["path"]
             elif child.tag == "{{{0}}}Patch".format(ADDON_NAMESPACE):
@@ -73,7 +73,7 @@ class AddOnInfoLoader:
                 raise Exception
         
         return AddOnInfo(identifier, name, version, author, homepage, license, icon, description, requirements,
-                         provisions, metamodel, toolbars, patch_module, plugin_info)
+                         provisions, metamodel, injections, patch_module, plugin_info)
     
     def __format_text(self, text):
         current_text = []

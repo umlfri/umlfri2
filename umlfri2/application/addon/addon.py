@@ -24,7 +24,8 @@ class AddOn:
         if self.__metamodel is not None:
             self.__metamodel._set_addon(self)
         self.__gui_injection = gui_injection
-        self.__gui_injection._set_addon(self)
+        if self.__gui_injection is not None:
+            self.__gui_injection._set_addon(self)
         self.__patch_plugin = patch_plugin
         if self.__patch_plugin is not None:
             self.__patch_plugin._set_addon(self)
@@ -124,7 +125,8 @@ class AddOn:
             self.__application.event_dispatcher.dispatch(AddonStateChangedEvent(self, self.__state))
     
     def _plugin_started(self):
-        self.__gui_injection.reset();
+        if self.__gui_injection is not None:
+            self.__gui_injection.reset()
         self.__state = AddOnState.started
         self.__application.event_dispatcher.dispatch(AddonStateChangedEvent(self, self.__state))
     

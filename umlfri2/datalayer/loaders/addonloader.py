@@ -8,7 +8,7 @@ from .metamodelloader import MetamodelLoader
 from umlfri2.types.image import Image
 from .addoninfoloader import AddOnInfoLoader
 from umlfri2.application.addon import AddOn
-from ..constants import ADDON_ADDON_FILE, ADDON_DISABLE_FILE
+from ..constants import ADDON_ADDON_FILE, ADDON_DISABLE_FILE, ADDON_NAMESPACE
 
 
 class AddOnLoader:
@@ -38,19 +38,10 @@ class AddOnLoader:
                 raise Exception("Unknown icon {0}".format(info.icon))
             icon = Image(self.__storage, info.icon)
         
-        toolbars = []
-        actions = {}
-        for toolbar_path in info.toolbars:
-            toolbars.append(
-                ToolBarLoader(
-                    self.__application,
-                    self.__storage,
-                    lxml.etree.parse(self.__storage.open(toolbar_path)).getroot(),
-                    actions
-                ).load()
-            )
-        
-        gui_injection = GuiInjection(actions, toolbars)
+        if info.injections is None:
+            gui_injection = None
+        else:
+            gui_injection = self.__load_injections(self.__storage.create_substorage(info.injections))
         
         if info.patch_module is None:
             patch = None
@@ -73,3 +64,22 @@ class AddOnLoader:
         ret.compile()
         
         return ret
+    
+    def __load_injections(self, storage):
+        parser = lxml.etree.XMLParser(remove_comments=True)
+        
+        toolbars = []
+        actions = {}
+        for file in storage.get_all_files():
+            xml = lxml.etree.parse(storage.open(file), parser=parser).getroot()
+            if xml.tag == "{{{0}}}ToolBar".format(ADDON_NAMESPACE):
+                toolbars.append(
+                    ToolBarLoader(
+                        self.__application,
+                        self.__storage,
+                        xml,
+                        actions
+                    ).load()
+                )
+
+        return GuiInjection(actions, toolbars)

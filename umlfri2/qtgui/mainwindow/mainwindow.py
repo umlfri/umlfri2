@@ -312,6 +312,9 @@ class UmlFriMainWindow(QMainWindow):
         if addon.state != AddOnState.started:
             return
         
+        if addon.gui_injection is None:
+            return
+        
         for toolbar in addon.gui_injection.toolbars:
             qt_toolbar = AddOnToolBar(toolbar)
             qt_toolbar.setObjectName(toolbar.label)

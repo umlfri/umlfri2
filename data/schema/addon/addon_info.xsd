@@ -75,7 +75,7 @@
                 
                 <xs:choice>
                     <xs:sequence>
-                        <xs:element name="ToolBar" type="toolbar_type" minOccurs="0" maxOccurs="unbounded"/>
+                        <xs:element name="Injections" type="injections_type" minOccurs="0"/>
                         <xs:element name="Plugin" type="plugin_type"/>
                         <xs:element name="Patch" type="patch_type" minOccurs="0"/>
                         <xs:element name="Metamodel" type="metamodel_type" minOccurs="0"/>
@@ -92,7 +92,7 @@
         </xs:complexType>
     </xs:element>
     
-    <xs:complexType name="toolbar_type">
+    <xs:complexType name="injections_type">
         <xs:attribute name="path" type="xs:string" use="required"/>
     </xs:complexType>
     

@@ -21,6 +21,9 @@ class IApplication(Interface):
     def get_actions(self):
         from .action import IAction
         
+        if self._executor.addon.gui_injection is None:
+            return
+        
         for action in self._executor.addon.gui_injection.actions:
             yield IAction(self._executor, action)
 
