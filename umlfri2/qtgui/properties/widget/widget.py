@@ -111,7 +111,7 @@ class PropertiesWidget(QTabWidget):
     
     def __reload_texts(self):
         if self.__dialog is not None:
-            self.__dialog.translate(self.__item.type.metamodel.get_translation(Application().language))
+            self.__dialog.translate(self.__item.type.metamodel.get_translation(Application().language.current_language))
         for no in range(self.count()):
             self.setTabText(no, self.widget(no).label)
             self.widget(no).reload_texts()

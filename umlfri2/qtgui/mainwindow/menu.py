@@ -287,7 +287,7 @@ class MainWindowMenu(QMenuBar):
         window.showFullScreen()
     
     def __tools_languages_menu_populate(self):
-        selected_language = Application().selected_language
+        selected_language = Application().config.language
         
         self.__tools_languages_menu.clear()
         system_lang = self.__tools_languages_menu.addAction(_("System language"))
@@ -304,7 +304,7 @@ class MainWindowMenu(QMenuBar):
             language.setChecked(selected_language == lang_id)
     
     def __tools_languages_menu_activate(self, lang_id, checked=False):
-        Application().change_language(lang_id)
+        Application().language.change_language(lang_id)
     
     def __view_zoom_in_action(self, checked=False):
         Application().tabs.current_tab.drawing_area.zoom_in()

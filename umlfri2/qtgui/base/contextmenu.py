@@ -27,7 +27,7 @@ class ContextMenu(QMenu):
         return ret
     
     def _add_type_menu_item(self, type, action=None, sub_menu=None):
-        translation = type.metamodel.get_translation(Application().language)
+        translation = type.metamodel.get_translation(Application().language.current_language)
         
         ret = QAction(translation.translate(type), sub_menu or self)
         

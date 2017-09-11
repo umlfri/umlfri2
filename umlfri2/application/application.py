@@ -1,13 +1,12 @@
-import ctypes
-import gettext
-import locale
 import os
 import os.path
 
+from umlfri2.application.config import ApplicationConfig
+from .language import LanguageManager
 from .about import AboutUmlFri
 from .addon import AddOnManager
 from .commands.solution import NewProjectCommand
-from .events.application import LanguageChangedEvent, ItemSelectedEvent, ClipboardSnippetChangedEvent
+from .events.application import ItemSelectedEvent, ClipboardSnippetChangedEvent
 from .events.solution import OpenSolutionEvent, SaveSolutionEvent, CloseSolutionEvent
 from .startupoptions import StartupOptions
 from .tablist import TabList
@@ -15,7 +14,6 @@ from .commandprocessor import CommandProcessor
 from .dispatcher import EventDispatcher
 from .recentfiles import RecentFiles
 
-from umlfri2.constants.paths import LOCALE_DIR
 from umlfri2.datalayer import Storage
 from umlfri2.datalayer.loaders import ProjectLoader, WholeSolutionLoader
 from umlfri2.datalayer.savers import WholeSolutionSaver
@@ -48,46 +46,15 @@ class Application(metaclass=MetaApplication):
         self.__solution = None
         self.__ruler = None
         self.__solution_storage_ref = None
-        self.__language = None
         self.__selected_item = None
         self.__clipboard = None
         self.__thread_manager = None
         self.__startup_options = None
-
-        self.__default_language = self.__find_out_language().split('.', 1)[0]
-        self.change_language(None)
+        
+        self.__config = ApplicationConfig()
+        self.__language = LanguageManager(self)
 
         self.__about = AboutUmlFri(self)
-    
-    def __find_out_language(self):
-        for e in 'LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG':
-            if e in os.environ:
-                return os.environ[e]
-        
-        if os.name == 'nt':
-            try:
-                langid = ctypes.windll.kernel32.GetUserDefaultUILanguage()
-                return locale.windows_locale[langid]
-            except:
-                pass
-        
-        try:
-            lang, enc = locale.getlocale()
-        except:
-            lang = None
-        
-        if lang is not None:
-            return lang
-        
-        try:
-            lang, enc = locale.getdefaultlocale()
-        except:
-            lang = None
-        
-        if lang is not None:
-            return lang
-        
-        return 'POSIX'
     
     @property
     def about(self):
@@ -222,11 +189,13 @@ class Application(metaclass=MetaApplication):
         
         self.__recent_files.add_file(filename)
     
-    def change_language(self, language):
-        self.__language = language
-        # install new language handler from gettext
-        gettext.translation('umlfri2', localedir=LOCALE_DIR, languages=[self.language], fallback=True).install()
-        self.__event_dispatcher.dispatch(LanguageChangedEvent(language))
+    @property
+    def language(self):
+        return self.__language
+    
+    @property
+    def config(self):
+        return self.__config
     
     @property
     def selected_item(self):
@@ -236,16 +205,6 @@ class Application(metaclass=MetaApplication):
         if self.__selected_item is not element:
             self.__selected_item = element
             self.__event_dispatcher.dispatch(ItemSelectedEvent(element))
-    
-    @property
-    def selected_language(self):
-        return self.__language
-    
-    @property
-    def language(self):
-        if self.__language is None:
-            return self.__default_language
-        return self.__language
     
     @property
     def clipboard_empty(self):

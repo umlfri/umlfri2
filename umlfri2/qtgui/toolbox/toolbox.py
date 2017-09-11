@@ -62,7 +62,7 @@ class ToolBox(QWidget):
         
         diagram_type = drawing_area.diagram.type
         
-        translation = diagram_type.metamodel.get_translation(Application().language)
+        translation = diagram_type.metamodel.get_translation(Application().language.current_language)
         
         has_elements = False
         for element_type in diagram_type.element_types:
