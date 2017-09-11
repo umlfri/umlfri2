@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project id="4d78dc5e-9208-11e5-89a7-88ae1da9fec3" xmlns="http://umlfri.org/v2/model.xsd" saveversion="2.0">
+    <Info>
+        <Name name="UML with class diagram"/>
+        <Metamodel id="urn:umlfri.org:metamodel:infjavauml" version="0.1"/>
+    </Info>
+    <Element id="82878a5a-8f90-11e5-b00e-88ae1da9fec3" type="package">
+        <Diagram id="b67702d1-5f4c-4e82-a6c3-c22a9afd446b" type="class_diagram" />
+    </Element>
+</Project>
