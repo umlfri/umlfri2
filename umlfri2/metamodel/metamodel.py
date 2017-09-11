@@ -1,14 +1,17 @@
 from collections import OrderedDict
 from weakref import ref
 
+from .translation import TranslationList
+
 
 class Metamodel:
-    def __init__(self, diagrams, elements, connections, templates):
+    def __init__(self, diagrams, elements, connections, templates, translations):
         self.__diagrams = OrderedDict(item for item in sorted(diagrams.items()))
         self.__elements = OrderedDict(item for item in sorted(elements.items()))
         self.__connections = OrderedDict(item for item in sorted(connections.items()))
         self.__templates = list(templates)
         self.__templates.sort(key=lambda item: item.name)
+        self.__translations = TranslationList(translations)
         
         self.__addon = None
         self.__config_structure = None
@@ -56,6 +59,9 @@ class Metamodel:
     
     def get_connection_type(self, name):
         return self.__connections[name]
+
+    def get_translation(self, language):
+        return self.__translations.get_translation(language)
     
     def compile(self):
         for diagram in self.__diagrams.values():

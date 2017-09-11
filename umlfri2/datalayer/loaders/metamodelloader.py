@@ -6,6 +6,7 @@ from .elementtypeloader import ElementTypeLoader
 from .diagramtypeloader import DiagramTypeLoader
 from .connectiontypeloader import ConnectionTypeLoader
 from .definitionsloader import DefinitionsLoader
+from .translationloader import TranslationLoader
 from umlfri2.metamodel import Metamodel
 
 
@@ -23,6 +24,7 @@ class MetamodelLoader:
         diagramXMLs = []
         templateXMLs = []
         definitionXMLs = None # TODO: multiple definition files
+        translationXMLs = []
         for file in self.__storage.get_all_files():
             xml = lxml.etree.parse(self.__storage.open(file), parser=parser).getroot()
             if xml.tag == "{{{0}}}ElementType".format(ADDON_NAMESPACE):
@@ -33,6 +35,8 @@ class MetamodelLoader:
                 diagramXMLs.append((file, xml))
             elif xml.tag == "{{{0}}}Definitions".format(ADDON_NAMESPACE):
                 definitionXMLs = (file, xml)
+            elif xml.tag == "{{{0}}}Translation".format(ADDON_NAMESPACE):
+                translationXMLs.append((file, xml))
             elif xml.tag == "{{{0}}}Project".format(MODEL_NAMESPACE):
                 templateXMLs.append((file, xml))
         
@@ -60,4 +64,9 @@ class MetamodelLoader:
         for file, template in templateXMLs:
             templates.append(TemplateLoader(self.__storage, template, file, self.__addon_info.identifier).load())
         
-        return Metamodel(diagrams, elements, connections, templates)
+        translations = []
+        for file, translation in translationXMLs:
+            loaded = TranslationLoader(translation).load()
+            translations.append(loaded)
+        
+        return Metamodel(diagrams, elements, connections, templates, translations)

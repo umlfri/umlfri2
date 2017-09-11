@@ -24,7 +24,7 @@ class CanvasElementMenu(ContextMenu):
         self.__drawing_area = drawing_area
         self.__diagram = drawing_area.diagram
         
-        translation = self.__diagram.type.metamodel.addon.get_translation(Application().language)
+        translation = self.__diagram.type.metamodel.get_translation(Application().language)
         
         something_above = False
         something_below = False

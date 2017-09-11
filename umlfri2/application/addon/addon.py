@@ -3,12 +3,11 @@ from .state import AddOnState
 from .stopper import AddOnStopper
 from umlfri2.application.events.addon import AddonStateChangedEvent
 from umlfri2.ufl.types import UflObjectType
-from .translation import POSIX_TRANSLATION
 
 
 class AddOn:
     def __init__(self, application, identifier, name, version, author, homepage, license, icon, description,
-                 requirements, provisions, config, translations, metamodel, gui_injection, patch_plugin, plugin,
+                 requirements, provisions, config, metamodel, gui_injection, patch_plugin, plugin,
                  system_addon):
         self.__application = application
         self.__identifier = identifier
@@ -29,7 +28,6 @@ class AddOn:
             self.__has_config = True
         self.__config_structure.set_parent(None)
         self.__config = self.__config_structure.build_default(None)
-        self.__translations = translations
         self.__metamodel = metamodel
         if self.__metamodel is not None:
             self.__metamodel._set_addon(self)
@@ -111,31 +109,6 @@ class AddOn:
     @property
     def application(self):
         return self.__application
-    
-    def get_translation(self, language):
-        ret = self.__get_translation(language)
-        if ret is not None:
-            return ret
-        
-        if '_' in language:
-            language, variation = language.split('_', 2)
-        
-            ret = self.__get_translation(language)
-            if ret is not None:
-                return ret
-        
-        ret = self.__get_translation('en')
-        if ret is not None:
-            return ret
-        
-        return POSIX_TRANSLATION
-
-    def __get_translation(self, language):
-        for translation in self.__translations:
-            if translation.language == language:
-                return translation
-
-        return None
 
     def compile(self):
         if self.__metamodel is not None:

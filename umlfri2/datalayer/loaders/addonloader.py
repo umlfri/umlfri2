@@ -4,7 +4,6 @@ from umlfri2.application.addon.guiinjection import GuiInjection
 from .toolbarloader import ToolBarLoader
 from umlfri2.datalayer.storages import DirectoryStorage
 from umlfri2.plugin import PatchPlugin, Plugin
-from .translationloader import TranslationLoader
 from .metamodelloader import MetamodelLoader
 from umlfri2.types.image import Image
 from .addoninfoloader import AddOnInfoLoader
@@ -31,11 +30,6 @@ class AddOnLoader:
         if info.metamodel:
             with self.__storage.create_substorage(info.metamodel) as metamodel_storage:
                 metamodel = MetamodelLoader(metamodel_storage, self.__storage, info).load()
-        
-        translations = ()
-        if info.translations:
-            with self.__storage.create_substorage(info.translations) as translations_storage:
-                translations = tuple(self.__load_translations(translations_storage))
         
         if info.icon is None:
             icon = None
@@ -73,18 +67,9 @@ class AddOnLoader:
             plugin = Plugin(self.__storage.path, info.plugin_info.starter, info.plugin_info.path)
         
         ret = AddOn(self.__application, info.identifier, info.name, info.version, info.author, info.homepage,
-                    info.license, icon, info.description, info.requirements, info.provisions, info.config, translations,
+                    info.license, icon, info.description, info.requirements, info.provisions, info.config,
                     metamodel, gui_injection, patch, plugin, self.__system_addon)
         
         ret.compile()
         
         return ret
-    
-    def __load_translations(self, storage):
-        for file in storage.get_all_files():
-            xml = lxml.etree.parse(storage.open(file)).getroot()
-            
-            if xml.tag == "{{{0}}}Translation".format(ADDON_NAMESPACE):
-                yield TranslationLoader(xml).load()
-            else:
-                raise Exception

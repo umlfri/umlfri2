@@ -41,6 +41,5 @@
         <Attribute id="background" type="color" default="white" />
     </Config>
 
-    <Translations path="translations"/>
     <Metamodel path="metamodel"/>
 </AddOn>

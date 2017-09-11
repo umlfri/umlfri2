@@ -75,12 +75,6 @@
                 
                 <xs:element name="Config" type="ufl_object" minOccurs="0"/>
                 
-                <xs:element name="Translations" minOccurs="0">
-                    <xs:complexType>
-                        <xs:attribute name="path" type="xs:string" use="required"/>
-                    </xs:complexType>
-                </xs:element>
-                
                 <xs:choice>
                     <xs:sequence>
                         <xs:element name="ToolBar" type="toolbar_type" minOccurs="0" maxOccurs="unbounded"/>
