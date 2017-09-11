@@ -83,7 +83,7 @@ class PluginExecutor:
             self.send_stop()
             return True
         elif target == 'system' and selector == 'started':
-            self.__thread_manager.execute_in_main_thread(self.__addon._plugin_started)
+            self.__addon._plugin_started()
             return True
         else:
             return False

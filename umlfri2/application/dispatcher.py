@@ -16,7 +16,8 @@ class methodref(ref):
 
 
 class EventDispatcher:
-    def __init__(self):
+    def __init__(self, application):
+        self.__application = application
         self.__events = {}
     
     def subscribe(self, event_type, function, auto_unsubscribe=True):
@@ -46,6 +47,12 @@ class EventDispatcher:
             del self.__events[event_type]
     
     def dispatch(self, event):
+        if self.__application.thread_manager is None:
+            self.__dispatch_internal(event)
+        else:
+            self.__application.thread_manager.execute_in_main_thread(self.__dispatch_internal, event)
+    
+    def __dispatch_internal(self, event):
         self.__dispatch_recursive(event)
         for function in self.__events.get(None, ()):
             self.__call_event_function(function, event)
@@ -66,6 +73,12 @@ class EventDispatcher:
             function(event)
     
     def dispatch_all(self, events):
+        if self.__application.thread_manager is None:
+            self.__dispatch_all_internal(events)
+        else:
+            self.__application.thread_manager.execute_in_main_thread(self.__dispatch_all_internal, events)
+    
+    def __dispatch_all_internal(self, events):
         for event in events:
             self.dispatch(event)
     

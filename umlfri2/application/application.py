@@ -35,7 +35,7 @@ class MetaApplication(type):
 
 class Application(metaclass=MetaApplication):
     def __init__(self):
-        self.__event_dispatcher = EventDispatcher()
+        self.__event_dispatcher = EventDispatcher(self)
         self.__commands = CommandProcessor(self)
         
         self.__addons = AddOnManager(self)
@@ -48,14 +48,15 @@ class Application(metaclass=MetaApplication):
         self.__solution = None
         self.__ruler = None
         self.__solution_storage_ref = None
-        self.__default_language = self.__find_out_language().split('.', 1)[0]
         self.__language = None
-        self.change_language(None)
         self.__selected_item = None
         self.__clipboard = None
         self.__thread_manager = None
         self.__startup_options = None
-        
+
+        self.__default_language = self.__find_out_language().split('.', 1)[0]
+        self.change_language(None)
+
         self.__about = AboutUmlFri(self)
     
     def __find_out_language(self):

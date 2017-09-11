@@ -16,10 +16,14 @@ class QTThreadManager(QObject, ThreadManager):
     
     def __init__(self):
         super().__init__()
+        self.__thread_id = QThread.currentThreadId()
         self.__execute.connect(lambda function, args: function(*args))
     
     def execute_in_main_thread(self, function, *args):
-        self.__execute.emit(function, args)
+        if QThread.currentThreadId() == self.__thread_id:
+            function(*args)
+        else:
+            self.__execute.emit(function, args)
 
     def start_thread(self, function):
         thread = self.__Thread(function)
