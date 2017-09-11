@@ -5,5 +5,5 @@ class ThreadManager:
         """
         raise NotImplementedError
     
-    def execute_in_main_thread(self, function):
+    def execute_in_main_thread(self, function, *args):
         raise NotImplementedError
