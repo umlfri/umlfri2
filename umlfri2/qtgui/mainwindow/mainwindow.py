@@ -2,7 +2,7 @@ import os.path
 
 from PyQt5.QtCore import Qt, QSettings
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMainWindow, QTabWidget, QDockWidget, QMessageBox, QFileDialog, QTabBar, QStyle
+from PyQt5.QtWidgets import QMainWindow, QTabWidget, QDockWidget, QMessageBox, QFileDialog, QTabBar, QStyle, QMenu
 
 from umlfri2.application import Application
 from umlfri2.application.addon import AddOnState
@@ -13,6 +13,7 @@ from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionE
 from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent
 from umlfri2.constants.paths import GRAPHICS, CONFIG
 from umlfri2.model import Diagram
+from .tabcontextmenu import TabContextMenu
 from ..base.clipboard import QtClipboardAdatper
 from ..newproject import NewProjectDialog
 from ..splashscreen.exitscreen import ExitScreen
@@ -41,6 +42,9 @@ class UmlFriMainWindow(QMainWindow):
         self.__tabs.setDocumentMode(True)
         self.__tabs.currentChanged.connect(self.__tab_changed)
         self.__tabs.tabCloseRequested.connect(self.__tab_close_requested)
+
+        self.__tabs.tabBar().setContextMenuPolicy(Qt.CustomContextMenu)
+        self.__tabs.tabBar().customContextMenuRequested.connect(self.__tab_bar_menu_requested)
         
         self.__toolbox_dock = QDockWidget()
         self.__toolbox_dock.setObjectName("tools")
@@ -134,6 +138,18 @@ class UmlFriMainWindow(QMainWindow):
         elif isinstance(widget, StartPage):
             self.__tabs.removeTab(self.__tabs.indexOf(widget))
             self.__handle_last_tab()
+    
+    def __tab_bar_menu_requested(self, point):
+        tab_bar = self.__tabs.tabBar()
+        index = tab_bar.tabAt(point)
+        
+        if index < 0:
+            return
+        
+        widget = self.__tabs.widget(index)
+        
+        menu = TabContextMenu(tab_bar, index, widget)
+        menu.exec(tab_bar.mapToGlobal(point))
     
     def __open_tab(self, event):
         canvas = ScrolledCanvasWidget(self, event.tab.drawing_area)
