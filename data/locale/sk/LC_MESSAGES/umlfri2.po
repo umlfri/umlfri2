@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-08 09:10+0200\n"
-"PO-Revision-Date: 2017-06-08 09:10+0200\n"
+"POT-Creation-Date: 2017-09-11 15:36+0200\n"
+"PO-Revision-Date: 2017-09-11 15:36+0200\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -130,6 +130,12 @@ msgstr "Skontroluj aktualizácie"
 
 msgid "Close"
 msgstr "Zatvoriť"
+
+msgid "Close All Tabs"
+msgstr "Zatvoriť všetky taby"
+
+msgid "Close Tab"
+msgstr "Zatvoriť tab"
 
 msgid "Close without saving"
 msgstr "Zatvoriť bez uloženia"
@@ -258,9 +264,6 @@ msgstr "Vložiť &ako kópiu"
 
 msgid "Paste Duplicate"
 msgstr "Vložiť ako kópiu"
-
-msgid "Preferences..."
-msgstr "Nastavenia..."
 
 msgid "Project"
 msgstr "Projekt"
@@ -411,3 +414,6 @@ msgstr "{0} k '{1}'"
 #, python-brace-format
 msgid "{0} version"
 msgstr "Verzia {0}"
+
+#~ msgid "Preferences..."
+#~ msgstr "Nastavenia..."

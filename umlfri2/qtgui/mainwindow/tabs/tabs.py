@@ -3,6 +3,7 @@ from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QTabWidget, QStyle, QShortcut
 
 from umlfri2.application import Application
+from umlfri2.application.events.application import LanguageChangedEvent
 from umlfri2.application.events.model import ObjectDataChangedEvent
 from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent
 from umlfri2.model import Diagram
@@ -34,6 +35,8 @@ class Tabs(QTabWidget):
         Application().event_dispatcher.subscribe(ChangedCurrentTabEvent, self.__change_tab)
         Application().event_dispatcher.subscribe(ClosedTabEvent, self.__close_tab)
         Application().event_dispatcher.subscribe(ObjectDataChangedEvent, self.__object_changed)
+        
+        Application().event_dispatcher.subscribe(LanguageChangedEvent, self.__language_changed)
         
         QShortcut(QKeySequence(QKeySequence.Close), self).activated.connect(self.__close_tab_shortcut)
         
