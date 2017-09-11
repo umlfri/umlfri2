@@ -2,50 +2,34 @@ import os.path
 
 from PyQt5.QtCore import Qt, QSettings
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMainWindow, QTabWidget, QDockWidget, QMessageBox, QFileDialog, QTabBar, QStyle, QMenu
+from PyQt5.QtWidgets import QMainWindow, QDockWidget, QMessageBox, QFileDialog
 
 from umlfri2.application import Application
 from umlfri2.application.addon import AddOnState
 from umlfri2.application.events.addon import AddonStateChangedEvent
 from umlfri2.application.events.application import LanguageChangedEvent, ChangeStatusChangedEvent
-from umlfri2.application.events.model import ObjectDataChangedEvent
 from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent, CloseSolutionEvent
-from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent
 from umlfri2.constants.paths import GRAPHICS, CONFIG
-from umlfri2.model import Diagram
-from .tabcontextmenu import TabContextMenu
 from ..base.clipboard import QtClipboardAdatper
 from ..newproject import NewProjectDialog
 from ..splashscreen.exitscreen import ExitScreen
-from ..startpage import StartPage
 from .addontoolbar import AddOnToolBar
 from .aligntoolbar import AlignToolBar
 from .menu import MainWindowMenu
 from .toolbar import MainToolBar
-from ..base import image_loader
-from ..canvas import ScrolledCanvasWidget, CanvasWidget
 from ..projecttree import ProjectTree
 from ..properties import PropertiesWidget
 from ..toolbox import MainToolBox
+from .tabs import Tabs
 
 
 class UmlFriMainWindow(QMainWindow):
     def __init__(self): 
         super().__init__()
         self.setWindowIcon(QIcon(os.path.join(GRAPHICS, "icon", "icon.ico")))
-        self.__tabs = QTabWidget()
-        self.__tabs.setTabsClosable(True)
+        self.__tabs = Tabs(self)
         self.setCentralWidget(self.__tabs)
-        
-        self.__tabs.setMovable(True)
-        self.__tabs.setFocusPolicy(Qt.NoFocus)
-        self.__tabs.setDocumentMode(True)
-        self.__tabs.currentChanged.connect(self.__tab_changed)
-        self.__tabs.tabCloseRequested.connect(self.__tab_close_requested)
 
-        self.__tabs.tabBar().setContextMenuPolicy(Qt.CustomContextMenu)
-        self.__tabs.tabBar().customContextMenuRequested.connect(self.__tab_bar_menu_requested)
-        
         self.__toolbox_dock = QDockWidget()
         self.__toolbox_dock.setObjectName("tools")
         self.addDockWidget(Qt.LeftDockWidgetArea, self.__toolbox_dock)
@@ -85,12 +69,6 @@ class UmlFriMainWindow(QMainWindow):
         
         self.__clipboard_adapter = QtClipboardAdatper()
         
-        self.__ignore_change_tab = False
-        
-        Application().event_dispatcher.subscribe(OpenTabEvent, self.__open_tab)
-        Application().event_dispatcher.subscribe(ChangedCurrentTabEvent, self.__change_tab)
-        Application().event_dispatcher.subscribe(ClosedTabEvent, self.__close_tab)
-        Application().event_dispatcher.subscribe(ObjectDataChangedEvent, self.__object_changed)
         Application().event_dispatcher.subscribe(CloseSolutionEvent, self.__solution_file_changed)
         Application().event_dispatcher.subscribe(OpenSolutionEvent, self.__solution_file_changed)
         Application().event_dispatcher.subscribe(SaveSolutionEvent, self.__solution_file_changed)
@@ -100,99 +78,7 @@ class UmlFriMainWindow(QMainWindow):
         
         self.__reload_texts()
         
-        self.__handle_last_tab()
-        
         self.__restore_window_state()
-    
-    def __handle_last_tab(self):
-        if self.__tabs.count() == 0:
-            self.__tabs.addTab(StartPage(self), self.__get_start_page_text())
-        
-        if self.__tabs.count() == 1 and isinstance(self.__tabs.widget(0), StartPage):
-            tab_close_enabled = False
-        else:
-            tab_close_enabled = True
-        
-        tabbar = self.__tabs.tabBar()
-        close_button_position = tabbar.style().styleHint(QStyle.SH_TabBar_CloseButtonPosition, None, tabbar)
-        
-        for no in range(self.__tabs.count()):
-            tabbar.tabButton(no, close_button_position).setEnabled(tab_close_enabled)
-    
-    def __tab_changed(self, index):
-        if self.__ignore_change_tab:
-            return
-        
-        if index >= 0:
-            widget = self.__tabs.widget(index)
-            
-            if isinstance(widget, (ScrolledCanvasWidget, CanvasWidget)):
-                Application().tabs.select_tab(widget.diagram)
-            else:
-                Application().tabs.select_tab(None)
-    
-    def __tab_close_requested(self, index):
-        widget = self.__tabs.widget(index)
-        if isinstance(widget, (ScrolledCanvasWidget, CanvasWidget)):
-            Application().tabs.close_tab(widget.diagram)
-        elif isinstance(widget, StartPage):
-            self.__tabs.removeTab(self.__tabs.indexOf(widget))
-            self.__handle_last_tab()
-    
-    def __tab_bar_menu_requested(self, point):
-        tab_bar = self.__tabs.tabBar()
-        index = tab_bar.tabAt(point)
-        
-        if index < 0:
-            return
-        
-        widget = self.__tabs.widget(index)
-        
-        menu = TabContextMenu(tab_bar, index, widget)
-        menu.exec(tab_bar.mapToGlobal(point))
-    
-    def __open_tab(self, event):
-        canvas = ScrolledCanvasWidget(self, event.tab.drawing_area)
-        self.__tabs.addTab(canvas, image_loader.load_icon(event.tab.icon), event.tab.name)
-        self.__handle_last_tab()
-    
-    def __change_tab(self, event):
-        if event.tab is None:
-            return
-        
-        for widget_id in range(self.__tabs.count()):
-            widget = self.__tabs.widget(widget_id)
-            
-            if isinstance(widget, (ScrolledCanvasWidget, CanvasWidget))\
-                    and widget.diagram is event.tab.drawing_area.diagram:
-                self.__tabs.setCurrentWidget(widget)
-                return
-    
-    def __close_tab(self, event):
-        for widget_id in range(self.__tabs.count()):
-            widget = self.__tabs.widget(widget_id)
-            
-            if isinstance(widget, (ScrolledCanvasWidget, CanvasWidget))\
-                    and widget.diagram is event.tab.drawing_area.diagram:
-                self.__ignore_change_tab = True
-                try:
-                    self.__tabs.removeTab(widget_id)
-                finally:
-                    self.__ignore_change_tab = False
-                break
-        self.__handle_last_tab()
-    
-    def __object_changed(self, event):
-        if not isinstance(event.object, Diagram):
-            return
-        
-        for widget_id in range(self.__tabs.count()):
-            widget = self.__tabs.widget(widget_id)
-            
-            if isinstance(widget, (ScrolledCanvasWidget, CanvasWidget))\
-                    and widget.diagram is event.object:
-                self.__tabs.setTabText(widget_id, widget.diagram.get_display_name())
-                return
     
     def __language_changed(self, event):
         self.__reload_texts()
@@ -362,13 +248,6 @@ class UmlFriMainWindow(QMainWindow):
     def __reload_texts(self):
         self.__reload_window_title()
         
-        for tabno in range(self.__tabs.count()):
-            if isinstance(self.__tabs.widget(tabno), StartPage):
-                self.__tabs.setTabText(tabno, self.__get_start_page_text())
-        
         self.__toolbox_dock.setWindowTitle(_("Tools"))
         self.__project_dock.setWindowTitle(_("Project"))
         self.__properties_dock.setWindowTitle(_("Properties"))
-    
-    def __get_start_page_text(self):
-        return _("Start Page")

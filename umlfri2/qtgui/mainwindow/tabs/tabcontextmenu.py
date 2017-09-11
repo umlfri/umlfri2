@@ -1,8 +1,8 @@
 from PyQt5.QtGui import QKeySequence
 
 from umlfri2.application import Application
-from ..startpage import StartPage
-from ..base.contextmenu import ContextMenu
+from .startpage import StartPage
+from ...base.contextmenu import ContextMenu
 
 
 class TabContextMenu(ContextMenu):
