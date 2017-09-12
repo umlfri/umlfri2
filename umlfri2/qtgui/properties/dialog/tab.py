@@ -52,7 +52,7 @@ class PropertyTab(QWidget):
                 for item in widget.possibilities:
                     qt_widget.addItem(item)
                 self.__qt_widgets[widget.id] = qt_widget
-                qt_widget.currentIndexChanged[str].connect(partial(self.__value_changed, widget))
+                qt_widget.editTextChanged.connect(partial(self.__value_changed, widget))
                 ret.addRow(widget.label, qt_widget)
             elif isinstance(widget, UflDialogFontWidget):
                 qt_widget = FontSelectionWidget()

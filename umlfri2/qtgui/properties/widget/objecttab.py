@@ -40,7 +40,7 @@ class ObjectTab(TableTab):
                 qt_widget.setEditable(True)
                 for item in widget.possibilities:
                     qt_widget.addItem(item)
-                qt_widget.currentIndexChanged[str].connect(partial(self.__value_changed, widget))
+                qt_widget.editTextChanged.connect(partial(self.__value_changed, widget))
                 qt_widget.lostFocus.connect(partial(self.__value_changed, widget))
             elif isinstance(widget, UflDialogFontWidget):
                 qt_widget = FontSelectionWidget(btn_class=partial(QSelectionChangingPushButton, self, no))
