@@ -1,7 +1,9 @@
 import os.path
 from configparser import ConfigParser
 
-from umlfri2.application.events.application import RecentFilesChangedEvent
+from .events.application import RecentFilesChangedEvent
+from .recentfile import RecentFile
+
 from umlfri2.constants.paths import CONFIG
 
 
@@ -41,17 +43,25 @@ class RecentFiles:
             cp.write(cf)
     
     def __iter__(self):
-        yield from self.__files
-    
-    def add_file(self, file):
-        if file in self.__files:
-            self.__files.remove(file)
+        for file in self.__files:
+            yield RecentFile(self.__application, self, file)
+
+    def _remove(self, file):
+        self.__files.remove(file.path)
         
-        self.__files.append(file)
+        self.__save()
+
+        self.__application.event_dispatcher.dispatch(RecentFilesChangedEvent(file))
+    
+    def add_file(self, file_path):
+        if file_path in self.__files:
+            self.__files.remove(file_path)
+        
+        self.__files.append(file_path)
         
         if len(self.__files) > 10:
             del self.__files[10:]
         
         self.__save()
         
-        self.__application.event_dispatcher.dispatch(RecentFilesChangedEvent(file))
+        self.__application.event_dispatcher.dispatch(RecentFilesChangedEvent(file_path))

@@ -175,6 +175,29 @@ class UmlFriMainWindow(QMainWindow):
         if file_name:
             self.open_solution_from_file(file_name)
 
+    def open_recent_file(self, recent_file):
+        if not recent_file.exists:
+            message_box = QMessageBox(self)
+            message_box.setWindowModality(Qt.WindowModal)
+            message_box.setIcon(QMessageBox.Question)
+            message_box.setWindowTitle(_("Missing file"))
+            message_box.setText(_("The requested file '{0}' missing.").format(recent_file.file_name))
+            message_box.setInformativeText(_("Do you want to remove it from list?"))
+            message_box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+            message_box.setDefaultButton(QMessageBox.Yes)
+            message_box.button(QMessageBox.Yes).setText(_("Yes"))
+            message_box.button(QMessageBox.No).setText(_("No"))
+            resp = message_box.exec_()
+            
+            if resp == QMessageBox.Yes:
+                recent_file.remove()
+                pass
+            
+            return
+
+        if self.__check_save(_("Open Project")):
+            recent_file.open()
+
     def open_solution_from_file(self, file_name):
         if self.__check_save(_("Open Project")):
             Application().open_solution(file_name)

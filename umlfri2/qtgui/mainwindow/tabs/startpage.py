@@ -86,5 +86,5 @@ class StartPage(QWidget):
         self.__recent_files_frame.clear()
         
         for file in reversed(list(Application().recent_files)[:5]):
-            no = self.__recent_files_frame.add_frame_action(partial(self.__main_window.open_solution_from_file, file))
-            self.__recent_files_frame.set_frame_action_label(no, os.path.basename(file), tooltip=file)
+            no = self.__recent_files_frame.add_frame_action(partial(self.__main_window.open_recent_file, file))
+            self.__recent_files_frame.set_frame_action_label(no, file.file_name, tooltip=file.path)
