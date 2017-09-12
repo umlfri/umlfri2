@@ -92,28 +92,27 @@ class ConnectionLabel:
                 self.__line_index += 1
             elif line2_length > 0:
                 proportions = line1_length / (line1_length + line2_length)
-                new_position = self.__line_position / proportions
-                
-                if new_position < 1:
-                    self.__line_position = new_position
+                if self.__line_position < proportions:
+                    self.__line_position = self.__line_position / proportions
                 else:
+                    self.__line_position = (self.__line_position - proportions) / (1 - proportions)
                     self.__line_index += 1
-                    self.__line_position = new_position - 1
                 self.__cache.invalidate()
     
     def _removing_point(self, line_index, line1_length, line2_length):
         if line_index + 1 < self.__line_index:
             self.__line_index -= 1
             self.__cache.invalidate()
-        elif line_index + 1 == self.__line_index:
-            proportions = line2_length / (line1_length + line2_length)
-            self.__line_position = self.__line_position * proportions + 0.5
-            self.__line_index -= 1
-            self.__cache.invalidate()
-        elif line_index == self.__line_index:
+        else:
             proportions = line1_length / (line1_length + line2_length)
-            self.__line_position = self.__line_position * proportions
-            self.__cache.invalidate()
+            
+            if line_index + 1 == self.__line_index:
+                self.__line_position = self.__line_position * (1 - proportions) + proportions
+                self.__line_index -= 1
+                self.__cache.invalidate()
+            elif line_index == self.__line_index:
+                self.__line_position = self.__line_position * proportions
+                self.__cache.invalidate()
     
     def get_bounds(self, ruler):
         self.__cache.ensure_valid(ruler=ruler)
