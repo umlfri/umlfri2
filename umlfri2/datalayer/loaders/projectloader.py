@@ -203,5 +203,9 @@ class ProjectLoader:
             if child.tag == "{{{0}}}Point".format(MODEL_NAMESPACE):
                 position = Point(int(child.attrib["x"]), int(child.attrib["y"]))
                 visual.add_point(self.__ruler, None, position)
+            elif child.tag == "{{{0}}}Label".format(MODEL_NAMESPACE):
+                label = visual.get_label(child.attrib["id"])
+                position = Point(int(child.attrib["x"]), int(child.attrib["y"]))
+                label.move(self.__ruler, position)
             else:
                 raise Exception

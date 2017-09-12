@@ -93,6 +93,16 @@ class ProjectSaver:
                 point_xml.attrib['x'] = str(point.x)
                 point_xml.attrib['y'] = str(point.y)
                 connection_xml.append(point_xml)
+
+            for label in connection.get_labels():
+                bounds = label.get_bounds(self.__ruler)
+                if bounds.width > 0 and bounds.height > 0:
+                    label_xml = lxml.etree.Element('{{{0}}}Label'.format(MODEL_NAMESPACE))
+                    label_xml.attrib['id'] = label.id
+                    label_xml.attrib['x'] = str(bounds.x1)
+                    label_xml.attrib['y'] = str(bounds.y1)
+                    connection_xml.append(label_xml)
+            
             xml.append(connection_xml)
         
         return xml
