@@ -154,7 +154,7 @@ print("Libraries and data")
 print("==================")
 print("Copying UML .FRI data")
 print("---------------------")
-shutil.copytree(os.path.join(UML_FRI_DIR, 'data'), os.path.join(OUT_DIR, 'data'), ignore=shutil.ignore_patterns("128x128", "256x256", "api", "*.svg"))
+shutil.copytree(os.path.join(UML_FRI_DIR, 'data'), os.path.join(OUT_DIR, 'data'), ignore=shutil.ignore_patterns("128x128", "256x256", "api", "*.svg", "icon", "tool_icons"))
 shutil.copy(os.path.join(UML_FRI_DIR, 'LICENSE.txt'), os.path.join(OUT_DIR, 'LICENSE.txt'))
 
 print("Appdirs lib")
@@ -181,7 +181,10 @@ import PyQt5
 shutil.copytree(os.path.dirname(PyQt5.__file__), os.path.join(OUT_DIR, 'dlls', 'PyQt5'), ignore=shutil.ignore_patterns("__pycache__", "qml", "resources", "translations", "uic",
     "Qt*Bluetooth.*", "Qt*CLucene.*", "Qt*DBus.*", "Qt*Designer.*", "Qt*Help.*", "Qt*Location.*", "Qt*Multimedia.*", "Qt*MultimediaWidgets.*", "Qt*Network.*", "Qt*Nfc.*",
     "Qt*Positioning.*", "Qt*Qml.*", "Qt*Quick.*", "Qt*QuickControls2.*", "Qt*QuickParticles.*", "Qt*QuickTemplates2.*", "Qt*QuickTest.*", "Qt*QuickWidgets.*", "Qt*Sensors.*",
-    "Qt*SerialPort.*", "Qt*Sql.*", "Qt*Test.*", "Qt*WebEngine.*", "Qt*WebEngineCore.*", "Qt*WebEngineWidgets.*", "Qt*WebChannel.*", "Qt*WebSockets.*"))
+    "Qt*SerialPort.*", "Qt*Sql.*", "Qt*Test.*", "Qt*WebEngine.*", "Qt*WebEngineCore.*", "Qt*WebEngineWidgets.*", "Qt*WebChannel.*", "Qt*WebSockets.*",
+    "concrt140.dll", "libeay32.dll", "libEGL.dll", "libGLESv2.dll", "QtWebEngineProcess.exe", "ssleay32.dll",
+    "audio", "bearer", "generic", "geoservices", "iconengines", "mediaservice", "qminimal.dll", "qoffscreen.dll", "playlistformats", "position", "sceneparsers", "sensorgestures",
+    "sensors", "sqldrivers"))
 
 print("Compiling dependencies")
 print("----------------------")
