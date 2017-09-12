@@ -164,3 +164,6 @@ class PropertyTab(QWidget):
     def _focus_first(self):
         if self.__qt_widgets:
             self.__qt_widgets[self.__tab.first_widget.id].setFocus()
+    
+    def refresh(self):
+        raise NotImplementedError

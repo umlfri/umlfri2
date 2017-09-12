@@ -37,9 +37,7 @@ class ListPropertyTab(PropertyTab):
         
         layout.addWidget(self.__list, stretch=1)
         self.setLayout(layout)
-        self.__update_list()
-        self._update_values()
-        self.__update_buttons()
+        self.refresh()
     
     def __update_list(self):
         self.__disable_selection_handling = True
@@ -104,23 +102,17 @@ class ListPropertyTab(PropertyTab):
         self._tab.save()
         if deselect:
             self._tab.change_current_index(None)
-        self.__update_list()
-        self._update_values()
-        self.__update_buttons()
+        self.refresh()
     
     def __discard(self, deselect=False):
         self._tab.discard()
         if deselect:
             self._tab.change_current_index(None)
-        self.__update_list()
-        self._update_values()
-        self.__update_buttons()
+        self.refresh()
     
     def __delete(self):
         self._tab.delete()
-        self.__update_list()
-        self._update_values()
-        self.__update_buttons()
+        self.refresh()
     
     def handle_needed_save(self):
         message_box = QMessageBox(self)
@@ -147,3 +139,8 @@ class ListPropertyTab(PropertyTab):
             self.__discard()
         
         return True
+    
+    def refresh(self):
+        self.__update_list()
+        self._update_values()
+        self.__update_buttons()

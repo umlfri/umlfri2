@@ -115,8 +115,11 @@ class UflDialog:
         return isinstance(self.__current_tab, UflDialogListTab) and self.__current_tab.should_save
     
     def switch_tab(self, index):
-        if isinstance(self.__current_tab, UflDialogListTab) and self.__current_tab.should_save:
-            raise Exception
+        if isinstance(self.__current_tab, UflDialogListTab):
+            if self.__current_tab.should_save:
+                raise Exception
+            
+            self.__current_tab.tab_deselected()
         
         self.__current_tab = self.__tabs[index]
     

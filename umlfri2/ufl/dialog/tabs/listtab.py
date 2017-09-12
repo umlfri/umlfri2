@@ -104,3 +104,7 @@ class UflDialogListTab(UflDialogTab):
 
         for column in self.__columns:
             column.translate(translation)
+    
+    def tab_deselected(self):
+        self.__current_index = None
+        self._set_current_object(None)

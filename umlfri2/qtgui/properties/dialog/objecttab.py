@@ -6,3 +6,6 @@ class ObjectPropertyTab(PropertyTab):
         super().__init__(window, tab)
         self.setLayout(self._create_layout())
         self._update_values()
+    
+    def refresh(self):
+        self._update_values()

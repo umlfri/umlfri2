@@ -71,6 +71,9 @@ class PropertiesDialog(QDialog):
         command = ApplyPatchCommand(self.__object, self.__dialog.make_patch())
         Application().commands.execute(command)
         self.__dialog.reset()
+        
+        for tab in self.__tabs:
+            tab.refresh()
     
     def __accept_clicked(self):
         if self.__dialog.should_save_tab:
@@ -87,6 +90,9 @@ class PropertiesDialog(QDialog):
                 self.__tab_widget.setCurrentIndex(self.__dialog.current_tab.tab_index)
                 return
         self.__dialog.switch_tab(tab_index)
+
+        for tab in self.__tabs:
+            tab.refresh()
     
     @staticmethod
     def open_for(main_window, object):
