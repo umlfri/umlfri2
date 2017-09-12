@@ -165,6 +165,7 @@ class Application(metaclass=MetaApplication):
         return self.__solution is not None
     
     def save_solution_as(self, filename):
+        filename = os.path.normpath(os.path.abspath(filename))
         with ZipStorage.new_storage(filename) as storage:
             WholeSolutionSaver(storage, self.__ruler).save(self.__solution)
             self.__solution_storage_ref = storage.remember_reference()
@@ -176,7 +177,7 @@ class Application(metaclass=MetaApplication):
         self.__recent_files.add_file(filename)
 
     def open_solution(self, filename):
-        filename = os.path.abspath(filename)
+        filename = os.path.normpath(os.path.abspath(filename))
         with Storage.read_storage(filename) as storage:
             self.__solution = WholeSolutionLoader(storage, self.__ruler, self.__addons).load()
             self.__solution_storage_ref = storage.remember_reference()
