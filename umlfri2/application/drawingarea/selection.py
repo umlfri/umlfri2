@@ -212,6 +212,13 @@ class Selection:
             return start + size - self.SELECTION_POINT_SIZE, start + size
     
     def get_action_at(self, position, shift_pressed):
+        if len(self.__selected) == 1 and self.is_connection_selected:
+            connection, = self.__selected
+            action = self.__get_connection_action_at(connection, position, shift_pressed)
+            
+            if isinstance(action, (MoveConnectionPointAction, AddConnectionPointAction, RemoveConnectionPointAction)):
+                return action
+        
         visual = self.__diagram.get_visual_at(self.__application.ruler, position)
         
         if visual not in self.__selected:
@@ -224,46 +231,55 @@ class Selection:
                 return MoveSelectionAction()
         
         if isinstance(visual, ElementVisual):
-            bounds = visual.get_bounds(self.__application.ruler)
-            for pos_x, pos_y in self.__get_selection_points_positions(visual):
-                if self.__get_selection_point(bounds, pos_x, pos_y).contains(position):
-                    if shift_pressed:
-                        return None
-                    else:
-                        return ResizeElementAction(visual, pos_x, pos_y)
-            if shift_pressed:
-                return None
-            else:
-                return MoveSelectionAction()
+            return self.__get_element_action_at(visual, position, shift_pressed)
         elif isinstance(visual, ConnectionVisual):
-            found = None
-            for idx, point in enumerate(visual.get_points(self.__application.ruler)):
-                if idx > 0: # don't return it for first point
-                    if (position - point).length < ConnectionVisual.MAXIMAL_CLICKABLE_DISTANCE:
-                        found = idx
-                    elif found is not None: # don't return it for last point
-                        if shift_pressed:
-                            return RemoveConnectionPointAction(visual, found)
-                        else:
-                            return MoveConnectionPointAction(visual, found)
-            
-            for label in visual.get_labels():
-                if label.get_bounds(self.__application.ruler).contains(position):
+            return self.__get_connection_action_at(visual, position, shift_pressed)
+        else:
+            return None
+
+    def __get_element_action_at(self, element, position, shift_pressed):
+        bounds = element.get_bounds(self.__application.ruler)
+        for pos_x, pos_y in self.__get_selection_points_positions(element):
+            if self.__get_selection_point(bounds, pos_x, pos_y).contains(position):
+                if shift_pressed:
+                    return None
+                else:
+                    return ResizeElementAction(element, pos_x, pos_y)
+        if shift_pressed:
+            return None
+        else:
+            return MoveSelectionAction()
+    
+    def __get_connection_action_at(self, connection, position, shift_pressed):
+        found = None
+        for idx, point in enumerate(connection.get_points(self.__application.ruler)):
+            if idx > 0: # don't return it for first point
+                if (position - point).length < ConnectionVisual.MAXIMAL_CLICKABLE_DISTANCE:
+                    found = idx
+                elif found is not None: # don't return it for last point
                     if shift_pressed:
-                        return None
+                        return RemoveConnectionPointAction(connection, found)
                     else:
-                        return MoveConnectionLabelAction(visual, label.id)
-            
-            if shift_pressed:
-                last = None
-                for idx, point in enumerate(visual.get_points(self.__application.ruler)):
-                    if last is not None:
-                        distance = Line.from_point_point(last, point).get_distance_to(position)
-                        if distance < ConnectionVisual.MAXIMAL_CLICKABLE_DISTANCE:
-                            return AddConnectionPointAction(visual, idx)
-                    last = point
+                        return MoveConnectionPointAction(connection, found)
+
+        for label in connection.get_labels():
+            if label.get_bounds(self.__application.ruler).contains(position):
+                if shift_pressed:
+                    return None
+                else:
+                    return MoveConnectionLabelAction(connection, label.id)
+
+        if shift_pressed:
+            last = None
+            for idx, point in enumerate(connection.get_points(self.__application.ruler)):
+                if last is not None:
+                    distance = Line.from_point_point(last, point).get_distance_to(position)
+                    if distance < ConnectionVisual.MAXIMAL_CLICKABLE_DISTANCE:
+                        return AddConnectionPointAction(connection, idx)
+                last = point
         
         return None
+        
     
     def is_selection_at(self, position):
         visual = self.__diagram.get_visual_at(self.__application.ruler, position)
