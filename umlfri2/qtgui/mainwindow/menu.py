@@ -144,6 +144,8 @@ class MainWindowMenu(QMenuBar):
         self.__file_save.setEnabled(Application().can_save_solution)
         self.__file_save_as.setEnabled(Application().can_save_solution_as)
         
+        self.__file_recent_files.setEnabled(any(Application().recent_files))
+        
         self.__edit_undo.setEnabled(Application().commands.can_undo)
         self.__edit_redo.setEnabled(Application().commands.can_redo)
         self.__edit_select_all.setEnabled(tab is not None)
