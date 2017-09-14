@@ -27,8 +27,10 @@ class StartPage(QWidget):
         self.__actions_frame = StartPageFrame()
         layout.addWidget(self.__actions_frame)
         
-        self.__new_project = self.__actions_frame.add_frame_action(self.__main_window.new_project)
-        self.__open_project = self.__actions_frame.add_frame_action(self.__main_window.open_solution)
+        self.__new_project = self.__actions_frame.add_frame_action()
+        self.__new_project.set_action_callback(self.__main_window.new_project)
+        self.__open_project = self.__actions_frame.add_frame_action()
+        self.__open_project.set_action_callback(self.__main_window.open_solution)
         
         self.__recent_files_frame = StartPageFrame()
         layout.addWidget(self.__recent_files_frame)
@@ -79,16 +81,18 @@ class StartPage(QWidget):
         painter.drawPath(path)
     
     def __reload_texts(self):
-        self.__actions_frame.set_frame_action_label(self.__new_project, _("New Project"))
-        self.__actions_frame.set_frame_action_label(self.__open_project, _("Open Project"))
+        self.__new_project.text = _("New Project")
+        self.__open_project.text = _("Open Project")
     
     def __reload_recent_files(self):
         self.__recent_files_frame.clear()
         
         for file in reversed(list(Application().recent_files)[:5]):
-            no = self.__recent_files_frame.add_frame_action(partial(self.__open_recent_file, file))
-            self.__recent_files_frame.set_frame_action_context_menu(no, partial(self.__build_recent_file_context_menu, file))
-            self.__recent_files_frame.set_frame_action_label(no, file.file_name, tooltip=file.path)
+            recent_action = self.__recent_files_frame.add_frame_action()
+            recent_action.set_action_callback(partial(self.__open_recent_file, file))
+            recent_action.set_context_menu_builder(partial(self.__build_recent_file_context_menu, file))
+            recent_action.text = file.file_name
+            recent_action.tooltip = file.path
     
     def __build_recent_file_context_menu(self, file):
         menu = QMenu()

@@ -1,9 +1,10 @@
-from html import escape
 from functools import partial
 
 from PyQt5.QtCore import QSize, QRect, Qt
 from PyQt5.QtGui import QPainter, QBrush, QPen, QColor
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel
+
+from .startpageframeaction import StartPageFrameAction
 
 
 class StartPageFrame(QWidget):
@@ -42,29 +43,11 @@ class StartPageFrame(QWidget):
     def sizeHint(self):
         return QSize(self.WIDTH, self.HEIGHT)
     
-    def add_frame_action(self, callback):
-        action_label = QLabel()
-        action_label.setContextMenuPolicy(Qt.NoContextMenu)
-        action_label.linkActivated.connect(lambda url: callback())
-        self.__layout.addWidget(action_label)
+    def add_frame_action(self):
+        action = StartPageFrameAction()
+        self.__layout.addWidget(action)
         
-        return self.__layout.count() - 1
-    
-    def set_frame_action_label(self, no, text, tooltip=None):
-        widget = self.__layout.itemAt(no).widget()
-        widget.setText('<a href="action" style="color: black">{0}</a>'.format(escape(text)))
-        
-        if tooltip is not None:
-            widget.setToolTip(tooltip)
-
-    def set_frame_action_context_menu(self, no, menu_builder):
-        widget = self.__layout.itemAt(no).widget()
-        widget.setContextMenuPolicy(Qt.CustomContextMenu)
-        widget.customContextMenuRequested.connect(partial(self.__show_context_menu, widget, menu_builder))
-
-    def __show_context_menu(self, label, menu_builder, point):
-        menu = menu_builder()
-        menu.exec_(label.mapToGlobal(point))
+        return action
     
     def clear(self):
         for no in range(self.__layout.count()):
