@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-12 11:59+0200\n"
+"POT-Creation-Date: 2017-09-14 11:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -143,6 +143,9 @@ msgstr ""
 msgid "Copy"
 msgstr ""
 
+msgid "Copy File Path"
+msgstr ""
+
 msgid "Copy without background (transparent)"
 msgstr ""
 
@@ -257,6 +260,9 @@ msgstr ""
 msgid "Open"
 msgstr ""
 
+msgid "Open File"
+msgstr ""
+
 msgid "Open Project"
 msgstr ""
 
@@ -291,6 +297,9 @@ msgid "Raise to Top"
 msgstr ""
 
 msgid "Redo"
+msgstr ""
+
+msgid "Remove from the List"
 msgstr ""
 
 msgid "Reverse Connection"

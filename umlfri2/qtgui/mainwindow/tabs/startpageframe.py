@@ -1,4 +1,5 @@
 from html import escape
+from functools import partial
 
 from PyQt5.QtCore import QSize, QRect, Qt
 from PyQt5.QtGui import QPainter, QBrush, QPen, QColor
@@ -55,6 +56,15 @@ class StartPageFrame(QWidget):
         
         if tooltip is not None:
             widget.setToolTip(tooltip)
+
+    def set_frame_action_context_menu(self, no, menu_builder):
+        widget = self.__layout.itemAt(no).widget()
+        widget.setContextMenuPolicy(Qt.CustomContextMenu)
+        widget.customContextMenuRequested.connect(partial(self.__show_context_menu, widget, menu_builder))
+
+    def __show_context_menu(self, label, menu_builder, point):
+        menu = menu_builder()
+        menu.exec_(label.mapToGlobal(point))
     
     def clear(self):
         for no in range(self.__layout.count()):

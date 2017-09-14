@@ -3,7 +3,7 @@ from functools import partial
 
 from PyQt5.QtCore import QPoint, Qt
 from PyQt5.QtGui import QPixmap, QPainter, QColor, QFont, QPen, QPainterPath, QBrush
-from PyQt5.QtWidgets import QWidget, QHBoxLayout
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QMenu, QApplication, QMessageBox
 from umlfri2.application import Application
 from umlfri2.application.events.application import LanguageChangedEvent, RecentFilesChangedEvent
 from umlfri2.constants.paths import GRAPHICS
@@ -86,5 +86,27 @@ class StartPage(QWidget):
         self.__recent_files_frame.clear()
         
         for file in reversed(list(Application().recent_files)[:5]):
-            no = self.__recent_files_frame.add_frame_action(partial(self.__main_window.open_recent_file, file))
+            no = self.__recent_files_frame.add_frame_action(partial(self.__open_recent_file, file))
+            self.__recent_files_frame.set_frame_action_context_menu(no, partial(self.__build_recent_file_context_menu, file))
             self.__recent_files_frame.set_frame_action_label(no, file.file_name, tooltip=file.path)
+    
+    def __build_recent_file_context_menu(self, file):
+        menu = QMenu()
+        open_action = menu.addAction(_("Open File"))
+        open_action.triggered.connect(partial(self.__open_recent_file, file))
+        copy_action = menu.addAction(_("Copy File Path"))
+        copy_action.triggered.connect(partial(self.__copy_recent_file, file))
+        menu.addSeparator()
+        remove_action = menu.addAction(_("Remove from the List"))
+        remove_action.triggered.connect(partial(self.__remove_recent_file, file))
+        menu.setDefaultAction(open_action)
+        return menu
+    
+    def __open_recent_file(self, file, checked=False):
+        self.__main_window.open_recent_file(file)
+    
+    def __copy_recent_file(self, file, checked=False):
+        QApplication.instance().clipboard().setText(file.path)
+    
+    def __remove_recent_file(self, file, checked=False):
+        file.remove()

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-12 11:59+0200\n"
-"PO-Revision-Date: 2017-09-12 12:01+0200\n"
+"POT-Creation-Date: 2017-09-14 11:16+0200\n"
+"PO-Revision-Date: 2017-09-14 11:16+0200\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -143,6 +143,9 @@ msgstr "Zatvoriť bez uloženia"
 msgid "Copy"
 msgstr "Kopírovať"
 
+msgid "Copy File Path"
+msgstr "Skopírovať cestu"
+
 msgid "Copy without background (transparent)"
 msgstr "Kopírovať bez pozadia (priehľadne)"
 
@@ -259,6 +262,9 @@ msgstr "Ok"
 msgid "Open"
 msgstr "Otvoriť"
 
+msgid "Open File"
+msgstr "Otvoriť"
+
 msgid "Open Project"
 msgstr "Otvoriť projekt"
 
@@ -294,6 +300,9 @@ msgstr "Presunúť navrch"
 
 msgid "Redo"
 msgstr "Znova"
+
+msgid "Remove from the List"
+msgstr "Odstrániť zo zoznamu"
 
 msgid "Reverse Connection"
 msgstr "Otočiť smer spojenia"
