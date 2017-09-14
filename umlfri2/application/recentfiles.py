@@ -25,7 +25,11 @@ class RecentFiles:
         count = cp.getint('Recent Files', 'count')
         
         for no in range(count):
-            self.__files.append(cp.get('Recent Files', str(no)))
+            path = cp.get('File.{}'.format(no), 'path', fallback=None)
+            if path is None:
+                path = cp.get('Recent Files', str(no), fallback=None)
+            if path is not None:
+                self.__files.append(RecentFile(self.__application, self, path))
     
     def __save(self):
         if not os.path.exists(CONFIG):
@@ -37,27 +41,26 @@ class RecentFiles:
         cp.set('Recent Files', 'count', str(len(self.__files)))
         
         for no, file in enumerate(self.__files):
-            cp.set('Recent Files', str(no), file)
+            cp.add_section('File.{}'.format(no))
+            cp.set('File.{}'.format(no), 'path', file.path)
         
         with open(self.CONFIG_FILE, 'w') as cf:
             cp.write(cf)
     
     def __iter__(self):
-        for file in self.__files:
-            yield RecentFile(self.__application, self, file)
+        yield from self.__files
 
     def _remove(self, file):
-        self.__files.remove(file.path)
+        self.__files.remove(file)
         
         self.__save()
 
         self.__application.event_dispatcher.dispatch(RecentFilesChangedEvent(file))
     
     def add_file(self, file_path):
-        if file_path in self.__files:
-            self.__files.remove(file_path)
-        
-        self.__files.append(file_path)
+        self.__files = [file for file in self.__files if file.path != file_path]
+
+        self.__files.append(RecentFile(self.__application, self, file_path))
         
         if len(self.__files) > 10:
             del self.__files[10:]
