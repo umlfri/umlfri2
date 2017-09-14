@@ -1,13 +1,16 @@
 import os.path
 from functools import partial
+from itertools import islice
 
 from PyQt5.QtCore import QPoint, Qt
 from PyQt5.QtGui import QPixmap, QPainter, QColor, QFont, QPen, QPainterPath, QBrush
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QMenu, QApplication, QMessageBox
+
 from umlfri2.application import Application
 from umlfri2.application.events.application import LanguageChangedEvent, RecentFilesChangedEvent
 from umlfri2.constants.paths import GRAPHICS
 from .startpageframe import StartPageFrame
+from ...base.resources import ICONS
 
 
 class StartPage(QWidget):
@@ -87,12 +90,14 @@ class StartPage(QWidget):
     def __reload_recent_files(self):
         self.__recent_files_frame.clear()
         
-        for file in reversed(list(Application().recent_files)[:5]):
+        for file in islice(Application().recent_files, 5):
             recent_action = self.__recent_files_frame.add_frame_action()
             recent_action.set_action_callback(partial(self.__open_recent_file, file))
             recent_action.set_context_menu_builder(partial(self.__build_recent_file_context_menu, file))
             recent_action.text = file.file_name
             recent_action.tooltip = file.path
+            if file.pinned:
+                recent_action.pixmap = ICONS.PINNED
     
     def __build_recent_file_context_menu(self, file):
         menu = QMenu()
@@ -100,6 +105,13 @@ class StartPage(QWidget):
         open_action.triggered.connect(partial(self.__open_recent_file, file))
         copy_action = menu.addAction(_("Copy File Path"))
         copy_action.triggered.connect(partial(self.__copy_recent_file, file))
+        menu.addSeparator()
+        if file.pinned:
+            unpin_action = menu.addAction(_("Unpin File"))
+            unpin_action.triggered.connect(partial(self.__unpin_recent_file, file))
+        else:
+            pin_action = menu.addAction(_("Pin File"))
+            pin_action.triggered.connect(partial(self.__pin_recent_file, file))
         menu.addSeparator()
         remove_action = menu.addAction(_("Remove from the List"))
         remove_action.triggered.connect(partial(self.__remove_recent_file, file))
@@ -114,3 +126,9 @@ class StartPage(QWidget):
     
     def __remove_recent_file(self, file, checked=False):
         file.remove()
+    
+    def __pin_recent_file(self, file, checked=False):
+        file.pin()
+
+    def __unpin_recent_file(self, file, checked=False):
+        file.unpin()

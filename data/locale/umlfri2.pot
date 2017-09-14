@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-14 11:15+0200\n"
+"POT-Creation-Date: 2017-09-14 13:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -278,6 +278,9 @@ msgstr ""
 msgid "Paste Duplicate"
 msgstr ""
 
+msgid "Pin File"
+msgstr ""
+
 msgid "Project"
 msgstr ""
 
@@ -376,6 +379,9 @@ msgid "Undo"
 msgstr ""
 
 msgid "Uninstall"
+msgstr ""
+
+msgid "Unpin File"
 msgstr ""
 
 msgid "Updates"

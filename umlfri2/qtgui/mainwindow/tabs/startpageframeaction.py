@@ -26,9 +26,9 @@ class StartPageFrameAction(QWidget):
         
         self.__pixmap = None
         self.__text = ""
-        
-        layout.addWidget(self.__img_label, stretch=0)
+
         layout.addWidget(self.__text_label, stretch=0)
+        layout.addWidget(self.__img_label, stretch=0)
         
         self.setLayout(layout)
     
@@ -51,8 +51,10 @@ class StartPageFrameAction(QWidget):
         
         if value is None:
             self.__img_label.clear()
+            self.__img_label.setContentsMargins(0, 0, 0, 0)
         else:
             self.__img_label.setPixmap(value)
+            self.__img_label.setContentsMargins(10, 0, 0, 0)
     
     @property
     def tooltip(self):

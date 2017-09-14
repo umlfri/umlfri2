@@ -182,7 +182,7 @@ class MainWindowMenu(QMenuBar):
     def __recent_files_menu_populate(self):
         self.__recent_files_menu.setToolTipsVisible(True)
         self.__recent_files_menu.clear()
-        for no, file in enumerate(reversed(list(Application().recent_files))):
+        for no, file in enumerate(list(Application().recent_files)):
             action = self.__recent_files_menu.addAction("&{0}. {1}".format(no, file.file_name))
             action.setToolTip(file.path)
             action.triggered.connect(partial(self.__main_window.open_recent_file, file))
