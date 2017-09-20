@@ -157,6 +157,7 @@ class About(QDialog):
     
     def __create_download_link(self, url):
         ret = QLabel("<a href=\"{0}\">{1}</a>".format(url, _("download update")))
+        ret.setToolTip(url)
         ret.setOpenExternalLinks(True)
         return ret
     
