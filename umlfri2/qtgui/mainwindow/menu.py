@@ -1,3 +1,4 @@
+import os
 import os.path
 from functools import partial
 
@@ -12,6 +13,7 @@ from umlfri2.constants.languages import AVAILABLE_LANGUAGES
 from umlfri2.qtgui.addons import AddOnsDialog
 from umlfri2.qtgui.fullscreen import FullScreenDiagram
 from umlfri2.qtgui.rendering import ImageExport, ExportDialog
+from umlfri2.qtgui.settings import SettingsDialog
 from .aboutdialog import About
 
 
@@ -59,15 +61,18 @@ class MainWindowMenu(QMenuBar):
         
         self.__edit_addons = self.__add_menu_item(edit_menu, None, "preferences-plugin", self.__edit_addons_actions)
         
+        if os.name != 'nt':
+            self.__edit_preferences = self.__add_menu_item(edit_menu, None, "application-preferences", self.__edit_preferences_action)
+            self.__edit_preferences.setMenuRole(QAction.PreferencesRole)
+        
         self.__diagram, diagram_menu = self.__add_menu()
         self.__diagram_export = self.__add_menu_item(diagram_menu, None, None, self.__diagram_export_action)
         self.__diagram_full_screen = self.__add_menu_item(diagram_menu, FULL_SCREEN, "view-fullscreen",
                                                           self.__diagram_full_screen_action)
-        
-        self.__tools, tools_menu = self.__add_menu()
-        self.__tools_languages_menu = QMenu()
-        self.__tools_languages_menu.aboutToShow.connect(self.__tools_languages_menu_populate)
-        self.__tools_languages = self.__add_submenu_item(tools_menu, None, None, self.__tools_languages_menu)
+
+        if os.name == 'nt':
+            self.__tools, tools_menu = self.__add_menu()
+            self.__tools_options = self.__add_menu_item(tools_menu, None, "application-preferences", self.__edit_preferences_action)
         
         # VIEW MENU
         self.__view, view_menu = self.__add_menu()
@@ -245,6 +250,9 @@ class MainWindowMenu(QMenuBar):
     def __edit_addons_actions(self, checked=False):
         AddOnsDialog(self.__main_window).exec_()
     
+    def __edit_preferences_action(self, checked=False):
+        SettingsDialog(self.__main_window).exec_()
+    
     def __diagram_export_action(self, checked=False):
         dialog = ExportDialog(self.__main_window)
         
@@ -287,26 +295,6 @@ class MainWindowMenu(QMenuBar):
         window = FullScreenDiagram(self.__main_window, Application().tabs.current_tab.drawing_area)
         window.showFullScreen()
     
-    def __tools_languages_menu_populate(self):
-        selected_language = Application().config.language
-        
-        self.__tools_languages_menu.clear()
-        system_lang = self.__tools_languages_menu.addAction(_("System language"))
-        system_lang.triggered.connect(partial(self.__tools_languages_menu_activate, None))
-        system_lang.setCheckable(True)
-        system_lang.setChecked(selected_language is None)
-        
-        self.__tools_languages_menu.addSeparator()
-        
-        for lang_id, label in AVAILABLE_LANGUAGES:
-            language = self.__tools_languages_menu.addAction(label)
-            language.triggered.connect(partial(self.__tools_languages_menu_activate, lang_id))
-            language.setCheckable(True)
-            language.setChecked(selected_language == lang_id)
-    
-    def __tools_languages_menu_activate(self, lang_id, checked=False):
-        Application().language.change_language(lang_id)
-    
     def __view_zoom_in_action(self, checked=False):
         Application().tabs.current_tab.drawing_area.zoom_in()
     
@@ -340,12 +328,16 @@ class MainWindowMenu(QMenuBar):
         self.__edit_select_all.setText(_("Select &All"))
         self.__edit_addons.setText(_("Add-ons"))
         
+        if os.name != 'nt':
+            self.__edit_preferences.setText(_("Preferences"))
+        
         self.__diagram.setText(_("&Diagram"))
         self.__diagram_export.setText(_("Export as &Image"))
         self.__diagram_full_screen.setText(_("Show Full &Screen"))
-        
-        self.__tools.setText(_("&Tools"))
-        self.__tools_languages.setText(_("Change &Language"))
+
+        if os.name == 'nt':
+            self.__tools.setText(_("&Tools"))
+            self.__tools_options.setText(_("Options"))
         
         self.__view.setText(_("&View"))
         self.__view_zoom_in.setText(_("Zoom &In"))

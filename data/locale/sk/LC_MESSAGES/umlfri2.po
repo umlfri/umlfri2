@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-14 13:42+0200\n"
-"PO-Revision-Date: 2017-09-14 13:42+0200\n"
+"POT-Creation-Date: 2017-09-21 18:12+0200\n"
+"PO-Revision-Date: 2017-09-21 18:13+0200\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -104,6 +104,9 @@ msgstr "Zarovnanie"
 msgid "Application Exit"
 msgstr "Ukončenie aplikácie"
 
+msgid "Application language"
+msgstr "Jazyk aplikácie"
+
 msgid "Apply"
 msgstr "Použiť"
 
@@ -121,9 +124,6 @@ msgstr "Centrovať vodorovne"
 
 msgid "Center Vertically"
 msgstr "Centrovať zvisle"
-
-msgid "Change &Language"
-msgstr "Zmeniť &jazyk"
 
 msgid "Check for updates"
 msgstr "Skontroluj aktualizácie"
@@ -151,6 +151,9 @@ msgstr "Kopírovať bez pozadia (priehľadne)"
 
 msgid "Create a new &solution"
 msgstr "Vytvoriť novú &solution"
+
+msgid "Custom language"
+msgstr "Jazyk"
 
 msgid "Cut"
 msgstr "Vystrihnúť"
@@ -268,6 +271,9 @@ msgstr "Otvoriť"
 msgid "Open Project"
 msgstr "Otvoriť projekt"
 
+msgid "Options"
+msgstr "Nastavenia"
+
 msgid "Padding"
 msgstr "Okraj"
 
@@ -282,6 +288,9 @@ msgstr "Vložiť ako kópiu"
 
 msgid "Pin File"
 msgstr "Pripnúť v zozname"
+
+msgid "Preferences"
+msgstr "Nastavenia"
 
 msgid "Project"
 msgstr "Projekt"
@@ -349,9 +358,6 @@ msgstr "Štart"
 msgid "Stop"
 msgstr "Zastaviť"
 
-msgid "System language"
-msgstr "Systémový jazyk"
-
 msgid "The data on this tab has been modified."
 msgstr "Dáta na tejto záložke boli zmenené"
 
@@ -388,6 +394,9 @@ msgstr "Odopnúť zo zoznamu"
 
 msgid "Updates"
 msgstr "Aktualizácie"
+
+msgid "Use system language"
+msgstr "Použiť systémový jazyk"
 
 msgid "Used libraries"
 msgstr "Použité knižnice"
@@ -445,6 +454,12 @@ msgstr "{0} k '{1}'"
 #, python-brace-format
 msgid "{0} version"
 msgstr "Verzia {0}"
+
+#~ msgid "Change &Language"
+#~ msgstr "Zmeniť &jazyk"
+
+#~ msgid "System language"
+#~ msgstr "Systémový jazyk"
 
 #~ msgid "Preferences..."
 #~ msgstr "Nastavenia..."
