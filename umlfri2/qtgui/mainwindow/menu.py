@@ -59,9 +59,8 @@ class MainWindowMenu(QMenuBar):
         
         edit_menu.addSeparator()
         
-        self.__edit_addons = self.__add_menu_item(edit_menu, None, "preferences-plugin", self.__edit_addons_actions)
-        
         if os.name != 'nt':
+            self.__edit_addons = self.__add_menu_item(edit_menu, None, "preferences-plugin", self.__edit_addons_actions)
             self.__edit_preferences = self.__add_menu_item(edit_menu, None, "application-preferences", self.__edit_preferences_action)
             self.__edit_preferences.setMenuRole(QAction.PreferencesRole)
         
@@ -72,7 +71,8 @@ class MainWindowMenu(QMenuBar):
 
         if os.name == 'nt':
             self.__tools, tools_menu = self.__add_menu()
-            self.__tools_options = self.__add_menu_item(tools_menu, None, "application-preferences", self.__edit_preferences_action)
+            self.__tools_addons = self.__add_menu_item(tools_menu, None, "preferences-plugin", self.__edit_addons_actions)
+            self.__tools_options = self.__add_menu_item(tools_menu, None, "preferences-desktop", self.__edit_preferences_action)
         
         # VIEW MENU
         self.__view, view_menu = self.__add_menu()
@@ -326,9 +326,9 @@ class MainWindowMenu(QMenuBar):
         self.__edit_paste.setText(_("&Paste"))
         self.__edit_duplicate.setText(_("Paste &Duplicate"))
         self.__edit_select_all.setText(_("Select &All"))
-        self.__edit_addons.setText(_("Add-ons"))
-        
+
         if os.name != 'nt':
+            self.__edit_addons.setText(_("Add-ons"))
             self.__edit_preferences.setText(_("Preferences"))
         
         self.__diagram.setText(_("&Diagram"))
@@ -337,6 +337,7 @@ class MainWindowMenu(QMenuBar):
 
         if os.name == 'nt':
             self.__tools.setText(_("&Tools"))
+            self.__tools_addons.setText(_("Add-ons"))
             self.__tools_options.setText(_("Options"))
         
         self.__view.setText(_("&View"))
