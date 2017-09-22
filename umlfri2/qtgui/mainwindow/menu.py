@@ -58,7 +58,7 @@ class MainWindowMenu(QMenuBar):
         
         if os.name != 'nt':
             self.__edit_addons = self.__add_menu_item(edit_menu, None, "preferences-plugin", self.__edit_addons_actions)
-            self.__edit_preferences = self.__add_menu_item(edit_menu, None, "application-preferences", self.__edit_preferences_action)
+            self.__edit_preferences = self.__add_menu_item(edit_menu, None, "preferences-desktop", self.__edit_preferences_action)
             self.__edit_preferences.setMenuRole(QAction.PreferencesRole)
         
         self.__diagram, diagram_menu = self.__add_menu()
