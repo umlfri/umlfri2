@@ -9,12 +9,10 @@ from umlfri2.application import Application
 from umlfri2.application.commands.diagram import HideElementsCommand, PasteSnippetCommand, DuplicateSnippetCommand
 from umlfri2.application.events.application.languagechanged import LanguageChangedEvent
 from umlfri2.constants.keys import FULL_SCREEN, ZOOM_ORIGINAL, PASTE_DUPLICATE, COPY_IMAGE
-from umlfri2.constants.languages import AVAILABLE_LANGUAGES
 from umlfri2.qtgui.addons import AddOnsDialog
 from umlfri2.qtgui.fullscreen import FullScreenDiagram
 from umlfri2.qtgui.rendering import ImageExport, ExportDialog
-from umlfri2.qtgui.settings import SettingsDialog
-from .aboutdialog import About
+from umlfri2.qtgui.appdialogs import SettingsDialog, About
 
 
 class MainWindowMenu(QMenuBar):
