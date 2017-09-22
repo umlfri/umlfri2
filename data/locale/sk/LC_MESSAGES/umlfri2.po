@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-21 18:12+0200\n"
-"PO-Revision-Date: 2017-09-21 18:13+0200\n"
+"POT-Creation-Date: 2017-09-22 14:40+0200\n"
+"PO-Revision-Date: 2017-09-22 14:46+0200\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -104,6 +104,10 @@ msgstr "Zarovnanie"
 msgid "Application Exit"
 msgstr "Ukončenie aplikácie"
 
+#, python-brace-format
+msgid "Application UML .FRI was updated to version '{0}' on the server."
+msgstr "Aplikácia UML .FRI bola na serveri aktualizovaná na verziu {0}."
+
 msgid "Application language"
 msgstr "Jazyk aplikácie"
 
@@ -179,6 +183,9 @@ msgstr "Chcete uložiť dáta?"
 msgid "Do you want to save the project?"
 msgstr "Chcete uložiť rozpracovaný projekt?"
 
+msgid "Download"
+msgstr "Stiahnuť"
+
 msgid "Edit..."
 msgstr "Upraviť..."
 
@@ -213,6 +220,9 @@ msgstr "Skryť"
 
 msgid "Homepage"
 msgstr "Domovská stránka"
+
+msgid "Ignore This Update"
+msgstr "Ignorovať verziu"
 
 msgid "Install AddOn From File"
 msgstr "Nainštaluj rozšírenie zo súboru"
@@ -252,6 +262,9 @@ msgstr "Nový"
 
 msgid "New Project"
 msgstr "Nový projekt"
+
+msgid "New update"
+msgstr "Nová aktualizácia"
 
 msgid "No"
 msgstr "Nie"
@@ -312,6 +325,9 @@ msgstr "Presunúť navrch"
 
 msgid "Redo"
 msgstr "Znova"
+
+msgid "Remind me later"
+msgstr "Upozorni ma neskôr"
 
 msgid "Remove from the List"
 msgstr "Odstrániť zo zoznamu"
@@ -454,12 +470,3 @@ msgstr "{0} k '{1}'"
 #, python-brace-format
 msgid "{0} version"
 msgstr "Verzia {0}"
-
-#~ msgid "Change &Language"
-#~ msgstr "Zmeniť &jazyk"
-
-#~ msgid "System language"
-#~ msgstr "Systémový jazyk"
-
-#~ msgid "Preferences..."
-#~ msgstr "Nastavenia..."
