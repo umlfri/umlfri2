@@ -1,13 +1,14 @@
 import os.path
 
-from PyQt5.QtCore import Qt, QSettings
-from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import Qt, QSettings, QUrl
+from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.QtWidgets import QMainWindow, QDockWidget, QMessageBox, QFileDialog
 
 from umlfri2.application import Application
 from umlfri2.application.addon import AddOnState
 from umlfri2.application.events.addon import AddonStateChangedEvent
-from umlfri2.application.events.application import LanguageChangedEvent, ChangeStatusChangedEvent
+from umlfri2.application.events.application import LanguageChangedEvent, ChangeStatusChangedEvent, \
+    UpdateCheckFinishedEvent
 from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent, CloseSolutionEvent
 from umlfri2.constants.paths import GRAPHICS, CONFIG
 from ..base.clipboard import QtClipboardAdatper
@@ -75,10 +76,14 @@ class UmlFriMainWindow(QMainWindow):
         Application().event_dispatcher.subscribe(ChangeStatusChangedEvent, self.__change_status_changed)
         Application().event_dispatcher.subscribe(LanguageChangedEvent, self.__language_changed)
         Application().event_dispatcher.subscribe(AddonStateChangedEvent, self.__plugin_state_changed)
+        Application().event_dispatcher.subscribe(UpdateCheckFinishedEvent, self.__update_check)
         
         self.__reload_texts()
         
         self.__restore_window_state()
+
+        if not Application().about.updates.checking_update:
+            self.__update_dialog()
     
     def __language_changed(self, event):
         self.__reload_texts()
@@ -255,7 +260,42 @@ class UmlFriMainWindow(QMainWindow):
                 self.removeToolBar(toolbar)
                 toolbar.deleteLater()
                 self.__addon_toolbars.remove(toolbar)
-
+    
+    def __update_check(self, event):
+        self.__update_dialog()
+    
+    def __update_dialog(self):
+        latest_update = Application().about.updates.latest_version
+        
+        if latest_update is None:
+            return
+        
+        if not latest_update.is_newer:
+            return
+        
+        if latest_update.is_ignored:
+            return
+        
+        new_update = QMessageBox(self)
+        new_update.setIcon(QMessageBox.Information)
+        new_update.setWindowModality(Qt.WindowModal)
+        new_update.setWindowTitle(_("New update"))
+        new_update.setText(_("Application UML .FRI was updated to version '{0}' on the server.").format(latest_update.version))
+        
+        download = new_update.addButton(_("Download"), QMessageBox.ActionRole)
+        ignore = new_update.addButton(_("Ignore This Update"), QMessageBox.ActionRole)
+        remind_later = new_update.addButton(_("Remind me later"), QMessageBox.ActionRole)
+        
+        new_update.setDefaultButton(remind_later)
+        new_update.setEscapeButton(remind_later)
+        
+        new_update.exec_()
+        
+        if new_update.clickedButton() is download:
+            QDesktopServices.openUrl(QUrl(latest_update.url))
+        elif new_update.clickedButton() is ignore:
+            latest_update.ignore_update()
+    
     def __reload_window_title(self):
         title = _("UML .FRI 2")
         if Application().solution_name is not None:

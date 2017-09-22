@@ -1,6 +1,6 @@
 import os.path
 
-from PyQt5.QtCore import QSize, pyqtSignal, Qt
+from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QLabel, QSpacerItem, QDialogButtonBox, QTabWidget, \
     QTextEdit, QGridLayout, QFormLayout, QScrollArea, QWidget, QPushButton
@@ -12,8 +12,6 @@ from umlfri2.qtgui.exceptionhook import ExceptionDialog
 
 
 class AboutDialog(QDialog):
-    __update_finished_evt = pyqtSignal()
-    
     def __init__(self, main_window):
         super().__init__(main_window)
         
@@ -82,8 +80,6 @@ class AboutDialog(QDialog):
         
         self.setLayout(main_layout)
         
-        self.__update_finished_evt.connect(self.__create_updates_tab)
-        
         Application().event_dispatcher.subscribe(UpdateCheckStartedEvent, self.__update_started)
         Application().event_dispatcher.subscribe(UpdateCheckFinishedEvent, self.__update_finished)
     
@@ -125,19 +121,24 @@ class AboutDialog(QDialog):
         self.__check_updates = QPushButton(_("Check for updates"))
         self.__check_updates.clicked.connect(lambda checked=False: Application().about.updates.recheck_update())
         updates_layout.addWidget(self.__check_updates, 0, 0, 1, 3, Qt.AlignLeft)
+        
+        latest_version = Application().about.updates.latest_version
         updates_layout.addWidget(QLabel(_("Latest version available:")), 1, 0)
-        if Application().about.updates.latest_version is None:
+        if latest_version is None:
             updates_layout.addWidget(QLabel("-"), 1, 1)
         else:
-            updates_layout.addWidget(QLabel(str(Application().about.updates.latest_version)), 1, 1)
-        if Application().about.updates.has_newer_version:
-            updates_layout.addWidget(self.__create_download_link(Application().about.updates.version_update_url), 1, 2)
-        if Application().about.updates.latest_prerelease is not None:
+            updates_layout.addWidget(QLabel(str(latest_version.version)), 1, 1)
+            if Application().about.updates.latest_version.is_newer:
+                updates_layout.addWidget(self.__create_download_link(latest_version.url), 1, 2)
+        
+        latest_prerelease = Application().about.updates.latest_prerelease
+        if latest_prerelease is not None:
             updates_layout.addWidget(QLabel(_("Latest unstable version available:")), 2, 0)
-            updates_layout.addWidget(QLabel(str(Application().about.updates.latest_prerelease)), 2, 1)
+            updates_layout.addWidget(QLabel(str(latest_prerelease.version)), 2, 1)
 
-            if Application().about.updates.has_newer_prerelease:
-                updates_layout.addWidget(self.__create_download_link(Application().about.updates.prerelease_update_url), 2, 2)
+            if latest_prerelease.is_newer:
+                updates_layout.addWidget(self.__create_download_link(latest_prerelease.url), 2, 2)
+        
         if Application().about.updates.has_error:
             updates_layout.addWidget(QLabel("<b>{0}</b>".format(_("Error while checking update:"))), 3, 0)
             more_info = QPushButton(_("More info"))
@@ -174,4 +175,4 @@ class AboutDialog(QDialog):
         self.__check_updates.setEnabled(False)
 
     def __update_finished(self, event):
-        self.__update_finished_evt.emit()
+        self.__create_updates_tab()
