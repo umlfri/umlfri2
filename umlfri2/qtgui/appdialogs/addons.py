@@ -4,13 +4,13 @@ from functools import partial
 from PyQt5.QtCore import QSize, Qt, QUrl, QTimer
 from PyQt5.QtGui import QFont, QIcon, QDesktopServices, QPalette
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QTableWidget, QHBoxLayout, QLabel, QWidget, \
-    QTableWidgetItem, QStyledItemDelegate, QStyle, QPushButton, QMenu, QFileDialog
+    QStyledItemDelegate, QStyle, QPushButton, QMenu, QFileDialog
 from umlfri2.application import Application
 from umlfri2.application.addon import AddOnState
 from umlfri2.application.events.addon import AddonStateChangedEvent
 from umlfri2.datalayer import Storage
 from umlfri2.qtgui.base import image_loader
-from .info import AddOnInfo
+from .addoninfo import AddOnInfoDialog
 
 
 class AddOnsDialog(QDialog):
@@ -244,7 +244,7 @@ class AddOnsDialog(QDialog):
         QDesktopServices.openUrl(QUrl(addon.homepage))
     
     def __show_info(self, addon, checked=False):
-        dialog = AddOnInfo(self, addon)
+        dialog = AddOnInfoDialog(self, addon)
         dialog.exec_()
     
     def __start_addon(self, addon, checked=False):

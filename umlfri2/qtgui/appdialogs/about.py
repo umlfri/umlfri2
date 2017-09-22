@@ -11,7 +11,7 @@ from umlfri2.constants.paths import GRAPHICS, LICENSE_FILE
 from umlfri2.qtgui.exceptionhook import ExceptionDialog
 
 
-class About(QDialog):
+class AboutDialog(QDialog):
     __update_finished_evt = pyqtSignal()
     
     def __init__(self, main_window):

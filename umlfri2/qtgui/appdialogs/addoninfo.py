@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QDialog, QVBoxLayout, QDialogButtonBox, QHBoxLayout,
 from umlfri2.qtgui.base import image_loader
 
 
-class AddOnInfo(QDialog):
+class AddOnInfoDialog(QDialog):
     def __init__(self, addon_window, addon):
         super().__init__(addon_window)
         self.__addon = addon

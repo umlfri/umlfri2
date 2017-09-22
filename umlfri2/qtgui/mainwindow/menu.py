@@ -9,10 +9,9 @@ from umlfri2.application import Application
 from umlfri2.application.commands.diagram import HideElementsCommand, PasteSnippetCommand, DuplicateSnippetCommand
 from umlfri2.application.events.application.languagechanged import LanguageChangedEvent
 from umlfri2.constants.keys import FULL_SCREEN, ZOOM_ORIGINAL, PASTE_DUPLICATE, COPY_IMAGE
-from umlfri2.qtgui.addons import AddOnsDialog
 from umlfri2.qtgui.fullscreen import FullScreenDiagram
 from umlfri2.qtgui.rendering import ImageExport, ExportDialog
-from umlfri2.qtgui.appdialogs import SettingsDialog, About
+from umlfri2.qtgui.appdialogs import SettingsDialog, AboutDialog, AddOnsDialog
 
 
 class MainWindowMenu(QMenuBar):
@@ -303,7 +302,7 @@ class MainWindowMenu(QMenuBar):
         Application().tabs.current_tab.drawing_area.zoom_original()
     
     def __help_about_action(self):
-        dlg = About(self.__main_window)
+        dlg = AboutDialog(self.__main_window)
         dlg.exec_()
     
     def __reload_texts(self):
