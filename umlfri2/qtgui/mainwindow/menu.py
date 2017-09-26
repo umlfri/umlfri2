@@ -58,7 +58,7 @@ class MainWindowMenu(QMenuBar):
         
         if os.name != 'nt':
             self.__edit_addons = self.__add_menu_item(edit_menu, None, "preferences-plugin", self.__edit_addons_actions)
-            self.__edit_preferences = self.__add_menu_item(edit_menu, None, "preferences-desktop", self.__edit_preferences_action)
+            self.__edit_preferences = self.__add_menu_item(edit_menu, QKeySequence.Preferences, "preferences-desktop", self.__edit_preferences_action)
             self.__edit_preferences.setMenuRole(QAction.PreferencesRole)
         
         self.__diagram, diagram_menu = self.__add_menu()
@@ -69,7 +69,7 @@ class MainWindowMenu(QMenuBar):
         if os.name == 'nt':
             self.__tools, tools_menu = self.__add_menu()
             self.__tools_addons = self.__add_menu_item(tools_menu, None, "preferences-plugin", self.__edit_addons_actions)
-            self.__tools_options = self.__add_menu_item(tools_menu, None, "preferences-desktop", self.__edit_preferences_action)
+            self.__tools_options = self.__add_menu_item(tools_menu, QKeySequence.Preferences, "preferences-desktop", self.__edit_preferences_action)
         
         # VIEW MENU
         self.__view, view_menu = self.__add_menu()
