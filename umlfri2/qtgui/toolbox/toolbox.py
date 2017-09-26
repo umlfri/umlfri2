@@ -34,6 +34,7 @@ class ToolBox(QWidget):
     def _fill(self, drawing_area):
         for widget in self.__widgets:
             self.__vbox.removeWidget(widget)
+            widget.setParent(None)
             widget.deleteLater()
         
         self.__current_drawing_area = drawing_area
