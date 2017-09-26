@@ -17,18 +17,21 @@ class SettingsDialogGeneral(QWidget):
 
         self.__language_selector = QComboBox()
 
-        current_language_id = Application().config.language
+        configured_language_id = Application().config.language
+        current_language_id = Application().language.current_language
         
         for no, (lang_id, label) in enumerate(AVAILABLE_LANGUAGES):
             self.__language_selector.addItem(label)
-            if lang_id == current_language_id:
+            if lang_id == configured_language_id:
+                self.__language_selector.setCurrentIndex(no)
+            elif configured_language_id is None and lang_id != current_language_id:
                 self.__language_selector.setCurrentIndex(no)
 
         self.__use_system = QRadioButton()
         self.__use_custom = QRadioButton()
         self.__use_custom.toggled.connect(self.__use_custom_changed)
         
-        if current_language_id is None:
+        if configured_language_id is None:
             self.__use_system.setChecked(True)
             self.__language_selector.setEnabled(False)
         else:

@@ -29,11 +29,11 @@ class UmlFriUpdate:
     
     @property
     def is_ignored(self):
-        return self.__application.config.ignored_version is not None and self.__application.config.ignored_version >= self.__version
+        return self.__version in self.__application.config.ignored_versions
     
     def ignore_update(self):
         if not self.is_ignored:
-            self.__application.config.ignored_version = self.__version
+            self.__application.config.ignore_version(self.__version)
 
 
 class UmlFriUpdates:
@@ -47,7 +47,8 @@ class UmlFriUpdates:
         self.__check_error = None
         self.__checking_update = False
         
-        self.recheck_update()
+        if application.config.auto_check_updates:
+            self.recheck_update()
     
     @property
     def checking_update(self):

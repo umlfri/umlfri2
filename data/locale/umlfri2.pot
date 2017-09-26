@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-22 14:40+0200\n"
+"POT-Creation-Date: 2017-09-26 12:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -117,6 +117,9 @@ msgstr ""
 msgid "Author"
 msgstr ""
 
+msgid "Automatic Updates"
+msgstr ""
+
 msgid "C&ut"
 msgstr ""
 
@@ -127,6 +130,9 @@ msgid "Center Horizontally"
 msgstr ""
 
 msgid "Center Vertically"
+msgstr ""
+
+msgid "Check for UML .FRI updates at the application startup"
 msgstr ""
 
 msgid "Check for updates"
@@ -220,6 +226,9 @@ msgid "Homepage"
 msgstr ""
 
 msgid "Ignore This Update"
+msgstr ""
+
+msgid "Ignored Versions"
 msgstr ""
 
 msgid "Install AddOn From File"
@@ -328,6 +337,9 @@ msgid "Remind me later"
 msgstr ""
 
 msgid "Remove from the List"
+msgstr ""
+
+msgid "Remove version"
 msgstr ""
 
 msgid "Reverse Connection"

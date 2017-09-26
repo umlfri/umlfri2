@@ -4,10 +4,11 @@ from PyQt5.QtWidgets import QDialog, QVBoxLayout, QTabWidget, QDialogButtonBox
 from umlfri2.application import Application
 from umlfri2.application.events.application import LanguageChangedEvent
 from .general import SettingsDialogGeneral
+from .updates import SettingsDialogUpdates
 
 
 class SettingsDialog(QDialog):
-    __tab_classes = [SettingsDialogGeneral]
+    __tab_classes = [SettingsDialogGeneral, SettingsDialogUpdates]
     
     def __init__(self, main_window):
         super().__init__(main_window)

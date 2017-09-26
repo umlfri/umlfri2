@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-22 14:40+0200\n"
-"PO-Revision-Date: 2017-09-22 14:46+0200\n"
+"POT-Creation-Date: 2017-09-26 12:14+0200\n"
+"PO-Revision-Date: 2017-09-26 12:15+0200\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -117,6 +117,9 @@ msgstr "Použiť"
 msgid "Author"
 msgstr "Autor"
 
+msgid "Automatic Updates"
+msgstr "Automatické aktualizácie"
+
 msgid "C&ut"
 msgstr "Vy&strihnúť"
 
@@ -128,6 +131,9 @@ msgstr "Centrovať vodorovne"
 
 msgid "Center Vertically"
 msgstr "Centrovať zvisle"
+
+msgid "Check for UML .FRI updates at the application startup"
+msgstr "Skontrolovať aktualizácie UML .FRI pri spustení programu"
 
 msgid "Check for updates"
 msgstr "Skontroluj aktualizácie"
@@ -223,6 +229,9 @@ msgstr "Domovská stránka"
 
 msgid "Ignore This Update"
 msgstr "Ignorovať verziu"
+
+msgid "Ignored Versions"
+msgstr "Ignorované verzie"
 
 msgid "Install AddOn From File"
 msgstr "Nainštaluj rozšírenie zo súboru"
@@ -331,6 +340,9 @@ msgstr "Upozorni ma neskôr"
 
 msgid "Remove from the List"
 msgstr "Odstrániť zo zoznamu"
+
+msgid "Remove version"
+msgstr "Odstrániť verziu"
 
 msgid "Reverse Connection"
 msgstr "Otočiť smer spojenia"

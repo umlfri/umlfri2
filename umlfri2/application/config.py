@@ -10,7 +10,8 @@ class ApplicationConfig:
     
     def __init__(self):
         self.__language = None
-        self.__ignored_version = None
+        self.__ignored_versions = []
+        self.__auto_check_updates = True
         
         if os.path.exists(self.CONFIG_FILE):
             self.__load()
@@ -21,31 +22,58 @@ class ApplicationConfig:
     
     @language.setter
     def language(self, value):
+        if self.__language == value:
+            return
+        
         self.__language = value
         
         self.__save()
     
     @property
-    def ignored_version(self):
-        return self.__ignored_version
+    def ignored_versions(self):
+        yield from self.__ignored_versions
     
-    @ignored_version.setter
-    def ignored_version(self, value):
-        self.__ignored_version = value
+    def ignore_version(self, version):
+        if version in self.__ignored_versions:
+            return
+        
+        self.__ignored_versions.append(version)
         
         self.__save()
-
+    
+    def unignore_versions(self, *versions):
+        if versions and not all(ver in self.__ignored_versions for ver in versions):
+            return
+        
+        for ver in versions:
+            self.__ignored_versions.remove(ver)
+        
+        self.__save()
+    
+    @property
+    def auto_check_updates(self):
+        return self.__auto_check_updates
+    
+    @auto_check_updates.setter
+    def auto_check_updates(self, value):
+        if self.__auto_check_updates == value:
+            return
+        
+        self.__auto_check_updates = value
+        
+        self.__save()
+    
     def __load(self):
         cp = ConfigParser()
 
         cp.read(self.CONFIG_FILE)
         
         self.__language = cp.get('Language', 'code', fallback=None)
-        ignored_version = cp.get('Updates', 'ignored_version', fallback=None)
-        if ignored_version is None:
-            self.__ignored_version = None
-        else:
-            self.__ignored_version = Version(ignored_version)
+        
+        ignored_versions = cp.get('Updates', 'ignored_versions', fallback='')
+        self.__ignored_versions = [Version(ver) for ver in ignored_versions.split()]
+        
+        self.__auto_check_updates = cp.getboolean('Updates', 'check_on_startup', fallback=True)
     
     def __save(self):
         if not os.path.exists(CONFIG):
@@ -57,9 +85,11 @@ class ApplicationConfig:
             cp.add_section('Language')
             cp.set('Language', 'code', self.__language)
         
-        if self.__ignored_version is not None:
+        cp.add_section('Updates')
+        cp.set('Updates', 'ignored_versions', ' '.join(str(ver) for ver in self.__ignored_versions))
+        if not cp.has_section('Updates'):
             cp.add_section('Updates')
-            cp.set('Updates', 'ignored_version', str(self.__ignored_version))
-
+        cp.set('Updates', 'check_on_startup', 'no')
+        
         with open(self.CONFIG_FILE, 'w') as cf:
             cp.write(cf)

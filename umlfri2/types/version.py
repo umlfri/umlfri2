@@ -71,6 +71,9 @@ class Version:
         
         return self.__get_comparable() >= other.__get_comparable()
     
+    def __hash__(self):
+        return hash(str(self))
+    
     def __str__(self):
         ver = '.'.join(str(part) for part in self.__version)
         if self.__suffix:
