@@ -65,7 +65,7 @@ class UflMutableObject(UflMutable):
         changes = []
         for name, (old_value, value) in self.__attributes.items():
             if self.__type.get_attribute(name).type.is_immutable:
-                if old_value is not value:
+                if old_value != value:
                     changes.append(UflObjectPatch.AttributeChanged(name, old_value, value))
             else:
                 patch = value.make_patch()
