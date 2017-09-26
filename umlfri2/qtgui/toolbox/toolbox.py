@@ -40,7 +40,8 @@ class ToolBox(QWidget):
         self.__widgets = []
         
         if drawing_area is None:
-            self.__add_button(self.__arrow, _('Select'), None, drawing_area, True)
+            button = self.__add_button(self.__arrow, _('Select'), None, drawing_area, True)
+            button.setEnabled(False)
             return
         
         current_connection = None
@@ -102,6 +103,8 @@ class ToolBox(QWidget):
         button.clicked.connect(on_clicked)
         self.__vbox.addWidget(button)
         self.__widgets.append(button)
+        
+        return button
     
     def __add_separator(self):
         line = HLineWidget()
