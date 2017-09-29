@@ -81,15 +81,22 @@ class ApplicationConfig:
         
         cp = ConfigParser()
         
-        if self.__language is not None:
-            cp.add_section('Language')
+        cp.add_section('Language')
+        
+        if self.__language is None:
+            # comment out the option
+            cp.set('Language', '; code', '')
+        else:
             cp.set('Language', 'code', self.__language)
         
         cp.add_section('Updates')
+        
+        if self.__auto_check_updates:
+            cp.set('Updates', 'check_on_startup', 'yes')
+        else:
+            cp.set('Updates', 'check_on_startup', 'no')
+        
         cp.set('Updates', 'ignored_versions', ' '.join(str(ver) for ver in self.__ignored_versions))
-        if not cp.has_section('Updates'):
-            cp.add_section('Updates')
-        cp.set('Updates', 'check_on_startup', 'no')
         
         with open(self.CONFIG_FILE, 'w') as cf:
             cp.write(cf)
