@@ -7,10 +7,12 @@
     <Element id="decision" label="Decision"/>
     <Element id="merge" label="Merge"/>
     <Element id="class" label="Class"/>
+    <Element id="object" label="Object"/>
     <Element id="package" label="Package"/>
     <Element id="note" label="Note"/>
     
     <Diagram id="class_diagram" label="Class Diagram"/>
+    <Diagram id="object_diagram" label="Object Diagram"/>
     <Diagram id="activity_diagram" label="Activity Diagram"/>
     <Diagram id="use_case_diagram" label="Use Case Diagram"/>
     
@@ -18,6 +20,8 @@
     <Connection id="composition" label="Composition"/>
     <Connection id="generalisation" label="Generalisation"/>
     <Connection id="implementation" label="Implementation"/>
+    <Connection id="instance_of" label="Instance Of"/>
+    <Connection id="reference" label="Reference"/>
     <Connection id="activity_control_flow" label="Control Flow"/>
     <Connection id="note_link" label="Note Link"/>
     
@@ -29,9 +33,12 @@
     <EnumItem path="**/visibility/-" label="Private"/>
     <EnumItem path="**/visibility/#" label="Protected"/>
     <EnumItem path="**/visibility/~" label="Package"/>
+    <EnumItem path="**/visibility/unspecified" label=""/>
     <Attribute path="**/abstract" label="Abstract"/>
     <Attribute path="**/static" label="Static"/>
     <Attribute path="**/note" label="Note"/>
+    <Attribute path="**/cardinality" label="Cardinality"/>
+    <Attribute path="**/role" label="Role"/>
     
     <Attribute path="class/attributes" label="Attributes"/>
     <Attribute path="class/operations" label="Operations"/>
@@ -49,12 +56,13 @@
     <EnumItem path="association/direction/bidirectional" label="Bidirectional"/>
     <Attribute path="association/source" label="Source"/>
     <Attribute path="association/destination" label="Destination"/>
-    <Attribute path="association/*/cardinality" label="Cardinality"/>
-    <EnumItem path="association/*/visibility/unspecified" label=""/>
-    <Attribute path="association/*/role" label="Role"/>
     
     <Attribute path="composition/cardinality" label="Cardinality"/>
     <Attribute path="composition/role" label="Role"/>
+
+    <Attribute path="object/class" label="Instance of Class"/>
+    <Attribute path="object/attributes" label="Attributes"/>
+    <Attribute path="object/attributes/value" label="Value"/>
     
     <Attribute path="activity_control_flow/guard" label="Guard"/>
     

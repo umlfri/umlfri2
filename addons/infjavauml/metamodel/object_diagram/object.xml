@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ElementType id="object" xmlns="http://umlfri.org/v2/addon.xsd">
+    <Icon path="icons/object.png"/>
+
+    <Structure>
+        <Attribute id="name" type="str">
+            <Template>
+                <Text text="object"/>
+                <Text text="#no"/>
+            </Template>
+        </Attribute>
+        <Attribute id="class" type="str"/>
+        <Attribute id="stereotype" type="str"/>
+        <Attribute id="attributes" type="object[]">
+            <Attribute id="name" type="str">
+                <Template>
+                    <Text text="attr"/>
+                    <Text text="#no"/>
+                </Template>
+            </Attribute>
+            <Attribute id="stereotype" type="str"/>
+            <Attribute id="visibility" type="enum">
+                <Value value="-"/>
+                <Value value="#"/>
+                <Value value="+"/>
+                <Value value="~"/>
+            </Attribute>
+            <Attribute id="value" type="str"/>
+            <Attribute id="note" type="text"/>
+        </Attribute>
+        <Attribute id="note" type="text"/>
+    </Structure>
+
+    <DisplayName>
+        <Text text="#self.name"/>
+        <If condition="#self.class">
+            <If condition="#self.name">
+                <Text text=" "/>
+            </If>
+            <Text text=": "/>
+            <Text text="#self.class"/>
+        </If>
+    </DisplayName>
+
+    <Appearance>
+        <Shadow padding="5" color="#cfg.element.shadow">
+            <Rectangle fill="#cfg.element.fill" border="#cfg.element.line">
+                <VBox>
+                    <Padding padding="5">
+                        <VBox>
+                            <If condition="#self.stereotype">
+                                <Align horizontal="center">
+                                    <TextBox font="#cfg.element.textfont" color="#cfg.element.text">
+                                        <Text text="&#171;"/>
+                                        <Text text="#self.stereotype"/>
+                                        <Text text="&#187;"/>
+                                    </TextBox>
+                                </Align>
+                            </If>
+                            <Align horizontal="center">
+                                <TextBox
+                                        font="#cfg.element.headingfont.change(FontStyle::underline, true)"
+                                        color="#cfg.element.heading">
+                                    <Text text="#self.name"/>
+                                    <If condition="#self.class">
+                                        <If condition="#self.name">
+                                            <Text text=" "/>
+                                        </If>
+                                        <Text text=": "/>
+                                        <Text text="#self.class"/>
+                                    </If>
+                                </TextBox>
+                            </Align>
+                        </VBox>
+                    </Padding>
+                    <Line color="#cfg.element.line"/>
+                    <Padding padding="5">
+                        <Table>
+                            <ForEach src="#self.attributes">
+                                <Row>
+                                    <TextBox font="#cfg.element.textfont" color="#cfg.element.text">
+                                        <Text text="#visibility"/>
+                                        <Text text=" "/>
+                                    </TextBox>
+                                    <TextBox color="#cfg.element.text" font="#cfg.element.textfont">
+                                        <If condition="#stereotype">
+                                            <Text text="&#171;"/>
+                                            <Text text="#stereotype"/>
+                                            <Text text="&#187;  "/>
+                                        </If>
+                                        <Text text="#name"/>
+                                        <If condition="#value">
+                                            <Text text=" = "/>
+                                            <Text text="#value"/>
+                                        </If>
+                                    </TextBox>
+                                </Row>
+                            </ForEach>
+                        </Table>
+                    </Padding>
+                </VBox>
+            </Rectangle>
+        </Shadow>
+    </Appearance>
+</ElementType>

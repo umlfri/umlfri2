@@ -2,7 +2,7 @@
 <AddOn id="urn:umlfri.org:metamodel:infjavauml" xmlns="http://umlfri.org/v2/addon.xsd">
     <AddOnInfo>
         <Name name="UML for FRI students"/>
-        <Version version="0.1"/>
+        <Version version="0.2"/>
         <Author name="Ján Janech"/>
         <Homepage url="http://umlfri.org"/>
         <CommonLicense name="GPL-3"/>

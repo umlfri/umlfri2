@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ConnectionType id="reference" xmlns="http://umlfri.org/v2/addon.xsd">
+    <Icon path="icons/association.png"/>
+
+    <Structure>
+        <Attribute id="stereotype" type="str"/>
+        <Attribute id="visibility" type="enum" default="-">
+            <Value value="unspecified"/>
+            <Value value="-"/>
+            <Value value="#"/>
+            <Value value="+"/>
+            <Value value="~"/>
+        </Attribute>
+        <Attribute id="role" type="str"/>
+        <Attribute id="note" type="text"/>
+    </Structure>
+
+    <Appearance>
+        <Line style="solid" color="#cfg.connection.line"/>
+
+        <Arrow position="100%" style="simple" color="#cfg.connection.arrow"/>
+
+        <Label position="90%" id="name">
+            <VBox>
+                <If condition="#self.stereotype">
+                    <Align horizontal="center">
+                        <Rectangle fill="#cfg.background">
+                            <TextBox font="#cfg.connection.textfont" color="#cfg.connection.text">
+                                <Text text="&#171;"/>
+                                <Text text="#self.stereotype"/>
+                                <Text text="&#187;"/>
+                            </TextBox>
+                        </Rectangle>
+                    </Align>
+                </If>
+
+                <If condition="#self.role">
+                    <Rectangle fill="#cfg.background">
+                        <TextBox font="#cfg.connection.textfont" color="#cfg.connection.text">
+                            <If condition="#self.visibility != 'unspecified'">
+                                <Text text="#self.visibility"/>
+                            </If>
+                            <Text text="#self.role"/>
+                        </TextBox>
+                    </Rectangle>
+                </If>
+            </VBox>
+        </Label>
+    </Appearance>
+</ConnectionType>

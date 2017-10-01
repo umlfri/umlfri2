@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ConnectionType id="instance_of" xmlns="http://umlfri.org/v2/addon.xsd">
+    <Icon path="icons/implementation.png"/>
+
+    <Structure>
+        <Attribute id="note" type="text"/>
+    </Structure>
+
+    <Appearance>
+        <Line style="dot" color="#cfg.connection.line"/>
+        <Arrow position="100%" style="triangle" color="#cfg.connection.arrow" fill="#cfg.connection.fill"/>
+        
+        <Label position="50%" id="name">
+            <Rectangle fill="#cfg.background">
+                <TextBox
+                        font="#cfg.connection.textfont"
+                        color="#cfg.connection.text"
+                        text="&#171;instance of&#187;"/>
+            </Rectangle>
+        </Label>
+    </Appearance>
+</ConnectionType>
