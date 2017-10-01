@@ -93,7 +93,7 @@ class ImageExport:
     def __draw(self, bounds, output):
         painter = QPainter()
         painter.begin(output)
-        painter.setRenderHint(QPainter.Antialiasing)
+        painter.setRenderHints(QPainter.Antialiasing | QPainter.TextAntialiasing)
         canvas = QTPainterCanvas(painter)
         canvas.zoom(self.__zoom)
         canvas.translate(Vector(-bounds.x1 + self.__padding, -bounds.y1 + self.__padding))

@@ -112,6 +112,7 @@ class QTPainterCanvas(Canvas):
         qfont.setItalic(FontStyle.italic in font.style)
         qfont.setStrikeOut(FontStyle.strike in font.style)
         qfont.setUnderline(FontStyle.underline in font.style)
+        qfont.setStyleStrategy(QFont.PreferAntialias)
         metrics = QFontMetrics(qfont)
         
         self.__painter.setFont(qfont)
