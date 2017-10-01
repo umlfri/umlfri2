@@ -63,6 +63,8 @@ class UflCompilingVisitor(UflVisitor):
         )
 
     def visit_variable(self, node):
+        if node.name in ('true', 'false'):
+            return UflBoolType(), node.name.capitalize()
         return self.__params[node.name], node.name
 
     def visit_binary(self, node):
