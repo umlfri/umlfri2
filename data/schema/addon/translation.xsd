@@ -5,33 +5,39 @@
     <xs:element name="Translation">
         <xs:complexType>
             <xs:choice minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="Element" minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="Element">
                     <xs:complexType>
                         <xs:attribute name="id" type="xs:string"/>
                         <xs:attribute name="label" type="xs:string"/>
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="Diagram" minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="Diagram">
                     <xs:complexType>
                         <xs:attribute name="id" type="xs:string"/>
                         <xs:attribute name="label" type="xs:string"/>
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="Connection" minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="Connection">
                     <xs:complexType>
                         <xs:attribute name="id" type="xs:string"/>
                         <xs:attribute name="label" type="xs:string"/>
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="Attribute" minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="Attribute">
                     <xs:complexType>
                         <xs:attribute name="path" type="xs:string"/>
                         <xs:attribute name="label" type="xs:string"/>
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="EnumItem" minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="EnumItem">
                     <xs:complexType>
                         <xs:attribute name="path" type="xs:string"/>
+                        <xs:attribute name="label" type="xs:string"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Template">
+                    <xs:complexType>
+                        <xs:attribute name="file_name" type="xs:string"/>
                         <xs:attribute name="label" type="xs:string"/>
                     </xs:complexType>
                 </xs:element>

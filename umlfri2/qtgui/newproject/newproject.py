@@ -9,7 +9,8 @@ from umlfri2.qtgui.base import image_loader
 
 class TemplateItem(QListWidgetItem):
     def __init__(self, template):
-        super().__init__(template.name)
+        translation = template.metamodel.get_translation(Application().language.current_language)
+        super().__init__(translation.translate(template))
         self.setIcon(image_loader.load_icon(template.icon))
         self.__template = template
     
@@ -48,7 +49,7 @@ class NewProjectDialog(QDialog):
         self.__description.setWordWrap(True)
         
         self.__project_name = QLineEdit()
-        self.__project_name.setText("Project")
+        self.__project_name.setText(_("Project"))
         self.__project_name.textChanged.connect(self.__name_changed)
         project_name_layout = QFormLayout()
         project_name_layout.addRow(_("Project &name:"), self.__project_name)

@@ -1,6 +1,7 @@
 from ..diagramtype import DiagramType
 from ..elementtype import ElementType
 from ..connectiontype import ConnectionType
+from ..projecttemplate import ProjectTemplate
 
 from umlfri2.ufl.types import UflObjectAttribute, UflEnumPossibility
 
@@ -15,6 +16,7 @@ class Translation:
         self.__connection_names = {}
         self.__attribute_names = AttributeTranslation()
         self.__enum_item_names = AttributeTranslation()
+        self.__template_names = {}
         
         for type, path, label in translations:
             if type == 'element':
@@ -35,6 +37,8 @@ class Translation:
                 for part in reversed(path.split('/')):
                     child = child.add_parent(part)
                 child.label = label
+            elif type == 'template':
+                self.__template_names[path] = label
     
     @property
     def language(self):
@@ -59,6 +63,8 @@ class Translation:
                 return object.name
             else:
                 return ret
+        elif isinstance(object, ProjectTemplate):
+            return self.__template_names.get(object.file_name, object.file_name)
         raise Exception
 
 

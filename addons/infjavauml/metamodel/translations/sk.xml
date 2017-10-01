@@ -59,4 +59,7 @@
     <Attribute path="composition/role" label="Roľa"/>
     
     <Attribute path="activity_control_flow/guard" label="Podmienka"/>
+
+    <Template file_name="empty.xml" label="Prázdny model UML"/>
+    <Template file_name="empty_class.xml" label="UML model s diagramom tried"/>
 </Translation>

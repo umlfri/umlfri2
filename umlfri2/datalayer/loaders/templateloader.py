@@ -29,14 +29,10 @@ class TemplateLoader:
         name = None
         
         for child in node:
-            if child.tag == "{{{0}}}Name".format(MODEL_NAMESPACE):
-                name = child.attrib["name"]
-            elif child.tag == "{{{0}}}Metamodel".format(MODEL_NAMESPACE):
+            if child.tag == "{{{0}}}Metamodel".format(MODEL_NAMESPACE):
                 metamodel = child.attrib["id"]
-            else:
-                raise Exception
         
         if metamodel != self.__metamodel_identifier:
             raise Exception
         
-        return ProjectTemplate(self.__storage.remember_reference(), name, self.__path)
+        return ProjectTemplate(self.__storage.remember_reference(), self.__path)
