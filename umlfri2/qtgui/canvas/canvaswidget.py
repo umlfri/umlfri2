@@ -116,12 +116,11 @@ class CanvasWidget(QWidget):
     def mouseDoubleClickEvent(self, event):
         pos = event.pos()
         point = Point(pos.x(), pos.y())
+
+        self.__drawing_area.ensure_selection_at(point)
         
         visual = self.__drawing_area.selection.get_lonely_selected_visual()
         if visual is None:
-            return
-        
-        if not visual.is_at_position(Application().ruler, point):
             return
         
         if not visual.object.has_ufl_dialog:
