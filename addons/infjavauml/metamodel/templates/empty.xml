@@ -1,7 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project id="59402394-9208-11e5-989e-88ae1da9fec3" xmlns="http://umlfri.org/v2/model.xsd" saveversion="2.0">
-    <Info>
-        <Name name="Project"/>
-        <Metamodel id="urn:umlfri.org:metamodel:infjavauml" version="0.1"/>
-    </Info>
-</Project>
+<Template id="empty" xmlns="http://umlfri.org/v2/addon.xsd" />

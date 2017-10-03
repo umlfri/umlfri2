@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://umlfri.org/v2/addon.xsd"
+           targetNamespace="http://umlfri.org/v2/addon.xsd" elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+    <xs:element name="Template">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Element" type="element" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="element">
+        <xs:sequence>
+            <xs:element name="Attribute" type="ufl_attribute" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="Diagram" type="diagram" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="Element" type="element" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="Connection" type="connection" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:string" use="optional"/>
+        <xs:attribute name="type" type="xs:string" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="connection">
+        <xs:sequence>
+            <xs:element name="Attribute" type="ufl_attribute" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:string" use="optional"/>
+        <xs:attribute name="type" type="xs:string" use="required"/>
+        <xs:attribute name="to" type="xs:string" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="diagram">
+        <xs:sequence>
+            <xs:element name="Attribute" type="ufl_attribute" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="Element" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="id" type="xs:string"/>
+                    <xs:attribute name="x" type="xs:integer"/>
+                    <xs:attribute name="y" type="xs:integer"/>
+                    <xs:attribute name="width" type="xs:integer"/>
+                    <xs:attribute name="height" type="xs:integer"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Connection" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Point" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:attribute name="x" type="xs:integer"/>
+                                <xs:attribute name="y" type="xs:integer"/>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="Label" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:attribute name="id" type="xs:string"/>
+                                <xs:attribute name="x" type="xs:integer"/>
+                                <xs:attribute name="y" type="xs:integer"/>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:string" use="optional"/>
+        <xs:attribute name="type" type="xs:string" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="ufl_attribute">
+        <xs:choice>
+            <xs:element name="Attribute" type="ufl_attribute" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="Item" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Attribute" type="ufl_attribute" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                    <xs:attribute name="value" type="xs:string" use="optional"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+        <xs:attribute name="id" type="xs:string" use="required"/>
+        <xs:attribute name="value" type="xs:string" use="optional"/>
+    </xs:complexType>
+</xs:schema>

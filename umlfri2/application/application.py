@@ -15,10 +15,10 @@ from .dispatcher import EventDispatcher
 from .recentfiles import RecentFiles
 
 from umlfri2.datalayer import Storage
-from umlfri2.datalayer.loaders import ProjectLoader, WholeSolutionLoader
+from umlfri2.datalayer.loaders import WholeSolutionLoader
 from umlfri2.datalayer.savers import WholeSolutionSaver
 from umlfri2.datalayer.storages import ZipStorage
-from umlfri2.model import Solution
+from umlfri2.model import Solution, ProjectBuilder
 
 
 class MetaApplication(type):
@@ -131,8 +131,8 @@ class Application(metaclass=MetaApplication):
     def new_project(self, template, new_solution=True, project_name="Project"):
         if new_solution:
             self.__event_dispatcher.dispatch(CloseSolutionEvent(self.__solution))
-            project = ProjectLoader(template.load(), self.__ruler, True, project_name, addon=template.addon).load()
-            self.__solution = Solution(project)
+            builder = ProjectBuilder(template)
+            self.__solution = Solution(builder.project)
             self.__solution_storage_ref = None
             self.__commands.clear_buffers()
             self.__commands.mark_unchanged()

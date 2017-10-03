@@ -10,7 +10,7 @@ class Metamodel:
         self.__elements = OrderedDict(item for item in sorted(elements.items()))
         self.__connections = OrderedDict(item for item in sorted(connections.items()))
         self.__templates = list(templates)
-        self.__templates.sort(key=lambda item: item.file_name)
+        self.__templates.sort(key=lambda item: item.id)
         self.__translations = TranslationList(translations)
         
         if config is None:

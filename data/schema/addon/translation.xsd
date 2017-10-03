@@ -37,7 +37,7 @@
                 </xs:element>
                 <xs:element name="Template">
                     <xs:complexType>
-                        <xs:attribute name="file_name" type="xs:string"/>
+                        <xs:attribute name="id" type="xs:string"/>
                         <xs:attribute name="label" type="xs:string"/>
                     </xs:complexType>
                 </xs:element>

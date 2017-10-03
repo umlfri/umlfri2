@@ -41,7 +41,7 @@ class MetamodelLoader:
                 translationXMLs.append((file, xml))
             elif xml.tag == "{{{0}}}Config".format(ADDON_NAMESPACE):
                 configXMLs = (file, xml)
-            elif xml.tag == "{{{0}}}Project".format(MODEL_NAMESPACE):
+            elif xml.tag == "{{{0}}}Template".format(ADDON_NAMESPACE):
                 templateXMLs.append((file, xml))
         
         if definitionXMLs is not None:
@@ -71,7 +71,7 @@ class MetamodelLoader:
         
         templates = []
         for file, template in templateXMLs:
-            templates.append(TemplateLoader(self.__storage, template, file, self.__addon_info.identifier).load())
+            templates.append(TemplateLoader(template).load())
         
         translations = []
         for file, translation in translationXMLs:

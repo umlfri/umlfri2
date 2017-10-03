@@ -66,6 +66,6 @@
     
     <Attribute path="activity_control_flow/guard" label="Guard"/>
     
-    <Template file_name="empty.xml" label="Empty UML model"/>
-    <Template file_name="empty_class.xml" label="UML with class diagram"/>
+    <Template id="empty" label="Empty UML model"/>
+    <Template id="empty_class" label="UML with class diagram"/>
 </Translation>

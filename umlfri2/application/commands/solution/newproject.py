@@ -1,5 +1,5 @@
 from umlfri2.application.events.solution import OpenProjectEvent
-from umlfri2.datalayer.loaders import ProjectLoader
+from umlfri2.model import ProjectBuilder
 from ..base import Command
 
 
@@ -15,8 +15,8 @@ class NewProjectCommand(Command):
         return "Creating a new project from template '{0}'".format(self.__template_name)
     
     def _do(self, ruler):
-        self.__project = ProjectLoader(self.__template.load(), ruler, True, self.__project_name,
-                                       addon=self.__template.addon).load()
+        builder = ProjectBuilder(self.__template)
+        self.__project = builder.project
         
         self._redo(ruler)
     

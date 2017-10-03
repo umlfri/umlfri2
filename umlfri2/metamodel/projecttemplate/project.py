@@ -1,18 +1,15 @@
-import os.path
-
-
 class ProjectTemplate:
-    def __init__(self, storage_ref, path):
-        self.__storage_ref = storage_ref
-        self.__path = path
+    def __init__(self, id, elements):
+        self.__id = id
+        self.__elements = elements
         self.__metamodel = None
     
     def _set_metamodel(self, metamodel):
         self.__metamodel = metamodel
     
     @property
-    def file_name(self):
-        return os.path.basename(self.__path)
+    def id(self):
+        return self.__id
     
     @property
     def icon(self):
@@ -25,6 +22,3 @@ class ProjectTemplate:
     @property
     def metamodel(self):
         return self.__metamodel
-    
-    def load(self):
-        return self.__storage_ref.open().open(self.__path)

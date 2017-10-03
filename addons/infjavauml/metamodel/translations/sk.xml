@@ -68,6 +68,6 @@
     
     <Attribute path="activity_control_flow/guard" label="Podmienka"/>
 
-    <Template file_name="empty.xml" label="Prázdny model UML"/>
-    <Template file_name="empty_class.xml" label="UML model s diagramom tried"/>
+    <Template id="empty" label="Prázdny model UML"/>
+    <Template id="empty_class" label="UML model s diagramom tried"/>
 </Translation>

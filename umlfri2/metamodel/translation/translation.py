@@ -64,7 +64,7 @@ class Translation:
             else:
                 return ret
         elif isinstance(object, ProjectTemplate):
-            return self.__template_names.get(object.file_name, object.file_name)
+            return self.__template_names.get(object.id, object.id)
         raise Exception
 
 
