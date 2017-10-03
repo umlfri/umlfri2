@@ -1,7 +1,8 @@
 class ProjectTemplate:
-    def __init__(self, id, elements):
+    def __init__(self, id, elements, diagrams):
         self.__id = id
         self.__elements = elements
+        self.__diagrams = diagrams
         self.__metamodel = None
     
     def _set_metamodel(self, metamodel):
@@ -25,8 +26,15 @@ class ProjectTemplate:
     
     @property
     def elements(self):
-        return self.__elements
+        yield from self.__elements
+    
+    @property
+    def diagrams(self):
+        yield from self.__diagrams
     
     def compile(self):
         for element in self.__elements:
             element._compile(self.__metamodel)
+        
+        for diagram in self.__diagrams:
+            diagram._compile(self.__metamodel)

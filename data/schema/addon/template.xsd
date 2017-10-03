@@ -61,7 +61,6 @@
                 </xs:complexType>
             </xs:element>
         </xs:sequence>
-        <xs:attribute name="id" type="xs:string" use="optional"/>
         <xs:attribute name="type" type="xs:string" use="required"/>
     </xs:complexType>
     <xs:complexType name="ufl_attribute">
