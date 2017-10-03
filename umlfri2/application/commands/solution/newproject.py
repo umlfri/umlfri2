@@ -5,14 +5,15 @@ from ..base import Command
 
 class NewProjectCommand(Command):
     def __init__(self, solution, template, project_name):
-        self.__template_name = template.name
+        self.__template_id = template.id
         self.__project_name = project_name
         self.__solution = solution
         self.__template = template
         self.__project = None
-        
+    
+    @property
     def description(self):
-        return "Creating a new project from template '{0}'".format(self.__template_name)
+        return "Creating a new project from template '{0}'".format(self.__template_id)
     
     def _do(self, ruler):
         builder = ProjectBuilder(self.__template)
