@@ -74,31 +74,11 @@ class ElementVisual:
         self.__cached_appearance.draw(canvas)
 
     def resize(self, ruler, new_size):
-        self.__cache.ensure_valid(ruler=ruler)
-        
-        min_size = self.__cached_appearance.get_minimal_size()
-        w_min = min_size.width
-        h_min = min_size.height 
-        w_new = new_size.width
-        h_new = new_size.height
-        
-        if w_new < w_min:
-            w_new = w_min
-        
-        if h_new < h_min:
-            h_new = h_min
-        
-        new_size = Size(w_new, h_new)
-        
-        self.__cached_appearance.resize(new_size)
         self.__size = new_size
         
         self.__cache.invalidate()
     
     def move(self, ruler, new_position):
-        self.__cache.ensure_valid(ruler=ruler)
-        
-        self.__cached_appearance.move(new_position)
         self.__position = new_position
         
         self.__cache.invalidate()
