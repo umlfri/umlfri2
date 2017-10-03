@@ -92,3 +92,6 @@ class Metamodel:
         
         for connection in self.__connections.values():
             connection.compile()
+        
+        for template in self.__templates:
+            template.compile()

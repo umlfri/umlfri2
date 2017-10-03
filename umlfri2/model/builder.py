@@ -1,4 +1,5 @@
 from .project import Project
+from .element import ElementObject
 
 
 class ProjectBuilder:
@@ -15,3 +16,14 @@ class ProjectBuilder:
 
     def __build_project(self):
         self.__project = Project(self.__template.metamodel, name=self.__name)
+        
+        for element in self.__template.elements:
+            self.__project.add_child(self.__build_element_object(self.__project, element))
+
+    def __build_element_object(self, parent, element):
+        ret = ElementObject(parent, element.type)
+        
+        for child in element.children:
+            ret.add_child(self.__build_element_object(ret, child))
+        
+        return ret

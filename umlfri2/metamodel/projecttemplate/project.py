@@ -22,3 +22,11 @@ class ProjectTemplate:
     @property
     def metamodel(self):
         return self.__metamodel
+    
+    @property
+    def elements(self):
+        return self.__elements
+    
+    def compile(self):
+        for element in self.__elements:
+            element._compile(self.__metamodel)
