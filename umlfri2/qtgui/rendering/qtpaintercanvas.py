@@ -61,6 +61,7 @@ class QTPainterCanvas(Canvas):
         
         self.__painter.translate(delta.x, delta.y)
         self.__delta = delta
+        self.__delta_set = True
     
     def zoom(self, zoom):
         if self.__zoom_set or self.__delta_set:
@@ -69,6 +70,7 @@ class QTPainterCanvas(Canvas):
         if zoom != 1:
             self.__painter.scale(zoom, zoom)
             self.__zoom = zoom
+            self.__zoom_set = True
         
     def draw_ellipse(self, rectangle, fg=None, bg=None, line_width=None, line_style=None):
         self.__set_brush(bg)
@@ -136,10 +138,14 @@ class QTPainterCanvas(Canvas):
             self.__painter.setBackground(QColor(255, 255, 255))
         else:
             self.__painter.setBackground(self.__convert_color(color))
-        size = self.__painter.viewport()
-        self.__painter.eraseRect(
-            QRect(-self.__delta.x, -self.__delta.y, size.width() / self.__zoom, size.height() / self.__zoom)
-        )
+
+        rect = self.__painter.viewport()
+        
+        if self.__zoom_set or self.__delta_set:
+            transform, invertible = self.__painter.worldTransform().inverted()
+            rect = QRect(transform.map(rect.topLeft()), transform.map(rect.bottomRight()))
+        
+        self.__painter.eraseRect(rect)
     
     def get_ruler(self):
         return self.__ruler
