@@ -1,22 +1,24 @@
 Dependency installation for Mac OS X
 ====================================
 
-1. Install Xcode
------------------
+Minimum required version of Mac Os X is 10.10 (Yosemite).
+
+Install Xcode
+-------------
 
 Xcode tool is required for the UML .FRI installation. You can find it in the apple store.
 
     https://itunes.apple.com/us/app/xcode/id497799835
 
-2. Install packaging system brew
---------------------------------
+Install packaging system brew
+-----------------------------
 
 Homebrew is required for installing binary dependencies onto Mac machine.
 
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-3. Install prerequisites - Qt and Python3
------------------------------------------
+Install prerequisites - Qt and Python3
+--------------------------------------
 
 UML .FRI tool is written using Python3 language. You can install it using brew.
 
@@ -27,8 +29,8 @@ the application can be used.
 
     brew install qt5
 
-4. Downloading sources using GIT
---------------------------------
+Downloading sources using GIT
+-----------------------------
 
 GIT version control is used to store source code of UML .FRI application.
 
@@ -41,8 +43,8 @@ the working copy:
 
     git pull
 
-5. Install other dependencies
------------------------------
+Install other dependencies
+--------------------------
 
 UML .FRI needs the pyparsing library for parsing ufl expressions, lxml library for reading and writing XML, and
 some others. You can install it using pip.
@@ -51,8 +53,8 @@ Just start following command inside the UML .FRI working directory:
 
     pip3 install -r doc/dependencies.pip
 
-6. Starting the application
----------------------------
+Starting the application
+------------------------
 
 After that, you can start UML .FRI by executing this inside the working directory:
 
