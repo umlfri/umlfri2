@@ -1,54 +1,55 @@
 Dependency installation for Mac OS X
 ====================================
 
-1. Install Python for Mac
--------------------------
+1. Install Xcode
+-----------------
 
-You can download Python from this link:
-https://www.python.org/downloads/release/python-360/
+Xcode tool is required for the UML .FRI installation. You can find it in the apple store.
 
-2. Install packaging systems - brew and pip
--------------------------------------------
+    https://itunes.apple.com/us/app/xcode/id497799835
 
-Homebrew is required for installing binary dependencies onto Mac machine. Pip, on the other hand, is used to install
-Python libraries.
+2. Install packaging system brew
+--------------------------------
 
-    curl https://bootstrap.pypa.io/get-pip.py | python3
+Homebrew is required for installing binary dependencies onto Mac machine.
+
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-3. Install QT library
----------------------
+3. Install prerequisites - Qt and Python3
+-----------------------------------------
 
-UML .FRI is written using the QT library. The library is needed to be installed before the application can be used.
+UML .FRI tool is written using Python3 language. You can install it using brew.
 
-    brew install qt
+    brew install python3
 
-Python wrapper for QT library used in UML .FRI is PyQt5. It can be installed using pip package manageer.
+UML .FRI is using the QT library for creating GUI. The library is needed to be installed before
+the application can be used.
 
-    brew install cmake
-    pip install PyQt5
+    brew install qt5
 
-4. Install other dependencies
------------------------------
+4. Downloading sources using GIT
+--------------------------------
 
-UML .FRI needs the pyparsing library for parsing ufl expressions and lxml library for reading and writing XML.
-
-    pip install pyparsing
-    pip install lxml
-
-5. Downloading sources using mercurial
---------------------------------------
-
-Mercurial version control is used to store source code of UML .FRI application.
+GIT version control is used to store source code of UML .FRI application.
 
 You can download your copy of UML .FRI for the first time by using the following commands:
 
-    brew install mercurial
-    hg clone http://hg.janik.ws/public/umlfri2
+    git clone https://github.com/umlfri/umlfri2.git
 
-If you only want to update existing source code to the newest version, use the following commands inside the working copy:
+If you only want to update existing source code to the newest version, use the following commands inside
+the working copy:
 
-    hg pull && hg update
+    git pull
+
+5. Install other dependencies
+-----------------------------
+
+UML .FRI needs the pyparsing library for parsing ufl expressions, lxml library for reading and writing XML, and
+some others. You can install it using pip.
+
+Just start following command inside the UML .FRI working directory:
+
+    pip3 install -r doc/dependencies.pip
 
 6. Starting the application
 ---------------------------
