@@ -36,7 +36,8 @@ class DeleteElementsCommand(Command):
         
         for connection in self.__connections:
             connection.source.remove_connection(connection)
-            connection.destination.remove_connection(connection)
+            if connection.source is not connection.destination:
+                connection.destination.remove_connection(connection)
         
         for command in self.__hide_commands:
             command.do(ruler)
@@ -63,7 +64,8 @@ class DeleteElementsCommand(Command):
         
         for connection in self.__connections:
             connection.source.add_connection(connection)
-            connection.destination.add_connection(connection)
+            if connection.source is not connection.destination:
+                connection.destination.add_connection(connection)
         
         for command in self.__hide_commands:
             command.undo(ruler)
@@ -74,7 +76,8 @@ class DeleteElementsCommand(Command):
         
         for connection in self.__connections:
             connection.source.remove_connection(connection)
-            connection.destination.remove_connection(connection)
+            if connection.source is not connection.destination:
+                connection.destination.remove_connection(connection)
         
         for command in self.__hide_commands:
             command.redo(ruler)

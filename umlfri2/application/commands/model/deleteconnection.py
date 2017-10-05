@@ -17,21 +17,24 @@ class DeleteConnectionCommand(Command):
             self.__hide_commands.append(HideConnectionCommand(visual.diagram, visual))
         
         self.__connection.source.remove_connection(self.__connection)
-        self.__connection.destination.remove_connection(self.__connection)
+        if self.__connection.source is not self.__connection.destination:
+            self.__connection.destination.remove_connection(self.__connection)
         
         for hide_command in self.__hide_commands:
             hide_command.do(ruler)
     
     def _redo(self, ruler):
         self.__connection.source.remove_connection(self.__connection)
-        self.__connection.destination.remove_connection(self.__connection)
+        if self.__connection.source is not self.__connection.destination:
+            self.__connection.destination.remove_connection(self.__connection)
         
         for hide_command in self.__hide_commands:
             hide_command.redo(ruler)
     
     def _undo(self, ruler):
         self.__connection.source.add_connection(self.__connection)
-        self.__connection.destination.add_connection(self.__connection)
+        if self.__connection.source is not self.__connection.destination:
+            self.__connection.destination.add_connection(self.__connection)
         
         for hide_command in self.__hide_commands:
             hide_command.undo(ruler)

@@ -96,7 +96,8 @@ class ElementObject:
     def connect_with(self, connection_type, second_element, save_id=None):
         connection = ConnectionObject(connection_type, self, second_element, save_id)
         self.__connections.append(connection)
-        second_element.__connections.append(connection)
+        if second_element is not self:
+            second_element.__connections.append(connection)
         return connection
     
     def get_connections_to(self, element):

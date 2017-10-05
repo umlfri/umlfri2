@@ -107,10 +107,13 @@ class Diagram:
             if element1 is not None and element2 is not None:
                 visual = ConnectionVisual(self, object, element1, element2)
                 element1.add_connection(visual)
-                element2.add_connection(visual)
+                if element1 is not element2:
+                    element2.add_connection(visual)
                 self.__connections.append(visual)
                 object.add_visual(visual)
                 return visual
+            else:
+                raise Exception
         else:
             raise Exception
     
@@ -138,7 +141,8 @@ class Diagram:
                 self.__connections.insert(z_order, visual)
             
             visual.source.add_connection(visual)
-            visual.destination.add_connection(visual)
+            if visual.source is not visual.destination:
+                visual.destination.add_connection(visual)
             
             visual.object.add_visual(visual)
         else:
@@ -162,7 +166,8 @@ class Diagram:
                 raise Exception
             self.__connections.remove(visual)
             visual.source.remove_connection(visual)
-            visual.destination.remove_connection(visual)
+            if visual.source is not visual.destination:
+                visual.destination.remove_connection(visual)
             
             visual.object.remove_visual(visual)
         else:
