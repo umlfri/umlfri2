@@ -50,6 +50,8 @@ class ProjectBuilder:
         data = ret.data.make_mutable()
         self.__apply_data(connection.type.ufl_type, data, connection.data)
         ret.data.apply_patch(data.make_patch())
+
+        self.__all_objects[connection.id] = ret
     
     def __build_diagram(self, diagram):
         parent = self.__all_objects[diagram.parent_id]
@@ -69,6 +71,11 @@ class ProjectBuilder:
             
             if element.size is not None:
                 element_visual.resize(self.__ruler, element.size)
+        
+        for connection in diagram.connections:
+            connection_object = self.__all_objects[connection.connection_id]
+            
+            connection_visual = ret.show(connection_object)
     
     def __apply_data(self, type, data, values):
         if isinstance(type, UflObjectType):
