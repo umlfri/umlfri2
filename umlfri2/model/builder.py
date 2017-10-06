@@ -14,16 +14,19 @@ class ProjectBuilder:
         if self.__project is None:
             self.__build_project()
         return self.__project
-
+    
     def __build_project(self):
         self.__project = Project(self.__template.metamodel, name=self.__name)
         
         for element in self.__template.elements:
             self.__build_element_object(self.__project, element)
 
+        for connection in self.__template.connections:
+            self.__build_connection_object(connection)
+
         for diagram in self.__template.diagrams:
             self.__build_diagram(diagram)
-
+    
     def __build_element_object(self, parent, element):
         ret = parent.create_child_element(element.type)
         
@@ -38,6 +41,15 @@ class ProjectBuilder:
         
         return ret
 
+    def __build_connection_object(self, connection):
+        source = self.__all_objects[connection.source_id]
+        destination = self.__all_objects[connection.destination_id]
+        ret = source.connect_with(connection.type, destination)
+        
+        data = ret.data.make_mutable()
+        self.__apply_data(connection.type.ufl_type, data, connection.data)
+        ret.data.apply_patch(data.make_patch())
+    
     def __build_diagram(self, diagram):
         parent = self.__all_objects[diagram.parent_id]
         ret = parent.create_child_diagram(diagram.type)
@@ -45,7 +57,7 @@ class ProjectBuilder:
         data = ret.data.make_mutable()
         self.__apply_data(diagram.type.ufl_type, data, diagram.data)
         ret.data.apply_patch(data.make_patch())
-
+    
     def __apply_data(self, type, data, values):
         if isinstance(type, UflObjectType):
             self.__apply_object_data(type, data, values)
@@ -55,7 +67,7 @@ class ProjectBuilder:
             self.__apply_flags_data(type, data, values)
         else:
             raise Exception
-
+    
     def __apply_object_data(self, type, object, values):
         for name, value in values.items():
             attr_type = type.get_attribute(name).type
@@ -63,7 +75,7 @@ class ProjectBuilder:
                 object.set_value(name, value)
             else:
                 self.__apply_data(attr_type, object.get_value(name), value)
-
+    
     def __apply_list_data(self, type, list, values):
         item_type = type.item_type
         
@@ -74,7 +86,7 @@ class ProjectBuilder:
             for value in values:
                 row = list.append()
                 self.__apply_data(item_type, row, value)
-
+    
     def __apply_flags_data(self, type, flags, values):
         for value in values:
             flags.set(value)

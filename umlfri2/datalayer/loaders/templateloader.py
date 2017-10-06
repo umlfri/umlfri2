@@ -1,6 +1,4 @@
-import uuid
-
-from umlfri2.metamodel.projecttemplate import ProjectTemplate, ElementTemplate, DiagramTemplate
+from umlfri2.metamodel.projecttemplate import ProjectTemplate, ElementTemplate, DiagramTemplate, ConnectionTemplate
 from ..constants import ADDON_NAMESPACE, ADDON_SCHEMA
 
 
@@ -15,6 +13,7 @@ class TemplateLoader:
         id = self.__xmlroot.attrib["id"]
         elements = []
         self.__all_diagrams = []
+        self.__all_connections = []
         self.__provided_ids = set()
         self.__required_ids = set()
         
@@ -25,7 +24,7 @@ class TemplateLoader:
         if self.__required_ids - self.__provided_ids:
             raise Exception("Missing references in a template")
         
-        return ProjectTemplate(id, elements, self.__all_diagrams)
+        return ProjectTemplate(id, elements, self.__all_connections, self.__all_diagrams)
     
     def __load_element(self, node):
         type = node.attrib["type"]
@@ -39,6 +38,8 @@ class TemplateLoader:
         for child in node:
             if child.tag == "{{{0}}}Element".format(ADDON_NAMESPACE):
                 children.append(self.__load_element(child))
+            elif child.tag == "{{{0}}}Connection".format(ADDON_NAMESPACE):
+                self.__all_connections.append(self.__load_connection(child, id))
             elif child.tag == "{{{0}}}Diagram".format(ADDON_NAMESPACE):
                 self.__all_diagrams.append(self.__load_diagram(child, id))
             elif child.tag == "{{{0}}}Attribute".format(ADDON_NAMESPACE):
@@ -66,6 +67,23 @@ class TemplateLoader:
     
     def __load_item(self, node, items):
         items.append(self.__load_data(node))
+
+    def __load_connection(self, node, source_id):
+        type = node.attrib["type"]
+        destination_id = node.attrib["to"]
+        id = node.attrib.get("id") or self.__new_id()
+        
+        self.__require_id(source_id)
+        self.__require_id(destination_id)
+        self.__provide_id(id)
+        
+        data = {}
+
+        for child in node:
+            if child.tag == "{{{0}}}Attribute".format(ADDON_NAMESPACE):
+                self.__load_attribute(child, data)
+        
+        return ConnectionTemplate(type, data, source_id, destination_id, id)
     
     def __load_diagram(self, node, parent_id):
         type = node.attrib["type"]

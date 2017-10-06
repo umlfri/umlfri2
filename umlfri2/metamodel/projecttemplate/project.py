@@ -1,7 +1,8 @@
 class ProjectTemplate:
-    def __init__(self, id, elements, diagrams):
+    def __init__(self, id, elements, connections, diagrams):
         self.__id = id
         self.__elements = elements
+        self.__connections = connections
         self.__diagrams = diagrams
         self.__metamodel = None
     
@@ -27,6 +28,10 @@ class ProjectTemplate:
     @property
     def elements(self):
         yield from self.__elements
+
+    @property
+    def connections(self):
+        yield from self.__connections
     
     @property
     def diagrams(self):
@@ -35,6 +40,9 @@ class ProjectTemplate:
     def compile(self):
         for element in self.__elements:
             element._compile(self.__metamodel)
+
+        for connection in self.__connections:
+            connection._compile(self.__metamodel)
         
         for diagram in self.__diagrams:
             diagram._compile(self.__metamodel)
