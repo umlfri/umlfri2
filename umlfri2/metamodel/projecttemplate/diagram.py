@@ -2,9 +2,11 @@ from .checkdata import check_any
 
 
 class DiagramTemplate:
-    def __init__(self, type, data, parent_id):
+    def __init__(self, type, data, elements, connections, parent_id):
         self.__type = type
         self.__data = data
+        self.__elements = elements
+        self.__connections = connections
         self.__parent_id = parent_id
     
     @property
@@ -14,6 +16,14 @@ class DiagramTemplate:
     @property
     def data(self):
         return self.__data
+    
+    @property
+    def elements(self):
+        yield from self.__elements
+    
+    @property
+    def connections(self):
+        yield from self.__connections
     
     @property
     def parent_id(self):

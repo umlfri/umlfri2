@@ -131,7 +131,7 @@ class Application(metaclass=MetaApplication):
     def new_project(self, template, new_solution=True, project_name="Project"):
         if new_solution:
             self.__event_dispatcher.dispatch(CloseSolutionEvent(self.__solution))
-            builder = ProjectBuilder(template)
+            builder = ProjectBuilder(self.__ruler, template)
             self.__solution = Solution(builder.project)
             self.__solution_storage_ref = None
             self.__commands.clear_buffers()

@@ -3,7 +3,8 @@ from .project import Project
 
 
 class ProjectBuilder:
-    def __init__(self, template, name="Project"):
+    def __init__(self, ruler, template, name="Project"):
+        self.__ruler = ruler
         self.__template = template
         self.__name = name
         self.__project = None
@@ -57,6 +58,17 @@ class ProjectBuilder:
         data = ret.data.make_mutable()
         self.__apply_data(diagram.type.ufl_type, data, diagram.data)
         ret.data.apply_patch(data.make_patch())
+        
+        for element in diagram.elements:
+            element_object = self.__all_objects[element.element_id]
+            
+            element_visual = ret.show(element_object)
+            
+            if element.position is not None:
+                element_visual.move(self.__ruler, element.position)
+            
+            if element.size is not None:
+                element_visual.resize(self.__ruler, element.size)
     
     def __apply_data(self, type, data, values):
         if isinstance(type, UflObjectType):

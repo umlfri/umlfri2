@@ -1,4 +1,6 @@
-from umlfri2.metamodel.projecttemplate import ProjectTemplate, ElementTemplate, DiagramTemplate, ConnectionTemplate
+from umlfri2.metamodel.projecttemplate import ProjectTemplate, ElementTemplate, DiagramTemplate, ConnectionTemplate, \
+    ElementVisualTemplate
+from umlfri2.types.geometry import Point, Size
 from ..constants import ADDON_NAMESPACE, ADDON_SCHEMA
 
 
@@ -91,12 +93,27 @@ class TemplateLoader:
         self.__require_id(parent_id)
         
         data = {}
+        elements = []
+        connections = []
         
         for child in node:
             if child.tag == "{{{0}}}Attribute".format(ADDON_NAMESPACE):
                 self.__load_attribute(child, data)
+            elif child.tag == "{{{0}}}Element".format(ADDON_NAMESPACE):
+                elements.append(self.__load_element_visual(child))
         
-        return DiagramTemplate(type, data, parent_id)
+        return DiagramTemplate(type, data, elements, connections, parent_id)
+    
+    def __load_element_visual(self, node):
+        position = None
+        if "x" in node.attrib or "y" in node.attrib:
+            position = Point(int(node.attrib.get("x", 0)), int(node.attrib.get("y", 0)))
+        
+        size = None
+        if "width" in node.attrib or "height" in node.attrib:
+            size = Size(int(node.attrib.get("width", 0)), int(node.attrib.get("height", 0)))
+        
+        return ElementVisualTemplate(node.attrib["id"], position, size)
     
     def __provide_id(self, id):
         if id in self.__provided_ids:
@@ -106,7 +123,7 @@ class TemplateLoader:
     
     def __require_id(self, id):
         self.__required_ids.add(id)
-
+    
     def __new_id(self):
         self.__last_id += 1
         return self.__last_id
