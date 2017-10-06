@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Template id="empty_class" xmlns="http://umlfri.org/v2/addon.xsd">
     <Element type="package">
-        <Diagram type="class_diagram" />
+        <Attribute id="name" value="Class diagram"/>
+        <Diagram type="class_diagram"/>
     </Element>
 </Template>

@@ -1,3 +1,6 @@
+from .checkdata import check_any
+
+
 class ElementTemplate:
     def __init__(self, type, data, children, id=None):
         self.__id = id
@@ -26,3 +29,5 @@ class ElementTemplate:
         
         for child in self.__children:
             child._compile(metamodel)
+        
+        self.__data = check_any(self.__type.ufl_type, self.__data)

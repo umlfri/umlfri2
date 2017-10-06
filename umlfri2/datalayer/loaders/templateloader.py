@@ -34,21 +34,51 @@ class TemplateLoader:
         self.__provide_id(id)
         
         children = []
-
+        data = {}
+        
         for child in node:
             if child.tag == "{{{0}}}Element".format(ADDON_NAMESPACE):
                 children.append(self.__load_element(child))
             elif child.tag == "{{{0}}}Diagram".format(ADDON_NAMESPACE):
                 self.__all_diagrams.append(self.__load_diagram(child, id))
+            elif child.tag == "{{{0}}}Attribute".format(ADDON_NAMESPACE):
+                self.__load_attribute(child, data)
 
-        return ElementTemplate(type, {}, children, id)
+        return ElementTemplate(type, data, children, id)
+    
+    def __load_data(self, node):
+        if "value" in node.attrib:
+            return node.attrib["value"]
+        
+        data_attribs = {}
+        data_values  = []
+        
+        for child in node:
+            if child.tag == "{{{0}}}Attribute".format(ADDON_NAMESPACE):
+                self.__load_attribute(child, data_attribs)
+            elif child.tag == "{{{0}}}Item".format(ADDON_NAMESPACE):
+                self.__load_item(child, data_values)
+        
+        return data_attribs or data_values
+    
+    def __load_attribute(self, node, attributes):
+        attributes[node.attrib["id"]] = self.__load_data(node)
+    
+    def __load_item(self, node, items):
+        items.append(self.__load_data(node))
     
     def __load_diagram(self, node, parent_id):
         type = node.attrib["type"]
         
         self.__require_id(parent_id)
         
-        return DiagramTemplate(type, parent_id)
+        data = {}
+        
+        for child in node:
+            if child.tag == "{{{0}}}Attribute".format(ADDON_NAMESPACE):
+                self.__load_attribute(child, data)
+        
+        return DiagramTemplate(type, data, parent_id)
     
     def __provide_id(self, id):
         if id in self.__provided_ids:

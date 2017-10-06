@@ -1,6 +1,5 @@
+from umlfri2.ufl.types import UflObjectType, UflListType, UflFlagsType
 from .project import Project
-from .element import ElementObject
-from .diagram import Diagram
 
 
 class ProjectBuilder:
@@ -28,6 +27,10 @@ class ProjectBuilder:
     def __build_element_object(self, parent, element):
         ret = parent.create_child_element(element.type)
         
+        data = ret.data.make_mutable()
+        self.__apply_data(element.type.ufl_type, data, element.data)
+        ret.data.apply_patch(data.make_patch())
+        
         for child in element.children:
             self.__build_element_object(ret, child)
         
@@ -37,4 +40,41 @@ class ProjectBuilder:
 
     def __build_diagram(self, diagram):
         parent = self.__all_objects[diagram.parent_id]
-        diagram = parent.create_child_diagram(diagram.type)
+        ret = parent.create_child_diagram(diagram.type)
+
+        data = ret.data.make_mutable()
+        self.__apply_data(diagram.type.ufl_type, data, diagram.data)
+        ret.data.apply_patch(data.make_patch())
+
+    def __apply_data(self, type, data, values):
+        if isinstance(type, UflObjectType):
+            self.__apply_object_data(type, data, values)
+        elif isinstance(type, UflListType):
+            self.__apply_list_data(type, data, values)
+        elif isinstance(type, UflFlagsType):
+            self.__apply_flags_data(type, data, values)
+        else:
+            raise Exception
+
+    def __apply_object_data(self, type, object, values):
+        for name, value in values.items():
+            attr_type = type.get_attribute(name).type
+            if attr_type.is_immutable:
+                object.set_value(name, value)
+            else:
+                self.__apply_data(attr_type, object.get_value(name), value)
+
+    def __apply_list_data(self, type, list, values):
+        item_type = type.item_type
+        
+        if item_type.is_immutable:
+            for value in values:
+                list.append(value)
+        else:
+            for value in values:
+                row = list.append()
+                self.__apply_data(item_type, row, value)
+
+    def __apply_flags_data(self, type, flags, values):
+        for value in values:
+            flags.set(value)
