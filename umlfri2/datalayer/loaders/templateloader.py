@@ -16,23 +16,22 @@ class TemplateLoader:
         elements = []
         self.__all_diagrams = []
         self.__all_connections = []
-        self.__provided_ids = set()
-        self.__required_ids = set()
+        self.__provided_ids = {}
+        self.__required_ids = {}
         
         for node in self.__xmlroot:
             if node.tag == "{{{0}}}Element".format(ADDON_NAMESPACE):
                 elements.append(self.__load_element(node))
-        
-        if self.__required_ids - self.__provided_ids:
-            raise Exception("Missing references in a template")
+
+        self.__check_ids()
         
         return ProjectTemplate(id, elements, self.__all_connections, self.__all_diagrams)
-    
+
     def __load_element(self, node):
         type = node.attrib["type"]
         id = node.attrib.get("id") or self.__new_id()
         
-        self.__provide_id(id)
+        self.__provide_id(id, 'element')
         
         children = []
         data = {}
@@ -75,9 +74,9 @@ class TemplateLoader:
         destination_id = node.attrib["to"]
         id = node.attrib.get("id") or self.__new_id()
         
-        self.__require_id(source_id)
-        self.__require_id(destination_id)
-        self.__provide_id(id)
+        self.__require_id(source_id, 'element')
+        self.__require_id(destination_id, 'element')
+        self.__provide_id(id, 'connection')
         
         data = {}
 
@@ -90,7 +89,7 @@ class TemplateLoader:
     def __load_diagram(self, node, parent_id):
         type = node.attrib["type"]
         
-        self.__require_id(parent_id)
+        self.__require_id(parent_id, 'element')
         
         data = {}
         elements = []
@@ -107,6 +106,10 @@ class TemplateLoader:
         return DiagramTemplate(type, data, elements, connections, parent_id)
     
     def __load_element_visual(self, node):
+        id = node.attrib["id"]
+        
+        self.__require_id(id, 'element')
+        
         position = None
         if "x" in node.attrib or "y" in node.attrib:
             position = Point(int(node.attrib.get("x", 0)), int(node.attrib.get("y", 0)))
@@ -114,21 +117,34 @@ class TemplateLoader:
         size = None
         if "width" in node.attrib or "height" in node.attrib:
             size = Size(int(node.attrib.get("width", 0)), int(node.attrib.get("height", 0)))
-        
-        return ElementVisualTemplate(node.attrib["id"], position, size)
+
+        return ElementVisualTemplate(id, position, size)
 
     def __load_connection_visual(self, node):
-        return ConnectionVisualTemplate(node.attrib["id"])
+        id = node.attrib["id"]
+        
+        self.__require_id(id, 'connection')
+        
+        return ConnectionVisualTemplate(id)
     
-    def __provide_id(self, id):
+    def __provide_id(self, id, type):
         if id in self.__provided_ids:
             raise Exception("Duplicated id in a template: {0}".format(id))
         
-        self.__provided_ids.add(id)
+        self.__provided_ids[id] = type
     
-    def __require_id(self, id):
-        self.__required_ids.add(id)
+    def __require_id(self, id, type):
+        if id in self.__required_ids:
+            if type != self.__required_ids[id]:
+                raise Exception("Invalid references in the template")
+
+        self.__required_ids[id] = type
     
     def __new_id(self):
         self.__last_id += 1
         return self.__last_id
+
+    def __check_ids(self):
+        for id, type in self.__required_ids.items():
+            if id not in self.__provided_ids or self.__provided_ids[id] != type:
+                raise Exception("Invalid references in the template")
