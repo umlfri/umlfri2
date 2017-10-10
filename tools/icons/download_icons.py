@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import os
 import os.path
@@ -8,10 +8,13 @@ import tarfile
 import urllib.request
 import zipfile
 from io import BytesIO
-
 import shutil
-
 import sys
+import ssl
+
+ssl_ctx = ssl.create_default_context()
+ssl_ctx.check_hostname = False
+ssl_ctx.verify_mode = ssl.CERT_NONE
 
 TOOLS_PATH = os.path.dirname(__file__)
 
@@ -59,7 +62,7 @@ def extract_theme(theme_dir, url, reader, remove_dirs):
     re_underscored = re.compile(b'^_', re.MULTILINE)
     
     print("- Downloading...")
-    tar = urllib.request.urlopen(url)
+    tar = urllib.request.urlopen(url, context=ssl_ctx)
     
     out = os.path.join(TOOLS_PATH, "..", "..", "data", "icons", theme_dir)
     if os.path.isdir(out):

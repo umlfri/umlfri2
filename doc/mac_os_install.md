@@ -53,6 +53,14 @@ Just start following command inside the UML .FRI working directory:
 
     pip3 install -r doc/dependencies.pip
 
+Download the icon pack
+----------------------
+
+You can continue by starting the application if you want. But it looks too weird without installed
+icon pack. You can download and install it automatically by starting the download_icons script.
+
+    ./tools/icons/download_icons.py
+
 Starting the application
 ------------------------
 
