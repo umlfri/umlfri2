@@ -80,9 +80,12 @@ class ZipStorage(Storage):
                                   file_path, 'r')
     
     @staticmethod
-    def new_storage(path):
+    def new_storage(path, mimetype=None):
         z = open(path, 'wb')
-        return ZipStorage(path, zipfile.ZipFile(z, mode='w', compression=zipfile.ZIP_DEFLATED), [], 'w')
+        zip_file = zipfile.ZipFile(z, mode='w', compression=zipfile.ZIP_DEFLATED)
+        if mimetype is not None:
+            zip_file.writestr("mimetype", mimetype.encode("ascii"), compress_type=zipfile.ZIP_STORED)
+        return ZipStorage(path, zip_file, [], 'w')
     
     def __init__(self, zip_path, zip_file, path, mode):
         self.__zip_path = zip_path

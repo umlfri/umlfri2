@@ -11,6 +11,7 @@ from umlfri2.application.events.application import LanguageChangedEvent, ChangeS
     UpdateCheckFinishedEvent
 from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent, CloseSolutionEvent
 from umlfri2.constants.paths import GRAPHICS, CONFIG
+from umlfri2.constants.solutionfile import SOLUTION_EXTENSION
 from ..base.clipboard import QtClipboardAdatper
 from ..newproject import NewProjectDialog
 from ..splashscreen.exitscreen import ExitScreen
@@ -175,7 +176,7 @@ class UmlFriMainWindow(QMainWindow):
         file_name, filter = QFileDialog.getOpenFileName(
             self,
             caption=_("Open Project"),
-            filter=_("UML .FRI 2 projects") + "(*.frip2)"
+            filter=_("UML .FRI 2 projects") + "(*.{0})".format(SOLUTION_EXTENSION)
         )
         if file_name:
             self.open_solution_from_file(file_name)
@@ -218,11 +219,11 @@ class UmlFriMainWindow(QMainWindow):
         file_name, filter = QFileDialog.getSaveFileName(
             self,
             caption=_("Save Project"),
-            filter=_("UML .FRI 2 projects") + "(*.frip2)"
+            filter=_("UML .FRI 2 projects") + "(*.{0})".format(SOLUTION_EXTENSION)
         )
         if file_name:
             if '.' not in os.path.basename(file_name):
-                file_name = file_name + '.frip2'
+                file_name = '{0}.{1}'.format(file_name, SOLUTION_EXTENSION)
             Application().save_solution_as(file_name)
             return True # the project was saved
         else:
