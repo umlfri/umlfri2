@@ -112,11 +112,11 @@ class TemplateLoader:
         
         position = None
         if "x" in node.attrib or "y" in node.attrib:
-            position = Point(int(node.attrib.get("x", 0)), int(node.attrib.get("y", 0)))
+            position = self.__get_position(node)
         
         size = None
         if "width" in node.attrib or "height" in node.attrib:
-            size = Size(int(node.attrib.get("width", 0)), int(node.attrib.get("height", 0)))
+            size = self.__get_size(node)
 
         return ElementVisualTemplate(id, position, size)
 
@@ -125,7 +125,19 @@ class TemplateLoader:
         
         self.__require_id(id, 'connection')
         
-        return ConnectionVisualTemplate(id)
+        points = []
+        
+        for child in node:
+            if child.tag == "{{{0}}}Point".format(ADDON_NAMESPACE):
+                points.append(self.__get_position(child))
+        
+        return ConnectionVisualTemplate(id, points)
+    
+    def __get_position(self, node):
+        return Point(int(node.attrib.get("x", 0)), int(node.attrib.get("y", 0)))
+    
+    def __get_size(self, node):
+        return Size(int(node.attrib.get("width", 0)), int(node.attrib.get("height", 0)))
     
     def __provide_id(self, id, type):
         if id in self.__provided_ids:

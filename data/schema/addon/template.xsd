@@ -48,19 +48,12 @@
                         <xs:sequence>
                             <xs:element name="Point" minOccurs="0" maxOccurs="unbounded">
                                 <xs:complexType>
-                                    <xs:attribute name="x" type="xs:integer"/>
-                                    <xs:attribute name="y" type="xs:integer"/>
-                                </xs:complexType>
-                            </xs:element>
-                            <xs:element name="Label" minOccurs="0" maxOccurs="unbounded">
-                                <xs:complexType>
-                                    <xs:attribute name="id" type="xs:string"/>
-                                    <xs:attribute name="x" type="xs:integer"/>
-                                    <xs:attribute name="y" type="xs:integer"/>
+                                    <xs:attribute name="x" type="xs:integer" use="optional"/>
+                                    <xs:attribute name="y" type="xs:integer" use="optional"/>
                                 </xs:complexType>
                             </xs:element>
                         </xs:sequence>
-                        <xs:attribute name="id" type="xs:string"/>
+                        <xs:attribute name="id" type="xs:string" use="required"/>
                     </xs:complexType>
                 </xs:element>
             </xs:choice>

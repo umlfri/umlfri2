@@ -76,6 +76,9 @@ class ProjectBuilder:
             connection_object = self.__all_objects[connection.connection_id]
             
             connection_visual = ret.show(connection_object)
+            
+            for point in connection.points:
+                connection_visual.add_point(self.__ruler, None, point)
     
     def __apply_data(self, type, data, values):
         if isinstance(type, UflObjectType):
