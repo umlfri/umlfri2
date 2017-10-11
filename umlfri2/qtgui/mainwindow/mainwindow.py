@@ -2,7 +2,7 @@ import os.path
 
 from PyQt5.QtCore import Qt, QSettings, QUrl
 from PyQt5.QtGui import QIcon, QDesktopServices
-from PyQt5.QtWidgets import QMainWindow, QDockWidget, QMessageBox, QFileDialog
+from PyQt5.QtWidgets import QMainWindow, QDockWidget, QMessageBox, QFileDialog, QApplication
 
 from umlfri2.application import Application
 from umlfri2.application.addon import AddOnState
@@ -277,7 +277,14 @@ class UmlFriMainWindow(QMainWindow):
         if latest_update.is_ignored:
             return
         
-        new_update = QMessageBox(self)
+        current_window = QApplication.instance().activeWindow()
+        
+        if current_window.isModal():
+            msg_parent = current_window
+        else:
+            msg_parent = self
+        
+        new_update = QMessageBox(msg_parent)
         new_update.setIcon(QMessageBox.Information)
         new_update.setWindowModality(Qt.WindowModal)
         new_update.setWindowTitle(_("New update"))
