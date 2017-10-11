@@ -1,18 +1,22 @@
+from collections import namedtuple
 from weakref import ref
 
 from umlfri2.components.base.context import Context
-from umlfri2.ufl.types import UflType, UflListType, UflImageType, UflStringType
+from umlfri2.ufl.types import UflType, UflListType, UflImageType, UflStringType, UflIterableType
 
 
 class UflNodeType(UflType):
-    pass
-
-
-UflNodeType.ALLOWED_DIRECT_ATTRIBUTES = {
-    'children': ('children', UflListType(UflNodeType)),
-    'icon': ('icon', UflImageType()),
-    'label': ('label', UflStringType()),
-}
+    def __init__(self, node_access_depth):
+        allowed_attributes = {
+            'icon': ('icon', UflImageType()),
+            'label': ('label', UflStringType()),
+        }
+        
+        if node_access_depth.child > 0:
+            deeper_node_access_depth = ElementAccessDepth(node_access_depth.parent + 1, node_access_depth.child - 1)
+            allowed_attributes['children'] = ('children', UflIterableType(UflNodeType(deeper_node_access_depth)))
+        
+        self.ALLOWED_DIRECT_ATTRIBUTES = allowed_attributes
 
 
 class UflNode:
@@ -33,8 +37,11 @@ class UflNode:
         return self.__element.get_display_name()
 
 
+ElementAccessDepth = namedtuple('ElementAccessDepth', ('parent', 'child'))
+
+
 class ElementType:
-    def __init__(self, id, icon, ufl_type, display_name, appearance, default_action):
+    def __init__(self, id, icon, ufl_type, display_name, appearance, default_action, node_access_depth):
         self.__metamodel = None
         self.__id = id
         self.__icon = icon
@@ -43,6 +50,7 @@ class ElementType:
         self.__display_name = display_name
         self.__appearance = appearance
         self.__default_action = default_action
+        self.__node_access_depth = node_access_depth
     
     def _set_metamodel(self, metamodel):
         self.__metamodel = ref(metamodel)
@@ -67,6 +75,10 @@ class ElementType:
     def default_action(self):
         return self.__default_action
     
+    @property
+    def node_access_depth(self):
+        return self.__node_access_depth
+    
     def compile(self):
         variables = {
             'self': self.__ufl_type,
@@ -74,7 +86,7 @@ class ElementType:
         }
         
         appearance_variables = variables.copy()
-        appearance_variables.update(node=UflNodeType())
+        appearance_variables.update(node=UflNodeType(self.__node_access_depth))
         
         self.__appearance.compile(appearance_variables)
         self.__display_name.compile(variables)

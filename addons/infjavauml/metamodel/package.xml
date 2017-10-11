@@ -19,6 +19,7 @@
     
     <Config>
         <DefaultAction action="subdiagram"/>
+        <AllowChildAccess depth="1" />
     </Config>
     
     <Appearance>

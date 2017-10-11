@@ -19,7 +19,7 @@
 
                 <xs:element name="Config" minOccurs="0">
                     <xs:complexType>
-                        <xs:sequence>
+                        <xs:all>
                             <xs:element name="DefaultAction" minOccurs="0">
                                 <xs:complexType>
                                     <xs:attribute name="action" use="required">
@@ -32,7 +32,18 @@
                                     </xs:attribute>
                                 </xs:complexType>
                             </xs:element>
-                        </xs:sequence>
+                            <xs:element name="AllowChildAccess" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:attribute name="depth" type="xs:integer" use="optional"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <!-- Will be enabled in the future -->
+                            <!--xs:element name="AllowParentAccess" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:attribute name="depth" type="xs:integer" use="optional"/>
+                                </xs:complexType>
+                            </xs:element-->
+                        </xs:all>
                     </xs:complexType>
                 </xs:element>
                 

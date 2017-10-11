@@ -3,7 +3,7 @@ from .componentloader import ComponentLoader
 from ..constants import ADDON_NAMESPACE, ADDON_SCHEMA
 from .structureloader import UflStructureLoader
 from umlfri2.components.text import TextContainerComponent
-from umlfri2.metamodel import ElementType, DefaultElementAction
+from umlfri2.metamodel import ElementType, DefaultElementAction, ElementAccessDepth
 
 
 class ElementTypeLoader:
@@ -21,6 +21,9 @@ class ElementTypeLoader:
         display_name = None
         appearance = None
         default_action = DefaultElementAction.properties
+        
+        allow_child_access = 0
+        allow_parent_access = 0
         
         for child in self.__xmlroot:
             if child.tag == "{{{0}}}Icon".format(ADDON_NAMESPACE):
@@ -41,6 +44,16 @@ class ElementTypeLoader:
                             default_action = DefaultElementAction.properties
                         else:
                             raise Exception
+                    elif childchild.tag == "{{{0}}}AllowChildAccess".format(ADDON_NAMESPACE):
+                        if "depth" in childchild.attrib:
+                            allow_child_access = int(childchild.attrib["depth"])
+                        else:
+                            allow_child_access = float('inf')
+                    elif childchild.tag == "{{{0}}}AllowParentAccess".format(ADDON_NAMESPACE):
+                        if "depth" in childchild.attrib:
+                            allow_parent_access = int(childchild.attrib["depth"])
+                        else:
+                            allow_parent_access = float('inf')
                     else:
                         raise Exception
             elif child.tag == "{{{0}}}Appearance".format(ADDON_NAMESPACE):
@@ -48,4 +61,6 @@ class ElementTypeLoader:
             else:
                 raise Exception
         
-        return ElementType(id, icon, ufl_type, display_name, appearance, default_action)
+        node_access_depth = ElementAccessDepth(allow_parent_access, allow_child_access)
+        
+        return ElementType(id, icon, ufl_type, display_name, appearance, default_action, node_access_depth)

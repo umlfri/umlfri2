@@ -1,5 +1,4 @@
 from .list import UflListType
-from .string import UflStringType
 from .flags import UflFlagsType
 from .type import UflType
 
@@ -13,7 +12,7 @@ class UflIterableType(UflType):
         return self.__item_type
 
     def is_same_as(self, other):
-        if isinstance(other, (UflListType, UflFlagsType)):
+        if isinstance(other, (UflListType, UflFlagsType, UflIterableType)):
             return self.__item_type.is_same_as(other.item_type)
         else:
             return False

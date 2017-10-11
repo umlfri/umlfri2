@@ -71,9 +71,11 @@ class ElementObject:
         if self.project is not new_parent and self.project is not new_parent.project:
             raise Exception
         
+        self.__notify_node_change_parent(0)
         self.__parent().remove_child(self)
         self.__parent = ref(new_parent)
         self.__parent().add_child(self, new_index)
+        self.__notify_node_change_children(0)
     
     @property
     def type(self):
@@ -167,6 +169,8 @@ class ElementObject:
     def create_child_element(self, type, save_id=None):
         obj = ElementObject(self, type, save_id)
         self.__children.append(obj)
+        self.__notify_node_change_parent(0)
+        self.__notify_node_change_children(0)
         return obj
     
     def create_child_diagram(self, type, save_id=None):
@@ -192,6 +196,8 @@ class ElementObject:
                 self.__children.append(obj)
             else:
                 self.__children.insert(index, obj)
+            self.__notify_node_change_parent(0)
+            self.__notify_node_change_children(0)
         else:
             if obj in self.__diagrams:
                 raise Exception
@@ -207,6 +213,8 @@ class ElementObject:
             if obj not in self.__children:
                 raise Exception
             self.__children.remove(obj)
+            self.__notify_node_change_parent(0)
+            self.__notify_node_change_children(0)
         else:
             if obj not in self.__diagrams:
                 raise Exception
@@ -226,3 +234,18 @@ class ElementObject:
         dialog = UflDialog(self.__type.ufl_type, options)
         dialog.associate(self.__data)
         return dialog
+
+    def __notify_node_change_parent(self, depth):
+        if depth <= self.__type.node_access_depth.parent:
+            self.__cache.refresh()
+        
+        parent = self.__parent()
+        if isinstance(parent, ElementObject):
+            parent.__notify_node_change_parent(depth + 1)
+
+    def __notify_node_change_children(self, depth):
+        if depth <= self.__type.node_access_depth.child:
+            self.__cache.refresh()
+        
+        for child in self.__children:
+            child.__notify_node_change_children(depth+1)
