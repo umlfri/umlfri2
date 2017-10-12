@@ -11,13 +11,13 @@ class ConditionComponent(ControlComponent):
         super().__init__(children)
         self.__condition = condition
     
-    def compile(self, variables):
+    def compile(self, type_context):
         self._compile_expressions(
-            variables,
+            type_context,
             condition=self.__condition,
         )
         
-        self._compile_children(variables)
+        self._compile_children(type_context)
     
     def filter_children(self, context):
         if self.__condition(context):

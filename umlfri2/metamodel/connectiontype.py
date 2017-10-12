@@ -1,6 +1,7 @@
 from weakref import ref
 
 from umlfri2.components.base.context import Context
+from umlfri2.components.base.typecontext import TypeContext
 
 
 class ConnectionType:
@@ -43,9 +44,11 @@ class ConnectionType:
         return self.__labels[id]
     
     def compile(self):
-        variables = {'self': self.__ufl_type, 'cfg': self.__metamodel().config_structure}
+        type_context = TypeContext()\
+                .set_variable_type('self', self.__ufl_type)\
+                .set_variable_type('cfg', self.__metamodel().config_structure)
         
-        self.__appearance.compile(variables)
+        self.__appearance.compile(type_context)
         for label in self.__labels.values():
             label.compile()
     

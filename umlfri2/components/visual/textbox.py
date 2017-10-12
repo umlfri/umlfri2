@@ -61,11 +61,11 @@ class TextBoxComponent(VisualComponent):
         
         return TextBoxObject(size, text, color, font)
     
-    def compile(self, variables):
+    def compile(self, type_context):
         self._compile_expressions(
-            variables,
+            type_context,
             color=self.__color,
             font=self.__font,
         )
         
-        self.__text.compile(variables)
+        self.__text.compile(type_context)

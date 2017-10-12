@@ -44,8 +44,8 @@ class ImageComponent(VisualComponent):
         size = ruler.measure_image(image)
         return ImageObject(size, image)
     
-    def compile(self, variables):
+    def compile(self, type_context):
         self._compile_expressions(
-            variables,
+            type_context,
             image=self.__image
         )

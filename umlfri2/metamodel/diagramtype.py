@@ -1,4 +1,5 @@
 from umlfri2.components.base.context import Context
+from umlfri2.components.base.typecontext import TypeContext
 from umlfri2.types.color import Color
 from weakref import ref
 
@@ -50,10 +51,12 @@ class DiagramType:
         return self.__background_color(context)
     
     def compile(self):
-        variables = {'self': self.__ufl_type, 'cfg': self.__metamodel().config_structure}
+        type_context = TypeContext() \
+            .set_variable_type('self', self.__ufl_type) \
+            .set_variable_type('cfg', self.__metamodel().config_structure)
         
-        self.__display_name.compile(variables)
-        self.__background_color.compile(variables, Color)
+        self.__display_name.compile(type_context)
+        self.__background_color.compile(type_context, Color)
     
     def get_display_name(self, diagram):
         context = Context()\

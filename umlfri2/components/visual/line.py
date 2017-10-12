@@ -75,9 +75,9 @@ class LineComponent(VisualComponent):
     def _create_object(self, context, ruler):
         return LineObject(self.__get_orientation(context), self.__color(context))
     
-    def compile(self, variables):
+    def compile(self, type_context):
         self._compile_expressions(
-            variables,
+            type_context,
             orientation=self.__orientation,
             color=self.__color,
         )

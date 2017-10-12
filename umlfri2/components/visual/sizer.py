@@ -108,9 +108,9 @@ class SizerComponent(VisualComponent):
             self.__height(context)
         )
     
-    def compile(self, variables):
+    def compile(self, type_context):
         self._compile_expressions(
-            variables,
+            type_context,
             minwidth=self.__minwidth,
             maxwidth=self.__maxwidth,
             minheight=self.__minheight,
@@ -119,4 +119,4 @@ class SizerComponent(VisualComponent):
             height=self.__height,
         )
         
-        self._compile_children(variables)
+        self._compile_children(type_context)

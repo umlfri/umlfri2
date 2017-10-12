@@ -46,9 +46,9 @@ class LineComponent(ConnectionLineComponent):
         self.__style = style or ConstantExpression(LineStyle.solid, UflTypedEnumType(LineStyle))
         self.__color = color or ConstantExpression(Colors.black)
     
-    def compile(self, variables):
+    def compile(self, type_context):
         self._compile_expressions(
-            variables,
+            type_context,
             start=self.__start,
             end=self.__end,
             style=self.__style,

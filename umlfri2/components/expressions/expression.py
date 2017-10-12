@@ -1,5 +1,5 @@
 class Expression:
-    def compile(self, variables, expected_type):
+    def compile(self, type_context, expected_type):
         raise NotImplementedError
     
     def get_type(self):

@@ -21,20 +21,20 @@ class SwitchCaseComponent(HelperComponent):
         if hasattr(self.__value, 'change_type'):
             self.__value = self.__value.change_type(type)
     
-    def compile(self, variables):
+    def compile(self, type_context):
         self._compile_expressions(
-            variables,
+            type_context,
             value=self.__value,
         )
         
-        self._compile_children(variables)
+        self._compile_children(type_context)
 
 
 class SwitchDefaultComponent(HelperComponent):
     CHILDREN_TYPE = 'return' # return back to type from the switch parent
     
-    def compile(self, variables):
-        self._compile_children(variables)
+    def compile(self, type_context):
+        self._compile_children(type_context)
 
 
 class SwitchComponent(ControlComponent):
@@ -49,16 +49,16 @@ class SwitchComponent(ControlComponent):
         self.__value = value
         self.__cases = children
     
-    def compile(self, variables):
+    def compile(self, type_context):
         self._compile_expressions(
-            variables,
+            type_context,
             value=self.__value,
         )
         
         for case in self.__cases:
             if isinstance(case, SwitchCaseComponent):
                 case.retype(self.__value.get_type())
-            case.compile(variables)
+            case.compile(type_context)
     
     def filter_children(self, context):
         for case in self.__cases:

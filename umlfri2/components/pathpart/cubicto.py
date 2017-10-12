@@ -22,9 +22,9 @@ class CubicTo(PathPartComponent):
         self.__x = x
         self.__y = y
 
-    def compile(self, variables):
+    def compile(self, type_context):
         self._compile_expressions(
-            variables,
+            type_context,
             x1=self.__x1,
             y1=self.__y1,
             x2=self.__x2,

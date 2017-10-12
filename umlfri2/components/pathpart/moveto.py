@@ -14,9 +14,9 @@ class MoveTo(PathPartComponent):
         self.__x = x
         self.__y = y
 
-    def compile(self, variables):
+    def compile(self, type_context):
         self._compile_expressions(
-            variables,
+            type_context,
             x=self.__x,
             y=self.__y,
         )

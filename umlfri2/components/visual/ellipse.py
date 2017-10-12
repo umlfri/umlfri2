@@ -74,11 +74,11 @@ class EllipseComponent(VisualComponent):
         
         return EllipseObject(found_child, self.__fill(context), self.__border(context))
     
-    def compile(self, variables):
+    def compile(self, type_context):
         self._compile_expressions(
-            variables,
+            type_context,
             fill=self.__fill,
             border=self.__border,
         )
         
-        self._compile_children(variables)
+        self._compile_children(type_context)

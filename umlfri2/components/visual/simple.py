@@ -9,5 +9,5 @@ class SimpleComponent(VisualComponent):
         
         return EmptyObject()
     
-    def compile(self, variables):
-        self._compile_children(variables)
+    def compile(self, type_context):
+        self._compile_children(type_context)

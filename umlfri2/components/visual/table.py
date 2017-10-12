@@ -50,15 +50,15 @@ class TableObject(VisualObject):
 class TableRow(HelperComponent):
     CHILDREN_TYPE = 'visual'
     
-    def compile(self, variables):
-        self._compile_children(variables)
+    def compile(self, type_context):
+        self._compile_children(type_context)
 
 
 class TableColumn(HelperComponent):
     CHILDREN_TYPE = 'visual'
     
-    def compile(self, variables):
-        self._compile_children(variables)
+    def compile(self, type_context):
+        self._compile_children(type_context)
 
 
 class TableComponent(VisualComponent):
@@ -84,5 +84,5 @@ class TableComponent(VisualComponent):
         else:
             return TableObject(ret)
     
-    def compile(self, variables):
-        self._compile_children(variables)
+    def compile(self, type_context):
+        self._compile_children(type_context)

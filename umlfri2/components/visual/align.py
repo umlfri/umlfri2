@@ -78,11 +78,11 @@ class AlignComponent(VisualComponent):
                 self.__vertical(context)
             )
     
-    def compile(self, variables):
+    def compile(self, type_context):
         self._compile_expressions(
-            variables,
+            type_context,
             vertical=self.__vertical,
             horizontal=self.__horizontal,
         )
         
-        self._compile_children(variables)
+        self._compile_children(type_context)

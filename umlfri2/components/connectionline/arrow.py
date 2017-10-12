@@ -70,9 +70,9 @@ class ArrowComponent(ConnectionLineComponent):
         self.__color = color or ConstantExpression(Colors.black)
         self.__fill = fill or NoneExpression
     
-    def compile(self, variables):
+    def compile(self, type_context):
         self._compile_expressions(
-            variables,
+            type_context,
             position=self.__position,
             orientation=self.__orientation,
             style=self.__style,

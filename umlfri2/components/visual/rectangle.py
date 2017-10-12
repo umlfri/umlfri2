@@ -301,7 +301,7 @@ class RectangleComponent(VisualComponent):
                 self.__border(context)
             )
     
-    def compile(self, variables):
+    def compile(self, type_context):
         attrs = {}
         
         if self.__corners:
@@ -321,10 +321,10 @@ class RectangleComponent(VisualComponent):
             )
         
         self._compile_expressions(
-            variables,
+            type_context,
             fill=self.__fill,
             border=self.__border,
             **attrs
         )
         
-        self._compile_children(variables)
+        self._compile_children(type_context)

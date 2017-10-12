@@ -13,9 +13,9 @@ class TextDataComponent(TextComponent):
         super().__init__(())
         self.__text = text
     
-    def compile(self, variables):
+    def compile(self, type_context):
         self._compile_expressions(
-            variables,
+            type_context,
             text=self.__text
         )
     

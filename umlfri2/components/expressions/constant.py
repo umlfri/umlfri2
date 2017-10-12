@@ -20,7 +20,7 @@ class ConstantExpression(Expression):
         else:
             self.__type = value_type
     
-    def compile(self, variables, expected_type):
+    def compile(self, type_context, expected_type):
         if isinstance(self.__type, UflAnyType):
             self.__type = expected_type
             self.__value = expected_type.parse(self.__value)

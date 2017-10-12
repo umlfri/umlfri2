@@ -50,11 +50,11 @@ class ShadowComponent(VisualComponent):
                 self.__padding(context)
             )
     
-    def compile(self, variables):
+    def compile(self, type_context):
         self._compile_expressions(
-            variables,
+            type_context,
             color=self.__color,
             padding=self.__padding,
         )
         
-        self._compile_children(variables)
+        self._compile_children(type_context)

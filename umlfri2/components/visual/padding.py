@@ -67,13 +67,13 @@ class PaddingComponent(VisualComponent):
                 self.__bottom(context)
             )
     
-    def compile(self, variables):
+    def compile(self, type_context):
         self._compile_expressions(
-            variables,
+            type_context,
             left=self.__left,
             right=self.__right,
             top=self.__top,
             bottom=self.__bottom,
         )
         
-        self._compile_children(variables)
+        self._compile_children(type_context)

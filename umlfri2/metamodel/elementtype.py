@@ -2,6 +2,7 @@ from collections import namedtuple
 from weakref import ref
 
 from umlfri2.components.base.context import Context
+from umlfri2.components.base.typecontext import TypeContext
 from umlfri2.ufl.types import UflType, UflListType, UflImageType, UflStringType, UflIterableType
 
 
@@ -80,16 +81,15 @@ class ElementType:
         return self.__node_access_depth
     
     def compile(self):
-        variables = {
-            'self': self.__ufl_type,
-            'cfg': self.__metamodel().config_structure,
-        }
+        type_context = TypeContext() \
+            .set_variable_type('self', self.__ufl_type) \
+            .set_variable_type('cfg', self.__metamodel().config_structure)
         
-        appearance_variables = variables.copy()
-        appearance_variables.update(node=UflNodeType(self.__node_access_depth))
+        self.__appearance.compile(
+            type_context.set_variable_type('node', UflNodeType(self.__node_access_depth))
+        )
         
-        self.__appearance.compile(appearance_variables)
-        self.__display_name.compile(variables)
+        self.__display_name.compile(type_context)
     
     def create_appearance_object(self, element, ruler):
         context = Context()\

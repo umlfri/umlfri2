@@ -36,14 +36,14 @@ class PathComponent(GraphicalComponent):
         self.__fill = fill or ConstantExpression(None, UflColorType())
         self.__border = border or ConstantExpression(None, UflColorType())
 
-    def compile(self, variables):
+    def compile(self, type_context):
         self._compile_expressions(
-            variables,
+            type_context,
             fill=self.__fill,
             border=self.__border,
         )
         
-        self._compile_children(variables)
+        self._compile_children(type_context)
     
     def create_graphical_object(self, context, ruler, size):
         builder = PathBuilder()

@@ -15,21 +15,20 @@ class ForEachComponent(ControlComponent):
         self.__item = item
         self.__index = index
     
-    def compile(self, variables):
+    def compile(self, type_context):
         self._compile_expressions(
-            variables,
+            type_context,
             src=self.__src,
         )
 
         item_type = self.__src.get_type().item_type
         
-        variables = variables.copy()
-        variables[self.__item] = item_type
+        type_context = type_context.set_variable_type(self.__item, item_type)
         
         if self.__index is not None:
-            variables[self.__index] = UflIntegerType()
+            type_context = type_context.set_variable_type(self.__index, UflIntegerType())
         
-        self._compile_children(variables)
+        self._compile_children(type_context)
     
     def filter_children(self, context):
         for line, item in enumerate(self.__src(context)):

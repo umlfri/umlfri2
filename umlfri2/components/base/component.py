@@ -15,22 +15,22 @@ class Component:
         for child in children:
             child.__parent = ref(self)
     
-    def compile(self, variables):
+    def compile(self, type_context):
         pass
     
-    def _compile_expressions(self, variables, **expressions):
+    def _compile_expressions(self, type_context, **expressions):
         for name, expression in expressions.items():
             expected_type = self.ATTRIBUTES[name]
             
-            expression.compile(variables, expected_type)
+            expression.compile(type_context, expected_type)
             
             actual_type = expression.get_type()
             if not expected_type.is_same_as(actual_type):
                 raise Exception("Invalid type for attribute {0} ({1}, but {2} expected)".format(name, actual_type, expected_type))
     
-    def _compile_children(self, variables):
+    def _compile_children(self, type_context):
         for child in self.__children:
-            child.compile(variables)
+            child.compile(type_context)
     
     def _get_children(self, context):
         for child in self.__children:
