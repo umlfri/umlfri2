@@ -141,8 +141,8 @@
 
                                                     <Text text="("/>
 
-                                                    <ForEach src="#op.parameters" item="param" index="no">
-                                                        <If condition="#no">
+                                                    <ForEach src="#op.parameters" item="param">
+                                                        <If condition="#@(param).index">
                                                             <Text text=", "/>
                                                         </If>
                                                         <If condition="#param.name">

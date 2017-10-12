@@ -14,4 +14,4 @@ class UflStringEnumType(UflEnumType):
         return self.possibilities == other.possibilities
     
     def __str__(self):
-        return 'Enum[{0}]'.format(", ".join(self.__possibilities))
+        return 'Enum[{0}]'.format(", ".join(possibility.name for possibility in self.possibilities))

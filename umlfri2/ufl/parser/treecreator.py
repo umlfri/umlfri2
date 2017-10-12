@@ -3,6 +3,8 @@ from pyparsing import ParseException
 from ..tree import *
 
 
+d.METADATA_ACCESS.addParseAction(lambda data: UflMetadataAccess(data[1]))
+
 def target(data):
     if len(data) > 1:
         return data[1]

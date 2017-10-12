@@ -1,3 +1,4 @@
+from umlfri2.ufl.types import UflDataWithMetadataType
 from ..types import UflTypedEnumType, UflObjectType, UflBoolType, UflStringType, UflIntegerType
 from ..tree.visitor import UflVisitor
 
@@ -11,7 +12,7 @@ class UflCompilingVisitor(UflVisitor):
         self.__enums = {name: UflTypedEnumType(enum) for name, enum in enums.items()}
     
     def visit_attribute_access(self, node):
-        objtype, objcode = node.object.accept(self)
+        objtype, objcode = self.__demeta(node.object.accept(self))
         
         if node.attribute in objtype.ALLOWED_DIRECT_ATTRIBUTES:
             attrname, attrtype = objtype.ALLOWED_DIRECT_ATTRIBUTES[node.attribute]
@@ -35,7 +36,7 @@ class UflCompilingVisitor(UflVisitor):
             
 
     def visit_method_call(self, node):
-        targettype, targetcode = node.target.accept(self)
+        targettype, targetcode = self.__demeta(node.target.accept(self))
         
         paramtypes = []
         params = []
@@ -68,8 +69,8 @@ class UflCompilingVisitor(UflVisitor):
         return self.__params[node.name], node.name
 
     def visit_binary(self, node):
-        ltype, lvalue = node.operand1.accept(self)
-        rtype, rvalue = node.operand2.accept(self)
+        ltype, lvalue = self.__demeta(node.operand1.accept(self))
+        rtype, rvalue = self.__demeta(node.operand2.accept(self))
         
         if ltype.is_same_as(rtype):
             raise Exception("Incompatible types {0} and {1}".format(ltype, rtype))
@@ -82,3 +83,15 @@ class UflCompilingVisitor(UflVisitor):
             return UflStringType(), repr(node.value)
         else:
             return UflIntegerType(), repr(node.value)
+    
+    def visit_metadata_access(self, node):
+        type, object = node.object.accept(self)
+        if not isinstance(type, UflDataWithMetadataType):
+            raise Exception('Does not have metadata for the value, cannot apply metadata access operator')
+        
+        return type.metadata_type, object
+    
+    def __demeta(self, type_and_value):
+        if isinstance(type_and_value[0], UflDataWithMetadataType):
+            return type_and_value[0].underlying_type, '({0}).value'.format(type_and_value[1])
+        return type_and_value

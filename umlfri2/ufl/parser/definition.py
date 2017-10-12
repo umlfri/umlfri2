@@ -2,9 +2,11 @@ import pyparsing as pp
 
 EXPRESSION = pp.Forward()
 
+METADATA_ACCESS = '@(' + EXPRESSION + ')'
+
 VARIABLE = pp.pyparsing_common.identifier
 
-TARGET = VARIABLE ^ ('(' + EXPRESSION + ')')
+TARGET = VARIABLE ^ ('(' + EXPRESSION + ')') ^ METADATA_ACCESS
 
 METHODORATTRORENUM = TARGET + (
     pp.OneOrMore(

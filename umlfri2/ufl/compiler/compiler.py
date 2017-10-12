@@ -1,6 +1,6 @@
 from .compilingvisitor import UflCompilingVisitor
 from ..parser import parse_ufl
-from umlfri2.ufl.types import UflBoolType, UflStringType
+from umlfri2.ufl.types import UflBoolType, UflStringType, UflDataWithMetadataType
 
 
 def compile_ufl(expression, expected_type, variables, enums={}):
@@ -8,6 +8,10 @@ def compile_ufl(expression, expected_type, variables, enums={}):
     tree = parse_ufl(expression)
     
     return_type, code = tree.accept(visitor)
+    
+    if not isinstance(expected_type, UflDataWithMetadataType) and isinstance(return_type, UflDataWithMetadataType):
+        code = '({0}).value'
+        return_type = return_type.underlying_type
     
     if isinstance(expected_type, UflBoolType) and not isinstance(return_type, UflBoolType):
         code = "bool({0})".format(code)
