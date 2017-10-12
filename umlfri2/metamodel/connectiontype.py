@@ -51,6 +51,6 @@ class ConnectionType:
     
     def create_appearance_object(self, connection, ruler):
         context = Context()\
-            .extend(connection.data, 'self')\
-            .extend(self.__metamodel().config, 'cfg')
+            .set_variable('self', connection.data)\
+            .set_variable('cfg', self.__metamodel().config)
         return self.__appearance.create_connection_object(context)

@@ -76,22 +76,22 @@
                     <Line color="#cfg.element.line"/>
                     <Padding padding="5">
                         <Table>
-                            <ForEach src="#self.attributes">
+                            <ForEach src="#self.attributes" item="attr">
                                 <Row>
                                     <TextBox font="#cfg.element.textfont" color="#cfg.element.text">
-                                        <Text text="#visibility"/>
+                                        <Text text="#attr.visibility"/>
                                         <Text text=" "/>
                                     </TextBox>
                                     <TextBox color="#cfg.element.text" font="#cfg.element.textfont">
-                                        <If condition="#stereotype">
+                                        <If condition="#attr.stereotype">
                                             <Text text="&#171;"/>
-                                            <Text text="#stereotype"/>
+                                            <Text text="#attr.stereotype"/>
                                             <Text text="&#187;  "/>
                                         </If>
-                                        <Text text="#name"/>
-                                        <If condition="#value">
+                                        <Text text="#attr.name"/>
+                                        <If condition="#attr.value">
                                             <Text text=" = "/>
-                                            <Text text="#value"/>
+                                            <Text text="#attr.value"/>
                                         </If>
                                     </TextBox>
                                 </Row>

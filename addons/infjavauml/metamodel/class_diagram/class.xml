@@ -87,27 +87,27 @@
                     <Line color="#cfg.element.line"/>
                     <Padding padding="5">
                         <Table>
-                            <ForEach src="#self.attributes">
+                            <ForEach src="#self.attributes" item="attr">
                                 <Row>
                                     <TextBox font="#cfg.element.textfont" color="#cfg.element.text">
-                                        <Text text="#visibility"/>
+                                        <Text text="#attr.visibility"/>
                                         <Text text=" "/>
                                     </TextBox>
                                     <TextBox color="#cfg.element.text"
-                                             font="#cfg.element.textfont.change(FontStyle::underline, static)">
-                                        <If condition="#stereotype">
+                                             font="#cfg.element.textfont.change(FontStyle::underline, attr.static)">
+                                        <If condition="#attr.stereotype">
                                             <Text text="&#171;"/>
-                                            <Text text="#stereotype"/>
+                                            <Text text="#attr.stereotype"/>
                                             <Text text="&#187;  "/>
                                         </If>
-                                        <Text text="#name"/>
-                                        <If condition="#type">
+                                        <Text text="#attr.name"/>
+                                        <If condition="#attr.type">
                                             <Text text=": "/>
-                                            <Text text="#type"/>
+                                            <Text text="#attr.type"/>
                                         </If>
-                                        <If condition="#default">
+                                        <If condition="#attr.default">
                                             <Text text=" = "/>
-                                            <Text text="#default"/>
+                                            <Text text="#attr.default"/>
                                         </If>
                                     </TextBox>
                                 </Row>
@@ -119,52 +119,52 @@
                             <Line color="#cfg.element.line"/>
                             <Padding padding="5">
                                 <Table>
-                                    <ForEach src="#self.operations">
-                                        <If condition="#name">
+                                    <ForEach src="#self.operations" item="op">
+                                        <If condition="#op.name">
                                             <Row>
                                                 <TextBox font="#cfg.element.textfont"
                                                          color="#cfg.element.text">
-                                                    <Text text="#visibility"/>
+                                                    <Text text="#op.visibility"/>
                                                     <Text text=" "/>
                                                 </TextBox>
 
                                                 <TextBox
-                                                        font="#cfg.element.textfont.change(FontStyle::underline, static).change(FontStyle::italic, abstract)"
+                                                        font="#cfg.element.textfont.change(FontStyle::underline, op.static).change(FontStyle::italic, op.abstract)"
                                                         color="#cfg.element.text">
-                                                    <If condition="#stereotype">
+                                                    <If condition="#op.stereotype">
                                                         <Text text="&#171;"/>
-                                                        <Text text="#stereotype"/>
+                                                        <Text text="#op.stereotype"/>
                                                         <Text text="&#187;  "/>
                                                     </If>
 
-                                                    <Text text="#name"/>
+                                                    <Text text="#op.name"/>
 
                                                     <Text text="("/>
 
-                                                    <ForEach src="#parameters" index="no">
+                                                    <ForEach src="#op.parameters" item="param" index="no">
                                                         <If condition="#no">
                                                             <Text text=", "/>
                                                         </If>
-                                                        <If condition="#name">
-                                                            <Text text="#name"/>
+                                                        <If condition="#param.name">
+                                                            <Text text="#param.name"/>
                                                         </If>
-                                                        <If condition="#type">
+                                                        <If condition="#param.type">
                                                             <Text text=":"/>
-                                                            <If condition="#name">
+                                                            <If condition="#param.name">
                                                                 <Text text=" "/>
                                                             </If>
-                                                            <Text text="#type"/>
+                                                            <Text text="#param.type"/>
                                                         </If>
-                                                        <If condition="#default">
+                                                        <If condition="#param.default">
                                                             <Text text=" = "/>
-                                                            <Text text="#default"/>
+                                                            <Text text="#param.default"/>
                                                         </If>
                                                     </ForEach>
 
                                                     <Text text=")"/>
-                                                    <If condition="#rtype">
+                                                    <If condition="#op.rtype">
                                                         <Text text=": "/>
-                                                        <Text text="#rtype"/>
+                                                        <Text text="#op.rtype"/>
                                                     </If>
                                                 </TextBox>
                                             </Row>

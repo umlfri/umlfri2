@@ -5,10 +5,10 @@ class UniqueValueGenerator:
     def get_text(self, template):
         i = 1
         prev = None
-        context = Context().extend(self.get_parent_name(), 'parent')
+        context = Context().set_variable('parent', self.get_parent_name())
         
         while True:
-            new = template.get_text(context.extend(i, 'no'))
+            new = template.get_text(context.set_variable('no', i))
             if new == prev:
                 return new # cant find template
             

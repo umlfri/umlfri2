@@ -9,11 +9,11 @@ class ForEachComponent(ControlComponent):
         'item': str,
     }
     
-    def __init__(self, children, src, index=None, item=None):
+    def __init__(self, children, src, item, index=None):
         super().__init__(children)
         self.__src = src
-        self.__index = index
         self.__item = item
+        self.__index = index
     
     def compile(self, variables):
         self._compile_expressions(
@@ -24,12 +24,7 @@ class ForEachComponent(ControlComponent):
         item_type = self.__src.get_type().item_type
         
         variables = variables.copy()
-        if self.__item is not None:
-            variables[self.__item] = item_type
-        elif isinstance(item_type, UflObjectType):
-            variables.update({attr.name: attr.type for attr in item_type.attributes})
-        else:
-            raise Exception("You have to specify item name or use list of objects")
+        variables[self.__item] = item_type
         
         if self.__index is not None:
             variables[self.__index] = UflIntegerType()
@@ -38,12 +33,9 @@ class ForEachComponent(ControlComponent):
     
     def filter_children(self, context):
         for line, item in enumerate(self.__src(context)):
-            if self.__item is None:
-                local = context.extend(item)
-            else:
-                local = context.extend(item, self.__item)
+            local = context.set_variable(self.__item, item)
             
             if self.__index is not None:
-                local = local.extend(line, self.__index)
+                local = local.set_variable(self.__index, line)
             
             yield from self._get_children(local)
