@@ -1,8 +1,9 @@
 import html
 
 from PyQt5.QtCore import Qt, QSize
+from PyQt5.QtGui import QPalette
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QListWidget, QLabel, QSizePolicy, \
-    QListWidgetItem, QCheckBox, QLineEdit, QFormLayout
+    QListWidgetItem, QCheckBox, QLineEdit, QFormLayout, QFrame
 from umlfri2.application import Application
 from umlfri2.qtgui.base import image_loader
 
@@ -43,7 +44,9 @@ class NewProjectDialog(QDialog):
         self.__templates.itemDoubleClicked.connect(self.__selection_double_clicked)
         
         self.__description = QLabel()
-        self.__description.setStyleSheet("background-color: white")
+        self.__description.setBackgroundRole(QPalette.Base)
+        self.__description.setAutoFillBackground(True)
+        self.__description.setFrameStyle(QFrame.StyledPanel | QFrame.Sunken)
         self.__description.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.__description.setAlignment(Qt.AlignTop)
         self.__description.setWordWrap(True)
