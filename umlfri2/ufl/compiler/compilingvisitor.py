@@ -78,6 +78,14 @@ class UflCompilingVisitor(UflVisitor):
         if node.operator in ('<', '>', '<=', '>=', '!=', '=='):
              return UflBoolType(), lvalue + node.operator + rvalue
     
+    def visit_unary(self, node):
+        type, value = self.__demeta(node.operand.accept(self))
+        
+        if node.operator == '!':
+            if not isinstance(type, UflBoolType):
+                raise Exception("Cannot apply operator ! to anything but boolean value")
+            return UflBoolType(), "not ({0})".format(value)
+    
     def visit_literal(self, node):
         if isinstance(node.value, str):
             return UflStringType(), repr(node.value)

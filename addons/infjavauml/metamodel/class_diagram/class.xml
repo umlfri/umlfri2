@@ -142,9 +142,6 @@
                                                     <Text text="("/>
 
                                                     <ForEach src="#op.parameters" item="param">
-                                                        <If condition="#@(param).index">
-                                                            <Text text=", "/>
-                                                        </If>
                                                         <If condition="#param.name">
                                                             <Text text="#param.name"/>
                                                         </If>
@@ -158,6 +155,9 @@
                                                         <If condition="#param.default">
                                                             <Text text=" = "/>
                                                             <Text text="#param.default"/>
+                                                        </If>
+                                                        <If condition="#!@(param).is_last">
+                                                            <Text text=", "/>
                                                         </If>
                                                     </ForEach>
 

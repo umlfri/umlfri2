@@ -25,13 +25,25 @@ d.NUMBER.addParseAction(number)
 
 d.STRING.addParseAction(lambda data: UflLiteral(data[0].strip("''")))
 
-def relational(data):
+def unary(data):
+    x = data[:]
+    value = x.pop(-1)
+    
+    while x:
+        operator = x.pop(-1)
+        value = UflUnary(operator, value)
+    
+    return value
+
+d.UNARY.setParseAction(unary)
+
+def binary(data):
     if len(data) > 2:
         return UflBinary(data[0], data[1], data[2])
     else:
         return data[0]
 
-d.RELATIONAL.addParseAction(relational)
+d.BINARY.addParseAction(binary)
 
 def method_or_attribute_or_enum(data):
     node = data[0]

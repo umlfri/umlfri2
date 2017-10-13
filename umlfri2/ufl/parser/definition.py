@@ -4,27 +4,29 @@ EXPRESSION = pp.Forward()
 
 METADATA_ACCESS = '@(' + EXPRESSION + ')'
 
-VARIABLE = pp.pyparsing_common.identifier
+VARIABLE = pp.pyparsing_common.identifier.copy()
 
 TARGET = VARIABLE ^ ('(' + EXPRESSION + ')') ^ METADATA_ACCESS
 
 METHODORATTRORENUM = TARGET + (
     pp.OneOrMore(
-        '.' + pp.Word(pp.alphanums)
+        '.' + pp.pyparsing_common.identifier.copy()
         + pp.Optional('(' + pp.Optional(
             pp.Optional(EXPRESSION) + pp.ZeroOrMore("," + pp.Optional(EXPRESSION))
         ) + ')')
     ) |
-    pp.Optional('::' + pp.Word(pp.alphanums))
+    pp.Optional('::' + pp.pyparsing_common.identifier.copy())
 )
 
 STRING = pp.QuotedString(quoteChar="'", escChar="\\")
-NUMBER = pp.pyparsing_common.real
+NUMBER = pp.Regex("[0-9]+(\\.[0-9]+)?")
 
 VALUE = METHODORATTRORENUM ^ STRING ^ NUMBER
 
-RELATIONAL = VALUE + pp.Optional(pp.oneOf(["<=", "<", "==", "!=", ">=", ">"]) + VALUE)
+UNARY = pp.ZeroOrMore("!") + VALUE
 
-EXPRESSION << RELATIONAL
+BINARY = UNARY + pp.Optional(pp.oneOf(["<=", "<", "==", "!=", ">=", ">"]) + UNARY)
+
+EXPRESSION << BINARY
 
 WHOLE_EXPRESSION = pp.StringStart() + EXPRESSION + pp.StringEnd()

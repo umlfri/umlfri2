@@ -25,7 +25,11 @@ class UflVisitor(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def visit_binary(self, node):
         pass
-
+    
+    @abc.abstractmethod
+    def visit_unary(self, node):
+        pass
+    
     @abc.abstractmethod
     def visit_metadata_access(self, node):
         pass
