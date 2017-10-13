@@ -53,7 +53,9 @@
                             <Table>
                                 <ForEach src="#node.children" item="child">
                                     <Row>
-                                        <Image image="#child.icon"/>
+                                        <Align vertical="center" horizontal="center">
+                                            <Image image="#child.icon"/>
+                                        </Align>
                                         <Align vertical="center">
                                             <Padding left="5">
                                                 <TextBox text="#child.label" font="#cfg.element.textfont" color="#cfg.element.text"/>
