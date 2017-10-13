@@ -8,9 +8,13 @@ class UflMetadataType(UflType):
             metadata[name] = (name, type)
 
         self.ALLOWED_DIRECT_ATTRIBUTES = metadata
-
-    def __repr__(self):
-        return "<Metadata {0}>".format(", ".join(self.ALLOWED_DIRECT_ATTRIBUTES.keys()))
+    
+    @property
+    def is_immutable(self):
+        return True
+    
+    def __str__(self):
+        return "[Metadata {0}]".format(", ".join(self.ALLOWED_DIRECT_ATTRIBUTES.keys()))
 
 
 class UflDataWithMetadataType(UflType):
@@ -26,5 +30,5 @@ class UflDataWithMetadataType(UflType):
     def metadata_type(self):
         return UflMetadataType(self.__metadata_types)
     
-    def __repr__(self):
-        return "<DataWithMetadata {0} {1}>".format(repr(self.__underlying_type), ", ".join(self.__metadata_types.keys()))
+    def __str__(self):
+        return "[DataWithMetadata {0} {1}]".format(repr(self.__underlying_type), ", ".join(self.__metadata_types.keys()))

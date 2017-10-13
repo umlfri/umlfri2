@@ -12,6 +12,10 @@ class UflStringEnumType(UflEnumType):
             return False
         
         return self.possibilities == other.possibilities
+
+    @property
+    def is_convertable_to_string(self):
+        return True
     
     def __str__(self):
         return 'Enum[{0}]'.format(", ".join(possibility.name for possibility in self.possibilities))

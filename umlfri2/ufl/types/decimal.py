@@ -24,6 +24,10 @@ class UflDecimalType(UflType):
     
     def is_default_value(self, value):
         return self.__default == value
+
+    @property
+    def is_convertable_to_string(self):
+        return True
     
     def __str__(self):
         return "Decimal"

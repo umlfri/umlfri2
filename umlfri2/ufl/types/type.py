@@ -38,6 +38,10 @@ class UflType:
     def is_immutable(self):
         raise NotImplementedError
     
+    @property
+    def is_convertable_to_string(self):
+        return False
+    
     def is_valid_value(self, value):
         raise NotImplementedError
     
