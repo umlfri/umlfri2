@@ -23,7 +23,6 @@
                     <xs:complexContent>
                         <xs:extension base="text_component">
                             <xs:attribute name="src" type="xs:string" use="required"/>
-                            <xs:attribute name="index" type="xs:string"/>
                             <xs:attribute name="item" type="xs:string" use="required"/>
                         </xs:extension>
                     </xs:complexContent>
@@ -186,7 +185,6 @@
                     <xs:complexContent>
                         <xs:extension base="visual_component">
                             <xs:attribute name="src" type="xs:string" use="required"/>
-                            <xs:attribute name="index" type="xs:string"/>
                             <xs:attribute name="item" type="xs:string" use="required"/>
                         </xs:extension>
                     </xs:complexContent>
@@ -231,7 +229,6 @@
                     <xs:complexContent>
                         <xs:extension base="table_component">
                             <xs:attribute name="src" type="xs:string" use="required"/>
-                            <xs:attribute name="index" type="xs:string"/>
                             <xs:attribute name="item" type="xs:string" use="required"/>
                         </xs:extension>
                     </xs:complexContent>
@@ -281,7 +278,6 @@
                     <xs:complexContent>
                         <xs:extension base="graphics_component">
                             <xs:attribute name="src" type="xs:string" use="required"/>
-                            <xs:attribute name="index" type="xs:string"/>
                             <xs:attribute name="item" type="xs:string" use="required"/>
                         </xs:extension>
                     </xs:complexContent>
@@ -346,7 +342,6 @@
                     <xs:complexContent>
                         <xs:extension base="path_component">
                             <xs:attribute name="src" type="xs:string" use="required"/>
-                            <xs:attribute name="index" type="xs:string"/>
                             <xs:attribute name="item" type="xs:string" use="required"/>
                         </xs:extension>
                     </xs:complexContent>
@@ -403,7 +398,6 @@
                     <xs:complexContent>
                         <xs:extension base="connection_component">
                             <xs:attribute name="src" type="xs:string" use="required"/>
-                            <xs:attribute name="index" type="xs:string"/>
                             <xs:attribute name="item" type="xs:string" use="required"/>
                         </xs:extension>
                     </xs:complexContent>
