@@ -98,9 +98,10 @@ class ElementVisual:
         if self.__size is None or (self.__size.width < min_size.width and self.__size.height < min_size.height):
             self.__size = min_size
         else:
-            if self.__size.width < min_size.width:
+            resizable_x, resizable_y = self.__cached_appearance.is_resizable()
+            if self.__size.width < min_size.width or not resizable_x:
                 self.__size = Size(min_size.width, self.__size.height)
-            elif self.__size.height < min_size.height:
+            elif self.__size.height < min_size.height or not resizable_y:
                 self.__size = Size(self.__size.width, min_size.height)
             
             self.__cached_appearance.resize(self.__size)
