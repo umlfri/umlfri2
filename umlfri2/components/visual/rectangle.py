@@ -25,7 +25,7 @@ class CornerDefinition:
         if len(path.segments) > 1:
             raise Exception("Corner path can have only one segment (corner '{0}')".format(id))
         
-        transformation = Transformation.make_translate(-center.as_vector()) * Transformation.make_rotation(-rotation)
+        transformation = Transformation.make_translate(-center.as_vector()) * Transformation.make_rotation(rotation)
         
         self.__path = path.transform(transformation)
         if ornament is None:
@@ -66,7 +66,7 @@ class SideDefinition:
         if len(path.segments) > 1:
             raise Exception("Side path can have only one segment (side '{0}')".format(id))
         
-        transformation = Transformation.make_translate(-center.as_vector()) * Transformation.make_rotation(-rotation)
+        transformation = Transformation.make_translate(-center.as_vector()) * Transformation.make_rotation(rotation)
         
         self.__path = path.transform(transformation)
         if ornament is None:
@@ -125,12 +125,12 @@ class RoundedRectangleObject(VisualObject):
             next_side = self.__sides[(no + 1) % 4]
             
             if corner is not None:
-                transformation = Transformation.make_translate(corner_point) * Transformation.make_rotation(rotation)
+                transformation = Transformation.make_translate(corner_point) * Transformation.make_rotation(-rotation)
                 path.from_path(corner.path.transform(transformation), True)
                 if corner.ornament is not None:
                     ornaments.from_path(corner.ornament.transform(transformation))
             elif side is not None:
-                transformation = Transformation.make_translate(side_point) * Transformation.make_rotation(rotation) *\
+                transformation = Transformation.make_translate(side_point) * Transformation.make_rotation(-rotation) *\
                     Transformation.make_scale2(Size(1, side_size / side.size.height))
                 path.from_path(side.path.transform(transformation), True)
                 if side.ornament is not None:
