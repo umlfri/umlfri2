@@ -1,11 +1,11 @@
 try:
     from PyQt5.QtPrintSupport import QPageSetupDialog, QPrinter, QPrinterInfo
 
-    CAN_PRINT = True
+    has_printing_support = True
 except ImportError:
-    CAN_PRINT = False
+    has_printing_support = False
 
-if CAN_PRINT:
+if has_printing_support:
     from .diagramprinting import DiagramPrinting
 
 
@@ -21,23 +21,30 @@ class MetaPrinting(type):
 
 class Printing(metaclass=MetaPrinting):
     def __init__(self):
-        self.__printer = QPrinter(QPrinterInfo.defaultPrinter())
+        if has_printing_support:
+            self.__printer = QPrinter(QPrinterInfo.defaultPrinter())
+        else:
+            self.__printer = None
     
     @property
     def printer(self):
         return self.__printer
 
     def for_diagram(self, diagram):
-        if not CAN_PRINT:
+        if not has_printing_support:
             raise Exception("Cannot print, Qt has no printing support")
         return DiagramPrinting(self, diagram)
     
     def show_page_setup(self):
-        if not CAN_PRINT:
+        if not has_printing_support:
             raise Exception("Cannot print, Qt has no printing support")
         dlg = QPageSetupDialog(self.__printer)
         dlg.exec_()
-
+    
+    @property
+    def has_printing_support(self):
+        return has_printing_support
+    
     @property
     def can_print(self):
-        return CAN_PRINT
+        return any(QPrinterInfo.availablePrinters())

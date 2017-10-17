@@ -33,7 +33,7 @@ class MainWindowMenu(QMenuBar):
         self.__file_save = self.__add_menu_item(file_menu, QKeySequence.Save, "document-save", self.__file_save_action)
         self.__file_save_as = self.__add_menu_item(file_menu, QKeySequence.SaveAs, "document-save-as", self.__file_save_as_action)
         
-        if Printing().can_print:
+        if Printing().has_printing_support:
             file_menu.addSeparator()
             self.__file_page_setup = self.__add_menu_item(file_menu, None, None, self.__file_page_setup_action)
             self.__file_print_preview = self.__add_menu_item(file_menu, None, "document-print-preview", self.__file_print_preview_action)
@@ -156,9 +156,10 @@ class MainWindowMenu(QMenuBar):
         
         self.__file_recent_files.setEnabled(any(Application().recent_files))
         
-        if Printing().can_print:
-            self.__file_print_preview.setEnabled(tab is not None)
-            self.__file_print.setEnabled(tab is not None)
+        if Printing().has_printing_support:
+            self.__file_page_setup.setEnabled(Printing().can_print)
+            self.__file_print_preview.setEnabled(tab is not None and Printing().can_print)
+            self.__file_print.setEnabled(tab is not None and Printing().can_print)
         
         self.__edit_undo.setEnabled(Application().commands.can_undo)
         self.__edit_redo.setEnabled(Application().commands.can_redo)
@@ -333,7 +334,7 @@ class MainWindowMenu(QMenuBar):
         self.__file_recent_files.setText(_("&Recent Files"))
         self.__file_save.setText(_("&Save"))
         self.__file_save_as.setText(_("Save &as"))
-        if Printing().can_print:
+        if Printing().has_printing_support:
             self.__file_page_setup.setText(_("Pa&ge setup"))
             self.__file_print_preview.setText(_("Print pre&view"))
             self.__file_print.setText(_("&Print"))
