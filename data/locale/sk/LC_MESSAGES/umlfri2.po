@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-26 12:14+0200\n"
-"PO-Revision-Date: 2017-09-26 12:15+0200\n"
+"POT-Creation-Date: 2017-10-17 10:48+0200\n"
+"PO-Revision-Date: 2017-10-17 10:50+0200\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -49,6 +49,9 @@ msgstr "&Otvoriť"
 
 msgid "&Paste"
 msgstr "&Vložiť"
+
+msgid "&Print"
+msgstr "&Tlačiť"
 
 msgid "&Quit"
 msgstr "U&končiť"
@@ -296,6 +299,9 @@ msgstr "Otvoriť projekt"
 msgid "Options"
 msgstr "Nastavenia"
 
+msgid "Pa&ge setup"
+msgstr "Nastavenie &stránky"
+
 msgid "Padding"
 msgstr "Okraj"
 
@@ -313,6 +319,9 @@ msgstr "Pripnúť v zozname"
 
 msgid "Preferences"
 msgstr "Nastavenia"
+
+msgid "Print pre&view"
+msgstr "Ná&hľad tlače"
 
 msgid "Project"
 msgstr "Projekt"
