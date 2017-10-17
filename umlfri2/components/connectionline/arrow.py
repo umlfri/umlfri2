@@ -14,7 +14,8 @@ class ArrowDefinition:
         self.__path = path\
             .transform(
                 Transformation.make_translate(-center.as_vector())
-                * Transformation.make_rotation(-rotation)
+                # transformation is clock-wise, given rotation is counter-clockwise
+                * Transformation.make_rotation(-(-rotation))  
             )
     
     @property
@@ -43,7 +44,7 @@ class ArrowObject(ConnectionLineObject):
         if self.__orientation == ArrowOrientation.source:
             transformation *= Transformation.make_rotation(math.pi)
         
-        transformation *= Transformation.make_rotation(-pos.orientation)
+        transformation *= Transformation.make_rotation(pos.orientation)
         
         self.__path = self.__style.path.transform(transformation)
     
