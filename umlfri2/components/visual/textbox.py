@@ -1,6 +1,6 @@
 from ..expressions import ConstantExpression
 from ..text import TextContainerComponent, TextDataComponent
-from umlfri2.types.color import Color
+from umlfri2.types.color import Colors
 from umlfri2.types.font import Fonts
 from umlfri2.types.geometry import Point
 from umlfri2.ufl.types import UflStringType, UflColorType, UflFontType
@@ -46,7 +46,7 @@ class TextBoxComponent(VisualComponent):
     
     def __init__(self, children, text=None, color=None, font=None):
         super().__init__(())
-        self.__color = color or ConstantExpression(Color.get_color("black"))
+        self.__color = color or ConstantExpression(Colors.black)
         self.__font = font or ConstantExpression(Fonts.default)
         if text is None:
             self.__text = TextContainerComponent(children)

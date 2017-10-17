@@ -33,13 +33,16 @@ class Color:
     
     @property
     def rgba(self):
-        return ((self.__value & 0xff000000) >> 24) + self.__value << 8
+        return ((self.__value & 0xff000000) >> 24) + (self.__value & 0xffffff) << 8
     
     def invert(self):
         return Color(self.__value & 0xff000000 + (0xffffff - self.__value & 0xffffff))
     
     def add_alpha(self, alpha):
         return Color(self.__value & 0xffffff + alpha << 24)
+    
+    def to_gray(self):
+        return Color(self.__value & 0xff000000 + (self.r * 11 + self.g * 16 + self.b * 5) // 32)
     
     def __eq__(self, other):
         if isinstance(other, Color):
@@ -56,19 +59,27 @@ class Color:
         return "<Color {0}>".format(self)
     
     @staticmethod
-    def get_color(color):
-        if isinstance(color, str) and hasattr(Colors, color):
+    def from_string(color):
+        if hasattr(Colors, color):
             return getattr(Colors, color)
-        if isinstance(color, tuple): # (r, g, b)
-            return Color((color[0] << 16) + (color[1] << 8) + color[2] + 0xff000000)
-        if isinstance(color, str) and Color.__RE_HTML_COLOR.match(color): # html rgb/argb
+        if Color.__RE_HTML_COLOR.match(color): # html rgb/argb
             val = int(color[1:], 16)
             if len(color) == 6:
                 val = (val << 8) + 0xff
             return Color(val)
-        if isinstance(color, int): # argb
-            return Color(color)
         raise ValueError("color")
+    
+    @staticmethod
+    def from_rgb_values(r, g, b, a=255):
+        return Color((a << 24) & (r << 16) & (g << 8) & b)
+    
+    @staticmethod
+    def from_argb(argb):
+        return Color(argb)
+    
+    @staticmethod
+    def from_rgba(rgba):
+        return Color(((rgba & 0xff) << 24) + rgba >> 8)
 
 
 class Colors:

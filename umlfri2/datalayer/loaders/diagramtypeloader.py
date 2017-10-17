@@ -48,11 +48,11 @@ class DiagramTypeLoader:
                     if childchild.tag == "{{{0}}}Background".format(ADDON_NAMESPACE):
                         attrvalue = childchild.attrib["color"]
                         if attrvalue.startswith("##"):
-                            background = ConstantExpression(Color.get_color(attrvalue[1:]), UflColorType())
+                            background = ConstantExpression(Color.from_string(attrvalue[1:]), UflColorType())
                         elif attrvalue.startswith("#"):
                             background = UflExpression(attrvalue[1:])
                         else:
-                            background = ConstantExpression(Color.get_color(attrvalue), UflColorType())
+                            background = ConstantExpression(Color.from_string(attrvalue), UflColorType())
             else:
                 raise Exception
         
