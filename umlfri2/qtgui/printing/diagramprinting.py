@@ -17,7 +17,6 @@ class DiagramPrinting:
     def print(self):
         dlg = QPrintDialog(self.__printing.printer)
         if dlg.exec_() == QPrintDialog.Accepted:
-            self.__printing.printer = dlg.printer()
             self.__print_diagram(self.__printing.printer)
     
     def __print_diagram(self, printer):
