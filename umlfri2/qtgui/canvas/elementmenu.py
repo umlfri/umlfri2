@@ -36,18 +36,22 @@ class CanvasElementMenu(ContextMenu):
         
         first_diagram_item = None
         
-        if any(element.object.diagram_count > 0 for element in self.__elements):
+        child_diagrams = [diagram
+                            for element in self.__elements
+                                for diagram in element.object.diagrams
+                                    if diagram is not self.__diagram]
+        
+        if any(child_diagrams):
             diagrams_menu = self._add_sub_menu_item(_("Show Diagram"))
             
-            for element in self.__elements:
-                for diagram in element.object.diagrams:
-                    if diagram is not self.__diagram:
-                        diagram_item = QAction(diagram.get_display_name(), diagrams_menu)
-                        diagram_item.setIcon(image_loader.load_icon(diagram.type.icon))
-                        diagram_item.triggered.connect(partial(self.__show_diagram, diagram))
-                        diagrams_menu.addAction(diagram_item)
-                        if first_diagram_item is None:
-                            first_diagram_item = diagram_item
+            for diagram in child_diagrams:
+                if diagram is not self.__diagram:
+                    diagram_item = QAction(diagram.get_display_name(), diagrams_menu)
+                    diagram_item.setIcon(image_loader.load_icon(diagram.type.icon))
+                    diagram_item.triggered.connect(partial(self.__show_diagram, diagram))
+                    diagrams_menu.addAction(diagram_item)
+                    if first_diagram_item is None:
+                        first_diagram_item = diagram_item
         else:
             self._add_sub_menu_item(_("Show Diagram"), enabled=False)
 

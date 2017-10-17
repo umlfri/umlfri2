@@ -140,8 +140,9 @@ class CanvasWidget(QWidget):
             PropertiesDialog.open_for(self.__main_window, visual.object)
         elif visual.object.type.default_action == DefaultElementAction.subdiagram:
             for diagram in visual.object.diagrams:
-                Application().tabs.select_tab(diagram)
-                break
+                if diagram is not self.__drawing_area.diagram:
+                    Application().tabs.select_tab(diagram)
+                    break
             else:
                 PropertiesDialog.open_for(self.__main_window, visual.object)
     
