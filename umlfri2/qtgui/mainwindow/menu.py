@@ -10,6 +10,7 @@ from umlfri2.application.commands.diagram import HideElementsCommand, PasteSnipp
 from umlfri2.application.events.application.languagechanged import LanguageChangedEvent
 from umlfri2.constants.keys import FULL_SCREEN, ZOOM_ORIGINAL, PASTE_DUPLICATE, COPY_IMAGE
 from umlfri2.qtgui.fullscreen import FullScreenDiagram
+from umlfri2.qtgui.printing import Printing
 from umlfri2.qtgui.rendering import ImageExport, ExportDialog
 from umlfri2.qtgui.appdialogs import SettingsDialog, AboutDialog, AddOnsDialog
 
@@ -31,6 +32,13 @@ class MainWindowMenu(QMenuBar):
         
         self.__file_save = self.__add_menu_item(file_menu, QKeySequence.Save, "document-save", self.__file_save_action)
         self.__file_save_as = self.__add_menu_item(file_menu, QKeySequence.SaveAs, "document-save-as", self.__file_save_as_action)
+        
+        if Printing().can_print:
+            file_menu.addSeparator()
+            self.__file_page_setup = self.__add_menu_item(file_menu, None, None, self.__file_page_setup_action)
+            self.__file_print_preview = self.__add_menu_item(file_menu, None, "document-print-preview", self.__file_print_preview_action)
+            self.__file_print = self.__add_menu_item(file_menu, QKeySequence.Print, "document-print", self.__file_print_action)
+        
         file_menu.addSeparator()
         self.__file_exit = self.__add_menu_item(file_menu, QKeySequence.Quit, "application-exit", self.__file_exit_action)
         self.__file_exit.setMenuRole(QAction.QuitRole)
@@ -148,6 +156,10 @@ class MainWindowMenu(QMenuBar):
         
         self.__file_recent_files.setEnabled(any(Application().recent_files))
         
+        if Printing().can_print:
+            self.__file_print_preview.setEnabled(tab is not None)
+            self.__file_print.setEnabled(tab is not None)
+        
         self.__edit_undo.setEnabled(Application().commands.can_undo)
         self.__edit_redo.setEnabled(Application().commands.can_redo)
         self.__edit_select_all.setEnabled(tab is not None)
@@ -194,6 +206,15 @@ class MainWindowMenu(QMenuBar):
     
     def __file_save_as_action(self, checked=False):
         self.__main_window.save_solution_as()
+    
+    def __file_page_setup_action(self, checked=False):
+        Printing().show_page_setup()
+    
+    def __file_print_preview_action(self, checked=False):
+        Printing().for_diagram(Application().tabs.current_tab.drawing_area.diagram).show_preview()
+    
+    def __file_print_action(self, checked=False):
+        Printing().for_diagram(Application().tabs.current_tab.drawing_area.diagram).print()
     
     def __file_exit_action(self, checked=False):
         self.__main_window.close()
@@ -312,6 +333,10 @@ class MainWindowMenu(QMenuBar):
         self.__file_recent_files.setText(_("&Recent Files"))
         self.__file_save.setText(_("&Save"))
         self.__file_save_as.setText(_("Save &as"))
+        if Printing().can_print:
+            self.__file_page_setup.setText(_("Pa&ge setup"))
+            self.__file_print_preview.setText(_("Print pre&view"))
+            self.__file_print.setText(_("&Print"))
         self.__file_exit.setText(_("&Quit"))
         
         self.__edit.setText(_("&Edit"))
