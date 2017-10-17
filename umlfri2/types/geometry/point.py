@@ -40,8 +40,8 @@ class Point:
     
     def transform(self, matrix):
         return Point(
-            matrix.m11*self.__x + matrix.m12*self.__y + matrix.offset_x,
-            matrix.m21*self.__x + matrix.m22*self.__y + matrix.offset_y
+            matrix.m11*self.__x + matrix.m21*self.__y + matrix.offset_x,
+            matrix.m12*self.__x + matrix.m22*self.__y + matrix.offset_y
         )
     
     def __str__(self):
