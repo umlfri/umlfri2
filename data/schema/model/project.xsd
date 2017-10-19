@@ -16,7 +16,7 @@
                             <xs:element name="Metamodel">
                                 <xs:complexType>
                                     <xs:attribute name="id" type="xs:anyURI" use="required"/>
-                                    <xs:attribute name="version" type="version" use="required"/>
+                                    <xs:attribute name="version" type="xs:string" use="required"/>
                                 </xs:complexType>
                             </xs:element>
                         </xs:sequence>
@@ -24,7 +24,7 @@
                 </xs:element>
                 <xs:element name="Element" type="element" minOccurs="0" maxOccurs="unbounded"/>
             </xs:sequence>
-            <xs:attribute name="saveversion" type="version" use="required"/>
+            <xs:attribute name="saveversion" type="xs:string" use="optional"/>
             <xs:attribute name="id" type="xs:string" use="required"/>
         </xs:complexType>
     </xs:element>
@@ -97,9 +97,4 @@
         <xs:attribute name="id" type="xs:string" use="required"/>
         <xs:attribute name="value" type="xs:string" use="optional"/>
     </xs:complexType>
-    <xs:simpleType name="version">
-        <xs:restriction base="xs:string">
-            <xs:pattern value="([0-9]+)(\.[0-9]+)*(-(alpha|beta|pre|rc|p)([0-9]+)?)?"/>
-        </xs:restriction>
-    </xs:simpleType>
 </xs:schema>

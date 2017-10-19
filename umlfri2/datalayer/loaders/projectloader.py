@@ -11,7 +11,7 @@ from umlfri2.model import Project
 class ProjectLoader:
     # TODO: ignore incorrect attributes
     
-    def __init__(self, xmlfile_or_xmlroot, ruler, new_project, rename_project_to=None, addon=None, addon_manager=None):
+    def __init__(self, xmlfile_or_xmlroot, ruler, addon_manager, save_version):
         if isinstance(xmlfile_or_xmlroot, lxml.etree._Element):
             self.__xmlroot = xmlfile_or_xmlroot
         else:
@@ -20,10 +20,6 @@ class ProjectLoader:
         if not MODEL_SCHEMA.validate(self.__xmlroot):
             raise Exception("Cannot load project: {0}".format(MODEL_SCHEMA.error_log.last_error))
         
-        self.__new_project = new_project
-        self.__rename_project_to = rename_project_to
-        
-        self.__addon = addon
         self.__addon_manager = addon_manager
         self.__connections = []
         self.__visuals = []
@@ -31,13 +27,12 @@ class ProjectLoader:
         self.__element_map = {}
         self.__connection_map = {}
         self.__ruler = ruler
+        
+        self.__save_version = save_version
     
     def load(self):
         project = None
-        if self.__new_project:
-            save_id = None
-        else:
-            save_id = UUID(self.__xmlroot.attrib["id"])
+        save_id = UUID(self.__xmlroot.attrib["id"])
         
         for node in self.__xmlroot:
             if node.tag == "{{{0}}}Info".format(MODEL_NAMESPACE):
@@ -56,9 +51,6 @@ class ProjectLoader:
             elif visual.tag == "{{{0}}}Connection".format(MODEL_NAMESPACE):
                 self.__load_connection_visual(diagram, visual)
         
-        if self.__rename_project_to is not None:
-            project.name = self.__rename_project_to
-        
         return project
 
     def __load_info(self, node, save_id):
@@ -68,20 +60,14 @@ class ProjectLoader:
         
         for child in node:
             if child.tag == "{{{0}}}Name".format(MODEL_NAMESPACE):
-                if not self.__new_project:
-                    name = child.attrib["name"]
+                name = child.attrib["name"]
             elif child.tag == "{{{0}}}Metamodel".format(MODEL_NAMESPACE):
                 metamodel = child.attrib["id"]
                 metamodel_version = child.attrib["version"]
             else:
                 raise Exception
         
-        if self.__addon is not None and self.__addon.identifier == metamodel:
-            addon = self.__addon
-        elif self.__addon_manager is not None:
-            addon = self.__addon_manager.get_addon(metamodel)
-        else:
-            addon = None
+        addon = self.__addon_manager.get_addon(metamodel)
         
         # TODO: check version and raise warning if needed
         

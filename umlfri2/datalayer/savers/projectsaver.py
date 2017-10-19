@@ -1,7 +1,7 @@
 import lxml.etree
 
 from umlfri2.ufl.types import UflObjectType, UflListType, UflFlagsType
-from ..constants import MODEL_NAMESPACE, MODEL_SAVE_VERSION, MODEL_SCHEMA
+from ..constants import MODEL_NAMESPACE, MODEL_SCHEMA
 
 
 class ProjectSaver:
@@ -13,7 +13,6 @@ class ProjectSaver:
     def save(self, project):
         root = lxml.etree.Element('{{{0}}}Project'.format(MODEL_NAMESPACE), nsmap={None: MODEL_NAMESPACE})
         root.attrib['id'] = str(project.save_id)
-        root.attrib['saveversion'] = str(MODEL_SAVE_VERSION)
         
         name = lxml.etree.Element('{{{0}}}Name'.format(MODEL_NAMESPACE))
         name.attrib['name'] = project.name

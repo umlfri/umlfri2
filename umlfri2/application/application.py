@@ -2,7 +2,6 @@ import os
 import os.path
 
 from umlfri2.application.config import ApplicationConfig
-from umlfri2.constants.solutionfile import SOLUTION_MIME_TYPE
 from .language import LanguageManager
 from .about import AboutUmlFri
 from .addon import AddOnManager
@@ -167,7 +166,7 @@ class Application(metaclass=MetaApplication):
     
     def save_solution_as(self, filename):
         filename = os.path.normpath(os.path.abspath(filename))
-        with ZipStorage.new_storage(filename, SOLUTION_MIME_TYPE) as storage:
+        with ZipStorage.new_storage(filename) as storage:
             WholeSolutionSaver(storage, self.__ruler).save(self.__solution)
             self.__solution_storage_ref = storage.remember_reference()
         

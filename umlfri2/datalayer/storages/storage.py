@@ -21,6 +21,12 @@ class Storage:
     def open(self, path, mode='r'):
         raise NotImplementedError
     
+    def store_string(self, path, data):
+        raise NotImplementedError
+    
+    def read_string(self, path):
+        raise NotImplementedError
+    
     def exists(self, path):
         raise NotImplementedError
     

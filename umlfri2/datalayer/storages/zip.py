@@ -80,11 +80,9 @@ class ZipStorage(Storage):
                                   file_path, 'r')
     
     @staticmethod
-    def new_storage(path, mimetype=None):
+    def new_storage(path):
         z = open(path, 'wb')
         zip_file = zipfile.ZipFile(z, mode='w', compression=zipfile.ZIP_DEFLATED)
-        if mimetype is not None:
-            zip_file.writestr("mimetype", mimetype.encode("ascii"), compress_type=zipfile.ZIP_STORED)
         return ZipStorage(path, zip_file, [], 'w')
     
     def __init__(self, zip_path, zip_file, path, mode):
@@ -106,6 +104,15 @@ class ZipStorage(Storage):
             if self.__mode == 'r':
                 raise ValueError("Storage is opened for read only")
             return ZipFileWriter(self.__zip_file, path)
+    
+    def store_string(self, path, data):
+        if self.__mode == 'r':
+            raise ValueError("Storage is opened for read only")
+        
+        self.__zip_file.writestr(self.__fix_path(path), data.encode("ascii"), compress_type=zipfile.ZIP_STORED)
+    
+    def read_string(self, path):
+        return self.__zip_file.read(self.__fix_path(path)).decode("ascii")
     
     def exists(self, path):
         return self.__fix_path(path) in self.__zip_file.namelist()

@@ -17,3 +17,7 @@ MODEL_SAVE_VERSION = Version("2.0")
 
 FRIP2_SOLUTION_FILE = "solution.xml"
 FRIP2_PROJECT_FILE = "project/{0}.xml"
+FRIP2_MIMETYPE_FILE = "mimetype"
+FRIP2_VERSION_FILE = "version"
+
+SOLUTION_MIME_TYPE = 'application/vnd.umlfri2.solution'

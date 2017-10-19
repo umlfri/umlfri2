@@ -51,6 +51,19 @@ class DirectoryStorage(Storage):
             if os.path.exists(path):
                 return open(path, 'rb')
     
+    def store_string(self, path, data):
+        if self.__mode == 'r':
+            raise ValueError("Storage is opened for read only")
+        path = self.__fix_path(path)
+        self.__create_directory_if_needed(path)
+        with open(path, 'w', encoding="ascii") as f:
+            f.write(data)
+    
+    def read_string(self, path):
+        path = self.__fix_path(path)
+        with open(path, 'r', encoding="ascii") as f:
+            return f.read()
+    
     def exists(self, path):
         path = self.__fix_path(path)
         return os.path.exists(path)

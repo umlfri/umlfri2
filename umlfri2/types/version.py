@@ -21,6 +21,18 @@ class Version:
                 self.__suffix = (parsed.group('suffix'), int(parsed.group('sufnum')))
     
     @property
+    def major(self):
+        return self.__version[0]
+    
+    @property
+    def minor(self):
+        return self.__version[1]
+    
+    @property
+    def build(self):
+        return self.__version[2]
+    
+    @property
     def version(self):
         return self.__version
     
@@ -31,6 +43,9 @@ class Version:
     @property
     def major_minor_string(self):
         return "{0}.{1}".format(self.__version[0], self.__version[1])
+    
+    def is_compatible_with(self, current):
+        return self.__version[0] == current.__version[0] and self <= current
     
     def __get_comparable(self):
         return self.__version, self.__suffix or ('full', )
