@@ -3,6 +3,7 @@ from functools import partial
 from umlfri2.application import Application
 from umlfri2.application.commands.model import CreateElementCommand, CreateDiagramCommand, DeleteElementsCommand
 from umlfri2.constants.keys import DELETE_FROM_PROJECT
+from umlfri2.qtgui.base.image_loader import load_icon
 from ..base.contextmenu import ContextMenu
 from ..properties import PropertiesDialog
 
@@ -29,7 +30,7 @@ class ProjectTreeElementMenu(ContextMenu):
         diagrams = [visual.diagram for visual in element.visuals]
         sub_menu = self._add_sub_menu_item(_("Show in Diagram"), len(diagrams) > 0)
         for diagram in diagrams:
-            self._add_menu_item(None, diagram.get_display_name(), None,
+            self._add_menu_item(load_icon(diagram.type.icon), diagram.get_display_name(), None,
                                 partial(self.__show_in_diagram, diagram), sub_menu)
         
         self._add_menu_item("edit-delete", _("Delete"), DELETE_FROM_PROJECT, self.__delete_element_action)

@@ -14,8 +14,10 @@ class ContextMenu(QMenu):
         if shortcut is not None:
             ret.setShortcut(QKeySequence(shortcut))
         
-        if icon is not None:
+        if isinstance(icon, str):
             ret.setIcon(QIcon.fromTheme(icon))
+        elif isinstance(icon, QIcon):
+            ret.setIcon(icon)
         
         if action is None:
             ret.setEnabled(False)
