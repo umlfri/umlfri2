@@ -23,8 +23,10 @@ class Printing(metaclass=MetaPrinting):
     def __init__(self):
         if has_printing_support:
             self.__printer = QPrinter(QPrinterInfo.defaultPrinter())
+            self.__can_print = any(QPrinterInfo.availablePrinters())
         else:
             self.__printer = None
+            self.__can_print = False
     
     @property
     def printer(self):
@@ -47,4 +49,4 @@ class Printing(metaclass=MetaPrinting):
     
     @property
     def can_print(self):
-        return any(QPrinterInfo.availablePrinters())
+        return self.__can_print
