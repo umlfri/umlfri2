@@ -163,7 +163,10 @@ class PropertyTab(QWidget):
     
     def _focus_first(self):
         if self.__qt_widgets:
-            self.__qt_widgets[self.__tab.first_widget.id].setFocus()
+            first_widget = self.__qt_widgets[self.__tab.first_widget.id]
+            first_widget.setFocus()
+            if isinstance(first_widget, (SelectAllLineEdit, SelectAllSpinBox)):
+                first_widget.selectAll()
     
     def refresh(self):
         raise NotImplementedError

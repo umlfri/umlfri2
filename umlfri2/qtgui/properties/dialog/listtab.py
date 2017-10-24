@@ -103,6 +103,8 @@ class ListPropertyTab(PropertyTab):
         if deselect:
             self._tab.change_current_index(None)
         self.refresh()
+        if self._tab.current_index is None:
+            self._focus_first()
     
     def __discard(self, deselect=False):
         self._tab.discard()
