@@ -25,6 +25,8 @@ class ElementTypeLoader:
         allow_child_access = 0
         allow_parent_access = 0
         
+        allow_direct_add = False
+        
         for child in self.__xmlroot:
             if child.tag == "{{{0}}}Icon".format(ADDON_NAMESPACE):
                 icon_path = child.attrib["path"]
@@ -54,6 +56,8 @@ class ElementTypeLoader:
                             allow_parent_access = int(childchild.attrib["depth"])
                         else:
                             allow_parent_access = float('inf')
+                    elif childchild.tag == "{{{0}}}AllowDirectAdd".format(ADDON_NAMESPACE):
+                        allow_direct_add = True
                     else:
                         raise Exception
             elif child.tag == "{{{0}}}Appearance".format(ADDON_NAMESPACE):
@@ -63,4 +67,5 @@ class ElementTypeLoader:
         
         node_access_depth = ElementAccessDepth(allow_parent_access, allow_child_access)
         
-        return ElementType(id, icon, ufl_type, display_name, appearance, default_action, node_access_depth)
+        return ElementType(id, icon, ufl_type, display_name, appearance, default_action, node_access_depth,
+                           allow_direct_add)

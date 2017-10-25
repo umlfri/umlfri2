@@ -43,6 +43,7 @@
                                     <xs:attribute name="depth" type="xs:integer" use="optional"/>
                                 </xs:complexType>
                             </xs:element-->
+                            <xs:element name="AllowDirectAdd" minOccurs="0"/>
                         </xs:all>
                     </xs:complexType>
                 </xs:element>

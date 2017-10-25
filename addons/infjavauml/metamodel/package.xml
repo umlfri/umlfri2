@@ -20,6 +20,7 @@
     <Config>
         <DefaultAction action="subdiagram"/>
         <AllowChildAccess depth="1" />
+        <AllowDirectAdd />
     </Config>
     
     <Appearance>

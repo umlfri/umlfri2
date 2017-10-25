@@ -42,7 +42,8 @@ ElementAccessDepth = namedtuple('ElementAccessDepth', ('parent', 'child'))
 
 
 class ElementType:
-    def __init__(self, id, icon, ufl_type, display_name, appearance, default_action, node_access_depth):
+    def __init__(self, id, icon, ufl_type, display_name, appearance, default_action, node_access_depth,
+                 allow_direct_add):
         self.__metamodel = None
         self.__id = id
         self.__icon = icon
@@ -52,6 +53,7 @@ class ElementType:
         self.__appearance = appearance
         self.__default_action = default_action
         self.__node_access_depth = node_access_depth
+        self.__allow_direct_add = allow_direct_add
     
     def _set_metamodel(self, metamodel):
         self.__metamodel = ref(metamodel)
@@ -79,6 +81,10 @@ class ElementType:
     @property
     def node_access_depth(self):
         return self.__node_access_depth
+    
+    @property
+    def allow_direct_add(self):
+        return self.__allow_direct_add
     
     def compile(self):
         type_context = TypeContext() \

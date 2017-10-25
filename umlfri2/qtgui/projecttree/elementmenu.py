@@ -21,9 +21,14 @@ class ProjectTreeElementMenu(ContextMenu):
         for diagram_type in metamodel.diagram_types:
             self._add_type_menu_item(diagram_type, self.__create_diagram_action, sub_menu)
         
-        sub_menu = self._add_sub_menu_item(_("Add Element"))
-        for element_type in metamodel.element_types:
-            self._add_type_menu_item(element_type, self.__create_element_action, sub_menu)
+        direct_element_types = [element_type for element_type in metamodel.element_types if element_type.allow_direct_add]
+        if any(direct_element_types):
+            for element_type in direct_element_types:
+                self._add_type_menu_item(element_type, self.__create_element_action, format=_("Add '{0}'"))
+        else:
+            sub_menu = self._add_sub_menu_item(_("Add Element"))
+            for element_type in metamodel.element_types:
+                self._add_type_menu_item(element_type, self.__create_element_action, sub_menu)
         
         self.addSeparator()
         

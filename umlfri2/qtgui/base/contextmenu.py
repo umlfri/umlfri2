@@ -28,10 +28,10 @@ class ContextMenu(QMenu):
         
         return ret
     
-    def _add_type_menu_item(self, type, action=None, sub_menu=None):
+    def _add_type_menu_item(self, type, action=None, sub_menu=None, format="{0}"):
         translation = type.metamodel.get_translation(Application().language.current_language)
         
-        ret = QAction(translation.translate(type), sub_menu or self)
+        ret = QAction(format.format(translation.translate(type)), sub_menu or self)
         
         ret.setIcon(image_loader.load_icon(type.icon))
         
