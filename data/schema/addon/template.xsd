@@ -59,6 +59,15 @@
             </xs:choice>
         </xs:sequence>
         <xs:attribute name="type" type="xs:string" use="required"/>
+        <xs:attribute name="state" use="optional" default="closed">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="closed"/>
+                    <xs:enumeration value="opened"/>
+                    <xs:enumeration value="locked"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
     </xs:complexType>
     <xs:complexType name="ufl_attribute_template">
         <xs:choice>

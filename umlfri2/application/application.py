@@ -137,9 +137,14 @@ class Application(metaclass=MetaApplication):
             self.__commands.clear_buffers()
             self.__commands.mark_unchanged()
             self.__event_dispatcher.dispatch(OpenSolutionEvent(self.__solution))
+            tabs = builder.tabs
         else:
             command = NewProjectCommand(self.__solution, template, project_name)
             self.__commands.execute(command)
+            tabs = command.opened_tabs
+        
+        for tab in tabs:
+            self.__tabs.select_tab(tab.diagram)
     
     @property
     def should_save_as(self):

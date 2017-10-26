@@ -8,6 +8,7 @@ from umlfri2.application.events.model import ElementCreatedEvent, ObjectDataChan
     ProjectChangedEvent, ElementDeletedEvent, DiagramDeletedEvent, NodeMovedEvent
 from umlfri2.application.events.solution import OpenProjectEvent, OpenSolutionEvent, RemoveProjectEvent, \
     CloseSolutionEvent
+from umlfri2.application.events.tabs import OpenTabEvent
 from umlfri2.model import Diagram, ElementObject, Project
 from .mimedata import ProjectMimeData
 from .treeitem import ProjectTreeItem
@@ -42,6 +43,7 @@ class ProjectTree(QTreeWidget):
         Application().event_dispatcher.subscribe(OpenSolutionEvent, self.__solution_open)
         Application().event_dispatcher.subscribe(ItemSelectedEvent, self.__element_selected)
         Application().event_dispatcher.subscribe(NodeMovedEvent, self.__node_moved)
+        Application().event_dispatcher.subscribe(OpenTabEvent, self.__diagram_opened)
     
     def reload(self):
         self.clear()
@@ -133,6 +135,13 @@ class ProjectTree(QTreeWidget):
         self.__reload_diagram(parent_item, event.diagram, event.index)
         
         parent_item.setExpanded(True)
+    
+    def __diagram_opened(self, event):
+        item = self.__get_item(event.tab.drawing_area.diagram.parent)
+        
+        while item is not None:
+            item.setExpanded(True)
+            item = item.parent()
     
     def __object_changed(self, event):
         if isinstance(event.object, (ElementObject, Diagram)):

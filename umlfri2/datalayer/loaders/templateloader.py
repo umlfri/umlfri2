@@ -1,5 +1,5 @@
 from umlfri2.metamodel.projecttemplate import ProjectTemplate, ElementTemplate, DiagramTemplate, ConnectionTemplate, \
-    ElementVisualTemplate, ConnectionVisualTemplate
+    ElementVisualTemplate, ConnectionVisualTemplate, DiagramTemplateState
 from umlfri2.types.geometry import Point, Size
 from ..constants import ADDON_NAMESPACE, ADDON_SCHEMA
 
@@ -103,7 +103,9 @@ class TemplateLoader:
             elif child.tag == "{{{0}}}Connection".format(ADDON_NAMESPACE):
                 connections.append(self.__load_connection_visual(child))
         
-        return DiagramTemplate(type, data, elements, connections, parent_id)
+        state = DiagramTemplateState[node.attrib.get("state", "closed")]
+        
+        return DiagramTemplate(type, data, elements, connections, parent_id, state=state)
     
     def __load_element_visual(self, node):
         id = node.attrib["id"]

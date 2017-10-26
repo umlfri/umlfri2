@@ -1,13 +1,22 @@
+from enum import Enum
+
 from .checkdata import check_any
 
 
+class DiagramTemplateState(Enum):
+    closed = 0
+    opened = 1
+    locked = 2
+
+
 class DiagramTemplate:
-    def __init__(self, type, data, elements, connections, parent_id):
+    def __init__(self, type, data, elements, connections, parent_id, state=DiagramTemplateState.closed):
         self.__type = type
         self.__data = data
         self.__elements = elements
         self.__connections = connections
         self.__parent_id = parent_id
+        self.__state = state
     
     @property
     def type(self):
@@ -28,6 +37,10 @@ class DiagramTemplate:
     @property
     def parent_id(self):
         return self.__parent_id
+    
+    @property
+    def state(self):
+        return self.__state
 
     def _compile(self, metamodel):
         self.__type = metamodel.get_diagram_type(self.__type)

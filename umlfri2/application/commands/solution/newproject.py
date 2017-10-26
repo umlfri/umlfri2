@@ -10,6 +10,7 @@ class NewProjectCommand(Command):
         self.__solution = solution
         self.__template = template
         self.__project = None
+        self.__tabs = []
     
     @property
     def description(self):
@@ -18,6 +19,7 @@ class NewProjectCommand(Command):
     def _do(self, ruler):
         builder = ProjectBuilder(ruler, self.__template)
         self.__project = builder.project
+        self.__tabs = list(builder.tabs)
         
         self._redo(ruler)
     
@@ -26,6 +28,10 @@ class NewProjectCommand(Command):
     
     def _undo(self, ruler):
         self.__solution.remove_project(self.__project)
+    
+    @property
+    def opened_tabs(self):
+        yield from self.__tabs
     
     def get_updates(self):
         yield OpenProjectEvent(self.__project)

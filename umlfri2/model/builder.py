@@ -1,5 +1,11 @@
+from collections import namedtuple
+
+from umlfri2.metamodel.projecttemplate import DiagramTemplateState
 from umlfri2.ufl.types import UflObjectType, UflListType, UflFlagsType
 from .project import Project
+
+
+StartupTab = namedtuple('StartupTab', ['diagram', 'locked'])
 
 
 class ProjectBuilder:
@@ -9,12 +15,17 @@ class ProjectBuilder:
         self.__name = name
         self.__project = None
         self.__all_objects = {}
+        self.__tabs = []
     
     @property
     def project(self):
         if self.__project is None:
             self.__build_project()
         return self.__project
+    
+    @property
+    def tabs(self):
+        yield from self.__tabs
     
     def __build_project(self):
         self.__project = Project(self.__template.metamodel, name=self.__name)
@@ -71,6 +82,11 @@ class ProjectBuilder:
             
             if element.size is not None:
                 element_visual.resize(self.__ruler, element.size)
+        
+        if diagram.state == DiagramTemplateState.opened:
+            self.__tabs.append(StartupTab(ret, False))
+        elif diagram.state == DiagramTemplateState.locked:
+            self.__tabs.append(StartupTab(ret, True))
         
         for connection in diagram.connections:
             connection_object = self.__all_objects[connection.connection_id]

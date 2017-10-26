@@ -2,6 +2,6 @@
 <Template id="empty_class" xmlns="http://umlfri.org/v2/addon.xsd">
     <Element type="package">
         <Attribute id="name" value="Class diagram"/>
-        <Diagram type="class_diagram"/>
+        <Diagram type="class_diagram" state="locked"/>
     </Element>
 </Template>
