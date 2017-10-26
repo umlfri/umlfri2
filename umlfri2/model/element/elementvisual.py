@@ -95,13 +95,21 @@ class ElementVisual:
         self.__cached_appearance = self.__object.create_appearance_object(ruler)
         self.__cached_appearance.move(self.__position)
         min_size = self.__cached_appearance.get_minimal_size()
-        if self.__size is None or (self.__size.width < min_size.width and self.__size.height < min_size.height):
+        
+        if self.__size is None:
             self.__size = min_size
         else:
+            undersize_width = self.__size.width < min_size.width
+            undersize_height = self.__size.height < min_size.height
+    
             resizable_x, resizable_y = self.__cached_appearance.is_resizable()
-            if self.__size.width < min_size.width or not resizable_x:
-                self.__size = Size(min_size.width, self.__size.height)
-            elif self.__size.height < min_size.height or not resizable_y:
-                self.__size = Size(self.__size.width, min_size.height)
             
-            self.__cached_appearance.resize(self.__size)
+            if (undersize_width and undersize_height) or (not resizable_x and not resizable_y):
+                self.__size = min_size
+            else:
+                if undersize_width or not resizable_x:
+                    self.__size = Size(min_size.width, self.__size.height)
+                elif undersize_height or not resizable_y:
+                    self.__size = Size(self.__size.width, min_size.height)
+                
+                self.__cached_appearance.resize(self.__size)
