@@ -13,6 +13,10 @@
                 <xs:complexType>
                     <xs:complexContent>
                         <xs:extension base="text_component">
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element name="Then" type="text_component"/>
+                                <xs:element name="Else" type="text_component"/>
+                            </xs:choice>
                             <xs:attribute name="condition" type="xs:string" use="required"/>
                         </xs:extension>
                     </xs:complexContent>
@@ -175,6 +179,10 @@
                 <xs:complexType>
                     <xs:complexContent>
                         <xs:extension base="visual_component">
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element name="Then" type="visual_component"/>
+                                <xs:element name="Else" type="visual_component"/>
+                            </xs:choice>
                             <xs:attribute name="condition" type="xs:string" use="required"/>
                         </xs:extension>
                     </xs:complexContent>
@@ -219,6 +227,10 @@
                 <xs:complexType>
                     <xs:complexContent>
                         <xs:extension base="table_component">
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element name="Then" type="table_component"/>
+                                <xs:element name="Else" type="table_component"/>
+                            </xs:choice>
                             <xs:attribute name="condition" type="xs:string" use="required"/>
                         </xs:extension>
                     </xs:complexContent>
@@ -268,6 +280,10 @@
                 <xs:complexType>
                     <xs:complexContent>
                         <xs:extension base="graphics_component">
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element name="Then" type="graphics_component"/>
+                                <xs:element name="Else" type="graphics_component"/>
+                            </xs:choice>
                             <xs:attribute name="condition" type="xs:string" use="required"/>
                         </xs:extension>
                     </xs:complexContent>
@@ -332,6 +348,10 @@
                 <xs:complexType>
                     <xs:complexContent>
                         <xs:extension base="path_component">
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element name="Then" type="path_component"/>
+                                <xs:element name="Else" type="path_component"/>
+                            </xs:choice>
                             <xs:attribute name="condition" type="xs:string" use="required"/>
                         </xs:extension>
                     </xs:complexContent>
@@ -388,6 +408,10 @@
                 <xs:complexType>
                     <xs:complexContent>
                         <xs:extension base="connection_component">
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element name="Then" type="connection_component"/>
+                                <xs:element name="Else" type="connection_component"/>
+                            </xs:choice>
                             <xs:attribute name="condition" type="xs:string" use="required"/>
                         </xs:extension>
                     </xs:complexContent>

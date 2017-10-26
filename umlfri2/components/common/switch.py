@@ -8,8 +8,6 @@ class SwitchCaseComponent(HelperComponent):
         'value': UflAnyType(),
     }
     
-    CHILDREN_TYPE = 'return' # return back to type from the switch parent
-    
     def __init__(self, children, value):
         super().__init__(children)
         self.__value = value
@@ -31,8 +29,6 @@ class SwitchCaseComponent(HelperComponent):
 
 
 class SwitchDefaultComponent(HelperComponent):
-    CHILDREN_TYPE = 'return' # return back to type from the switch parent
-    
     def compile(self, type_context):
         self._compile_children(type_context)
 
@@ -41,8 +37,13 @@ class SwitchComponent(ControlComponent):
     ATTRIBUTES = {
         'value': UflAnyType(),
     }
+
+    SPECIAL_CHILDREN = {
+        'Case': SwitchCaseComponent,
+        'Default': SwitchDefaultComponent,
+    }
     
-    CHILDREN_TYPE = 'switch'
+    ONLY_SPECIAL_CHILDREN = True
     
     def __init__(self, children, value):
         super().__init__(())

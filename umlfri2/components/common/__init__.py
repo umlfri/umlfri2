@@ -1,14 +1,9 @@
 from .condition import ConditionComponent
 from .foreach import ForEachComponent
-from .switch import SwitchComponent, SwitchCaseComponent, SwitchDefaultComponent
+from .switch import SwitchComponent
 
 COMMON_COMPONENTS = {
     'If': ConditionComponent,
     'ForEach': ForEachComponent,
     'Switch': SwitchComponent,
-}
-
-SWITCH_COMPONENTS = {
-    'Case': SwitchCaseComponent,
-    'Default': SwitchDefaultComponent,
 }

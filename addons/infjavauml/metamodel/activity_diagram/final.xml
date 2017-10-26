@@ -8,7 +8,14 @@
     </Structure>
 
     <DisplayName>
-        <Text text="#self.name"/>
+        <If condition="#self.name">
+            <Then>
+                <Text text="#self.name"/>
+            </Then>
+            <Else>
+                <Text text="Final"/>
+            </Else>
+        </If>
     </DisplayName>
     
     <Appearance>

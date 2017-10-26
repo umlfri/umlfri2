@@ -7,6 +7,8 @@ class Component:
     HAS_CHILDREN = True
     CHILDREN_TYPE = None
     IS_CONTROL = False
+    SPECIAL_CHILDREN = {}
+    ONLY_SPECIAL_CHILDREN = False
     
     def __init__(self, children):
         self.__children = children

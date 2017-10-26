@@ -1,7 +1,7 @@
 from collections import namedtuple
 
 from ..constants import ADDON_NAMESPACE
-from umlfri2.components.common import COMMON_COMPONENTS, SWITCH_COMPONENTS
+from umlfri2.components.common import COMMON_COMPONENTS
 from umlfri2.components.connectionline import CONNECTION_LINE_COMPONENTS
 from umlfri2.components.expressions import UflExpression, ConstantExpression
 from umlfri2.components.graphic import GRAPHIC_COMPONENTS
@@ -23,8 +23,6 @@ class ComponentLoader:
     __components['text'] = COMMON_COMPONENTS.copy()
     __components['connection'] = COMMON_COMPONENTS.copy()
     
-    __components['switch'] = SWITCH_COMPONENTS.copy()
-    
     __components['visual'].update(VISUAL_COMPONENTS)
     __components['text'].update(TEXT_COMPONENTS)
     __components['graphic'].update(GRAPHIC_COMPONENTS)
@@ -38,14 +36,20 @@ class ComponentLoader:
         self.__definitions = definitions
     
     def load(self):
-        return list(self.__load_children(self.__xmlroot, self.__type, (), {}))
+        return list(self.__load_children(self.__xmlroot, self.__type, {}, {}, False))
     
-    def __load_children(self, node, component_type, previous_types, children_attributes):
+    def __load_children(self, node, component_type, children_attributes, special_children,
+                        only_special_children):
         for child in node:
             if child.tag.startswith("{{{0}}}".format(ADDON_NAMESPACE)):
                 tagname = child.tag[len(ADDON_NAMESPACE) + 2:]
                 
-                component = self.__components[component_type][tagname]
+                if tagname in special_children:
+                    component = special_children[tagname]
+                elif only_special_children:
+                    raise Exception("Unknown component")
+                else:
+                    component = self.__components[component_type][tagname]
                 
                 children_params = {}
                 params = {}
@@ -80,15 +84,10 @@ class ComponentLoader:
                         params[attrname] = value
                 
                 if component.HAS_CHILDREN:
-                    if component.CHILDREN_TYPE == 'return':
-                        new_component_type = previous_types[-1]
-                        new_previous_types = previous_types[:-1]
-                    elif component.CHILDREN_TYPE is not None:
-                        new_component_type = component.CHILDREN_TYPE
-                        new_previous_types = previous_types + (component_type, )
-                    else:
+                    if component.CHILDREN_TYPE is None:
                         new_component_type = component_type
-                        new_previous_types = previous_types
+                    else:
+                        new_component_type = component.CHILDREN_TYPE
                     
                     if component.IS_CONTROL:
                         new_children_attributes = children_attributes
@@ -98,7 +97,11 @@ class ComponentLoader:
                                 for name, type in component.CHILDREN_ATTRIBUTES.items()
                         }
                     
-                    children = list(self.__load_children(child, new_component_type, new_previous_types, new_children_attributes))
+                    new_special_children = component.SPECIAL_CHILDREN
+                    new_only_special_children = component.ONLY_SPECIAL_CHILDREN
+                    
+                    children = list(self.__load_children(child, new_component_type, new_children_attributes,
+                                                         new_special_children, new_only_special_children))
                     
                     if not component.IS_CONTROL:
                         for attr in new_children_attributes.values():
