@@ -5,9 +5,11 @@ from PyQt5.QtWidgets import QTabWidget, QStyle, QShortcut, QMessageBox
 from umlfri2.application import Application
 from umlfri2.application.events.application import LanguageChangedEvent
 from umlfri2.application.events.model import ObjectDataChangedEvent
-from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent
+from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent, TabLockStatusEvent
 from umlfri2.model import Diagram
 from umlfri2.qtgui.base import image_loader
+from umlfri2.qtgui.base.icon_combiner import combine_icons
+from umlfri2.qtgui.base.resources import ICONS
 from umlfri2.qtgui.canvas import ScrolledCanvasWidget, CanvasWidget
 from .tabbar import MiddleClosableTabBar
 from .startpage import StartPage
@@ -38,6 +40,7 @@ class Tabs(QTabWidget):
         Application().event_dispatcher.subscribe(ChangedCurrentTabEvent, self.__change_tab)
         Application().event_dispatcher.subscribe(ClosedTabEvent, self.__close_tab)
         Application().event_dispatcher.subscribe(ObjectDataChangedEvent, self.__object_changed)
+        Application().event_dispatcher.subscribe(TabLockStatusEvent, self.__tab_lock_status_changed)
         
         Application().event_dispatcher.subscribe(LanguageChangedEvent, self.__language_changed)
         
@@ -117,47 +120,59 @@ class Tabs(QTabWidget):
     
     def __open_tab(self, event):
         canvas = ScrolledCanvasWidget(self.__main_window, event.tab.drawing_area)
-        self.addTab(canvas, image_loader.load_icon(event.tab.icon), event.tab.name)
+        icon = image_loader.load_icon(event.tab.icon)
+        if event.tab.locked:
+            icon = combine_icons(icon, ICONS.LOCKED, [self.iconSize()])
+        self.addTab(canvas, icon, event.tab.name)
         self.__handle_last_tab()
-
+    
+    def __tab_lock_status_changed(self, event):
+        widget_id = self.__get_tab_widget_id(event.tab)
+        
+        if widget_id is not None:
+            icon = image_loader.load_icon(event.tab.icon)
+            if event.tab.locked:
+                icon = combine_icons(icon, ICONS.LOCKED, [self.iconSize()])
+            self.setTabIcon(widget_id, icon)
+    
     def __change_tab(self, event):
         if event.tab is None:
             return
-
-        for widget_id in range(self.count()):
-            widget = self.widget(widget_id)
-
-            if isinstance(widget, (ScrolledCanvasWidget, CanvasWidget)) \
-                    and widget.diagram is event.tab.drawing_area.diagram:
-                self.setCurrentWidget(widget)
-                return
+        
+        widget_id = self.__get_tab_widget_id(event.tab)
+        if widget_id is not None:
+            self.setCurrentIndex(widget_id)
 
     def __close_tab(self, event):
-        for widget_id in range(self.count()):
-            widget = self.widget(widget_id)
-
-            if isinstance(widget, (ScrolledCanvasWidget, CanvasWidget)) \
-                    and widget.diagram is event.tab.drawing_area.diagram:
-                self.__ignore_change_tab = True
-                try:
-                    self.removeTab(widget_id)
-                finally:
-                    self.__ignore_change_tab = False
-                break
-        self.__handle_last_tab()
+        widget_id = self.__get_tab_widget_id(event.tab)
+        if widget_id is not None:
+            self.__ignore_change_tab = True
+            try:
+                self.removeTab(widget_id)
+            finally:
+                self.__ignore_change_tab = False
+            self.__handle_last_tab()
 
     def __object_changed(self, event):
         if not isinstance(event.object, Diagram):
             return
+        
+        widget_id = self.__get_tab_widget_id_by_diagram(event.object)
+        if widget_id is not None:
+            self.setTabText(widget_id, event.object.get_display_name())
+    
+    def __get_tab_widget_id(self, tab):
+        return self.__get_tab_widget_id_by_diagram(tab.drawing_area.diagram)
 
+    def __get_tab_widget_id_by_diagram(self, diagram):
         for widget_id in range(self.count()):
             widget = self.widget(widget_id)
 
             if isinstance(widget, (ScrolledCanvasWidget, CanvasWidget)) \
-                    and widget.diagram is event.object:
-                self.setTabText(widget_id, widget.diagram.get_display_name())
-                return
-
+                    and widget.diagram is diagram:
+                return widget_id
+        return None
+    
     def __language_changed(self, event):
         self.__reload_texts()
 
