@@ -1,5 +1,6 @@
 from collections import OrderedDict
 
+from umlfri2.components.base.componenttype import ComponentType
 from umlfri2.components.base.typecontext import TypeContext
 from ..constants import ADDON_NAMESPACE
 from .componentloader import ComponentLoader
@@ -72,7 +73,7 @@ class UflStructureLoader:
     def __load_template(self, node):
         for child in node:
             if child.tag == "{{{0}}}Template".format(ADDON_NAMESPACE):
-                template = TextContainerComponent(ComponentLoader(child, 'text').load())
+                template = TextContainerComponent(ComponentLoader(child, ComponentType.text).load())
                 type_context = TypeContext()\
                     .set_variable_type('parent', UflStringType())\
                     .set_variable_type('no', UflIntegerType())

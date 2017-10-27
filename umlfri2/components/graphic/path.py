@@ -3,6 +3,7 @@ from umlfri2.types.geometry import PathBuilder
 from umlfri2.types.geometry import Size
 from umlfri2.types.geometry import Transformation
 from umlfri2.ufl.types import UflColorType, UflNullableType
+from ..base.componenttype import ComponentType
 from .graphicalcomponent import GraphicalComponent, GraphicalObject
 
 
@@ -28,7 +29,7 @@ class PathComponent(GraphicalComponent):
         'fill': UflNullableType(UflColorType()),
         'border': UflNullableType(UflColorType()),
     }
-    CHILDREN_TYPE = 'pathpart'
+    CHILDREN_TYPE = ComponentType.path_part
 
     def __init__(self, children, fill=None, border=None):
         super().__init__(children)

@@ -1,3 +1,4 @@
+from umlfri2.components.base.componenttype import ComponentType
 from umlfri2.types.image import Image
 from .componentloader import ComponentLoader
 from ..constants import ADDON_NAMESPACE, ADDON_SCHEMA
@@ -40,14 +41,14 @@ class ConnectionTypeLoader:
                     
                     label_position = UflProportionType().parse(label.attrib["position"])
                     label_id = label.attrib["id"]
-                    label_appearance = ComponentLoader(label, 'visual', self.__definitions).load()
+                    label_appearance = ComponentLoader(label, ComponentType.visual, self.__definitions).load()
                     label_appearance = SimpleComponent(label_appearance)
                     
                     labels.append(ConnectionTypeLabel(label_position, label_id, label_appearance))
                     
                     del appearance_children[-1]
                 
-                appearance = ConnectionLineContainerComponent(ComponentLoader(appearance_children, 'connection', self.__definitions).load())
+                appearance = ConnectionLineContainerComponent(ComponentLoader(appearance_children, ComponentType.connection, self.__definitions).load())
             else:
                 raise Exception
         

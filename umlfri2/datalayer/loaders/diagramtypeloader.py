@@ -1,3 +1,4 @@
+from umlfri2.components.base.componenttype import ComponentType
 from umlfri2.types.image import Image
 from .componentloader import ComponentLoader
 from ..constants import ADDON_NAMESPACE, ADDON_SCHEMA
@@ -36,7 +37,7 @@ class DiagramTypeLoader:
             elif child.tag == "{{{0}}}Structure".format(ADDON_NAMESPACE):
                 ufl_type = UflStructureLoader(child).load()
             elif child.tag == "{{{0}}}DisplayName".format(ADDON_NAMESPACE):
-                display_name = TextContainerComponent(ComponentLoader(child, 'text').load())
+                display_name = TextContainerComponent(ComponentLoader(child, ComponentType.text).load())
             elif child.tag == "{{{0}}}Connections".format(ADDON_NAMESPACE):
                 for childchild in child:
                     connections.append(childchild.attrib["id"])

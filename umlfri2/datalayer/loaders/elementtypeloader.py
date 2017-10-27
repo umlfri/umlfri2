@@ -1,3 +1,4 @@
+from umlfri2.components.base.componenttype import ComponentType
 from umlfri2.types.image import Image
 from .componentloader import ComponentLoader
 from ..constants import ADDON_NAMESPACE, ADDON_SCHEMA
@@ -36,7 +37,7 @@ class ElementTypeLoader:
             elif child.tag == "{{{0}}}Structure".format(ADDON_NAMESPACE):
                 ufl_type = UflStructureLoader(child).load()
             elif child.tag == "{{{0}}}DisplayName".format(ADDON_NAMESPACE):
-                display_name = TextContainerComponent(ComponentLoader(child, 'text').load())
+                display_name = TextContainerComponent(ComponentLoader(child, ComponentType.text).load())
             elif child.tag == "{{{0}}}Config".format(ADDON_NAMESPACE):
                 for childchild in child:
                     if childchild.tag == "{{{0}}}DefaultAction".format(ADDON_NAMESPACE):
@@ -61,7 +62,7 @@ class ElementTypeLoader:
                     else:
                         raise Exception
             elif child.tag == "{{{0}}}Appearance".format(ADDON_NAMESPACE):
-                appearance = ComponentLoader(child, 'visual', self.__defintions).load()[0]
+                appearance = ComponentLoader(child, ComponentType.visual, self.__defintions).load()[0]
             else:
                 raise Exception
         

@@ -1,4 +1,5 @@
 from umlfri2.types.threestate import Maybe
+from ..base.componenttype import ComponentType
 from ..base.helpercomponent import HelperComponent
 from umlfri2.types.geometry import Size, Rectangle
 from .visualcomponent import VisualComponent, VisualObject
@@ -48,21 +49,21 @@ class TableObject(VisualObject):
 
 
 class TableRow(HelperComponent):
-    CHILDREN_TYPE = 'visual'
+    CHILDREN_TYPE = ComponentType.visual
     
     def compile(self, type_context):
         self._compile_children(type_context)
 
 
 class TableColumn(HelperComponent):
-    CHILDREN_TYPE = 'visual'
+    CHILDREN_TYPE = ComponentType.visual
     
     def compile(self, type_context):
         self._compile_children(type_context)
 
 
 class TableComponent(VisualComponent):
-    CHILDREN_TYPE = 'table'
+    CHILDREN_TYPE = ComponentType.table
     
     def _create_object(self, context, ruler):
         iscolumn = False # is this table with columns?

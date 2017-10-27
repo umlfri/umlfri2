@@ -1,5 +1,6 @@
 from umlfri2.types.geometry import Size
 from umlfri2.ufl.types import UflDecimalType
+from ..base.componenttype import ComponentType
 from .visualcomponent import VisualComponent, VisualObject
 
 
@@ -27,7 +28,7 @@ class GraphicsComponent(VisualComponent):
         'width': UflDecimalType(),
         'height': UflDecimalType(),
     }
-    CHILDREN_TYPE = 'graphic'
+    CHILDREN_TYPE = ComponentType.graphic
     
     def __init__(self, children, width, height):
         super().__init__(children)

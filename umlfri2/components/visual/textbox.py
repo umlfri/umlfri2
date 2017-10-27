@@ -4,6 +4,7 @@ from umlfri2.types.color import Colors
 from umlfri2.types.font import Fonts
 from umlfri2.types.geometry import Point
 from umlfri2.ufl.types import UflStringType, UflColorType, UflFontType
+from ..base.componenttype import ComponentType
 from .visualcomponent import VisualComponent, VisualObject
 
 
@@ -42,7 +43,7 @@ class TextBoxComponent(VisualComponent):
         'color': UflColorType(),
         'font': UflFontType(),
     }
-    CHILDREN_TYPE = 'text'
+    CHILDREN_TYPE = ComponentType.text
     
     def __init__(self, children, text=None, color=None, font=None):
         super().__init__(())
