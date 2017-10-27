@@ -1,6 +1,6 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QKeySequence
-from PyQt5.QtWidgets import QTabWidget, QStyle, QShortcut
+from PyQt5.QtWidgets import QTabWidget, QStyle, QShortcut, QMessageBox
 
 from umlfri2.application import Application
 from umlfri2.application.events.application import LanguageChangedEvent
@@ -76,7 +76,25 @@ class Tabs(QTabWidget):
     def __tab_close_requested(self, index):
         widget = self.widget(index)
         if isinstance(widget, (ScrolledCanvasWidget, CanvasWidget)):
-            Application().tabs.close_tab(widget.diagram)
+            tab = Application().tabs.get_tab_for(widget.diagram)
+            if tab is None:
+                return
+            if tab.locked:
+                message_box = QMessageBox(self)
+                message_box.setWindowModality(Qt.WindowModal)
+                message_box.setIcon(QMessageBox.Warning)
+                message_box.setWindowTitle(_("Closing Locked Tab"))
+                message_box.setText(_("The tab you have just requested to be closed is locked."))
+                message_box.setInformativeText(_("Do you really want to close it?"))
+                message_box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+                message_box.setDefaultButton(QMessageBox.No)
+                message_box.button(QMessageBox.Yes).setText(_("Yes"))
+                message_box.button(QMessageBox.No).setText(_("No"))
+                
+                resp = message_box.exec_()
+                if resp == QMessageBox.No:
+                    return
+            tab.close()
         elif isinstance(widget, StartPage):
             self.removeTab(self.indexOf(widget))
             self.__handle_last_tab()
