@@ -136,12 +136,11 @@ class Application(metaclass=MetaApplication):
     
     def new_project(self, template, new_solution=True, project_name="Project"):
         if new_solution:
-            self.__event_dispatcher.dispatch(CloseSolutionEvent(self.__solution))
+            self.close_solution()
+            
             builder = ProjectBuilder(self.__ruler, template)
             self.__solution = Solution(builder.project)
             self.__solution_storage_ref = None
-            self.__commands.clear_buffers()
-            self.__commands.mark_unchanged()
             self.__event_dispatcher.dispatch(OpenSolutionEvent(self.__solution))
             self.__tabs.open_new_project_tabs(builder.tabs)
             self.__tabs.reset_lock_status()
@@ -195,11 +194,7 @@ class Application(metaclass=MetaApplication):
         saver.save()
     
     def open_solution(self, filename):
-        self.__event_dispatcher.dispatch(CloseSolutionEvent(self.__solution))
-        self.__commands.clear_buffers()
-        self.__commands.mark_unchanged()
-        self.select_item(None)
-        
+        self.close_solution()
         filename = os.path.normpath(os.path.abspath(filename))
         with Storage.read_storage(filename) as storage:
             loader = WholeSolutionLoader(storage, self.__ruler, self.__addons)
@@ -211,6 +206,14 @@ class Application(metaclass=MetaApplication):
         self.__tabs.open_new_project_tabs(loader.locked_tabs)
         self.__tabs.reset_lock_status()
         self.__recent_files.add_file(filename)
+    
+    def close_solution(self):
+        self.__commands.clear_buffers()
+        self.__commands.mark_unchanged()
+        self.select_item(None)
+        self.__solution = None
+        self.__event_dispatcher.dispatch(CloseSolutionEvent(self.__solution))
+        self.__solution_storage_ref = None
     
     @property
     def language(self):

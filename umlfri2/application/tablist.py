@@ -21,10 +21,11 @@ class TabList:
     
     def __solution_closed(self, event):
         events = []
-
+        
         for tab in self.__tabs:
             events.append(ClosedTabEvent(tab))
-
+        
+        self.__tabs = []
         self.__application.event_dispatcher.dispatch_all(events)
         self.__current_tab = None
         self.__application.event_dispatcher.dispatch(ChangedCurrentTabEvent(None))
