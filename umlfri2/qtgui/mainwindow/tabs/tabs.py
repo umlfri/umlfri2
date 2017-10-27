@@ -9,6 +9,7 @@ from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent
 from umlfri2.model import Diagram
 from umlfri2.qtgui.base import image_loader
 from umlfri2.qtgui.canvas import ScrolledCanvasWidget, CanvasWidget
+from .tabbar import MiddleClosableTabBar
 from .startpage import StartPage
 from .tabcontextmenu import TabContextMenu
 
@@ -16,6 +17,8 @@ from .tabcontextmenu import TabContextMenu
 class Tabs(QTabWidget):
     def __init__(self, main_window):
         super().__init__()
+        
+        self.setTabBar(MiddleClosableTabBar())
         
         self.__main_window = main_window
         
