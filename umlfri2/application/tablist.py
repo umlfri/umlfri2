@@ -19,7 +19,14 @@ class TabList:
             tab.close()
     
     def __solution_closed(self, event):
-        self.close_all()
+        events = []
+
+        for tab in self.__tabs:
+            events.append(ClosedTabEvent(tab))
+
+        self.__application.event_dispatcher.dispatch_all(events)
+        self.__current_tab = None
+        self.__application.event_dispatcher.dispatch(ChangedCurrentTabEvent(None))
     
     def get_tab_for(self, diagram):
         for tab in self.__tabs:

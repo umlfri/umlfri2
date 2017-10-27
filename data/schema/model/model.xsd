@@ -4,4 +4,5 @@
            attributeFormDefault="unqualified">
     <xs:include schemaLocation="solution.xsd"/>
     <xs:include schemaLocation="project.xsd"/>
+    <xs:include schemaLocation="tabs.xsd"/>
 </xs:schema>

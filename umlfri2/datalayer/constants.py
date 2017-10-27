@@ -19,5 +19,6 @@ FRIP2_SOLUTION_FILE = "solution.xml"
 FRIP2_PROJECT_FILE = "project/{0}.xml"
 FRIP2_MIMETYPE_FILE = "mimetype"
 FRIP2_VERSION_FILE = "version"
+FRIP2_LOCKED_TABS_FILE = "tabs.xml"
 
 SOLUTION_MIME_TYPE = 'application/vnd.umlfri2.solution'

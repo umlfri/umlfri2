@@ -2,16 +2,16 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://umlfri.org/v2/model.xsd"
            targetNamespace="http://umlfri.org/v2/model.xsd" elementFormDefault="qualified"
            attributeFormDefault="unqualified">
-    <xs:element name="Solution">
+    <xs:element name="Tabs">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="Project" minOccurs="1" maxOccurs="unbounded">
+                <xs:element name="Tab" minOccurs="1" maxOccurs="unbounded">
                     <xs:complexType>
-                        <xs:attribute name="id" type="xs:string" use="required"/>
+                        <xs:attribute name="diagram" type="xs:string" use="required"/>
+                        <xs:attribute name="locked" type="xs:boolean" use="required"/>
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
-            <xs:attribute name="id" type="xs:string" use="required"/>
         </xs:complexType>
     </xs:element>
 </xs:schema>

@@ -156,7 +156,7 @@ class Application(metaclass=MetaApplication):
             raise Exception
         
         with self.__solution_storage_ref.open(mode='w') as storage:
-            WholeSolutionSaver(storage, self.__ruler).save(self.__solution)
+            self.__save_solution_into(storage)
         
         self.__commands.mark_unchanged()
         
@@ -169,7 +169,7 @@ class Application(metaclass=MetaApplication):
     def save_solution_as(self, filename):
         filename = os.path.normpath(os.path.abspath(filename))
         with ZipStorage.new_storage(filename) as storage:
-            WholeSolutionSaver(storage, self.__ruler).save(self.__solution)
+            self.__save_solution_into(storage)
             self.__solution_storage_ref = storage.remember_reference()
         
         self.__commands.mark_unchanged()
@@ -177,19 +177,32 @@ class Application(metaclass=MetaApplication):
         self.__event_dispatcher.dispatch(SaveSolutionEvent(self.__solution))
         
         self.__recent_files.add_file(filename)
-
-    def open_solution(self, filename):
-        filename = os.path.normpath(os.path.abspath(filename))
-        with Storage.read_storage(filename) as storage:
-            self.__solution = WholeSolutionLoader(storage, self.__ruler, self.__addons).load()
-            self.__solution_storage_ref = storage.remember_reference()
+    
+    def __save_solution_into(self, storage):
+        saver = WholeSolutionSaver(storage, self.__ruler)
+        saver.solution = self.__solution
         
+        for tab in self.__tabs:
+            if tab.locked:
+                saver.add_locked_tab(tab)
+        
+        saver.save()
+    
+    def open_solution(self, filename):
+        self.__event_dispatcher.dispatch(CloseSolutionEvent(self.__solution))
         self.__commands.clear_buffers()
         self.__commands.mark_unchanged()
-        self.__event_dispatcher.dispatch(OpenSolutionEvent(self.__solution))
-        self.tabs.close_all()
         self.select_item(None)
         
+        filename = os.path.normpath(os.path.abspath(filename))
+        with Storage.read_storage(filename) as storage:
+            loader = WholeSolutionLoader(storage, self.__ruler, self.__addons)
+            loader.load()
+            self.__solution = loader.solution
+            self.__solution_storage_ref = storage.remember_reference()
+        
+        self.__event_dispatcher.dispatch(OpenSolutionEvent(self.__solution))
+        self.__tabs.open_new_project_tabs(loader.locked_tabs)
         self.__recent_files.add_file(filename)
     
     @property

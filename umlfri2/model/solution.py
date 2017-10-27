@@ -25,3 +25,16 @@ class Solution:
     @property
     def save_id(self):
         return self.__save_id
+    
+    def get_all_diagrams(self):
+        for element in self.get_all_elements():
+            yield from element.diagrams
+    
+    def get_all_elements(self):
+        def recursion(obj):
+            for child in obj.children:
+                yield child
+                yield from recursion(child)
+        
+        for project in self.__projects:
+            yield from recursion(project)
