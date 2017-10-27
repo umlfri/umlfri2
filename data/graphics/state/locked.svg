@@ -25,13 +25,13 @@
        inkscape:collect="always"
        style="color-interpolation-filters:sRGB"
        id="filter5122"
-       x="-0.20087512"
-       width="1.4017502"
-       y="-0.1723736"
-       height="1.3447472">
+       x="-0.20137731"
+       width="1.4027546"
+       y="-0.17280453"
+       height="1.3456091">
       <feGaussianBlur
          inkscape:collect="always"
-         stdDeviation="9.1002349"
+         stdDeviation="9.1229855"
          id="feGaussianBlur5124" />
     </filter>
   </defs>
