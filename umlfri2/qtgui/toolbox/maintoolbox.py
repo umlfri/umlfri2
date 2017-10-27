@@ -5,7 +5,7 @@ from .toolbox import ToolBox
 
 class MainToolBox(ToolBox):
     def __init__(self):
-        super().__init__(None)
+        super().__init__(None, True)
         
         Application().event_dispatcher.subscribe(ChangedCurrentTabEvent, self.__current_tab_changed)
     

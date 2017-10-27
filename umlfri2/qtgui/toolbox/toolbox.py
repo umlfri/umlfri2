@@ -13,12 +13,14 @@ from umlfri2.qtgui.base.hlinewidget import HLineWidget
 
 
 class ToolBox(QWidget):
-    def __init__(self, drawing_area): 
+    def __init__(self, drawing_area, show_names): 
         super().__init__()
         self.__arrow = QIcon(os.path.join(GRAPHICS, 'arrow.png'))
         self.__vbox = QVBoxLayout()
         self.__vbox.setAlignment(Qt.AlignTop)
         self.setLayout(self.__vbox)
+        
+        self.__show_names = show_names
         
         self.__widgets = []
         self.__current_tab = None
@@ -97,7 +99,12 @@ class ToolBox(QWidget):
             else:
                 action_obj = None
             self.__select(button, action_obj, drawing_area)
-        button = QPushButton(text)
+        
+        button = QPushButton()
+        if self.__show_names:
+            button.setText(text)
+        else:
+            button.setToolTip(text)
         button.setIcon(icon)
         button.setCheckable(True)
         button.setChecked(checked)
