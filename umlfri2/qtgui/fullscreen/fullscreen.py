@@ -1,6 +1,7 @@
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QShortcut
 
+from umlfri2.constants.keys import FULL_SCREEN
 from umlfri2.qtgui.canvas import ScrolledCanvasWidget
 from umlfri2.qtgui.toolbox import ToolBox
 
@@ -20,7 +21,8 @@ class FullScreenDiagram(QWidget):
         self.setLayout(layout)
         
         QShortcut(QKeySequence("Esc"), self).activated.connect(self.__esc)
-
+        QShortcut(FULL_SCREEN, self).activated.connect(self.__esc)
+    
     def __esc(self):
         self.close()
     
