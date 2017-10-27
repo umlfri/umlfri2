@@ -10,6 +10,7 @@ from umlfri2.application.events.addon import AddonStateChangedEvent
 from umlfri2.application.events.application import LanguageChangedEvent, ChangeStatusChangedEvent, \
     UpdateCheckFinishedEvent
 from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent, CloseSolutionEvent
+from umlfri2.application.events.tabs import TabLockStatusChangedEvent
 from umlfri2.constants.paths import GRAPHICS, CONFIG
 from umlfri2.constants.solutionfile import SOLUTION_EXTENSION
 from ..base.clipboard import QtClipboardAdatper
@@ -75,6 +76,7 @@ class UmlFriMainWindow(QMainWindow):
         Application().event_dispatcher.subscribe(OpenSolutionEvent, self.__solution_file_changed)
         Application().event_dispatcher.subscribe(SaveSolutionEvent, self.__solution_file_changed)
         Application().event_dispatcher.subscribe(ChangeStatusChangedEvent, self.__change_status_changed)
+        Application().event_dispatcher.subscribe(TabLockStatusChangedEvent, self.__tab_lock_status_changed)
         Application().event_dispatcher.subscribe(LanguageChangedEvent, self.__language_changed)
         Application().event_dispatcher.subscribe(AddonStateChangedEvent, self.__plugin_state_changed)
         Application().event_dispatcher.subscribe(UpdateCheckFinishedEvent, self.__update_check)
@@ -90,6 +92,9 @@ class UmlFriMainWindow(QMainWindow):
         self.__reload_texts()
     
     def __change_status_changed(self, event):
+        self.__reload_window_title()
+    
+    def __tab_lock_status_changed(self, event):
         self.__reload_window_title()
     
     def __solution_file_changed(self, event):
@@ -311,7 +316,7 @@ class UmlFriMainWindow(QMainWindow):
         elif Application().solution is not None:
             title += " [{0}]".format(_("unsaved"))
         
-        if Application().commands.changed:
+        if Application().change_status:
             title += "*"
         
         self.setWindowTitle(title)

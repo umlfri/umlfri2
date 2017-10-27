@@ -1,4 +1,4 @@
-from umlfri2.application.events.tabs import TabLockStatusEvent
+from umlfri2.application.events.tabs import TabLockStatusChangedEvent
 from .drawingarea import DrawingArea
 
 
@@ -15,11 +15,11 @@ class Tab:
     
     def lock(self):
         self.__locked = True
-        self.__application.event_dispatcher.dispatch(TabLockStatusEvent(self))
+        self.__application.event_dispatcher.dispatch(TabLockStatusChangedEvent(self))
     
     def unlock(self):
         self.__locked = False
-        self.__application.event_dispatcher.dispatch(TabLockStatusEvent(self))
+        self.__application.event_dispatcher.dispatch(TabLockStatusChangedEvent(self))
     
     def close(self):
         self.__tabs._close_tab(self)

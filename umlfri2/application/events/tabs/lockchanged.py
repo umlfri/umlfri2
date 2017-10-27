@@ -1,7 +1,7 @@
 from ..base import Event
 
 
-class TabLockStatusEvent(Event):
+class TabLockStatusChangedEvent(Event):
     def __init__(self, tab):
         self.__tab = tab
 

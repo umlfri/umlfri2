@@ -9,6 +9,7 @@ class TabList:
         self.__tabs = []
         self.__application = application
         self.__current_tab = None
+        self.__locked_tabs = set()
         
         application.event_dispatcher.subscribe(DiagramDeletedEvent, self.__diagram_deleted)
         application.event_dispatcher.subscribe(CloseSolutionEvent, self.__solution_closed)
@@ -27,6 +28,15 @@ class TabList:
         self.__application.event_dispatcher.dispatch_all(events)
         self.__current_tab = None
         self.__application.event_dispatcher.dispatch(ChangedCurrentTabEvent(None))
+    
+    def reset_lock_status(self):
+        self.__locked_tabs = {tab.drawing_area.diagram.save_id for tab in self.__tabs if tab.locked}
+    
+    @property
+    def lock_status_changed(self):
+        new_locked_tabs = {tab.drawing_area.diagram.save_id for tab in self.__tabs if tab.locked}
+        
+        return self.__locked_tabs != new_locked_tabs
     
     def get_tab_for(self, diagram):
         for tab in self.__tabs:
@@ -69,6 +79,8 @@ class TabList:
             return tab
     
     def _close_tab(self, tab):
+        if tab.locked:
+            tab.unlock()
         tab_id = self.__tabs.index(tab)
         del self.__tabs[tab_id]
 

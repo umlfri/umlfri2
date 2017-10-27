@@ -109,7 +109,13 @@ class Application(metaclass=MetaApplication):
     
     @property
     def unsaved(self):
-        return self.__commands.changed or (self.__solution is not None and self.__solution_storage_ref is None)
+        return self.__commands.changed \
+            or (self.__solution is not None and self.__solution_storage_ref is None) \
+            or self.__tabs.lock_status_changed
+    
+    @property
+    def change_status(self):
+        return self.__commands.changed or self.__tabs.lock_status_changed
     
     @property
     def templates(self):
@@ -138,6 +144,7 @@ class Application(metaclass=MetaApplication):
             self.__commands.mark_unchanged()
             self.__event_dispatcher.dispatch(OpenSolutionEvent(self.__solution))
             self.__tabs.open_new_project_tabs(builder.tabs)
+            self.__tabs.reset_lock_status()
         else:
             command = NewProjectCommand(self.__solution, template, project_name)
             self.__commands.execute(command)
@@ -159,7 +166,7 @@ class Application(metaclass=MetaApplication):
             self.__save_solution_into(storage)
         
         self.__commands.mark_unchanged()
-        
+        self.__tabs.reset_lock_status()
         self.__event_dispatcher.dispatch(SaveSolutionEvent(self.__solution))
     
     @property
@@ -173,9 +180,8 @@ class Application(metaclass=MetaApplication):
             self.__solution_storage_ref = storage.remember_reference()
         
         self.__commands.mark_unchanged()
-        
         self.__event_dispatcher.dispatch(SaveSolutionEvent(self.__solution))
-        
+        self.__tabs.reset_lock_status()
         self.__recent_files.add_file(filename)
     
     def __save_solution_into(self, storage):
@@ -203,6 +209,7 @@ class Application(metaclass=MetaApplication):
         
         self.__event_dispatcher.dispatch(OpenSolutionEvent(self.__solution))
         self.__tabs.open_new_project_tabs(loader.locked_tabs)
+        self.__tabs.reset_lock_status()
         self.__recent_files.add_file(filename)
     
     @property

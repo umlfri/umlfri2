@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QTabWidget, QStyle, QShortcut, QMessageBox
 from umlfri2.application import Application
 from umlfri2.application.events.application import LanguageChangedEvent
 from umlfri2.application.events.model import ObjectDataChangedEvent
-from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent, TabLockStatusEvent
+from umlfri2.application.events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent, TabLockStatusChangedEvent
 from umlfri2.model import Diagram
 from umlfri2.qtgui.base import image_loader
 from umlfri2.qtgui.base.icon_combiner import combine_icons
@@ -40,7 +40,7 @@ class Tabs(QTabWidget):
         Application().event_dispatcher.subscribe(ChangedCurrentTabEvent, self.__change_tab)
         Application().event_dispatcher.subscribe(ClosedTabEvent, self.__close_tab)
         Application().event_dispatcher.subscribe(ObjectDataChangedEvent, self.__object_changed)
-        Application().event_dispatcher.subscribe(TabLockStatusEvent, self.__tab_lock_status_changed)
+        Application().event_dispatcher.subscribe(TabLockStatusChangedEvent, self.__tab_lock_status_changed)
         
         Application().event_dispatcher.subscribe(LanguageChangedEvent, self.__language_changed)
         
