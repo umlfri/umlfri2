@@ -1,35 +1,14 @@
 from collections import namedtuple
 
 from ..constants import ADDON_NAMESPACE
-from umlfri2.components.common import COMMON_COMPONENTS
-from umlfri2.components.connectionline import CONNECTION_LINE_COMPONENTS
+from umlfri2.components.all import ALL_COMPONENTS
 from umlfri2.components.expressions import UflExpression, ConstantExpression
-from umlfri2.components.graphic import GRAPHIC_COMPONENTS
-from umlfri2.components.pathpart import PATH_COMPONENTS
-from umlfri2.components.text import TEXT_COMPONENTS
-from umlfri2.components.visual import VISUAL_COMPONENTS, TABLE_COMPONENTS
 from umlfri2.ufl.types import UflDefinedEnumType, UflNullableType
 
 ChildAttribute = namedtuple('ChildAttribute', ["name", "type", "values"])
 
 
 class ComponentLoader:
-    __components = {}
-    
-    __components['visual'] = COMMON_COMPONENTS.copy()
-    __components['table'] = COMMON_COMPONENTS.copy()
-    __components['graphic'] = COMMON_COMPONENTS.copy()
-    __components['pathpart'] = COMMON_COMPONENTS.copy()
-    __components['text'] = COMMON_COMPONENTS.copy()
-    __components['connection'] = COMMON_COMPONENTS.copy()
-    
-    __components['visual'].update(VISUAL_COMPONENTS)
-    __components['text'].update(TEXT_COMPONENTS)
-    __components['graphic'].update(GRAPHIC_COMPONENTS)
-    __components['pathpart'].update(PATH_COMPONENTS)
-    __components['connection'].update(CONNECTION_LINE_COMPONENTS)
-    __components['table'].update(TABLE_COMPONENTS)
-    
     def __init__(self, xmlroot, type, definitions={}):
         self.__xmlroot = xmlroot
         self.__type = type
@@ -49,7 +28,7 @@ class ComponentLoader:
                 elif only_special_children:
                     raise Exception("Unknown component")
                 else:
-                    component = self.__components[component_type][tagname]
+                    component = ALL_COMPONENTS[component_type][tagname]
                 
                 children_params = {}
                 params = {}
