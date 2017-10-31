@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-25 13:18+0200\n"
+"POT-Creation-Date: 2017-10-31 12:33+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -157,6 +157,9 @@ msgstr ""
 msgid "Close without saving"
 msgstr ""
 
+msgid "Closing Locked Tab"
+msgstr ""
+
 msgid "Copy"
 msgstr ""
 
@@ -185,6 +188,9 @@ msgid "Description"
 msgstr ""
 
 msgid "Discard"
+msgstr ""
+
+msgid "Do you really want to close it?"
 msgstr ""
 
 msgid "Do you want to remove it from list?"
@@ -251,6 +257,9 @@ msgid "Latest version available:"
 msgstr ""
 
 msgid "License"
+msgstr ""
+
+msgid "Lock Tab"
 msgstr ""
 
 msgid "Lower"
@@ -407,6 +416,9 @@ msgstr ""
 msgid "The requested file '{0}' missing."
 msgstr ""
 
+msgid "The tab you have just requested to be closed is locked."
+msgstr ""
+
 msgid "Toolbar"
 msgstr ""
 
@@ -426,6 +438,9 @@ msgid "Undo"
 msgstr ""
 
 msgid "Uninstall"
+msgstr ""
+
+msgid "Unlock Tab"
 msgstr ""
 
 msgid "Unpin File"
