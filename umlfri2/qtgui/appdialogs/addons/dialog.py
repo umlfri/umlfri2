@@ -1,5 +1,5 @@
 from PyQt5.QtCore import QSize
-from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QFileDialog
+from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QFileDialog, QTabWidget, QWidget
 
 from umlfri2.application import Application
 from umlfri2.datalayer import Storage
@@ -26,14 +26,19 @@ class AddOnsDialog(QDialog):
         
         layout = QVBoxLayout()
         
-        self.__list = InstalledAddOnList()
-        layout.addWidget(self.__list)
+        tabs = QTabWidget()
+        
+        tabs.addTab(InstalledAddOnList(), _("Installed Add-ons"))
+        tabs.addTab(QWidget(), _("Online Add-ons"))
+        tabs.addTab(QWidget(), _("Updates"))
+        
+        layout.addWidget(tabs)
         
         layout.addWidget(button_box)
         self.setLayout(layout)
     
     def sizeHint(self):
-        return QSize(600, 300)
+        return QSize(700, 450)
     
     def closeEvent(self, event):
         if self.isEnabled():
