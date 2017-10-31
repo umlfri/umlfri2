@@ -10,7 +10,7 @@ from umlfri2.application.addon import AddOnState
 from umlfri2.application.events.addon import AddonStateChangedEvent
 from umlfri2.datalayer import Storage
 from umlfri2.qtgui.base import image_loader
-from .addoninfo import AddOnInfoDialog
+from .info import AddOnInfoDialog
 
 
 class AddOnsDialog(QDialog):

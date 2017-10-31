@@ -12,7 +12,9 @@ from umlfri2.constants.keys import FULL_SCREEN, ZOOM_ORIGINAL, PASTE_DUPLICATE, 
 from umlfri2.qtgui.fullscreen import FullScreenDiagram
 from umlfri2.qtgui.printing import Printing
 from umlfri2.qtgui.rendering import ImageExport, ExportDialog
-from umlfri2.qtgui.appdialogs import SettingsDialog, AboutDialog, AddOnsDialog
+from umlfri2.qtgui.appdialogs.settings import SettingsDialog
+from umlfri2.qtgui.appdialogs.about import AboutDialog
+from umlfri2.qtgui.appdialogs.addons import AddOnsDialog
 
 
 class MainWindowMenu(QMenuBar):
