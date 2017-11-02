@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QFileDialog,
 from umlfri2.application import Application
 from umlfri2.datalayer import Storage
 
+from .onlineaddons import OnlineAddOnList
 from .installedaddons import InstalledAddOnList
 
 
@@ -29,7 +30,7 @@ class AddOnsDialog(QDialog):
         tabs = QTabWidget()
         
         tabs.addTab(InstalledAddOnList(), _("Installed Add-ons"))
-        tabs.addTab(QWidget(), _("Online Add-ons"))
+        tabs.addTab(OnlineAddOnList(), _("Online Add-ons"))
         tabs.addTab(QWidget(), _("Updates"))
         
         layout.addWidget(tabs)

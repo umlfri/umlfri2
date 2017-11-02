@@ -94,9 +94,24 @@
                 
                 <xs:element name="InstallFrom" minOccurs="0" maxOccurs="unbounded">
                     <xs:complexType>
-                        <xs:attribute name="os" type="xs:string" use="optional" />
-                        <xs:attribute name="arch" type="xs:string" use="optional" />
+                        <xs:attribute name="os" type="xs:string" use="optional">
+                        <xs:attribute name="arch" use="optional" default="any">
+                            <xs:simpleType>
+                                <xs:restriction>
+                                    <xs:enumeration value="32bit"/>
+                                    <xs:enumeration value="64bit"/>
+                                    <xs:enumeration value="any"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
                         <xs:attribute name="url" type="xs:anyURI" use="required" />
+                        <xs:attribute name="sha256" use="required">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:hexBinary">
+                                    <xs:length value="32" fixed="true"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
