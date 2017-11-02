@@ -1,4 +1,4 @@
-from .state import AddOnState
+from ..state import AddOnState
 
 
 class AddOnStarter:

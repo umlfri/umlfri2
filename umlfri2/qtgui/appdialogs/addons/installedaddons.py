@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt, QUrl, QTimer
 from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.QtWidgets import QPushButton, QMenu
 from umlfri2.application import Application
-from umlfri2.application.addon import AddOnState
+from umlfri2.application.addon.local import AddOnState
 from umlfri2.application.events.addon import AddonStateChangedEvent
 from .listwidget import AddOnListWidget
 from .info import AddOnInfoDialog
@@ -24,7 +24,7 @@ class InstalledAddOnList(AddOnListWidget):
     
     @property
     def _addons(self):
-        return Application().addons
+        return Application().addons.local
     
     def _addon_content_menu(self, addon):
         menu = QMenu(self)

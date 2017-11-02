@@ -2,7 +2,7 @@ from collections import namedtuple
 
 import itertools
 
-from .state import AddOnState
+from ..state import AddOnState
 
 
 class AddOnStopper:

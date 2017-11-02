@@ -32,7 +32,7 @@ class ExitScreen(QLabel):
         self.__timer_event()
 
     def __init_application(self):
-        self.__stopper = Application().addons.stop_all()
+        self.__stopper = Application().addons.local.stop_all()
 
     def __timer_event(self):
         if self.__stopper.finished:

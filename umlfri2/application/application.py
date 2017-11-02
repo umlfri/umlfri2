@@ -4,7 +4,7 @@ import os.path
 from umlfri2.application.config import ApplicationConfig
 from .language import LanguageManager
 from .about import AboutUmlFri
-from .addon import AddOnManager
+from .addon import AddOnList
 from .commands.solution import NewProjectCommand
 from .events.application import ItemSelectedEvent, ClipboardSnippetChangedEvent
 from .events.solution import OpenSolutionEvent, SaveSolutionEvent, CloseSolutionEvent
@@ -36,9 +36,7 @@ class Application(metaclass=MetaApplication):
         self.__event_dispatcher = EventDispatcher(self)
         self.__commands = CommandProcessor(self)
         
-        self.__addons = AddOnManager(self)
-        
-        self.__addons.load_addons()
+        self.__addons = AddOnList(self)
         
         self.__recent_files = RecentFiles(self)
         
@@ -61,6 +59,7 @@ class Application(metaclass=MetaApplication):
         return self.__about
     
     def start(self):
+        self.__addons.init()
         self.__startup_options.apply()
     
     def stop(self):
@@ -119,7 +118,7 @@ class Application(metaclass=MetaApplication):
     
     @property
     def templates(self):
-        for addon in self.__addons:
+        for addon in self.__addons.local:
             if addon.metamodel is not None:
                 yield from addon.metamodel.templates
     
@@ -197,7 +196,7 @@ class Application(metaclass=MetaApplication):
         self.close_solution()
         filename = os.path.normpath(os.path.abspath(filename))
         with Storage.read_storage(filename) as storage:
-            loader = WholeSolutionLoader(storage, self.__ruler, self.__addons)
+            loader = WholeSolutionLoader(storage, self.__ruler, self.__addons.local)
             loader.load()
             self.__solution = loader.solution
             self.__solution_storage_ref = storage.remember_reference()

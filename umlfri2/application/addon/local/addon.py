@@ -1,8 +1,7 @@
-from .starter import AddOnStarter
-from .state import AddOnState
-from .stopper import AddOnStopper
 from umlfri2.application.events.addon import AddonStateChangedEvent
-from umlfri2.ufl.types import UflObjectType
+
+from .state import AddOnState
+from .actions import AddOnStarter, AddOnStopper
 
 
 class AddOn:
@@ -104,10 +103,10 @@ class AddOn:
         return self.__gui_injection
     
     def start(self):
-        return AddOnStarter(self.__application.addons, self)
+        return AddOnStarter(self.__application.addons.local, self)
 
     def stop(self):
-        return AddOnStopper(self.__application.addons, self)
+        return AddOnStopper(self.__application.addons.local, self)
     
     def _start(self):
         if self.__state == AddOnState.none:

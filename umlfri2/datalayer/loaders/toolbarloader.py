@@ -1,6 +1,4 @@
-from umlfri2.application.addon.action import AddOnAction
-from umlfri2.application.addon.toolbar import ToolBar
-from umlfri2.application.addon.toolbaritem import ToolBarItem
+from umlfri2.application.addon.local import AddOnAction, ToolBar, ToolBarItem
 from umlfri2.types.image import Image
 from ..constants import ADDON_SCHEMA, ADDON_NAMESPACE
 

@@ -1,13 +1,12 @@
 import lxml.etree
 
-from umlfri2.application.addon.guiinjection import GuiInjection
 from .toolbarloader import ToolBarLoader
 from umlfri2.datalayer.storages import DirectoryStorage
 from umlfri2.plugin import PatchPlugin, Plugin
 from .metamodelloader import MetamodelLoader
 from umlfri2.types.image import Image
 from .addoninfoloader import AddOnInfoLoader
-from umlfri2.application.addon import AddOn
+from umlfri2.application.addon.local import AddOn, GuiInjection
 from ..constants import ADDON_ADDON_FILE, ADDON_DISABLE_FILE, ADDON_NAMESPACE
 
 

@@ -5,7 +5,7 @@ from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.QtWidgets import QMainWindow, QDockWidget, QMessageBox, QFileDialog, QApplication
 
 from umlfri2.application import Application
-from umlfri2.application.addon import AddOnState
+from umlfri2.application.addon.local import AddOnState
 from umlfri2.application.events.addon import AddonStateChangedEvent
 from umlfri2.application.events.application import LanguageChangedEvent, ChangeStatusChangedEvent, \
     UpdateCheckFinishedEvent
@@ -235,7 +235,7 @@ class UmlFriMainWindow(QMainWindow):
             return False # the project was not saved
     
     def __create_addon_toolbars(self):
-        for addon in Application().addons:
+        for addon in Application().addons.local:
             self.__create_toolbars_for(addon)
 
     def __plugin_state_changed(self, event):

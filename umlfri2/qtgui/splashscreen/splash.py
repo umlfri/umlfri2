@@ -27,7 +27,7 @@ class SplashScreen(QSplashScreen):
         self.show()
     
     def __init_application(self):
-        self.__starter = Application().addons.start_all()
+        self.__starter = Application().addons.local.start_all()
     
     def __timer_event(self):
         if self.__timeout < time() and self.__starter.finished:

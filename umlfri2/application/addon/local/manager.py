@@ -1,11 +1,11 @@
 import os.path
 import uuid
 
-from .starter import AddOnStarter
-from .stopper import AddOnStopper
 from umlfri2.constants.paths import ADDONS, LOCAL_ADDONS
 from umlfri2.datalayer import AddOnLoader, Storage
 from umlfri2.datalayer.storages import DirectoryStorage
+
+from .actions import AddOnStarter, AddOnStopper
 
 
 class AddOnManager:

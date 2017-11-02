@@ -53,4 +53,4 @@ class AddOnsDialog(QDialog):
                 filter=_("UML .FRI 2 addons") + "(*.fria2)"
         )
         if file_name:
-            Application().addons.install_addon(Storage.read_storage(file_name))
+            Application().addons.local.install_addon(Storage.read_storage(file_name))
