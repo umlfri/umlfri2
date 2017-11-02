@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://umlfri.org/v2/addon-list.xsd"
+           targetNamespace="http://umlfri.org/v2/addon-list.xsd" elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+    <xs:element name="AddOn">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Name">
+                    <xs:complexType>
+                        <xs:attribute name="name" type="xs:string" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Version">
+                    <xs:complexType>
+                        <xs:attribute name="version" type="xs:string" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Author">
+                    <xs:complexType>
+                        <xs:attribute name="name" type="xs:string" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Homepage" minOccurs="0">
+                    <xs:complexType>
+                        <xs:attribute name="url" type="xs:string" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="CommonLicense">
+                    <xs:complexType>
+                        <xs:attribute name="name" type="xs:string" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Icon" minOccurs="0">
+                    <xs:complexType>
+                        <xs:attribute name="path" type="xs:string" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Description" type="xs:string" minOccurs="0"/>
+                
+                <xs:element name="Requires" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="UmlFri" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:attribute name="version" type="xs:string" use="required"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="API" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:attribute name="version" type="xs:string" use="required"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="MetaMetaModel" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:attribute name="version" type="xs:string" use="required"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="Starter" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:attribute name="id" type="xs:string" use="required" />
+                                    <xs:attribute name="version" type="xs:string" use="optional"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="Interface" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attribute name="id" type="xs:string" use="required" />
+                                    <xs:attribute name="version" type="xs:string" use="optional"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                
+                <xs:element name="Provides" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Starter" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attribute name="id" type="xs:string" use="required" />
+                                    <xs:attribute name="version" type="xs:string" use="optional"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="Interface" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attribute name="id" type="xs:string" use="required" />
+                                    <xs:attribute name="version" type="xs:string" use="optional"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                
+                <xs:element name="ChangeLog" type="xs:string"/>
+                
+                <xs:element name="InstallFrom" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:attribute name="os" type="xs:string" use="optional" />
+                        <xs:attribute name="arch" type="xs:string" use="optional" />
+                        <xs:attribute name="url" type="xs:anyURI" use="required" />
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
