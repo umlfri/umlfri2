@@ -94,10 +94,10 @@
                 
                 <xs:element name="InstallFrom" minOccurs="0" maxOccurs="unbounded">
                     <xs:complexType>
-                        <xs:attribute name="os" type="xs:string" use="optional">
+                        <xs:attribute name="os" type="xs:string" use="optional"/>
                         <xs:attribute name="arch" use="optional" default="any">
                             <xs:simpleType>
-                                <xs:restriction>
+                                <xs:restriction base="xs:string">
                                     <xs:enumeration value="32bit"/>
                                     <xs:enumeration value="64bit"/>
                                     <xs:enumeration value="any"/>

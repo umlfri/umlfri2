@@ -61,6 +61,9 @@ class InstalledAddOnList(AddOnListWidget):
         self.__addon_buttons = {}
         return self
     
+    def _get_version(self, addon):
+        return addon.version
+    
     def add_buttons(self, addon, button_box):
         if addon.state != AddOnState.none:
             start_button = QPushButton(QIcon.fromTheme("media-playback-start"), _("Start"))

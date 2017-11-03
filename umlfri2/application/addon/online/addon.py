@@ -44,6 +44,7 @@ class OnlineAddOn:
     def versions(self):
         yield from self.__versions
     
+    @property
     def latest_version(self):
         return self.__versions[0]
     

@@ -40,6 +40,9 @@ class AddOnListWidget(QTableWidget):
     def _addon_content_menu(self, addon):
         raise NotImplementedError
     
+    def _get_version(self, addon):
+        raise NotImplementedError
+    
     def refresh(self):
         addons = sorted(self._addons, key=lambda item: item.name)
         self.__addons = list(addons)
@@ -81,7 +84,7 @@ class AddOnListWidget(QTableWidget):
             name_label.setFont(font)
             name_layout.addWidget(name_label)
             
-            version_label = QLabel(str(addon.version))
+            version_label = QLabel(str(self._get_version(addon)))
             version_label.setAutoFillBackground(False)
             version_label.setTextFormat(Qt.PlainText)
             name_layout.addWidget(version_label)

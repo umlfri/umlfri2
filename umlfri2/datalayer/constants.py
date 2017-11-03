@@ -22,3 +22,7 @@ FRIP2_VERSION_FILE = "version"
 FRIP2_LOCKED_TABS_FILE = "tabs.xml"
 
 SOLUTION_MIME_TYPE = 'application/vnd.umlfri2.solution'
+
+ONLINE_ADDON_NAMESPACE = 'http://umlfri.org/v2/addon-list.xsd'
+ONLINE_ADDON_SCHEMA = lxml.etree.XMLSchema(lxml.etree.parse(open(os.path.join(XML_SCHEMAS, 'addon_list',
+                                                                              'addon_list.xsd'), 'rb')))

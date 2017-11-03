@@ -12,3 +12,6 @@ class OnlineAddOnList(AddOnListWidget):
     @property
     def _addons(self):
         return Application().addons.online
+    
+    def _get_version(self, addon):
+        return addon.latest_version.version

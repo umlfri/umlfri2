@@ -13,3 +13,4 @@ CONFIG = APP_DIRS.user_config_dir
 OS_SPECIFIC_ICON_THEME_PATH = os.path.join(ROOT_DIR, 'data', 'icons')
 LOCALE_DIR = os.path.join(ROOT_DIR, 'data', 'locale')
 LICENSE_FILE = os.path.join(ROOT_DIR, 'LICENSE.txt')
+ONLINE_ADDONS = os.path.join(APP_DIRS.user_data_dir, 'addon-list', 'official')

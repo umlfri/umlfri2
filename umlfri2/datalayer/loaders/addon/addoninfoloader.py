@@ -1,9 +1,8 @@
 from collections import namedtuple
 
-import re
-
 from umlfri2.application.addon.dependency import AddOnDependency, AddOnDependencyType
 from umlfri2.application.addon.license import CommonLicense
+from ..textformat import format_text
 from ...constants import ADDON_NAMESPACE, ADDON_SCHEMA
 from umlfri2.types.version import Version
 
@@ -15,7 +14,6 @@ PluginInfo = namedtuple('PluginInfo', ('path', 'starter'))
 
 
 class AddOnInfoLoader:
-    __SPACES = re.compile('\\s+')
     def __init__(self, xmlroot):
         self.__xmlroot = xmlroot
         if not ADDON_SCHEMA.validate(xmlroot):
@@ -53,7 +51,7 @@ class AddOnInfoLoader:
                     elif childchild.tag == "{{{0}}}Icon".format(ADDON_NAMESPACE):
                         icon = childchild.attrib["path"]
                     elif childchild.tag == "{{{0}}}Description".format(ADDON_NAMESPACE):
-                        description = self.__format_text(childchild.text)
+                        description = format_text(childchild.text)
                     else:
                         raise Exception
             elif child.tag == "{{{0}}}Requires".format(ADDON_NAMESPACE):
@@ -75,18 +73,6 @@ class AddOnInfoLoader:
         return AddOnInfo(identifier, name, version, author, homepage, license, icon, description, requirements,
                          provisions, metamodel, injections, patch_module, plugin_info)
     
-    def __format_text(self, text):
-        current_text = []
-        current_line = []
-        for line in text.splitlines():
-            line = self.__SPACES.sub(' ', line.strip())
-            if line:
-                current_line.append(line)
-            elif current_line:
-                current_text.append(' '.join(current_line))
-                current_line = []
-        return '\n'.join(current_text)
-
     def __load_dependencies(self, node):
         ret = set()
         for child in node:
