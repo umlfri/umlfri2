@@ -3,6 +3,7 @@ from html import escape
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QLabel, QFormLayout, QWidget
 
+from umlfri2.application.addon.online import OnlineAddOn
 from umlfri2.qtgui.base import image_loader
 
 
@@ -20,7 +21,12 @@ class AddOnInfoWidget(QWidget):
             icon.setPixmap(image_loader.load(addon.icon))
             hbox_caption.addWidget(icon, 0)
         
-        name_widget = QLabel('<font size="+2"><b>{0}</b></font>&nbsp;&nbsp;&nbsp;&nbsp;{1}'.format(escape(addon.name), addon.version))
+        if isinstance(addon, OnlineAddOn):
+            version = addon.latest_version.version
+        else:
+            version = addon.version
+        
+        name_widget = QLabel('<font size="+2"><b>{0}</b></font>&nbsp;&nbsp;&nbsp;&nbsp;{1}'.format(escape(addon.name), version))
         hbox_caption.addWidget(name_widget, 1)
         
         layout.addLayout(hbox_caption, 0)

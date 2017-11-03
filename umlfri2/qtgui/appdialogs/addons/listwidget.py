@@ -1,6 +1,8 @@
 from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtGui import QFont, QPalette
 from PyQt5.QtWidgets import QVBoxLayout, QTableWidget, QHBoxLayout, QLabel, QWidget,  QStyledItemDelegate, QStyle
+
+from umlfri2.application.addon.online import OnlineAddOn
 from umlfri2.qtgui.base import image_loader
 
 
@@ -39,9 +41,6 @@ class AddOnListWidget(QTableWidget):
         raise NotImplementedError
     
     def _addon_content_menu(self, addon):
-        raise NotImplementedError
-    
-    def _get_version(self, addon):
         raise NotImplementedError
     
     def refresh(self):
@@ -85,7 +84,12 @@ class AddOnListWidget(QTableWidget):
             name_label.setFont(font)
             name_layout.addWidget(name_label)
             
-            version_label = QLabel(str(self._get_version(addon)))
+            if isinstance(addon, OnlineAddOn):
+                version = addon.latest_version.version
+            else:
+                version = addon.version
+            
+            version_label = QLabel(str(version))
             version_label.setAutoFillBackground(False)
             version_label.setTextFormat(Qt.PlainText)
             name_layout.addWidget(version_label)
