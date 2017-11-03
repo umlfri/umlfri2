@@ -39,12 +39,7 @@ class AddOnInfoWidget(QWidget):
         homepageWidget.setOpenExternalLinks(True)
         info.addRow(_("Homepage") + ":", homepageWidget)
         
-        if addon.license.title:
-            license = "{0} ({1})".format(addon.license.title, addon.license.abbreviation)
-        else:
-            license = addon.license.abbreviation
-        
-        license = escape(license)
+        license = addon.license.abbreviation
         
         if addon.license.url:
             license = '<a href="{0}">{1}</a>'.format(addon.license.url, license)
@@ -52,6 +47,8 @@ class AddOnInfoWidget(QWidget):
         license_widget = QLabel(license)
         license_widget.setTextInteractionFlags(Qt.TextBrowserInteraction)
         license_widget.setOpenExternalLinks(True)
+        if addon.license.title:
+            license_widget.setToolTip(addon.license.title)
         info.addRow(_("License") + ":", license_widget)
         
         if addon.description:
