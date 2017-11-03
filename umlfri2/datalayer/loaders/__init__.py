@@ -1,2 +1,2 @@
-from .addonloader import AddOnLoader
-from .wholesolutionloader import WholeSolutionLoader
+from .addon import AddOnListLoader
+from .solution import WholeSolutionLoader

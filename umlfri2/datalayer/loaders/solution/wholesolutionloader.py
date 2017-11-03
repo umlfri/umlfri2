@@ -2,10 +2,10 @@ from uuid import UUID
 
 import lxml.etree
 
-from umlfri2.datalayer.loaders.lockedtabsloader import LockedTabsLoader
+from .lockedtabsloader import LockedTabsLoader
 from umlfri2.types.version import Version
 from .projectloader import ProjectLoader
-from ..constants import FRIP2_SOLUTION_FILE, FRIP2_PROJECT_FILE, FRIP2_VERSION_FILE, FRIP2_LOCKED_TABS_FILE, MODEL_SAVE_VERSION
+from ...constants import FRIP2_SOLUTION_FILE, FRIP2_PROJECT_FILE, FRIP2_VERSION_FILE, FRIP2_LOCKED_TABS_FILE, MODEL_SAVE_VERSION
 from .solutioninfoloader import SolutionInfoLoader
 from umlfri2.model import Solution
 

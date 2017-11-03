@@ -1,5 +1,5 @@
 from umlfri2.metamodel import Translation
-from ..constants import ADDON_NAMESPACE, ADDON_SCHEMA
+from ....constants import ADDON_NAMESPACE, ADDON_SCHEMA
 
 
 class TranslationLoader:

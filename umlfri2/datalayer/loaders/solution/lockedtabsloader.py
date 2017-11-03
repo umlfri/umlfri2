@@ -1,7 +1,7 @@
 from collections import namedtuple
 from uuid import UUID
 
-from ..constants import MODEL_SCHEMA, MODEL_NAMESPACE
+from ...constants import MODEL_SCHEMA, MODEL_NAMESPACE
 
 StartupTab = namedtuple('StartupTab', ['diagram', 'locked'])
 

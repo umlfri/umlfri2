@@ -2,7 +2,7 @@ from collections import OrderedDict
 
 from umlfri2.components.base.componenttype import ComponentType
 from umlfri2.components.base.typecontext import TypeContext
-from ..constants import ADDON_NAMESPACE
+from ....constants import ADDON_NAMESPACE
 from .componentloader import ComponentLoader
 from umlfri2.components.text import TextContainerComponent
 from umlfri2.ufl.types import *

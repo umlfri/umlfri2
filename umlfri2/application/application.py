@@ -14,7 +14,7 @@ from .commandprocessor import CommandProcessor
 from .dispatcher import EventDispatcher
 from .recentfiles import RecentFiles
 
-from umlfri2.datalayer import Storage
+from umlfri2.datalayer.storages import Storage
 from umlfri2.datalayer.loaders import WholeSolutionLoader
 from umlfri2.datalayer.savers import WholeSolutionSaver
 from umlfri2.datalayer.storages import ZipStorage

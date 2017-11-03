@@ -1,7 +1,7 @@
 from umlfri2.metamodel.projecttemplate import ProjectTemplate, ElementTemplate, DiagramTemplate, ConnectionTemplate, \
     ElementVisualTemplate, ConnectionVisualTemplate, DiagramTemplateState
 from umlfri2.types.geometry import Point, Size
-from ..constants import ADDON_NAMESPACE, ADDON_SCHEMA
+from ....constants import ADDON_NAMESPACE, ADDON_SCHEMA
 
 
 class TemplateLoader:

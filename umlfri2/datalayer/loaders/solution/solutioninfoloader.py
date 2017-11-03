@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-from ..constants import MODEL_SCHEMA, MODEL_NAMESPACE
+from ...constants import MODEL_SCHEMA, MODEL_NAMESPACE
 
 ProjectInfo = namedtuple("ProjectInfo", ["id"])
 SolutionInfo = namedtuple("SolutionInfo", ["id", "projects"])

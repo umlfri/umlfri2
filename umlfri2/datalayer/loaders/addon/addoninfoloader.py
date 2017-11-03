@@ -4,7 +4,7 @@ import re
 
 from umlfri2.application.addon.dependency import AddOnDependency, AddOnDependencyType
 from umlfri2.application.addon.license import CommonLicense
-from ..constants import ADDON_NAMESPACE, ADDON_SCHEMA
+from ...constants import ADDON_NAMESPACE, ADDON_SCHEMA
 from umlfri2.types.version import Version
 
 

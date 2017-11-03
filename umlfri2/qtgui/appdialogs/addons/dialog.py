@@ -2,7 +2,7 @@ from PyQt5.QtCore import QSize
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QFileDialog, QTabWidget, QWidget
 
 from umlfri2.application import Application
-from umlfri2.datalayer import Storage
+from umlfri2.datalayer.storages import Storage
 
 from .onlineaddons import OnlineAddOnList
 from .installedaddons import InstalledAddOnList

@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-from ..constants import ADDON_NAMESPACE
+from ....constants import ADDON_NAMESPACE
 from umlfri2.components.all import ALL_COMPONENTS
 from umlfri2.components.expressions import UflExpression, ConstantExpression
 from umlfri2.ufl.types import UflDefinedEnumType, UflNullableType

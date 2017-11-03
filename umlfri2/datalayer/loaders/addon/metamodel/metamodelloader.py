@@ -1,7 +1,7 @@
 import lxml.etree
 
 from .templateloader import TemplateLoader
-from ..constants import ADDON_NAMESPACE, MODEL_NAMESPACE
+from ....constants import ADDON_NAMESPACE, MODEL_NAMESPACE
 from .elementtypeloader import ElementTypeLoader
 from .diagramtypeloader import DiagramTypeLoader
 from .connectiontypeloader import ConnectionTypeLoader

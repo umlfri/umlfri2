@@ -1,6 +1,6 @@
 from umlfri2.application.addon.local import AddOnAction, ToolBar, ToolBarItem
 from umlfri2.types.image import Image
-from ..constants import ADDON_SCHEMA, ADDON_NAMESPACE
+from ...constants import ADDON_SCHEMA, ADDON_NAMESPACE
 
 
 class ToolBarLoader:
