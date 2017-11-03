@@ -14,6 +14,7 @@ class AddOnListWidget(QTableWidget):
     def __init__(self):
         super().__init__()
         
+        self.setTabKeyNavigation(False)
         self.setItemDelegate(self.__NoSelectionItemDelegate())
         self.verticalHeader().hide()
         self.horizontalHeader().hide()

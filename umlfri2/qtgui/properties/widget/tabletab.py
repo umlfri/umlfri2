@@ -4,7 +4,8 @@ from PyQt5.QtWidgets import QTableWidget
 class TableTab(QTableWidget):
     def __init__(self):
         super().__init__()
-        
+
+        self.setTabKeyNavigation(False)
         self.setColumnCount(2)
         self.verticalHeader().hide()
         self.setSelectionBehavior(QTableWidget.SelectRows)
