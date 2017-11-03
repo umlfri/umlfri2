@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-31 13:06+0100\n"
+"POT-Creation-Date: 2017-11-03 14:00+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -91,6 +91,9 @@ msgid "Add Element"
 msgstr ""
 
 msgid "Add-ons"
+msgstr ""
+
+msgid "Addon is already installed"
 msgstr ""
 
 msgid "Align Bottom"
@@ -242,6 +245,9 @@ msgid "Ignore This Update"
 msgstr ""
 
 msgid "Ignored Versions"
+msgstr ""
+
+msgid "Install"
 msgstr ""
 
 msgid "Install AddOn From File"

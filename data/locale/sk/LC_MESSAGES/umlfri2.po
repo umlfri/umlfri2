@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-31 13:06+0100\n"
-"PO-Revision-Date: 2017-10-31 13:06+0100\n"
+"POT-Creation-Date: 2017-11-03 14:01+0100\n"
+"PO-Revision-Date: 2017-11-03 14:01+0100\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -92,6 +92,9 @@ msgstr "Pridať element"
 
 msgid "Add-ons"
 msgstr "Rozšírenia"
+
+msgid "Addon is already installed"
+msgstr "Rozšírenie už je nainštalované"
 
 msgid "Align Bottom"
 msgstr "Zarovnať dole"
@@ -245,6 +248,9 @@ msgstr "Ignorovať verziu"
 
 msgid "Ignored Versions"
 msgstr "Ignorované verzie"
+
+msgid "Install"
+msgstr "Inštaluj"
 
 msgid "Install AddOn From File"
 msgstr "Nainštaluj rozšírenie zo súboru"
