@@ -24,10 +24,10 @@ class OnlineAddOnLocation:
         if self.__os is not None and not sys.platform.startswith(self.__os):
             return False
         
-        if self.__arch == OnlineAddonArch.processor_32 and sys.maxsize > 2**32:
+        if self.__arch == OnlineAddOnArch.processor_32 and sys.maxsize > 2**32:
             return False
 
-        if self.__arch == OnlineAddonArch.processor_64 and sys.maxsize <= 2**32:
+        if self.__arch == OnlineAddOnArch.processor_64 and sys.maxsize <= 2**32:
             return False
         
         return True

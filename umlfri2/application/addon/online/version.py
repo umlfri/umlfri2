@@ -54,5 +54,7 @@ class OnlineAddOnVersion:
         return self.__changelog
     
     @property
-    def locations(self):
-        yield from self.__locations
+    def valid_location(self):
+        for location in self.__locations:
+            if location.is_valid:
+                return location

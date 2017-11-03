@@ -5,6 +5,7 @@ from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.QtWidgets import QPushButton, QLabel, QMenu
 
 from umlfri2.application import Application
+from .installdialog import InstallAddOnDialog
 from .info import AddOnInfoDialog
 from .listwidget import AddOnListWidget
 
@@ -17,6 +18,7 @@ class OnlineAddOnList(AddOnListWidget):
         menu = QMenu(self)
         
         install = menu.addAction(QIcon.fromTheme("list-add"), _("Install"))
+        install.triggered.connect(partial(self.__install, addon))
 
         if addon.local_addon is not None:
             install.setEnabled(False)
@@ -35,6 +37,7 @@ class OnlineAddOnList(AddOnListWidget):
         if addon.local_addon is None:
             install_button = QPushButton(QIcon.fromTheme("list-add"), _("Install"))
             install_button.setFocusPolicy(Qt.NoFocus)
+            install_button.clicked.connect(partial(self.__install, addon))
             button_box.addWidget(install_button)
         else:
             installed = QLabel("<i><small>{0}</small></i>".format(_("Addon is already installed")))
@@ -50,3 +53,7 @@ class OnlineAddOnList(AddOnListWidget):
     
     def __show_homepage(self, addon, checked=False):
         QDesktopServices.openUrl(QUrl(addon.homepage))
+    
+    def __install(self, addon, checked=False):
+        dialog = InstallAddOnDialog(self, addon)
+        dialog.exec_()

@@ -6,7 +6,7 @@ from .infowidget import AddOnInfoWidget
 class AddOnInfoDialog(QDialog):
     def __init__(self, addon_window, addon):
         super().__init__(addon_window)
-        self.__addon = addon
+        self.setWindowTitle(addon.name)
         
         layout = QVBoxLayout()
         
