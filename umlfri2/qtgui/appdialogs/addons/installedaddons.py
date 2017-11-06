@@ -1,7 +1,7 @@
 from collections import namedtuple
 from functools import partial
 
-from PyQt5.QtCore import Qt, QUrl, QTimer
+from PyQt5.QtCore import Qt, QUrl
 from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.QtWidgets import QPushButton, QMenu
 from umlfri2.application import Application
@@ -14,11 +14,10 @@ from .info import AddOnInfoDialog
 class InstalledAddOnList(AddOnListWidget):
     __AddonButtons = namedtuple('AddonButtons', ['start', 'stop'])
     
-    def __init__(self):
+    def __init__(self, processes):
         super().__init__()
 
-        self.__timer = QTimer(self)
-        self.__timer.timeout.connect(self.__timer_event)
+        self.__processes = processes
         
         Application().event_dispatcher.subscribe(AddonStateChangedEvent, self.__addon_state_changed)
     
@@ -85,23 +84,10 @@ class InstalledAddOnList(AddOnListWidget):
         QDesktopServices.openUrl(QUrl(addon.homepage))
     
     def __start_addon(self, addon, checked=False):
-        self.__run_process(addon.start())
+        self.__processes.run_process(addon.start())
     
     def __stop_addon(self, addon, checked=False):
-        self.__run_process(addon.stop())
-    
-    def __run_process(self, starter_stopper):
-        self.__starter_stopper = starter_stopper
-        self.__timer.start(100)
-        self.__timer_event()
-        self.setEnabled(False)
-    
-    def __timer_event(self):
-        if self.__starter_stopper.finished:
-            self.__timer.stop()
-            self.setEnabled(True)
-        else:
-            self.__starter_stopper.do()
+        self.__processes.run_process(addon.stop())
     
     def __addon_state_changed(self, event):
         if event.addon.identifier in self.__addon_buttons:

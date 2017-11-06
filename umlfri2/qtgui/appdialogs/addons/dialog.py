@@ -6,12 +6,15 @@ from umlfri2.datalayer.storages import Storage
 
 from .onlineaddons import OnlineAddOnList
 from .installedaddons import InstalledAddOnList
+from .process import AddOnProcessManager
 
 
 class AddOnsDialog(QDialog):
     def __init__(self, main_window):
         super().__init__(main_window)
         self.setWindowTitle(_("Add-ons"))
+        
+        self.__processes = AddOnProcessManager(self)
         
         self.__main_window = main_window
         
@@ -29,7 +32,7 @@ class AddOnsDialog(QDialog):
         
         tabs = QTabWidget()
         
-        tabs.addTab(InstalledAddOnList(), _("Installed Add-ons"))
+        tabs.addTab(InstalledAddOnList(self.__processes), _("Installed Add-ons"))
         tabs.addTab(OnlineAddOnList(), _("Online Add-ons"))
         tabs.addTab(QWidget(), _("Updates"))
         
