@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-03 14:01+0100\n"
-"PO-Revision-Date: 2017-11-03 14:01+0100\n"
+"POT-Creation-Date: 2017-11-06 11:17+0100\n"
+"PO-Revision-Date: 2017-11-06 11:18+0100\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -195,6 +195,9 @@ msgstr "Zrušiť zmeny"
 
 msgid "Do you really want to close it?"
 msgstr "Skutočne ho chceš uzavrieť?"
+
+msgid "Do you really want to install this addon?"
+msgstr "Skutočne chceš nainštalovať toto rozšírenie?"
 
 msgid "Do you want to remove it from list?"
 msgstr "Chceš ho odstrániť zo zoznamu?"
@@ -480,6 +483,10 @@ msgstr "Prispievatelia do verzie 1.0"
 
 msgid "Yes"
 msgstr "Áno"
+
+#, python-brace-format
+msgid "Yes ({0})"
+msgstr "Áno ({0})"
 
 msgid "You are running UML .FRI in the debug mode"
 msgstr "Program UML .FRI je spustený vo vývojovom režime"
