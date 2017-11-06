@@ -47,4 +47,3 @@ class InstallAddOnDialog(QDialog):
             self.__button_yes.setEnabled(False)
             self.__button_yes.setText(_("Yes ({0})".format(self.__timeout)))
             self.__timeout -= 1
-p
