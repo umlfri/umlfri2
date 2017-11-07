@@ -1,8 +1,9 @@
 import os.path
 
+from umlfri2.application.events.addon import AddOnInstalledEvent
 from umlfri2.constants.paths import ADDONS, LOCAL_ADDONS
 from umlfri2.datalayer.loaders import AddOnListLoader
-from umlfri2.datalayer.storages import Storage, DirectoryStorage
+from umlfri2.datalayer.storages import DirectoryStorage
 
 from .actions import AddOnStarter, AddOnStopper
 
@@ -30,8 +31,11 @@ class AddOnManager:
             self.__local_addons = AddOnListLoader(self.__application, DirectoryStorage.new_storage(LOCAL_ADDONS), False)
         
         addon = self.__local_addons.install_from(storage)
-        if addon is not None:
-            self.__addons.append(addon)
+        if addon is None:
+            raise Exception("Cannot install addon")
+        
+        self.__addons.append(addon)
+        self.__application.event_dispatcher.dispatch(AddOnInstalledEvent(addon))
     
     def get_addon(self, identifier):
         for addon in self.__addons:

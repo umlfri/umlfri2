@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QMainWindow, QDockWidget, QMessageBox, QFileDialog, 
 
 from umlfri2.application import Application
 from umlfri2.application.addon.local import AddOnState
-from umlfri2.application.events.addon import AddonStateChangedEvent
+from umlfri2.application.events.addon import AddOnStateChangedEvent
 from umlfri2.application.events.application import LanguageChangedEvent, ChangeStatusChangedEvent, \
     UpdateCheckFinishedEvent
 from umlfri2.application.events.solution import OpenSolutionEvent, SaveSolutionEvent, CloseSolutionEvent
@@ -78,7 +78,7 @@ class UmlFriMainWindow(QMainWindow):
         Application().event_dispatcher.subscribe(ChangeStatusChangedEvent, self.__change_status_changed)
         Application().event_dispatcher.subscribe(TabLockStatusChangedEvent, self.__tab_lock_status_changed)
         Application().event_dispatcher.subscribe(LanguageChangedEvent, self.__language_changed)
-        Application().event_dispatcher.subscribe(AddonStateChangedEvent, self.__plugin_state_changed)
+        Application().event_dispatcher.subscribe(AddOnStateChangedEvent, self.__plugin_state_changed)
         Application().event_dispatcher.subscribe(UpdateCheckFinishedEvent, self.__update_check)
         
         self.__reload_texts()

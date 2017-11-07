@@ -1,4 +1,4 @@
-from umlfri2.application.events.addon import AddonStateChangedEvent
+from umlfri2.application.events.addon import AddOnStateChangedEvent
 
 from .state import AddOnState
 from .actions import AddOnStarter, AddOnStopper
@@ -117,17 +117,17 @@ class AddOn:
             self.__patch_plugin.start()
         if self.__plugin is not None:
             self.__state = AddOnState.starting
-            self.__application.event_dispatcher.dispatch(AddonStateChangedEvent(self, self.__state))
+            self.__application.event_dispatcher.dispatch(AddOnStateChangedEvent(self, self.__state))
             self.__plugin.start()
         else:
             self.__state = AddOnState.started
-            self.__application.event_dispatcher.dispatch(AddonStateChangedEvent(self, self.__state))
+            self.__application.event_dispatcher.dispatch(AddOnStateChangedEvent(self, self.__state))
     
     def _plugin_started(self):
         if self.__gui_injection is not None:
             self.__gui_injection.reset()
         self.__state = AddOnState.started
-        self.__application.event_dispatcher.dispatch(AddonStateChangedEvent(self, self.__state))
+        self.__application.event_dispatcher.dispatch(AddOnStateChangedEvent(self, self.__state))
     
     def _stop(self):
         if self.__state == AddOnState.none:
@@ -138,11 +138,11 @@ class AddOn:
             self.__patch_plugin.stop()
         if self.__plugin is not None:
             self.__state = AddOnState.stopping
-            self.__application.event_dispatcher.dispatch(AddonStateChangedEvent(self, self.__state))
+            self.__application.event_dispatcher.dispatch(AddOnStateChangedEvent(self, self.__state))
             self.__plugin.stop()
         else:
             self.__state = AddOnState.stopped
-            self.__application.event_dispatcher.dispatch(AddonStateChangedEvent(self, self.__state))
+            self.__application.event_dispatcher.dispatch(AddOnStateChangedEvent(self, self.__state))
     
     def _plugin_stopped(self):
         if self.__patch_plugin is not None and self.__patch_plugin.running:
@@ -153,4 +153,4 @@ class AddOn:
             self.__state = AddOnState.error
         else:
             self.__state = AddOnState.stopped
-        self.__application.event_dispatcher.dispatch(AddonStateChangedEvent(self, self.__state))
+        self.__application.event_dispatcher.dispatch(AddOnStateChangedEvent(self, self.__state))
