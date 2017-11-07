@@ -85,6 +85,12 @@ class ZipStorage(Storage):
         zip_file = zipfile.ZipFile(z, mode='w', compression=zipfile.ZIP_DEFLATED)
         return ZipStorage(path, zip_file, [], 'w')
     
+    @staticmethod
+    def read_from_memory(bytes):
+        z = BytesIO(bytes)
+        zip_file = zipfile.ZipFile(z, mode='r')
+        return ZipStorage(None, zip_file, [], 'r')
+    
     def __init__(self, zip_path, zip_file, path, mode):
         self.__zip_path = zip_path
         self.__zip_file = zip_file
@@ -138,6 +144,8 @@ class ZipStorage(Storage):
                 self.__zip_file.writestr(self.__fix_path(path), source_file.read())
     
     def remember_reference(self):
+        if self.__zip_path is None:
+            raise Exception("Cannot remember reference to in-memory zip storage")
         return ZipStorageReference(self.__zip_path, self.__path, self.__mode)
     
     def close(self):
