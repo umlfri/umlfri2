@@ -74,9 +74,11 @@ class DirectoryStorage(Storage):
             return Storage.read_storage(path)
     
     def make_dir(self, path):
+        if self.__mode == 'r':
+            raise ValueError("Storage is opened for read only")
         path = self.__fix_path(path)
         os.makedirs(path)
-        return Storage.read_storage(path)
+        return DirectoryStorage.new_storage(path)
     
     def get_all_files(self):
         for dirpath, dirs, files in os.walk(self.__path):
@@ -88,16 +90,17 @@ class DirectoryStorage(Storage):
         if self.__mode == 'r':
             raise ValueError("Storage is opened for read only")
         for path in storage.get_all_files():
-            self.__create_directory_if_needed(path)
+            fix_path = self.__fix_path(path)
+            self.__create_directory_if_needed(fix_path)
             with storage.open(path) as source_file:
-                with open(self.__fix_path(path), 'wb') as destination_file:
+                with open(fix_path, 'wb') as destination_file:
                     destination_file.write(source_file.read())
     
     def __fix_path(self, path):
         if path is None:
             return self.__path
         
-        return os.path.join(self.__path, path)
+        return os.path.join(self.__path, path.lstrip('/'))
     
     def __create_directory_if_needed(self, path):
         dir = os.path.dirname(path)
