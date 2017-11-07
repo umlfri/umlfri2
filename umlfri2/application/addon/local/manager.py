@@ -2,7 +2,7 @@ import os.path
 
 from umlfri2.constants.paths import ADDONS, LOCAL_ADDONS
 from umlfri2.datalayer.loaders import AddOnListLoader
-from umlfri2.datalayer.storages import Storage
+from umlfri2.datalayer.storages import Storage, DirectoryStorage
 
 from .actions import AddOnStarter, AddOnStopper
 
@@ -11,9 +11,9 @@ class AddOnManager:
     def __init__(self, application):
         self.__addons = []
         self.__application = application
-        self.__system_addons = AddOnListLoader(application, Storage.read_storage(ADDONS), True)
+        self.__system_addons = AddOnListLoader(application, DirectoryStorage.read_storage(ADDONS), True)
         if os.path.exists(LOCAL_ADDONS):
-            self.__local_addons = AddOnListLoader(application, Storage.read_storage(LOCAL_ADDONS), False)
+            self.__local_addons = AddOnListLoader(self.__application, DirectoryStorage.new_storage(LOCAL_ADDONS), False)
         else:
             self.__local_addons = None
     
@@ -27,7 +27,7 @@ class AddOnManager:
         if self.__local_addons is None:
             if not os.path.exists(LOCAL_ADDONS):
                 os.makedirs(LOCAL_ADDONS)
-            self.__local_addons = AddOnListLoader(self.__application, Storage.read_storage(LOCAL_ADDONS), False)
+            self.__local_addons = AddOnListLoader(self.__application, DirectoryStorage.new_storage(LOCAL_ADDONS), False)
         
         addon = self.__local_addons.install_from(storage)
         if addon is not None:

@@ -16,8 +16,7 @@ class AddOnStarter:
         for addon in self.__manager:
             for provision in addon.provisions:
                 self.__dependencies.setdefault(provision, []).append(addon)
-
-
+    
     @property
     def finished(self):
         return self.__started

@@ -33,7 +33,7 @@ class AddOnsDialog(QDialog):
         tabs = QTabWidget()
         
         tabs.addTab(InstalledAddOnList(self.__processes), _("Installed Add-ons"))
-        tabs.addTab(OnlineAddOnList(), _("Online Add-ons"))
+        tabs.addTab(OnlineAddOnList(self.__processes), _("Online Add-ons"))
         tabs.addTab(QWidget(), _("Updates"))
         
         layout.addWidget(tabs)

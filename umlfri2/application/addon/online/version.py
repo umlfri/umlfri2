@@ -1,6 +1,10 @@
+from .actions import OnlineAddOnInstaller
+
+
 class OnlineAddOnVersion:
-    def __init__(self, name, version, author, homepage, license, icon, description,
+    def __init__(self, application, name, version, author, homepage, license, icon, description,
                  requirements, provisions, changelog, locations):
+        self.__application = application
         self.__name = name
         self.__version = version
         self.__author = author
@@ -58,3 +62,6 @@ class OnlineAddOnVersion:
         for location in self.__locations:
             if location.is_valid:
                 return location
+    
+    def install(self):
+        return OnlineAddOnInstaller(self.__application.addons.local, self)

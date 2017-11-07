@@ -1,10 +1,22 @@
+from hashlib import sha256
 import sys
 from enum import Enum
+from urllib.request import urlopen
 
 
 class OnlineAddOnArch(Enum):
     processor_32 = 1
     processor_64 = 2
+
+
+class OnlineAddOnHash(Enum):
+    sha256 = (sha256, )
+    
+    def __init__(self, fnc):
+        self.__fnc = fnc
+    
+    def compute(self, bytes):
+        return self.__fnc(bytes).hexdigest()
 
 
 class OnlineAddOnLocation:
@@ -33,4 +45,10 @@ class OnlineAddOnLocation:
         return True
     
     def download(self):
-        pass
+        data = urlopen(self.__url).read()
+        hash = self.__hash_type.compute(data)
+        
+        if hash != self.__hash:
+            raise Exception("Invalid hash")
+        
+        return data

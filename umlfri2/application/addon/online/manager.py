@@ -18,7 +18,7 @@ class OnlineAddOnManager:
         addons = {}
         if os.path.exists(ONLINE_ADDONS):
             with Storage.read_storage(ONLINE_ADDONS) as storage:
-                for identifier, version in OnlineAddOnListLoader(storage).load_all():
+                for identifier, version in OnlineAddOnListLoader(self.__application, storage).load_all():
                     addons.setdefault(identifier, []).append(version)
         
         for identifier, versions in addons.items():

@@ -11,6 +11,11 @@ from .listwidget import AddOnListWidget
 
 
 class OnlineAddOnList(AddOnListWidget):
+    def __init__(self, processes):
+        super().__init__()
+        
+        self.__processes = processes
+    
     def _addon_button_factory(self):
         return self
     
@@ -56,4 +61,5 @@ class OnlineAddOnList(AddOnListWidget):
     
     def __install(self, addon, checked=False):
         dialog = InstallAddOnDialog(self, addon)
-        dialog.exec_()
+        if dialog.exec_() == InstallAddOnDialog.Accepted:
+            self.__processes.run_process(addon.latest_version.install())

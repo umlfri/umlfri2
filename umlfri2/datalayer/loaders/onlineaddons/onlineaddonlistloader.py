@@ -5,7 +5,8 @@ from .onlineaddonloader import OnlineAddOnLoader
 
 
 class OnlineAddOnListLoader:
-    def __init__(self, storage):
+    def __init__(self, application, storage):
+        self.__application = application
         self.__storage = storage
     
     def load_all(self):
@@ -15,7 +16,7 @@ class OnlineAddOnListLoader:
             if not file.endswith('.xml'):
                 continue
             xml = lxml.etree.parse(self.__storage.open(file), parser=parser).getroot()
-            loader = OnlineAddOnLoader(xml, self.__storage, os.path.dirname(file))
+            loader = OnlineAddOnLoader(self.__application, xml, self.__storage, os.path.dirname(file))
             if not loader.is_valid():
                 continue
 

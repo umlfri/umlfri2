@@ -2,7 +2,7 @@ from collections import namedtuple
 
 from umlfri2.application.addon.dependency import AddOnDependency, AddOnDependencyType
 from umlfri2.application.addon.license import CommonLicense
-from umlfri2.application.addon.online import OnlineAddOnLocation, OnlineAddOnArch, OnlineAddOnVersion
+from umlfri2.application.addon.online import OnlineAddOnLocation, OnlineAddOnArch, OnlineAddOnVersion, OnlineAddOnHash
 from umlfri2.types.image import Image
 from umlfri2.types.version import Version
 from ...constants import ONLINE_ADDON_SCHEMA, ONLINE_ADDON_NAMESPACE
@@ -13,7 +13,8 @@ LoadedAddOnVersion = namedtuple('LoadedAddOnVersion', ['identifier', 'version'])
 
 
 class OnlineAddOnLoader:
-    def __init__(self, xmlroot, storage, path):
+    def __init__(self, application, xmlroot, storage, path):
+        self.__application = application
         self.__xmlroot = xmlroot
         self.__storage = storage
         self.__path = path
@@ -65,8 +66,8 @@ class OnlineAddOnLoader:
             else:
                 raise Exception
         
-        addon_version = OnlineAddOnVersion(name, version, author, homepage, license, icon, description,
-                                              requirements, provisions, changelog, locations)
+        addon_version = OnlineAddOnVersion(self.__application, name, version, author, homepage, license, icon,
+                                           description, requirements, provisions, changelog, locations)
         
         return LoadedAddOnVersion(identifier, addon_version)
     
@@ -96,4 +97,4 @@ class OnlineAddOnLoader:
             arch = OnlineAddOnArch.processor_64
         else:
             arch = None
-        return OnlineAddOnLocation(child.attrib['url'], child.attrib['sha256'], 'sha256', arch, child.attrib.get('os'))
+        return OnlineAddOnLocation(child.attrib['url'], child.attrib['sha256'], OnlineAddOnHash.sha256, arch, child.attrib.get('os'))
