@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-06 11:17+0100\n"
-"PO-Revision-Date: 2017-11-06 11:18+0100\n"
+"POT-Creation-Date: 2017-11-08 12:06+0100\n"
+"PO-Revision-Date: 2017-11-08 12:06+0100\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -255,12 +255,6 @@ msgstr "Ignorované verzie"
 msgid "Install"
 msgstr "Inštaluj"
 
-msgid "Install AddOn From File"
-msgstr "Nainštaluj rozšírenie zo súboru"
-
-msgid "Install new..."
-msgstr "Inštalovať nové..."
-
 msgid "Installed Add-ons"
 msgstr "Nainštalované rozšírenia"
 
@@ -444,9 +438,6 @@ msgstr "Nástroje"
 
 msgid "UML .FRI 2"
 msgstr "UML .FRI 2"
-
-msgid "UML .FRI 2 addons"
-msgstr "Zásuvné moduly UML .FRI 2"
 
 msgid "UML .FRI 2 projects"
 msgstr "Projekty UML .FRI 2"

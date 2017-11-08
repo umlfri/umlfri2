@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-06 11:17+0100\n"
+"POT-Creation-Date: 2017-11-08 12:05+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -253,12 +253,6 @@ msgstr ""
 msgid "Install"
 msgstr ""
 
-msgid "Install AddOn From File"
-msgstr ""
-
-msgid "Install new..."
-msgstr ""
-
 msgid "Installed Add-ons"
 msgstr ""
 
@@ -441,9 +435,6 @@ msgid "Tools"
 msgstr ""
 
 msgid "UML .FRI 2"
-msgstr ""
-
-msgid "UML .FRI 2 addons"
 msgstr ""
 
 msgid "UML .FRI 2 projects"

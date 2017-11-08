@@ -21,11 +21,6 @@ class AddOnsDialog(QDialog):
         button_box = QDialogButtonBox(QDialogButtonBox.Close)
         button_box.button(QDialogButtonBox.Close).setText(_("Close"))
         
-        install_button = button_box.addButton(_("Install new..."), QDialogButtonBox.ActionRole)
-        install_button.setDefault(False)
-        install_button.setAutoDefault(False)
-        install_button.clicked.connect(self.__install_addon)
-        
         button_box.rejected.connect(self.reject)
         
         layout = QVBoxLayout()
@@ -49,12 +44,3 @@ class AddOnsDialog(QDialog):
             super().closeEvent(event)
         else:
             event.ignore()
-    
-    def __install_addon(self):
-        file_name, filter = QFileDialog.getOpenFileName(
-                self,
-                caption=_("Install AddOn From File"),
-                filter=_("UML .FRI 2 addons") + "(*.fria2)"
-        )
-        if file_name:
-            Application().addons.local.install_addon(Storage.read_storage(file_name))
