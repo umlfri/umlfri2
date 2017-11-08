@@ -97,9 +97,10 @@ class ZipStorage(Storage):
         self.__path = path
         self.__mode = mode
     
-    def list(self, path=None):
+    def list(self, path='/'):
         path = self.__fix_path(path)
         for name in self.__zip_file.namelist():
+            name = name.rstrip('/')
             if os.path.dirname(name) == path:
                 yield os.path.basename(name)
     
