@@ -80,7 +80,7 @@ class EventDispatcher:
     
     def __dispatch_all_internal(self, events):
         for event in events:
-            self.dispatch(event)
+            self.__dispatch_internal(event)
     
     def clear(self):
         self.__events.clear()
