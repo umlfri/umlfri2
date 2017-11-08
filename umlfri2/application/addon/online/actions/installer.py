@@ -13,6 +13,7 @@ class OnlineAddOnInstaller:
         self.__download_future = None
         self.__error = False
         self.__finished = False
+        self.__starter = None
     
     @property
     def finished(self):
@@ -26,16 +27,23 @@ class OnlineAddOnInstaller:
         if self.__finished:
             return
         
-        if self.__download_future is None:
+        if self.__starter is not None:
+            try:
+                self.__starter.do()
+            finally:
+                self.__error = self.__starter.has_error
+                self.__finished = self.__starter.finished
+        elif self.__download_future is None:
             self.__download_future = download_executor.submit(self.__download)
         elif self.__download_future.done():
             try:
                 storage = ZipStorage.read_from_memory(self.__download_future.result(0))
-                self.__local_manager.install_addon(storage)
+                addon = self.__local_manager.install_addon(storage)
             except:
                 self.__error = True
                 raise
-            self.__finished = True
+            
+            self.__starter = addon.start()
     
     def __download(self):
         location = self.__addon_version.valid_location

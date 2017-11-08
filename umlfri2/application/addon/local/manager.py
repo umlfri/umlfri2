@@ -36,6 +36,8 @@ class AddOnManager:
         
         self.__addons.append(addon)
         self.__application.event_dispatcher.dispatch(AddOnInstalledEvent(addon))
+        
+        return addon
     
     def get_addon(self, identifier):
         for addon in self.__addons:
