@@ -1,11 +1,18 @@
-import uuid
+import re
 
 import os.path
 
+import lxml.etree
+import unicodedata
+
+from ...constants import ADDON_ADDON_FILE
+from .addoninfoloader import AddOnInfoLoader
 from .addonloader import AddOnLoader
 
 
 class AddOnListLoader:
+    __RE_INVALID_CHARACTER_GROUP = re.compile('[^a-zA-Z0-9]+')
+    
     def __init__(self, application, storage, system_location):
         self.__application = application
         self.__storage = storage
@@ -19,7 +26,6 @@ class AddOnListLoader:
                     yield addon
     
     def install_from(self, storage):
-        dir_name = str(uuid.uuid1())
         path = None
         for file in storage.get_all_files():
             if os.path.basename(file) == 'addon.xml':
@@ -29,9 +35,28 @@ class AddOnListLoader:
             raise Exception("Selected file is not an addon")
         
         with storage.create_substorage(path) as source_storage:
+            info = AddOnInfoLoader(lxml.etree.parse(source_storage.open(ADDON_ADDON_FILE)).getroot()).load()
+            
+            identifier = info.identifier
+            dir_name = self.__mk_unique_dir_name(source_storage, info.identifier)
+            
             with self.__storage.make_dir(dir_name) as destination_storage:
                 destination_storage.copy_from(source_storage)
                 return self.__load(destination_storage)
+    
+    def __mk_unique_dir_name(self, storage, identifier):
+        dir_name = ''.join(char for char in unicodedata.normalize('NFD', identifier)
+                           if unicodedata.category(char) != 'Mn')
+        dir_name = self.__RE_INVALID_CHARACTER_GROUP.sub('-', dir_name)
+        
+        if storage.exists(dir_name):
+            format = dir_name + "-{0}"
+            i = 0
+            while storage.exists(format.format(i)):
+                i += 1
+            dir_name = format.format(i)
+        
+        return dir_name
     
     def __load(self, addon_storage):
         loader = AddOnLoader(self.__application, addon_storage, self.__system_location)
