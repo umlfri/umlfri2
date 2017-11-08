@@ -1,5 +1,4 @@
 from concurrent.futures import ThreadPoolExecutor
-from urllib.request import urlopen
 
 from umlfri2.datalayer.storages import ZipStorage
 

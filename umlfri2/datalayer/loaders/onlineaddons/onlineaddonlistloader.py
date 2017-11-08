@@ -1,6 +1,7 @@
 import lxml.etree
 import os
 
+from umlfri2.datalayer.constants import ONLINE_ADDON_LAST_VERSION_FILE
 from .onlineaddonloader import OnlineAddOnLoader
 
 
@@ -21,3 +22,9 @@ class OnlineAddOnListLoader:
                 continue
 
             yield loader.load()
+    
+    def get_last_update(self):
+        if self.__storage.exists(ONLINE_ADDON_LAST_VERSION_FILE):
+            return self.__storage.read_string(ONLINE_ADDON_LAST_VERSION_FILE)
+        else:
+            return None
