@@ -38,21 +38,21 @@ class AddOnListLoader:
             info = AddOnInfoLoader(lxml.etree.parse(source_storage.open(ADDON_ADDON_FILE)).getroot()).load()
             
             identifier = info.identifier
-            dir_name = self.__mk_unique_dir_name(source_storage, info.identifier)
+            dir_name = self.__mk_unique_dir_name(info.identifier)
             
             with self.__storage.make_dir(dir_name) as destination_storage:
                 destination_storage.copy_from(source_storage)
                 return self.__load(destination_storage)
     
-    def __mk_unique_dir_name(self, storage, identifier):
+    def __mk_unique_dir_name(self, identifier):
         dir_name = ''.join(char for char in unicodedata.normalize('NFD', identifier)
                            if unicodedata.category(char) != 'Mn')
         dir_name = self.__RE_INVALID_CHARACTER_GROUP.sub('-', dir_name)
         
-        if storage.exists(dir_name):
+        if self.__storage.exists(dir_name):
             format = dir_name + "-{0}"
-            i = 0
-            while storage.exists(format.format(i)):
+            i = 1
+            while self.__storage.exists(format.format(i)):
                 i += 1
             dir_name = format.format(i)
         
