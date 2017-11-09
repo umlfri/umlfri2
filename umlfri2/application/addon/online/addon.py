@@ -3,6 +3,9 @@ class OnlineAddOn:
         self.__application = application
         self.__identifier = identifier
         self.__versions = tuple(sorted(versions, key=lambda ver: ver.version, reverse=True))
+        
+        for version in self.__versions:
+            version._set_addon(self)
     
     @property
     def identifier(self):

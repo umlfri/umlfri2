@@ -25,10 +25,10 @@ class AddOnListLoader:
                 if addon is not None:
                     yield addon
     
-    def install_from(self, storage):
+    def install_from(self, storage, validator_callback=None):
         path = None
         for file in storage.get_all_files():
-            if os.path.basename(file) == 'addon.xml':
+            if os.path.basename(file) == ADDON_ADDON_FILE:
                 path = os.path.dirname(file)
         
         if path is None:
@@ -37,7 +37,10 @@ class AddOnListLoader:
         with storage.create_substorage(path) as source_storage:
             info = AddOnInfoLoader(lxml.etree.parse(source_storage.open(ADDON_ADDON_FILE)).getroot()).load()
             
-            identifier = info.identifier
+            if validator_callback is not None:
+                if not validator_callback(info):
+                    raise Exception("Invalid add-on")
+            
             dir_name = self.__mk_unique_dir_name(info.identifier)
             
             with self.__storage.make_dir(dir_name) as destination_storage:

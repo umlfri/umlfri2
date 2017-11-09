@@ -24,13 +24,13 @@ class AddOnManager:
         if self.__local_addons is not None:
             self.__addons.extend(self.__local_addons.load_all())
     
-    def install_addon(self, storage):
+    def install_addon(self, storage, validator_callback=None):
         if self.__local_addons is None:
             if not os.path.exists(LOCAL_ADDONS):
                 os.makedirs(LOCAL_ADDONS)
             self.__local_addons = AddOnListLoader(self.__application, DirectoryStorage.new_storage(LOCAL_ADDONS), False)
         
-        addon = self.__local_addons.install_from(storage)
+        addon = self.__local_addons.install_from(storage, validator_callback)
         if addon is None:
             raise Exception("Cannot install addon")
         

@@ -37,12 +37,19 @@ class OnlineAddOnInstaller:
         elif self.__download_future.done():
             try:
                 storage = ZipStorage.read_from_memory(self.__download_future.result(0))
-                addon = self.__local_manager.install_addon(storage)
+                addon = self.__local_manager.install_addon(storage, validator_callback=self.__validate_addon_info)
             except:
                 self.__error = True
                 raise
             
             self.__starter = addon.start()
+    
+    def __validate_addon_info(self, info):
+        if info.identifier != self.__addon_version.addon.identifier:
+            return False
+        if info.version != self.__addon_version.version:
+            return False
+        return True
     
     def __download(self):
         location = self.__addon_version.valid_location

@@ -16,6 +16,14 @@ class OnlineAddOnVersion:
         self.__provisions = tuple(provisions)
         self.__changelog = changelog
         self.__locations = tuple(locations)
+        self.__addon = None
+    
+    def _set_addon(self, addon):
+        self.__addon = addon
+    
+    @property
+    def addon(self):
+        return self.__addon
     
     @property
     def name(self):
