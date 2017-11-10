@@ -45,6 +45,9 @@ class Storage:
     def remember_reference(self):
         raise NotImplementedError
     
+    def remove_storage(self):
+        raise NotImplementedError
+    
     def close(self):
         raise NotImplementedError
     

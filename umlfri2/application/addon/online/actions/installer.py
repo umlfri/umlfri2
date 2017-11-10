@@ -23,7 +23,7 @@ class OnlineAddOnInstaller:
         return self.__error
     
     def do(self):
-        if self.__finished:
+        if self.__error or self.__finished:
             return
         
         if self.__starter is not None:

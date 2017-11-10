@@ -1,14 +1,14 @@
 from umlfri2.application.events.addon import AddOnStateChangedEvent
 
 from .state import AddOnState
-from .actions import AddOnStarter, AddOnStopper
+from .actions import AddOnStarter, AddOnStopper, AddOnUninstaller
 
 
 class AddOn:
-    def __init__(self, application, identifier, name, version, author, homepage, license, icon, description,
-                 requirements, provisions, metamodel, gui_injection, patch_plugin, plugin,
-                 system_addon):
+    def __init__(self, application, storage_reference, identifier, name, version, author, homepage, license, icon,
+                 description, requirements, provisions, metamodel, gui_injection, patch_plugin, plugin, system_addon):
         self.__application = application
+        self.__storage_reference = storage_reference
         self.__identifier = identifier
         self.__name = name
         self.__version = version
@@ -102,11 +102,18 @@ class AddOn:
     def gui_injection(self):
         return self.__gui_injection
     
+    @property
+    def storage_reference(self):
+        return self.__storage_reference
+    
     def start(self):
         return AddOnStarter(self.__application.addons.local, self)
 
     def stop(self):
         return AddOnStopper(self.__application.addons.local, self)
+    
+    def uninstall(self):
+        return AddOnUninstaller(self.__application.addons.local, self)
     
     def _start(self):
         if self.__state == AddOnState.none:

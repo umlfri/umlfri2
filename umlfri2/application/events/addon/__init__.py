@@ -2,3 +2,4 @@ from .actionenablestatuschanged import ActionEnableStatusChangedEvent
 from .actiontriggered import ActionTriggeredEvent
 from .addonstatechanged import AddOnStateChangedEvent
 from .addoninstalled import AddOnInstalledEvent
+from .addonuninstalled import AddOnUninstalledEvent

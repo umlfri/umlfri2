@@ -6,7 +6,7 @@ from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.QtWidgets import QPushButton, QLabel, QMenu
 
 from umlfri2.application import Application
-from umlfri2.application.events.addon import AddOnInstalledEvent
+from umlfri2.application.events.addon import AddOnInstalledEvent, AddOnUninstalledEvent
 from .installdialog import InstallAddOnDialog
 from .info import AddOnInfoDialog
 from .listwidget import AddOnListWidget
@@ -21,6 +21,7 @@ class OnlineAddOnList(AddOnListWidget):
         self.__processes = processes
         
         Application().event_dispatcher.subscribe(AddOnInstalledEvent, self.__addon_installed)
+        Application().event_dispatcher.subscribe(AddOnUninstalledEvent, self.__addon_uninstalled)
     
     def _addon_button_factory(self):
         self.__buttons = {}
@@ -82,3 +83,9 @@ class OnlineAddOnList(AddOnListWidget):
             buttons = self.__buttons[event.addon.identifier]
             buttons.installed_info.setVisible(True)
             buttons.install.setVisible(False)
+
+    def __addon_uninstalled(self, event):
+        if event.addon.identifier in self.__buttons:
+            buttons = self.__buttons[event.addon.identifier]
+            buttons.installed_info.setVisible(False)
+            buttons.install.setVisible(True)

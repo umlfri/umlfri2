@@ -149,6 +149,14 @@ class ZipStorage(Storage):
             raise Exception("Cannot remember reference to in-memory zip storage")
         return ZipStorageReference(self.__zip_path, self.__path, self.__mode)
     
+    def remove_storage(self):
+        if self.__mode == 'r':
+            raise ValueError("Storage is opened for read only")
+        if self.__path:
+            raise ValueError("Cannot remove zip sub-storage")
+        
+        os.unlink(self.__zip_path)
+    
     def close(self):
         self.__zip_file.close()
     

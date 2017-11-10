@@ -1,11 +1,12 @@
 import os.path
 
-from umlfri2.application.events.addon import AddOnInstalledEvent
+from umlfri2.application.events.addon import AddOnInstalledEvent, AddOnUninstalledEvent
 from umlfri2.constants.paths import ADDONS, LOCAL_ADDONS
 from umlfri2.datalayer.loaders import AddOnListLoader
 from umlfri2.datalayer.storages import DirectoryStorage
 
 from .actions import AddOnStarter, AddOnStopper
+from .state import AddOnState
 
 
 class AddOnManager:
@@ -38,6 +39,30 @@ class AddOnManager:
         self.__application.event_dispatcher.dispatch(AddOnInstalledEvent(addon))
         
         return addon
+    
+    def uninstall_addon(self, addon):
+        if addon.is_system_addon:
+            raise Exception("Cannot uninstall system addon")
+        
+        if addon.state not in (AddOnState.stopped, AddOnState.error, AddOnState.none):
+            raise Exception("Cannot uninstall started addon")
+        
+        with addon.storage_reference.open('w') as storage:
+            try:
+                # try disabling the addon first - just to make sure, it can be disabled if it will be needed
+                storage.store_string('.disabled', '')
+                storage.remove_storage()
+            except:
+                try:
+                    # if the addon cannot be removed completely, just disable it
+                    storage.store_string('.disabled', '')
+                except:
+                    pass
+                raise
+        
+        self.__addons.remove(addon)
+        
+        self.__application.event_dispatcher.dispatch(AddOnUninstalledEvent(addon))
     
     def get_addon(self, identifier):
         for addon in self.__addons:

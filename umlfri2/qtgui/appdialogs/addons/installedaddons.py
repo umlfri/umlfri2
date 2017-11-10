@@ -6,7 +6,7 @@ from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.QtWidgets import QPushButton, QMenu
 from umlfri2.application import Application
 from umlfri2.application.addon.local import AddOnState
-from umlfri2.application.events.addon import AddOnStateChangedEvent, AddOnInstalledEvent
+from umlfri2.application.events.addon import AddOnStateChangedEvent, AddOnInstalledEvent, AddOnUninstalledEvent
 from .listwidget import AddOnListWidget
 from .info import AddOnInfoDialog
 
@@ -21,6 +21,7 @@ class InstalledAddOnList(AddOnListWidget):
         
         Application().event_dispatcher.subscribe(AddOnStateChangedEvent, self.__addon_state_changed)
         Application().event_dispatcher.subscribe(AddOnInstalledEvent, self.__addon_installed)
+        Application().event_dispatcher.subscribe(AddOnUninstalledEvent, self.__addon_uninstalled)
     
     @property
     def _addons(self):
@@ -53,7 +54,8 @@ class InstalledAddOnList(AddOnListWidget):
         menu.addSeparator()
         
         if not addon.is_system_addon:
-            menu.addAction(QIcon.fromTheme("edit-delete"), _("Uninstall"))
+            uninstall = menu.addAction(QIcon.fromTheme("edit-delete"), _("Uninstall"))
+            uninstall.triggered.connect(partial(self.__uninstall, addon))
         
         return menu
     
@@ -90,6 +92,9 @@ class InstalledAddOnList(AddOnListWidget):
     def __stop_addon(self, addon, checked=False):
         self.__processes.run_process(addon.stop())
     
+    def __uninstall(self, addon):
+        self.__processes.run_process(addon.uninstall())
+    
     def __addon_state_changed(self, event):
         if event.addon.identifier in self.__addon_buttons:
             buttons = self.__addon_buttons[event.addon.identifier]
@@ -97,4 +102,7 @@ class InstalledAddOnList(AddOnListWidget):
             buttons.stop.setEnabled(event.addon.state == AddOnState.started)
     
     def __addon_installed(self, event):
+        self.refresh()
+
+    def __addon_uninstalled(self, event):
         self.refresh()

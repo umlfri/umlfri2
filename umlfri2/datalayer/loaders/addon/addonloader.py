@@ -56,7 +56,8 @@ class AddOnLoader:
                 raise Exception
             plugin = Plugin(self.__storage.path, info.plugin_info.starter, info.plugin_info.path)
         
-        ret = AddOn(self.__application, info.identifier, info.name, info.version, info.author, info.homepage,
+        ret = AddOn(self.__application, self.__storage.remember_reference(),
+                    info.identifier, info.name, info.version, info.author, info.homepage,
                     info.license, icon, info.description, info.requirements, info.provisions,
                     metamodel, gui_injection, patch, plugin, self.__system_addon)
         

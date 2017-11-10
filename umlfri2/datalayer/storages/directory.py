@@ -1,5 +1,8 @@
 import os
 import os.path
+
+import shutil
+
 from .storage import Storage, StorageReference
 
 
@@ -109,6 +112,11 @@ class DirectoryStorage(Storage):
     
     def remember_reference(self):
         return DirectoryStorageReference(self.__path, self.__mode)
+    
+    def remove_storage(self):
+        if self.__mode == 'r':
+            raise ValueError("Storage is opened for read only")
+        shutil.rmtree(self.__path)
     
     def close(self):
         pass
