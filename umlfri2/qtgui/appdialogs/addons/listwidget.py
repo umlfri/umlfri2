@@ -106,15 +106,15 @@ class AddOnListWidget(QTableWidget):
             addon_button_box = QHBoxLayout()
             addon_button_box.setAlignment(Qt.AlignRight)
             
+            addon_button_box_widget = QWidget()
+            addon_button_box_widget.setLayout(addon_button_box)
+            addon_button_box_widget.setVisible(False)
+            addon_button_box_widget.setObjectName("button_box")
+            
             if button_factory is not None:
-                button_factory.add_buttons(addon, addon_button_box)
+                button_factory.add_buttons(addon, addon_button_box, addon_button_box_widget)
             
             if addon_button_box.count() > 0:
-                addon_button_box_widget = QWidget()
-                addon_button_box_widget.setLayout(addon_button_box)
-                addon_button_box_widget.setVisible(False)
-                addon_button_box_widget.setObjectName("button_box")
-                
                 layout.addWidget(addon_button_box_widget)
             
             widget = QWidget()

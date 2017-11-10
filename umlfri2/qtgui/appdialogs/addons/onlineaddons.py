@@ -13,7 +13,7 @@ from .listwidget import AddOnListWidget
 
 
 class OnlineAddOnList(AddOnListWidget):
-    __OnlineAddonButtons = namedtuple('AddonButtons', ['install', 'installed_info'])
+    __OnlineAddonButtons = namedtuple('AddonButtons', ['install', 'installed_info', 'container'])
     
     def __init__(self, processes):
         super().__init__()
@@ -46,7 +46,7 @@ class OnlineAddOnList(AddOnListWidget):
         
         return menu
     
-    def add_buttons(self, addon, button_box):
+    def add_buttons(self, addon, button_box, container):
         install_button = QPushButton(QIcon.fromTheme("list-add"), _("Install"))
         install_button.setFocusPolicy(Qt.NoFocus)
         install_button.clicked.connect(partial(self.__install, addon))
@@ -55,7 +55,7 @@ class OnlineAddOnList(AddOnListWidget):
         installed = QLabel("<i><small>{0}</small></i>".format(_("Addon is already installed")))
         button_box.addWidget(installed)
         
-        self.__buttons[addon.identifier] = self.__OnlineAddonButtons(install_button, installed)
+        self.__buttons[addon.identifier] = self.__OnlineAddonButtons(install_button, installed, container)
         
         if addon.local_addon is None:
             installed.setVisible(False)
@@ -83,9 +83,13 @@ class OnlineAddOnList(AddOnListWidget):
             buttons = self.__buttons[event.addon.identifier]
             buttons.installed_info.setVisible(True)
             buttons.install.setVisible(False)
-
+            buttons.container.adjustSize()
+            self.resizeRowsToContents()
+    
     def __addon_uninstalled(self, event):
         if event.addon.identifier in self.__buttons:
             buttons = self.__buttons[event.addon.identifier]
             buttons.installed_info.setVisible(False)
             buttons.install.setVisible(True)
+            buttons.container.adjustSize()
+            self.resizeRowsToContents()
