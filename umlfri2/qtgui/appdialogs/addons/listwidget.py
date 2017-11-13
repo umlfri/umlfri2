@@ -126,6 +126,14 @@ class AddOnListWidget(QTableWidget):
         self.resizeColumnsToContents()
         self.resizeRowsToContents()
     
+    def focusInEvent(self, event):
+        super().focusInEvent(event)
+        self.__refresh_all_selection_colors()
+    
+    def focusOutEvent(self, event):
+        super().focusOutEvent(event)
+        self.__refresh_all_selection_colors()
+    
     def __selection_changed(self):
         selection = set(item.row() for item in self.selectedIndexes())
         
@@ -143,12 +151,26 @@ class AddOnListWidget(QTableWidget):
         
         self.resizeRowsToContents()
     
+    def __refresh_all_selection_colors(self):
+        selection = set(item.row() for item in self.selectedIndexes())
+        
+        for i in range(self.rowCount()):
+            cell = self.cellWidget(i, 1)
+            self.__refresh_selection_colors(cell, i in selection)
+    
     def __refresh_selection_colors(self, cell_widget, selected):
-        if selected:
-            color = self.palette().color(QPalette.Active, QPalette.HighlightedText)
+        if self.hasFocus():
+            color_group = QPalette.Active
         else:
-            color = self.palette().color(QPalette.Active, QPalette.Text)
-            
+            color_group = QPalette.Inactive
+        
+        if selected:
+            color_role = QPalette.HighlightedText
+        else:
+            color_role = QPalette.Text
+        
+        color = self.palette().color(color_group, color_role)
+        
         for lbl in cell_widget.findChildren(QLabel):
             lbl.setStyleSheet("QLabel {{ color : {0}; }}".format(color.name()))
     
