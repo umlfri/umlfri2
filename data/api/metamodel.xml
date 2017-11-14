@@ -1,68 +1,68 @@
 <?xml version="1.0" ?>
-<interface
+<Interface
         xmlns="http://umlfri.org/v2/api.xsd"
         name="org.umlfri.api.metamodel.Metamodel">
     
-    <documentation>
+    <Documentation>
         Root object for metamodel object hierarchy.
-    </documentation>
+    </Documentation>
     
-    <property name="identifier">
-        <documentation>
+    <Property name="identifier">
+        <Documentation>
             The metamodel identifier.
-        </documentation>
+        </Documentation>
         
-        <value type="string" readable="true"/>
-    </property>
+        <Value type="string" readable="true"/>
+    </Property>
     
-    <property name="version">
-        <documentation>
+    <Property name="version">
+        <Documentation>
             The metamodel version.
-        </documentation>
+        </Documentation>
         
-        <value type="string" readable="true"/>
-    </property>
+        <Value type="string" readable="true"/>
+    </Property>
     
     <!-- TODO: exception for element/connection/diagram not found by name -->
-    <property name="diagrams" singular="diagram">
-        <documentation>
+    <Property name="diagrams" singular="diagram">
+        <Documentation>
             Diagram types defined in the metamodel.
-        </documentation>
+        </Documentation>
         
-        <index name="name" type="string">
-            <documentation>
+        <Index name="name" type="string">
+            <Documentation>
                 Identifier of the diagram type.
-            </documentation>
-        </index>
+            </Documentation>
+        </Index>
         
-        <value type="org.umlfri.api.metamodel.DiagramType" readable="true" iterable="true" nullable="true"/>
-    </property>
+        <Value type="org.umlfri.api.metamodel.DiagramType" readable="true" iterable="true" nullable="true"/>
+    </Property>
     
-    <property name="elements" singular="element">
-        <documentation>
+    <Property name="elements" singular="element">
+        <Documentation>
             Element types defined in the metamodel.
-        </documentation>
+        </Documentation>
         
-        <index name="name" type="string">
-            <documentation>
+        <Index name="name" type="string">
+            <Documentation>
                 Identifier of the element type.
-            </documentation>
-        </index>
+            </Documentation>
+        </Index>
         
-        <value type="org.umlfri.api.metamodel.ElementType" readable="true" iterable="true" nullable="true"/>
-    </property>
+        <Value type="org.umlfri.api.metamodel.ElementType" readable="true" iterable="true" nullable="true"/>
+    </Property>
     
-    <property name="connections" singular="connection">
-        <documentation>
+    <Property name="connections" singular="connection">
+        <Documentation>
             Connection types defined in the metamodel.
-        </documentation>
+        </Documentation>
         
-        <index name="name" type="string">
-            <documentation>
+        <Index name="name" type="string">
+            <Documentation>
                 Identifier of the connection type.
-            </documentation>
-        </index>
+            </Documentation>
+        </Index>
         
-        <value type="org.umlfri.api.metamodel.ConnectionType" readable="true" iterable="true" nullable="true"/>
-    </property>
-</interface>
+        <Value type="org.umlfri.api.metamodel.ConnectionType" readable="true" iterable="true" nullable="true"/>
+    </Property>
+</Interface>

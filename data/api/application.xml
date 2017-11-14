@@ -1,37 +1,37 @@
 <?xml version="1.0" ?>
-<interface
+<Interface
         xmlns="http://umlfri.org/v2/api.xsd"
         name="org.umlfri.api.base.Application">
     
-    <documentation>
+    <Documentation>
         Root of public api object hierarchy.
-    </documentation>
+    </Documentation>
     
-    <property name="solution">
-        <documentation>
+    <Property name="solution">
+        <Documentation>
             Gets a reference to the current project, or null if no project
             is loaded.
-        </documentation>
-        <value type="org.umlfri.api.model.Solution" readable="true" nullable="true"/>
-    </property>
+        </Documentation>
+        <Value type="org.umlfri.api.model.Solution" readable="true" nullable="true"/>
+    </Property>
     
-    <property name="currentDiagram">
-        <documentation>
+    <Property name="currentDiagram">
+        <Documentation>
             Gets or sets a reference to the current diagram, or null if no diagram
             is selected.
-        </documentation>
-        <value type="org.umlfri.api.model.Diagram" readable="true" writable="true" nullable="true"/>
+        </Documentation>
+        <Value type="org.umlfri.api.model.Diagram" readable="true" writable="true" nullable="true"/>
         
-        <setter transactional="false"/>
-    </property>
+        <Setter transactional="false"/>
+    </Property>
     
-    <property name="actions" singular="action">
-        <documentation>
+    <Property name="actions" singular="action">
+        <Documentation>
             Contains list of all addon actions.
-        </documentation>
+        </Documentation>
         
-        <index name="id" type="string"/>
+        <Index name="id" type="string"/>
         
-        <value type="org.umlfri.api.base.Action" readable="true" iterable="true"/>
-    </property>
-</interface>
+        <Value type="org.umlfri.api.base.Action" readable="true" iterable="true"/>
+    </Property>
+</Interface>

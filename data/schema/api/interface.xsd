@@ -2,48 +2,37 @@
 <xs:schema xmlns="http://umlfri.org/v2/api.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
            targetNamespace="http://umlfri.org/v2/api.xsd" elementFormDefault="qualified"
            attributeFormDefault="unqualified">
-	<xs:element name="interface">
+	<xs:element name="Interface">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="documentation" type="xs:string" minOccurs="0"/>
+				<xs:element name="Documentation" type="xs:string" minOccurs="0"/>
 				<xs:choice minOccurs="0" maxOccurs="unbounded">
-					<xs:element name="property" type="propertyType"/>
-					<xs:element name="event" type="eventType"/>
-					<xs:element name="method">
-						<xs:complexType>
-							<xs:complexContent>
-								<xs:extension base="methodType">
-									<xs:attribute name="apiname" type="xs:string"/>
-									<xs:attribute name="mutator" type="xs:boolean" default="false"/>
-									<xs:attribute name="transactional" type="xs:boolean" default="true"/>
-									<xs:attribute name="async" type="xs:boolean" default="false"/>
-								</xs:extension>
-							</xs:complexContent>
-						</xs:complexType>
-					</xs:element>
+					<xs:element name="Property" type="property_type"/>
+					<xs:element name="Event" type="event_type"/>
+					<xs:element name="Method" type="method_type"/>
 				</xs:choice>
 			</xs:sequence>
 			<xs:attribute name="name" type="xs:string" use="required"/>
-			<xs:attribute name="apiName" type="xs:string"/>
+			<xs:attribute name="api_name" type="xs:string"/>
 			<xs:attribute name="base" type="xs:string"/>
 			<xs:attribute name="abstract" type="xs:boolean" default="false"/>
 			<xs:attribute name="generate" type="xs:boolean" default="true"/>
 		</xs:complexType>
 	</xs:element>
-	<xs:complexType name="propertyType">
+	<xs:complexType name="property_type">
 		<xs:sequence>
-			<xs:element name="documentation" type="xs:string" minOccurs="0"/>
-			<xs:element name="index" minOccurs="0">
+			<xs:element name="Documentation" type="xs:string" minOccurs="0"/>
+			<xs:element name="Index" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="documentation" type="xs:string" minOccurs="0"/>
+						<xs:element name="Documentation" type="xs:string" minOccurs="0"/>
 					</xs:sequence>
 					<xs:attribute name="name" type="xs:string" use="required"/>
 					<xs:attribute name="type" type="xs:string" use="required"/>
-					<xs:attribute name="apiname" type="xs:string"/>
+					<xs:attribute name="api_name" type="xs:string"/>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="value">
+			<xs:element name="Value">
 				<xs:complexType>
 					<xs:attribute name="type" type="xs:string" use="required"/>
                     <xs:attribute name="nullable" type="xs:boolean" default="false"/>
@@ -52,114 +41,118 @@
 					<xs:attribute name="iterable" type="xs:boolean" default="false"/>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="getter" minOccurs="0">
+			<xs:element name="Getter" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="throws" minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="Throws" minOccurs="0" maxOccurs="unbounded">
 							<xs:complexType>
 								<xs:sequence>
-									<xs:element name="documentation" type="xs:string" minOccurs="0"/>
+									<xs:element name="Documentation" type="xs:string" minOccurs="0"/>
 								</xs:sequence>
 								<xs:attribute name="exception" type="xs:string" use="required"/>
 							</xs:complexType>
 						</xs:element>
 					</xs:sequence>
-					<xs:attribute name="apiname" type="xs:string"/>
+					<xs:attribute name="api_name" type="xs:string"/>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="setter" minOccurs="0">
+			<xs:element name="Setter" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="throws" minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="Throws" minOccurs="0" maxOccurs="unbounded">
 							<xs:complexType>
 								<xs:sequence>
-									<xs:element name="documentation" type="xs:string" minOccurs="0"/>
+									<xs:element name="Documentation" type="xs:string" minOccurs="0"/>
 								</xs:sequence>
 								<xs:attribute name="exception" type="xs:string" use="required"/>
 							</xs:complexType>
 						</xs:element>
 					</xs:sequence>
-					<xs:attribute name="apiname" type="xs:string"/>
+					<xs:attribute name="api_name" type="xs:string"/>
 					<xs:attribute name="transactional" type="xs:boolean" default="true"/>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="iterator" minOccurs="0">
+			<xs:element name="Iterator" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="throws" minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="Throws" minOccurs="0" maxOccurs="unbounded">
 							<xs:complexType>
 								<xs:sequence>
-									<xs:element name="documentation" type="xs:string" minOccurs="0"/>
+									<xs:element name="Documentation" type="xs:string" minOccurs="0"/>
 								</xs:sequence>
 								<xs:attribute name="exception" type="xs:string" use="required"/>
 							</xs:complexType>
 						</xs:element>
 					</xs:sequence>
-					<xs:attribute name="apiname" type="xs:string"/>
-					<xs:attribute name="includeindex" type="xs:boolean" default="false"/>
+					<xs:attribute name="api_name" type="xs:string"/>
+					<xs:attribute name="include_index" type="xs:boolean" default="false"/>
 				</xs:complexType>
 			</xs:element>
 		</xs:sequence>
 		<xs:attribute name="name" type="xs:string" use="required"/>
 		<xs:attribute name="singular" type="xs:string"/>
 	</xs:complexType>
-	<xs:complexType name="methodType">
+	<xs:complexType name="method_type">
 		<xs:sequence>
-			<xs:element name="documentation" type="xs:string" minOccurs="0"/>
-			<xs:element name="parameter" minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Documentation" type="xs:string" minOccurs="0"/>
+			<xs:element name="Parameter" minOccurs="0" maxOccurs="unbounded">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="documentation" type="xs:string" minOccurs="0"/>
+						<xs:element name="Documentation" type="xs:string" minOccurs="0"/>
 					</xs:sequence>
 					<xs:attribute name="name" type="xs:string" use="required"/>
-					<xs:attribute name="apiname" type="xs:string"/>
+					<xs:attribute name="api_name" type="xs:string"/>
 					<xs:attribute name="type" type="xs:string" use="required"/>
 					<xs:attribute name="required" type="xs:boolean" default="true"/>
 					<xs:attribute name="default" type="xs:string"/>
                     <xs:attribute name="nullable" type="xs:boolean" default="false"/>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="parameterDictionary" minOccurs="0">
+			<xs:element name="ParameterDictionary" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="documentation" type="xs:string" minOccurs="0"/>
+						<xs:element name="Documentation" type="xs:string" minOccurs="0"/>
 					</xs:sequence>
 					<xs:attribute name="name" type="xs:string" use="required"/>
-					<xs:attribute name="apiname" type="xs:string"/>
+					<xs:attribute name="api_name" type="xs:string"/>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="return" minOccurs="0">
+			<xs:element name="Return" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="documentation" type="xs:string" minOccurs="0"/>
+						<xs:element name="Documentation" type="xs:string" minOccurs="0"/>
 					</xs:sequence>
 					<xs:attribute name="type" type="xs:string" use="required"/>
 					<xs:attribute name="iterable" type="xs:boolean" default="false"/>
                     <xs:attribute name="nullable" type="xs:boolean" default="false"/>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="throws" minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Throws" minOccurs="0" maxOccurs="unbounded">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="documentation" type="xs:string" minOccurs="0"/>
+						<xs:element name="Documentation" type="xs:string" minOccurs="0"/>
 					</xs:sequence>
 					<xs:attribute name="exception" type="xs:string" use="required"/>
 				</xs:complexType>
 			</xs:element>
 		</xs:sequence>
 		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="api_name" type="xs:string"/>
+		<xs:attribute name="mutator" type="xs:boolean" default="false"/>
+		<xs:attribute name="transactional" type="xs:boolean" default="true"/>
+		<xs:attribute name="async" type="xs:boolean" default="false"/>
 	</xs:complexType>
-	<xs:complexType name="eventType">
+	<xs:complexType name="event_type">
 		<xs:sequence>
-			<xs:element name="documentation" type="xs:string" minOccurs="0"/>
-			<xs:element name="connector" minOccurs="0">
+			<xs:element name="Documentation" type="xs:string" minOccurs="0"/>
+			<xs:element name="Connector" minOccurs="0">
 				<xs:complexType>
-					<xs:attribute name="apiname" type="xs:string"/>
+					<xs:attribute name="api_name" type="xs:string"/>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="disconnector" minOccurs="0">
+			<xs:element name="Disconnector" minOccurs="0">
 				<xs:complexType>
-					<xs:attribute name="apiname" type="xs:string"/>
+					<xs:attribute name="api_name" type="xs:string"/>
 				</xs:complexType>
 			</xs:element>
 		</xs:sequence>

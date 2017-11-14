@@ -2,46 +2,46 @@
 <xs:schema xmlns="http://umlfri.org/v2/api.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
            targetNamespace="http://umlfri.org/v2/api.xsd" elementFormDefault="qualified"
            attributeFormDefault="unqualified">
-	<xs:element name="delegate">
+	<xs:element name="Delegate">
 		<xs:complexType>
             <xs:sequence>
-                <xs:element name="documentation" type="xs:string" minOccurs="0"/>
-                <xs:element name="parameter" minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="Documentation" type="xs:string" minOccurs="0"/>
+                <xs:element name="Parameter" minOccurs="0" maxOccurs="unbounded">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="documentation" type="xs:string" minOccurs="0"/>
+                            <xs:element name="Documentation" type="xs:string" minOccurs="0"/>
                         </xs:sequence>
                         <xs:attribute name="name" type="xs:string" use="required"/>
-                        <xs:attribute name="apiname" type="xs:string"/>
+                        <xs:attribute name="api_name" type="xs:string"/>
                         <xs:attribute name="type" type="xs:string" use="required"/>
                         <xs:attribute name="required" type="xs:boolean" default="true"/>
                         <xs:attribute name="default" type="xs:string"/>
                         <xs:attribute name="nullable" type="xs:boolean" default="false"/>
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="parameterDictionary" minOccurs="0">
+                <xs:element name="ParameterDictionary" minOccurs="0">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="documentation" type="xs:string" minOccurs="0"/>
+                            <xs:element name="Documentation" type="xs:string" minOccurs="0"/>
                         </xs:sequence>
                         <xs:attribute name="name" type="xs:string" use="required"/>
-                        <xs:attribute name="apiname" type="xs:string"/>
+                        <xs:attribute name="api_name" type="xs:string"/>
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="return" minOccurs="0">
+                <xs:element name="Return" minOccurs="0">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="documentation" type="xs:string" minOccurs="0"/>
+                            <xs:element name="Documentation" type="xs:string" minOccurs="0"/>
                         </xs:sequence>
                         <xs:attribute name="type" type="xs:string" use="required"/>
                         <xs:attribute name="iterable" type="xs:boolean" default="false"/>
                         <xs:attribute name="nullable" type="xs:boolean" default="false"/>
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="throws" minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="Throws" minOccurs="0" maxOccurs="unbounded">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="documentation" type="xs:string" minOccurs="0"/>
+                            <xs:element name="Documentation" type="xs:string" minOccurs="0"/>
                         </xs:sequence>
                         <xs:attribute name="exception" type="xs:string" use="required"/>
                     </xs:complexType>

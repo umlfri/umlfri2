@@ -1,10 +1,10 @@
 <?xml version="1.0" ?>
-<interface
+<Interface
         xmlns="http://umlfri.org/v2/api.xsd"
         name="org.umlfri.api.model.Visual"
         abstract="true">
     
-    <documentation>
+    <Documentation>
         Common base class for ConnectionVisual and ElementVisual
-    </documentation>
-</interface>
+    </Documentation>
+</Interface>

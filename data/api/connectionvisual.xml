@@ -1,53 +1,53 @@
 <?xml version="1.0" ?>
-<interface
+<Interface
         xmlns="http://umlfri.org/v2/api.xsd"
         name="org.umlfri.api.model.ConnectionVisual"
         base="org.umlfri.api.model.Visual">
     
-    <documentation>
+    <Documentation>
         Visual information about connection shown on some diagram.
-    </documentation>
+    </Documentation>
     
-    <property name="object">
-        <documentation>
+    <Property name="object">
+        <Documentation>
             Associated connection object.
-        </documentation>
-        <value type="org.umlfri.api.model.ConnectionObject" readable="true"/>
-    </property>
+        </Documentation>
+        <Value type="org.umlfri.api.model.ConnectionObject" readable="true"/>
+    </Property>
     
-    <property name="diagram">
-        <documentation>
+    <Property name="diagram">
+        <Documentation>
             Diagram, on which the connection is located.
-        </documentation>
+        </Documentation>
         
-        <value type="org.umlfri.api.model.Diagram" readable="true"/>
-    </property>
+        <Value type="org.umlfri.api.model.Diagram" readable="true"/>
+    </Property>
     
-    <property name="source">
-        <documentation>
+    <Property name="source">
+        <Documentation>
             Element at source end of the connection.
-        </documentation>
-        <value type="org.umlfri.api.model.ElementVisual" readable="true"/>
-    </property>
+        </Documentation>
+        <Value type="org.umlfri.api.model.ElementVisual" readable="true"/>
+    </Property>
     
-    <property name="destination">
-        <documentation>
+    <Property name="destination">
+        <Documentation>
             Element at destination end of the connection.
-        </documentation>
-        <value type="org.umlfri.api.model.ElementVisual" readable="true"/>
-    </property>
+        </Documentation>
+        <Value type="org.umlfri.api.model.ElementVisual" readable="true"/>
+    </Property>
     
-    <property name="points">
-        <documentation>
+    <Property name="points">
+        <Documentation>
             All bend points of the connection.
-        </documentation>
-        <value type="xy" iterable="true"/>
-    </property>
+        </Documentation>
+        <Value type="xy" iterable="true"/>
+    </Property>
     
-    <property name="labels">
-        <documentation>
+    <Property name="labels">
+        <Documentation>
             Positions of all connection labels associated with the connection.
-        </documentation>
-        <value type="org.umlfri.api.model.ConnectionLabel" iterable="true"/>
-    </property>
-</interface>
+        </Documentation>
+        <Value type="org.umlfri.api.model.ConnectionLabel" iterable="true"/>
+    </Property>
+</Interface>

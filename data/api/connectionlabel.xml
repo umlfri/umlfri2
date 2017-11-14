@@ -1,49 +1,49 @@
 <?xml version="1.0" ?>
-<interface
+<Interface
         xmlns="http://umlfri.org/v2/api.xsd"
         name="org.umlfri.api.model.ConnectionLabel">
     
-    <documentation>
+    <Documentation>
         Label element associated with some connection.
-    </documentation>
+    </Documentation>
     
-    <property name="position">
-        <documentation>
+    <Property name="position">
+        <Documentation>
             Absolute position of the connection label.
-        </documentation>
+        </Documentation>
         
-        <value type="xy" readable="true"/>
-    </property>
+        <Value type="xy" readable="true"/>
+    </Property>
     
-    <property name="center">
-        <documentation>
+    <Property name="center">
+        <Documentation>
             Absolute position of the connection label center.
-        </documentation>
+        </Documentation>
         
-        <value type="xy" readable="true"/>
-    </property>
+        <Value type="xy" readable="true"/>
+    </Property>
     
-    <property name="size">
-        <documentation>
+    <Property name="size">
+        <Documentation>
             Size of the connection label.
-        </documentation>
+        </Documentation>
         
-        <value type="wh" readable="true"/>
-    </property>
+        <Value type="wh" readable="true"/>
+    </Property>
     
-    <property name="connection">
-        <documentation>
+    <Property name="connection">
+        <Documentation>
             Connection associated with the label.
-        </documentation>
+        </Documentation>
         
-        <value type="org.umlfri.api.model.ConnectionVisual" readable="true"/>
-    </property>
+        <Value type="org.umlfri.api.model.ConnectionVisual" readable="true"/>
+    </Property>
     
-    <property name="diagram">
-        <documentation>
+    <Property name="diagram">
+        <Documentation>
             Diagram, on which the connection label is located.
-        </documentation>
+        </Documentation>
         
-        <value type="org.umlfri.api.model.Diagram" readable="true"/>
-    </property>
-</interface>
+        <Value type="org.umlfri.api.model.Diagram" readable="true"/>
+    </Property>
+</Interface>

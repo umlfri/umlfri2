@@ -1,67 +1,67 @@
 <?xml version="1.0" ?>
-<interface
+<Interface
         xmlns="http://umlfri.org/v2/api.xsd"
         name="org.umlfri.api.model.ElementVisual"
         base="org.umlfri.api.model.Visual">
     
-    <documentation>
+    <Documentation>
         Visual information about element in model.
-    </documentation>
+    </Documentation>
     
-    <property name="position">
-        <documentation>
+    <Property name="position">
+        <Documentation>
             Absolute position of the element.
-        </documentation>
+        </Documentation>
         
-        <value type="xy" readable="true"/>
-    </property>
+        <Value type="xy" readable="true"/>
+    </Property>
     
-    <property name="center">
-        <documentation>
+    <Property name="center">
+        <Documentation>
             Absolute position of the element center.
-        </documentation>
+        </Documentation>
         
-        <value type="xy" readable="true"/>
-    </property>
+        <Value type="xy" readable="true"/>
+    </Property>
     
-    <property name="size">
-        <documentation>
+    <Property name="size">
+        <Documentation>
             Size of the element.
-        </documentation>
+        </Documentation>
         
-        <value type="wh" readable="true"/>
-    </property>
+        <Value type="wh" readable="true"/>
+    </Property>
     
-    <property name="minimalSize">
-        <documentation>
+    <Property name="minimalSize">
+        <Documentation>
             Minimal size of the element.
-        </documentation>
+        </Documentation>
         
-        <value type="wh" readable="true"/>
-    </property>
+        <Value type="wh" readable="true"/>
+    </Property>
     
-    <property name="object">
-        <documentation>
+    <Property name="object">
+        <Documentation>
             Element object associated with the element visual.
-        </documentation>
+        </Documentation>
         
-        <value type="org.umlfri.api.model.ElementObject" readable="true"/>
-    </property>
+        <Value type="org.umlfri.api.model.ElementObject" readable="true"/>
+    </Property>
     
-    <property name="diagram">
-        <documentation>
+    <Property name="diagram">
+        <Documentation>
             Diagram, on which the element is located.
-        </documentation>
+        </Documentation>
         
-        <value type="org.umlfri.api.model.Diagram" readable="true"/>
-    </property>
+        <Value type="org.umlfri.api.model.Diagram" readable="true"/>
+    </Property>
     
-    <property name="connections">
-        <documentation>
+    <Property name="connections">
+        <Documentation>
             Collection of all connections attached to the element that
             are shown on the same diagram.
-        </documentation>
+        </Documentation>
         
-        <value type="org.umlfri.api.model.ConnectionVisual" iterable="true"/>
-    </property>
-</interface>
+        <Value type="org.umlfri.api.model.ConnectionVisual" iterable="true"/>
+    </Property>
+</Interface>

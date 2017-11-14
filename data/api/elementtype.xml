@@ -1,17 +1,17 @@
 <?xml version="1.0" ?>
-<interface
+<Interface
         xmlns="http://umlfri.org/v2/api.xsd"
         name="org.umlfri.api.metamodel.ElementType">
     
-    <documentation>
+    <Documentation>
         Element type as defined in metamodel.
-    </documentation>
+    </Documentation>
     
-    <property name="name">
-        <documentation>
+    <Property name="name">
+        <Documentation>
             Connection type name.
-        </documentation>
+        </Documentation>
         
-        <value type="string" readable="true"/>
-    </property>
-</interface>
+        <Value type="string" readable="true"/>
+    </Property>
+</Interface>

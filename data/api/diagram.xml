@@ -1,103 +1,103 @@
 <?xml version="1.0" ?>
-<interface
+<Interface
         xmlns="http://umlfri.org/v2/api.xsd"
         name="org.umlfri.api.model.Diagram">
     
-    <documentation>
+    <Documentation>
         Logical and visual information in one piece.
-    </documentation>
+    </Documentation>
     
-    <method name="getElement">
-        <documentation>
+    <Method name="getElement">
+        <Documentation>
             Returns visual element associated with the given element object.
-        </documentation>
+        </Documentation>
         
-        <parameter name="obj" type="org.umlfri.api.model.ElementObject">
-            <documentation>
+        <Parameter name="obj" type="org.umlfri.api.model.ElementObject">
+            <Documentation>
                 The element object.
-            </documentation>
-        </parameter>
+            </Documentation>
+        </Parameter>
         
-        <return type="org.umlfri.api.model.ElementVisual" nullable="true"/>
-    </method>
+        <Return type="org.umlfri.api.model.ElementVisual" nullable="true"/>
+    </Method>
     
-    <method name="getConnection">
-        <documentation>
+    <Method name="getConnection">
+        <Documentation>
             Returns visual connection associated with the given connection object.
-        </documentation>
+        </Documentation>
         
-        <parameter name="obj" type="org.umlfri.api.model.ConnectionObject">
-            <documentation>
+        <Parameter name="obj" type="org.umlfri.api.model.ConnectionObject">
+            <Documentation>
                 The connection object.
-            </documentation>
-        </parameter>
+            </Documentation>
+        </Parameter>
         
-        <return type="org.umlfri.api.model.ConnectionVisual" nullable="true"/>
-    </method>
+        <Return type="org.umlfri.api.model.ConnectionVisual" nullable="true"/>
+    </Method>
     
-    <property name="selection">
-        <documentation>
+    <Property name="selection">
+        <Documentation>
             Elements or connections selected on the diagram.
-        </documentation>
+        </Documentation>
         
-        <value type="org.umlfri.api.model.Visual" iterable="true"/>
-    </property>
+        <Value type="org.umlfri.api.model.Visual" iterable="true"/>
+    </Property>
     
-    <property name="elements">
-        <documentation>
+    <Property name="elements">
+        <Documentation>
             All elements in the diagram.
-        </documentation>
+        </Documentation>
         
-        <value type="org.umlfri.api.model.ElementVisual" iterable="true"/>
-    </property>
+        <Value type="org.umlfri.api.model.ElementVisual" iterable="true"/>
+    </Property>
     
-    <property name="connections">
-        <documentation>
+    <Property name="connections">
+        <Documentation>
             All connections in the diagram.
-        </documentation>
+        </Documentation>
         
-        <value type="org.umlfri.api.model.ConnectionVisual" iterable="true"/>
-    </property>
+        <Value type="org.umlfri.api.model.ConnectionVisual" iterable="true"/>
+    </Property>
     
-    <property name="name">
-        <documentation>
+    <Property name="name">
+        <Documentation>
             Diagram name.
-        </documentation>
+        </Documentation>
         
-        <value type="string" readable="true"/>
-    </property>
+        <Value type="string" readable="true"/>
+    </Property>
     
-    <property name="values" singular="value">
-        <documentation>
+    <Property name="values" singular="value">
+        <Documentation>
             Collection, that contains all property values.
-        </documentation>
+        </Documentation>
         
-        <index name="path" type="string"/>
-        <value type="variant" readable="true" iterable="true"/>
-        <iterator includeindex="true"/>
-    </property>
+        <Index name="path" type="string"/>
+        <Value type="variant" readable="true" iterable="true"/>
+        <Iterator include_index="true"/>
+    </Property>
     
-    <property name="type">
-        <documentation>
+    <Property name="type">
+        <Documentation>
             Diagram type identifier.
-        </documentation>
+        </Documentation>
         
-        <value type="org.umlfri.api.metamodel.DiagramType" readable="true"/>
-    </property>
+        <Value type="org.umlfri.api.metamodel.DiagramType" readable="true"/>
+    </Property>
     
-    <property name="parent">
-        <documentation>
+    <Property name="parent">
+        <Documentation>
             Parent element of the diagram.
-        </documentation>
+        </Documentation>
         
-        <value type="org.umlfri.api.model.ElementObject" readable="true"/>
-    </property>
+        <Value type="org.umlfri.api.model.ElementObject" readable="true"/>
+    </Property>
     
-    <property name="project">
-        <documentation>
+    <Property name="project">
+        <Documentation>
             Project the diagram is located in.
-        </documentation>
+        </Documentation>
         
-        <value type="org.umlfri.api.model.Project" readable="true"/>
-    </property>
-</interface>
+        <Value type="org.umlfri.api.model.Project" readable="true"/>
+    </Property>
+</Interface>

@@ -1,65 +1,65 @@
 <?xml version="1.0" ?>
-<interface
+<Interface
         xmlns="http://umlfri.org/v2/api.xsd"
         name="org.umlfri.api.model.ConnectionObject">
     
-    <documentation>
+    <Documentation>
         Logical information about connection.
-    </documentation>
+    </Documentation>
     
-    <method name="getConnectedObject">
-        <documentation>
+    <Method name="getConnectedObject">
+        <Documentation>
             Gets the element connected through the connection to element
             passed as parameter.
-        </documentation>
+        </Documentation>
         
-        <parameter name="obj" type="org.umlfri.api.model.ElementObject">
-            <documentation>
+        <Parameter name="obj" type="org.umlfri.api.model.ElementObject">
+            <Documentation>
                 Known element connected through the connection.
-            </documentation>
-        </parameter>
+            </Documentation>
+        </Parameter>
         
-        <return type="org.umlfri.api.model.ElementObject"/>
-    </method>
+        <Return type="org.umlfri.api.model.ElementObject"/>
+    </Method>
     
-    <property name="source">
-        <documentation>
+    <Property name="source">
+        <Documentation>
             Connection source element.
-        </documentation>
-        <value type="org.umlfri.api.model.ElementObject" readable="true"/>
-    </property>
+        </Documentation>
+        <Value type="org.umlfri.api.model.ElementObject" readable="true"/>
+    </Property>
     
-    <property name="destination">
-        <documentation>
+    <Property name="destination">
+        <Documentation>
             Connection destination element.
-        </documentation>
-        <value type="org.umlfri.api.model.ElementObject" readable="true"/>
-    </property>
+        </Documentation>
+        <Value type="org.umlfri.api.model.ElementObject" readable="true"/>
+    </Property>
     
-    <property name="values" singular="value">
-        <documentation>
+    <Property name="values" singular="value">
+        <Documentation>
             Collection, that contains all property values.
-        </documentation>
-        <index name="path" type="string">
-            <documentation>
+        </Documentation>
+        <Index name="path" type="string">
+            <Documentation>
                 Identifier of the connection attribute.
-            </documentation>
-        </index>
-        <value type="variant" readable="true" iterable="true"/>
-        <iterator includeindex="true"/>
-    </property>
+            </Documentation>
+        </Index>
+        <Value type="variant" readable="true" iterable="true"/>
+        <Iterator include_index="true"/>
+    </Property>
     
-    <property name="type">
-        <documentation>
+    <Property name="type">
+        <Documentation>
             Connection type.
-        </documentation>
-        <value type="org.umlfri.api.metamodel.ConnectionType" readable="true"/>
-    </property>
+        </Documentation>
+        <Value type="org.umlfri.api.metamodel.ConnectionType" readable="true"/>
+    </Property>
     
-    <property name="visuals">
-        <documentation>
+    <Property name="visuals">
+        <Documentation>
             Connection appearances in project diagrams.
-        </documentation>
-        <value type="org.umlfri.api.model.ConnectionVisual" iterable="true"/>
-    </property>
-</interface>
+        </Documentation>
+        <Value type="org.umlfri.api.model.ConnectionVisual" iterable="true"/>
+    </Property>
+</Interface>

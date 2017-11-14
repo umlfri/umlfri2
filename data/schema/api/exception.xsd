@@ -2,22 +2,22 @@
 <xs:schema xmlns="http://umlfri.org/v2/api.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
            targetNamespace="http://umlfri.org/v2/api.xsd" elementFormDefault="qualified"
            attributeFormDefault="unqualified">
-	<xs:element name="exception">
+	<xs:element name="Exception">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="documentation" type="xs:string" minOccurs="0"/>
-				<xs:element name="property" type="exceptionPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="Documentation" type="xs:string" minOccurs="0"/>
+				<xs:element name="Property" type="exception_property_type" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 			<xs:attribute name="name" type="xs:string" use="required"/>
+			<xs:attribute name="api_name" type="xs:string"/>
 			<xs:attribute name="base" type="xs:string"/>
-			<xs:attribute name="number" type="xs:int" use="required"/>
-			<xs:attribute name="throwsFrom" type="xs:string"/>
+			<xs:attribute name="throws_from" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
-	<xs:complexType name="exceptionPropertyType">
+	<xs:complexType name="exception_property_type">
 		<xs:sequence>
-			<xs:element name="documentation" type="xs:string" minOccurs="0"/>
-			<xs:element name="value">
+			<xs:element name="Documentation" type="xs:string" minOccurs="0"/>
+			<xs:element name="Value">
 				<xs:complexType>
 					<xs:attribute name="type" type="xs:string" use="required"/>
 					<xs:attribute name="readable" type="xs:boolean" default="false"/>

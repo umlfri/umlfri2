@@ -1,33 +1,33 @@
 <?xml version="1.0" ?>
-<interface
+<Interface
         xmlns="http://umlfri.org/v2/api.xsd"
         name="org.umlfri.api.metamodel.DiagramType">
     
-    <documentation>
+    <Documentation>
         Type of diagram as defined in the metamodel.
-    </documentation>
+    </Documentation>
     
-    <property name="name">
-        <documentation>
+    <Property name="name">
+        <Documentation>
             Diagram type name.
-        </documentation>
+        </Documentation>
         
-        <value type="string" readable="true"/>
-    </property>
+        <Value type="string" readable="true"/>
+    </Property>
     
-    <property name="elements">
-        <documentation>
+    <Property name="elements">
+        <Documentation>
             All element types defined for the diagram.
-        </documentation>
+        </Documentation>
         
-        <value type="org.umlfri.api.metamodel.ElementType" iterable="true"/>
-    </property>
+        <Value type="org.umlfri.api.metamodel.ElementType" iterable="true"/>
+    </Property>
     
-    <property name="connections">
-        <documentation>
+    <Property name="connections">
+        <Documentation>
             All connection types defined for the diagram
-        </documentation>
+        </Documentation>
         
-        <value type="org.umlfri.api.metamodel.ConnectionType" iterable="true"/>
-    </property>
-</interface>
+        <Value type="org.umlfri.api.metamodel.ConnectionType" iterable="true"/>
+    </Property>
+</Interface>

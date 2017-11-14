@@ -1,33 +1,33 @@
 <?xml version="1.0" ?>
-<interface
+<Interface
         xmlns="http://umlfri.org/v2/api.xsd"
         name="org.umlfri.api.model.Project">
     
-    <documentation>
+    <Documentation>
         Root object for project definition.
-    </documentation>
+    </Documentation>
     
-    <property name="children">
-        <documentation>
+    <Property name="children">
+        <Documentation>
             Child elements of the project.
-        </documentation>
+        </Documentation>
         
-        <value type="org.umlfri.api.model.ElementObject" iterable="true"/>
-    </property>
+        <Value type="org.umlfri.api.model.ElementObject" iterable="true"/>
+    </Property>
     
-    <property name="metamodel">
-        <documentation>
+    <Property name="metamodel">
+        <Documentation>
             Metamodel associated with the project.
-        </documentation>
+        </Documentation>
         
-        <value type="org.umlfri.api.metamodel.Metamodel" readable="true"/>
-    </property>
+        <Value type="org.umlfri.api.metamodel.Metamodel" readable="true"/>
+    </Property>
     
-    <property name="name">
-        <documentation>
+    <Property name="name">
+        <Documentation>
             Name of the project.
-        </documentation>
+        </Documentation>
         
-        <value type="string" readable="true"/>
-    </property>
-</interface>
+        <Value type="string" readable="true"/>
+    </Property>
+</Interface>

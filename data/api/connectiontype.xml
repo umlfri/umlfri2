@@ -1,16 +1,16 @@
 <?xml version="1.0" ?>
-<interface
+<Interface
         xmlns="http://umlfri.org/v2/api.xsd"
         name="org.umlfri.api.metamodel.ConnectionType">
     
-    <documentation>
+    <Documentation>
         Type of connection as defined in metamodel.
-    </documentation>
+    </Documentation>
     
-    <property name="name">
-        <documentation>
+    <Property name="name">
+        <Documentation>
             Connection type name.
-        </documentation>
-        <value type="string" readable="true"/>
-    </property>
-</interface>
+        </Documentation>
+        <Value type="string" readable="true"/>
+    </Property>
+</Interface>
