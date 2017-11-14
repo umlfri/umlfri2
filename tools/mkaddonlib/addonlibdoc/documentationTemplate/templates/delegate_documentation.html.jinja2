@@ -53,6 +53,56 @@
             {{ method_params(root) }}
         </code>
         <br /><br />
-        {{ root.documentation }}
+        <dl>
+            <dd>
+                <p>{{ root.documentation.replace("\n\n", "</p><p>") }}</p>
+            </dd>
+        </dl>
+        {% if root.has_children_of_type('DelegateParameter') %}
+            <dl>
+                <dt><b>Parameters:</b></dt>
+                <dd>
+                    <ul>
+                        {% for param in root.parameters %}
+                            {% if param.documentation %}
+                                <li>
+                                    {{ param.name }} &mdash; {{ param.documentation }}
+                                    {% if param.nullable %}
+                                        <i>Parameter can be used with null value.</i>
+                                    {% endif %}
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </dd>
+            </dl>
+        {% endif %}
+        {% if root.return_type and (root.return_type.documentation or root.return_type.nullable) %}
+            <dl>
+                <dt><b>Returns:</b></dt>
+                <dd>
+                    {{ root.return_type.documentation }}
+                    {% if root.return_type.nullable %}
+                        <i>Return value can be null in some cases.</i>
+                    {% endif %}
+                </dd>
+            </dl>
+        {% endif %}
+        {% if root.has_children_of_type('DelegateThrows') %}
+            <dl>
+                <dt><b>Throws:</b></dt>
+                <dd>
+                    <ul>
+                        {% for throw in root.throws %}
+                            {% if throw.documentation %}
+                                <li>{{ link_to(throw.exception) }} &mdash; {{ throw.documentation }}</li>
+                            {% else %}
+                                <li>{{ link_to(throw.exception) }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </dd>
+            </dl>
+        {% endif %}
     </body>
 </html>
