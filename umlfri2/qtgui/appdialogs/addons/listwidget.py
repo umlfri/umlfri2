@@ -1,6 +1,9 @@
+from functools import partial
+
 from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtGui import QFont, QPalette
-from PyQt5.QtWidgets import QVBoxLayout, QTableWidget, QHBoxLayout, QLabel, QWidget,  QStyledItemDelegate, QStyle
+from PyQt5.QtWidgets import QVBoxLayout, QTableWidget, QHBoxLayout, QLabel, QWidget, QStyledItemDelegate, QStyle, \
+    QCheckBox
 
 from umlfri2.application.addon.online import OnlineAddOn
 from umlfri2.qtgui.base import image_loader
@@ -13,14 +16,14 @@ class AddOnListWidget(QTableWidget):
             
             option.state = option.state & ~QStyle.State_HasFocus
     
-    def __init__(self):
+    def __init__(self, check_boxes=False, show_prev_version=False):
         super().__init__()
         
         self.setTabKeyNavigation(False)
         self.setItemDelegate(self.__NoSelectionItemDelegate())
         self.verticalHeader().hide()
         self.horizontalHeader().hide()
-        self.setColumnCount(2)
+        self.setColumnCount(3)
         self.setSelectionBehavior(QTableWidget.SelectRows)
         self.setSelectionMode(QTableWidget.SingleSelection)
         self.horizontalHeader().setStretchLastSection(True)
@@ -30,6 +33,14 @@ class AddOnListWidget(QTableWidget):
         self.itemSelectionChanged.connect(self.__selection_changed)
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self.__context_menu_requested)
+        
+        if not check_boxes:
+            self.setColumnHidden(0, True)
+        
+        self.__show_prev_version = show_prev_version
+        
+        self.__addons = []
+        self.__checked_addons = set()
         
         self.refresh()
     
@@ -45,13 +56,30 @@ class AddOnListWidget(QTableWidget):
     
     def refresh(self):
         addons = sorted(self._addons, key=lambda item: item.name)
+        
+        prev_unchecked = set(addon.identifier for addon in self.__addons if addon not in self.__checked_addons)
+        
         self.__addons = list(addons)
+        
+        self.__checked_addons = set()
         
         button_factory = self._addon_button_factory()
         
         self.setRowCount(len(self.__addons))
         
         for no, addon in enumerate(self.__addons):
+            check_widget = QWidget()
+            check_layout = QHBoxLayout()
+            check_layout.setAlignment(Qt.AlignCenter)
+            check_check = QCheckBox()
+            if addon.identifier not in prev_unchecked:
+                check_check.setChecked(True)
+            check_check.toggled.connect(partial(self.__check_checked, addon))
+            check_check.setFocusPolicy(Qt.NoFocus)
+            check_layout.addWidget(check_check)
+            check_widget.setLayout(check_layout)
+            self.setCellWidget(no, 0, check_widget)
+            
             if addon.icon:
                 icon_widget = QWidget()
                 icon_layout = QVBoxLayout()
@@ -66,7 +94,7 @@ class AddOnListWidget(QTableWidget):
                 lp, tp, rp, bp = icon_layout.getContentsMargins()
                 icon_layout.setContentsMargins(lp, tp, 0, bp)
                 
-                self.setCellWidget(no, 0, icon_widget)
+                self.setCellWidget(no, 1, icon_widget)
             
             layout = QVBoxLayout()
             layout.setSpacing(0)
@@ -85,7 +113,10 @@ class AddOnListWidget(QTableWidget):
             name_layout.addWidget(name_label)
             
             if isinstance(addon, OnlineAddOn):
-                version = addon.latest_version.version
+                if self.__show_prev_version:
+                    version = "{0} ⟶ {1}".format(addon.local_addon.version, addon.latest_version.version)
+                else:
+                    version = addon.latest_version.version
             else:
                 version = addon.version
             
@@ -119,12 +150,18 @@ class AddOnListWidget(QTableWidget):
             
             widget = QWidget()
             widget.setLayout(layout)
-            self.setCellWidget(no, 1, widget)
+            self.setCellWidget(no, 2, widget)
 
             self.__refresh_selection_colors(widget, False)
         
         self.resizeColumnsToContents()
         self.resizeRowsToContents()
+    
+    def __check_checked(self, addon, checked=False):
+        if checked:
+            self.__checked_addons.add(addon)
+        else:
+            self.__checked_addons.remove(addon)
     
     def focusInEvent(self, event):
         super().focusInEvent(event)
@@ -138,7 +175,7 @@ class AddOnListWidget(QTableWidget):
         selection = set(item.row() for item in self.selectedIndexes())
         
         for i in range(self.rowCount()):
-            cell = self.cellWidget(i, 1)
+            cell = self.cellWidget(i, 2)
             button_box = cell.findChild(QWidget, "button_box")
             
             if button_box is not None: # no button box present
@@ -155,7 +192,7 @@ class AddOnListWidget(QTableWidget):
         selection = set(item.row() for item in self.selectedIndexes())
         
         for i in range(self.rowCount()):
-            cell = self.cellWidget(i, 1)
+            cell = self.cellWidget(i, 2)
             self.__refresh_selection_colors(cell, i in selection)
     
     def __refresh_selection_colors(self, cell_widget, selected):

@@ -1,11 +1,9 @@
 from PyQt5.QtCore import QSize
-from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QFileDialog, QTabWidget, QWidget
-
-from umlfri2.application import Application
-from umlfri2.datalayer.storages import Storage
+from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QTabWidget
 
 from .onlineaddons import OnlineAddOnList
 from .installedaddons import InstalledAddOnList
+from .updateaddons import UpdateAddOnList
 from .process import AddOnProcessManager
 
 
@@ -29,7 +27,7 @@ class AddOnsDialog(QDialog):
         
         tabs.addTab(InstalledAddOnList(self.__processes), _("Installed Add-ons"))
         tabs.addTab(OnlineAddOnList(self.__processes), _("Online Add-ons"))
-        tabs.addTab(QWidget(), _("Updates"))
+        tabs.addTab(UpdateAddOnList(), _("Updates"))
         
         layout.addWidget(tabs)
         
