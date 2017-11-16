@@ -1,6 +1,6 @@
 from functools import partial
 
-from PyQt5.QtCore import QSize, Qt
+from PyQt5.QtCore import QSize, Qt, pyqtSignal
 from PyQt5.QtGui import QFont, QPalette
 from PyQt5.QtWidgets import QVBoxLayout, QTableWidget, QHBoxLayout, QLabel, QWidget, QStyledItemDelegate, QStyle, \
     QCheckBox
@@ -15,6 +15,8 @@ class AddOnListWidget(QTableWidget):
             super().initStyleOption(option, index)
             
             option.state = option.state & ~QStyle.State_HasFocus
+    
+    check_changed = pyqtSignal()
     
     def __init__(self, check_boxes=False, show_prev_version=False):
         super().__init__()
@@ -57,6 +59,7 @@ class AddOnListWidget(QTableWidget):
     def refresh(self):
         addons = sorted(self._addons, key=lambda item: item.name)
         
+        prev_checked = set(addon.identifier for addon in self.__checked_addons)
         prev_unchecked = set(addon.identifier for addon in self.__addons if addon not in self.__checked_addons)
         
         self.__addons = list(addons)
@@ -74,6 +77,7 @@ class AddOnListWidget(QTableWidget):
             check_check = QCheckBox()
             if addon.identifier not in prev_unchecked:
                 check_check.setChecked(True)
+                self.__checked_addons.add(addon)
             check_check.toggled.connect(partial(self.__check_checked, addon))
             check_check.setFocusPolicy(Qt.NoFocus)
             check_layout.addWidget(check_check)
@@ -156,12 +160,19 @@ class AddOnListWidget(QTableWidget):
         
         self.resizeColumnsToContents()
         self.resizeRowsToContents()
+        
+        cur_checked = set(addon.identifier for addon in self.__checked_addons)
+        
+        if prev_checked != cur_checked:
+            self.check_changed.emit()
     
     def __check_checked(self, addon, checked=False):
         if checked:
             self.__checked_addons.add(addon)
         else:
             self.__checked_addons.remove(addon)
+        
+        self.check_changed.emit()
     
     def focusInEvent(self, event):
         super().focusInEvent(event)
@@ -220,3 +231,7 @@ class AddOnListWidget(QTableWidget):
         
         if menu is not None:
             menu.exec_(self.viewport().mapToGlobal(point))
+    
+    @property
+    def checked_addons(self):
+        yield from self.__checked_addons

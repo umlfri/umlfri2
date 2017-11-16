@@ -1,9 +1,10 @@
 from PyQt5.QtCore import QSize
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QTabWidget
 
+from umlfri2.application import Application
 from .onlineaddons import OnlineAddOnList
 from .installedaddons import InstalledAddOnList
-from .updateaddons import UpdateAddOnList
+from .updateaddons import UpdateAddOnTab
 from .process import AddOnProcessManager
 
 
@@ -27,7 +28,8 @@ class AddOnsDialog(QDialog):
         
         tabs.addTab(InstalledAddOnList(self.__processes), _("Installed Add-ons"))
         tabs.addTab(OnlineAddOnList(self.__processes), _("Online Add-ons"))
-        tabs.addTab(UpdateAddOnList(), _("Updates"))
+        if any(Application().addons.online.updated_addons):
+            tabs.addTab(UpdateAddOnTab(), _("Updates"))
         
         layout.addWidget(tabs)
         

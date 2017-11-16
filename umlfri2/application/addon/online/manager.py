@@ -66,3 +66,9 @@ class OnlineAddOnManager:
     
     def __iter__(self):
         yield from self.__addons
+    
+    @property
+    def updated_addons(self):
+        for addon in self.__addons:
+            if addon.local_addon is not None and addon.local_addon.version < addon.latest_version.version:
+                yield addon
