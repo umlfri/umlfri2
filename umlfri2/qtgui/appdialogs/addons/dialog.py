@@ -2,6 +2,7 @@ from PyQt5.QtCore import QSize
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QTabWidget
 
 from umlfri2.application import Application
+from umlfri2.application.events.addon import AddOnInstalledEvent, AddOnUninstalledEvent
 from .onlineaddons import OnlineAddOnList
 from .installedaddons import InstalledAddOnList
 from .updateaddons import UpdateAddOnTab
@@ -24,17 +25,20 @@ class AddOnsDialog(QDialog):
         
         layout = QVBoxLayout()
         
-        tabs = QTabWidget()
+        self.__tabs = QTabWidget()
+
+        self.__tabs.addTab(InstalledAddOnList(self.__processes), _("Installed Add-ons"))
+        self.__tabs.addTab(OnlineAddOnList(self.__processes), _("Online Add-ons"))
         
-        tabs.addTab(InstalledAddOnList(self.__processes), _("Installed Add-ons"))
-        tabs.addTab(OnlineAddOnList(self.__processes), _("Online Add-ons"))
-        if any(Application().addons.online.updated_addons):
-            tabs.addTab(UpdateAddOnTab(), _("Updates"))
+        self.__has_update_tab = False
+        self.__refresh_update_tab()
         
-        layout.addWidget(tabs)
+        layout.addWidget(self.__tabs)
         
         layout.addWidget(button_box)
         self.setLayout(layout)
+        Application().event_dispatcher.subscribe(AddOnInstalledEvent, self.__addon_list_changed)
+        Application().event_dispatcher.subscribe(AddOnUninstalledEvent, self.__addon_list_changed)
     
     def sizeHint(self):
         return QSize(700, 450)
@@ -44,3 +48,18 @@ class AddOnsDialog(QDialog):
             super().closeEvent(event)
         else:
             event.ignore()
+    
+    def __addon_list_changed(self, event):
+        self.__refresh_update_tab()
+    
+    def __refresh_update_tab(self):
+        if any(Application().addons.online.updated_addons):
+            if not self.__has_update_tab:
+                self.__tabs.addTab(UpdateAddOnTab(), _("Updates"))
+            
+            self.__has_update_tab = True
+        else:
+            if self.__has_update_tab:
+                self.__tabs.removeTab(2)
+            
+            self.__has_update_tab = False
