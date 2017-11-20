@@ -66,7 +66,7 @@ class ApplicationConfig:
     def __load(self):
         cp = ConfigParser()
 
-        cp.read(self.CONFIG_FILE)
+        cp.read(self.CONFIG_FILE, encoding='utf8')
         
         self.__language = cp.get('Language', 'code', fallback=None)
         
@@ -98,5 +98,5 @@ class ApplicationConfig:
         
         cp.set('Updates', 'ignored_versions', ' '.join(str(ver) for ver in self.__ignored_versions))
         
-        with open(self.CONFIG_FILE, 'w') as cf:
+        with open(self.CONFIG_FILE, 'w', encoding='utf8') as cf:
             cp.write(cf)

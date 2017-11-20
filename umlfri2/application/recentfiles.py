@@ -21,7 +21,7 @@ class RecentFiles:
     def __load(self):
         cp = ConfigParser()
         
-        cp.read(self.CONFIG_FILE)
+        cp.read(self.CONFIG_FILE, encoding='utf8')
         
         count = cp.getint('Recent Files', 'count')
         
@@ -50,7 +50,7 @@ class RecentFiles:
             if file.pinned:
                 cp.set('File.{}'.format(no), 'pinned', 'yes')
         
-        with open(self.CONFIG_FILE, 'w') as cf:
+        with open(self.CONFIG_FILE, 'w', encoding='utf8') as cf:
             cp.write(cf)
     
     def __iter__(self):
