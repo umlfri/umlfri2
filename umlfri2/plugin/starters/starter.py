@@ -1,4 +1,4 @@
-class AddonStarter:
+class PluginStarter:
     def start(self):
         # should return communication channel
         raise NotImplementedError

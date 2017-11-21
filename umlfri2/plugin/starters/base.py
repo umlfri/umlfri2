@@ -18,11 +18,11 @@ try:
 except ImportError:
     pass
 
-from .starter import AddonStarter
+from .starter import PluginStarter
 from ..communication import PipeChannel
 
 
-class BaseProgramStarter(AddonStarter):
+class BaseProgramStarter(PluginStarter):
     program = ()
     environment = {}
     
