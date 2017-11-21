@@ -1,8 +1,12 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton
+from functools import partial
+
+from PyQt5.QtCore import Qt, QUrl
+from PyQt5.QtGui import QIcon, QDesktopServices
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QMenu
 
 from umlfri2.application import Application
 from umlfri2.application.events.addon import AddOnInstalledEvent, AddOnUninstalledEvent
+from umlfri2.qtgui.appdialogs.addons.info import AddOnInfoDialog
 from .listwidget import AddOnListWidget
 
 
@@ -21,10 +25,34 @@ class UpdateAddOnList(AddOnListWidget):
         pass
     
     def _addon_content_menu(self, addon):
-        pass
+        menu = QMenu(self)
+        
+        install = menu.addAction(QIcon.fromTheme("system-software-update"), _("Update"))
+        install.triggered.connect(partial(self.__update, addon))
+        
+        menu.addSeparator()
+        
+        if addon.homepage:
+            homepage = menu.addAction(QIcon.fromTheme("application-internet"), _("Homepage"))
+            homepage.triggered.connect(partial(self.__show_homepage, addon))
+        
+        about = menu.addAction(QIcon.fromTheme("help-about"), _("About..."))
+        about.triggered.connect(partial(self.__show_info, addon))
+        
+        return menu
 
     def __addon_list_changed(self, event):
         self.refresh()
+    
+    def __update(self, addon, checked=False):
+        pass
+    
+    def __show_info(self, addon, checked=False):
+        dialog = AddOnInfoDialog(self, addon)
+        dialog.exec_()
+    
+    def __show_homepage(self, addon, checked=False):
+        QDesktopServices.openUrl(QUrl(addon.homepage))
 
 
 class UpdateAddOnTab(QWidget):
@@ -34,7 +62,7 @@ class UpdateAddOnTab(QWidget):
         self.__addon_list = UpdateAddOnList()
         self.__addon_list.check_changed.connect(self.__addon_check_changed)
         
-        self.__update_button = QPushButton(_("Update"))
+        self.__update_button = QPushButton(QIcon.fromTheme("system-software-update"), _("Update"))
         
         layout = QVBoxLayout()
         layout.addWidget(self.__addon_list)
