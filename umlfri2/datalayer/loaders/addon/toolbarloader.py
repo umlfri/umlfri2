@@ -11,7 +11,7 @@ class ToolBarLoader:
         self.__application = application
         
         if not ADDON_SCHEMA.validate(xmlroot):
-            raise Exception("Cannot load addon info: {0}".format(ADDON_SCHEMA.error_log.last_error))
+            raise Exception("Cannot load add-on info: {0}".format(ADDON_SCHEMA.error_log.last_error))
     
     def load(self):
         items = []

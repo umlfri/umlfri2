@@ -18,7 +18,7 @@ class InstallAddOnDialog(QDialog):
         
         layout.addWidget(HLineWidget())
         
-        layout.addWidget(QLabel(_("Do you really want to install this addon?")))
+        layout.addWidget(QLabel(_("Do you really want to install this add-on?")))
         
         button_box = QDialogButtonBox(QDialogButtonBox.Yes | QDialogButtonBox.No)
         button_box.button(QDialogButtonBox.Yes).setText(_("Yes"))

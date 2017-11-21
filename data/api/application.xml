@@ -27,7 +27,7 @@
     
     <Property name="actions" singular="action">
         <Documentation>
-            Contains list of all addon actions.
+            Contains list of all add-on actions.
         </Documentation>
         
         <Index name="id" type="string"/>

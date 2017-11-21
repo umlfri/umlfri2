@@ -54,5 +54,5 @@ class OnlineAddOnInstaller:
     def __download(self):
         location = self.__addon_version.valid_location
         if location is None:
-            raise Exception("There is no valid addon location for current platform")
+            raise Exception("There is no valid add-on location for current platform")
         return location.download()

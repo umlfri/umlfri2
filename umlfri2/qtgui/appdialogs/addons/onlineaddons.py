@@ -52,7 +52,7 @@ class OnlineAddOnList(AddOnListWidget):
         install_button.clicked.connect(partial(self.__install, addon))
         button_box.addWidget(install_button)
         
-        installed = QLabel("<i><small>{0}</small></i>".format(_("Addon is already installed")))
+        installed = QLabel("<i><small>{0}</small></i>".format(_("Add-on is already installed")))
         button_box.addWidget(installed)
         
         self.__buttons[addon.identifier] = self.__OnlineAddonButtons(install_button, installed, container)

@@ -33,7 +33,7 @@ class AddOnManager:
         
         addon = self.__local_addons.install_from(storage, validator_callback)
         if addon is None:
-            raise Exception("Cannot install addon")
+            raise Exception("Cannot install add-on")
         
         self.__addons.append(addon)
         self.__application.event_dispatcher.dispatch(AddOnInstalledEvent(addon))
@@ -42,10 +42,10 @@ class AddOnManager:
     
     def uninstall_addon(self, addon):
         if addon.is_system_addon:
-            raise Exception("Cannot uninstall system addon")
+            raise Exception("Cannot uninstall system add-on")
         
         if addon.state not in (AddOnState.stopped, AddOnState.error, AddOnState.none):
-            raise Exception("Cannot uninstall started addon")
+            raise Exception("Cannot uninstall started add-on")
         
         with addon.storage_reference.open('w') as storage:
             try:

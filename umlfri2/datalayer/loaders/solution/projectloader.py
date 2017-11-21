@@ -72,7 +72,7 @@ class ProjectLoader:
         # TODO: check version and raise warning if needed
         
         if addon is None or addon.metamodel is None:
-            raise Exception("AddOn not found")
+            raise Exception("Add-on not found")
         
         return Project(addon.metamodel, name, save_id)
 

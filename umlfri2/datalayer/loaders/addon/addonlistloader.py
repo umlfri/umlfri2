@@ -32,7 +32,7 @@ class AddOnListLoader:
                 path = os.path.dirname(file)
         
         if path is None:
-            raise Exception("Selected file is not an addon")
+            raise Exception("Selected file is not an add-on")
         
         with storage.create_substorage(path) as source_storage:
             info = AddOnInfoLoader(lxml.etree.parse(source_storage.open(ADDON_ADDON_FILE)).getroot()).load()
