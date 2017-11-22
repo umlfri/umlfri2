@@ -55,7 +55,7 @@ class AddOnsDialog(QDialog):
     def __refresh_update_tab(self):
         if any(Application().addons.online.updated_addons):
             if not self.__has_update_tab:
-                self.__tabs.addTab(UpdateAddOnTab(), _("Updates"))
+                self.__tabs.addTab(UpdateAddOnTab(self.__processes), _("Updates"))
             
             self.__has_update_tab = True
         else:

@@ -1,4 +1,4 @@
-from .actions import OnlineAddOnInstaller
+from .actions import OnlineAddOnInstaller, OnlineAddOnUpdater
 
 
 class OnlineAddOnVersion:
@@ -73,3 +73,6 @@ class OnlineAddOnVersion:
     
     def install(self):
         return OnlineAddOnInstaller(self.__application.addons.local, self)
+
+    def update(self):
+        return OnlineAddOnUpdater(self.__application.addons.local, self)

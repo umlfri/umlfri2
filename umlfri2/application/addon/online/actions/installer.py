@@ -1,15 +1,14 @@
-from concurrent.futures import ThreadPoolExecutor
-
-from umlfri2.datalayer.storages import ZipStorage
-
-download_executor = ThreadPoolExecutor(max_workers=4)
+from .downloader import OnlineAddonVersionDownloader
 
 
 class OnlineAddOnInstaller:
     def __init__(self, local_manager, addon_version):
+        if addon_version.addon.local_addon is not None:
+            raise Exception("Add-on already installed")
+        
         self.__local_manager = local_manager
         self.__addon_version = addon_version
-        self.__download_future = None
+        self.__downloader = None
         self.__error = False
         self.__finished = False
         self.__starter = None
@@ -32,12 +31,14 @@ class OnlineAddOnInstaller:
             finally:
                 self.__error = self.__starter.has_error
                 self.__finished = self.__starter.finished
-        elif self.__download_future is None:
-            self.__download_future = download_executor.submit(self.__download)
-        elif self.__download_future.done():
+        elif self.__downloader is None:
+            self.__downloader = OnlineAddonVersionDownloader(self.__addon_version)
+        elif self.__downloader.downloaded:
             try:
-                storage = ZipStorage.read_from_memory(self.__download_future.result(0))
-                addon = self.__local_manager.install_addon(storage, validator_callback=self.__validate_addon_info)
+                addon = self.__local_manager.install_addon(
+                    self.__downloader.storage,
+                    validator_callback=self.__validate_addon_info
+                )
             except:
                 self.__error = True
                 raise
@@ -50,9 +51,3 @@ class OnlineAddOnInstaller:
         if info.version != self.__addon_version.version:
             return False
         return True
-    
-    def __download(self):
-        location = self.__addon_version.valid_location
-        if location is None:
-            raise Exception("There is no valid add-on location for current platform")
-        return location.download()
