@@ -7,16 +7,21 @@ class OnlineAddonVersionDownloader:
     __download_executor = ThreadPoolExecutor(max_workers=4)
     
     def __init__(self, version):
+        self.__version = version
         location = version.valid_location
         
         if location is None:
             raise Exception("There is no valid add-on location for current platform")
         
-        self.__feature = self.__download_executor.submit(location.download)
+        self.__future = self.__download_executor.submit(location.download)
+    
+    @property
+    def addon_version(self):
+        return self.__version
     
     @property
     def downloaded(self):
-        return self.__feature.done()
+        return self.__future.done()
     
     @property
     def storage(self):

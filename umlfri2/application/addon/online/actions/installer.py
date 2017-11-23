@@ -37,17 +37,10 @@ class OnlineAddOnInstaller:
             try:
                 addon = self.__local_manager.install_addon(
                     self.__downloader.storage,
-                    validator_callback=self.__validate_addon_info
+                    self.__addon_version
                 )
             except:
                 self.__error = True
                 raise
             
             self.__starter = addon.start()
-    
-    def __validate_addon_info(self, info):
-        if info.identifier != self.__addon_version.addon.identifier:
-            return False
-        if info.version != self.__addon_version.version:
-            return False
-        return True
