@@ -187,6 +187,8 @@ class AddOnListWidget(QTableWidget):
         
         for i in range(self.rowCount()):
             cell = self.cellWidget(i, 2)
+            if cell is None:
+                continue
             button_box = cell.findChild(QWidget, "button_box")
             
             if button_box is not None: # no button box present
