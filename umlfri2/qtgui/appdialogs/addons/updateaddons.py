@@ -5,7 +5,7 @@ from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QMenu
 
 from umlfri2.application import Application
-from umlfri2.application.events.addon import AddOnInstalledEvent, AddOnUninstalledEvent
+from umlfri2.application.events.addon import AddOnInstalledEvent, AddOnUninstalledEvent, AddOnUpdatedEvent
 from umlfri2.qtgui.appdialogs.addons.info import AddOnInfoDialog
 from .listwidget import AddOnListWidget
 
@@ -18,7 +18,8 @@ class UpdateAddOnList(AddOnListWidget):
         
         Application().event_dispatcher.subscribe(AddOnInstalledEvent, self.__addon_list_changed)
         Application().event_dispatcher.subscribe(AddOnUninstalledEvent, self.__addon_list_changed)
-        
+        Application().event_dispatcher.subscribe(AddOnUpdatedEvent, self.__addon_list_changed)
+    
     @property
     def _addons(self):
         yield from Application().addons.online.updated_addons

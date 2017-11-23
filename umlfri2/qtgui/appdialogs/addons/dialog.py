@@ -2,7 +2,7 @@ from PyQt5.QtCore import QSize
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QTabWidget
 
 from umlfri2.application import Application
-from umlfri2.application.events.addon import AddOnInstalledEvent, AddOnUninstalledEvent
+from umlfri2.application.events.addon import AddOnInstalledEvent, AddOnUninstalledEvent, AddOnUpdatedEvent
 from .onlineaddons import OnlineAddOnList
 from .installedaddons import InstalledAddOnList
 from .updateaddons import UpdateAddOnTab
@@ -39,6 +39,7 @@ class AddOnsDialog(QDialog):
         self.setLayout(layout)
         Application().event_dispatcher.subscribe(AddOnInstalledEvent, self.__addon_list_changed)
         Application().event_dispatcher.subscribe(AddOnUninstalledEvent, self.__addon_list_changed)
+        Application().event_dispatcher.subscribe(AddOnUpdatedEvent, self.__addon_list_changed)
     
     def sizeHint(self):
         return QSize(700, 450)

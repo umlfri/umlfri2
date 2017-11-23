@@ -1,6 +1,6 @@
 import os.path
 
-from umlfri2.application.events.addon import AddOnInstalledEvent, AddOnUninstalledEvent
+from umlfri2.application.events.addon import AddOnInstalledEvent, AddOnUninstalledEvent, AddOnUpdatedEvent
 from umlfri2.constants.paths import ADDONS, LOCAL_ADDONS
 from umlfri2.datalayer.loaders import AddOnListLoader
 from umlfri2.datalayer.storages import DirectoryStorage
@@ -26,10 +26,7 @@ class AddOnManager:
             self.__addons.extend(self.__local_addons.load_all())
     
     def install_addon(self, storage, online_addon_version):
-        if self.__local_addons is None:
-            if not os.path.exists(LOCAL_ADDONS):
-                os.makedirs(LOCAL_ADDONS)
-            self.__local_addons = AddOnListLoader(self.__application, DirectoryStorage.new_storage(LOCAL_ADDONS), False)
+        self.__ensure_local_addons_exist()
         
         addon = self.__local_addons.install_from(storage, online_addon_version)
         if addon is None:
@@ -41,6 +38,24 @@ class AddOnManager:
         return addon
     
     def install_addon_update(self, storage, online_addon_version):
+        addon = online_addon_version.addon.local_addon
+        if addon.state not in (AddOnState.stopped, AddOnState.error, AddOnState.none):
+            raise Exception("Cannot uninstall started add-on")
+        
+        if not addon.is_system_addon:
+            self.__remove_addon_storage(addon)
+        
+        self.__addons.remove(addon)
+        
+        self.__ensure_local_addons_exist()
+        
+        addon = self.__local_addons.install_from(storage, online_addon_version)
+        if addon is None:
+            raise Exception("Cannot install add-on")
+        
+        self.__addons.append(addon)
+        self.__application.event_dispatcher.dispatch(AddOnUpdatedEvent(addon))
+        
         return online_addon_version.addon.local_addon # TODO
     
     def uninstall_addon(self, addon):
@@ -49,7 +64,20 @@ class AddOnManager:
         
         if addon.state not in (AddOnState.stopped, AddOnState.error, AddOnState.none):
             raise Exception("Cannot uninstall started add-on")
+
+        self.__remove_addon_storage(addon)
         
+        self.__addons.remove(addon)
+        
+        self.__application.event_dispatcher.dispatch(AddOnUninstalledEvent(addon))
+    
+    def __ensure_local_addons_exist(self):
+        if self.__local_addons is None:
+            if not os.path.exists(LOCAL_ADDONS):
+                os.makedirs(LOCAL_ADDONS)
+            self.__local_addons = AddOnListLoader(self.__application, DirectoryStorage.new_storage(LOCAL_ADDONS), False)
+    
+    def __remove_addon_storage(self, addon):
         with addon.storage_reference.open('w') as storage:
             try:
                 # try disabling the addon first - just to make sure, it can be disabled if it will be needed
@@ -62,10 +90,6 @@ class AddOnManager:
                 except:
                     pass
                 raise
-        
-        self.__addons.remove(addon)
-        
-        self.__application.event_dispatcher.dispatch(AddOnUninstalledEvent(addon))
     
     def get_addon(self, identifier):
         for addon in self.__addons:

@@ -6,7 +6,8 @@ from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.QtWidgets import QPushButton, QMenu
 from umlfri2.application import Application
 from umlfri2.application.addon.local import AddOnState
-from umlfri2.application.events.addon import AddOnStateChangedEvent, AddOnInstalledEvent, AddOnUninstalledEvent
+from umlfri2.application.events.addon import AddOnStateChangedEvent, AddOnInstalledEvent, AddOnUninstalledEvent, \
+    AddOnUpdatedEvent
 from .listwidget import AddOnListWidget
 from .info import AddOnInfoDialog
 
@@ -20,8 +21,9 @@ class InstalledAddOnList(AddOnListWidget):
         self.__processes = processes
         
         Application().event_dispatcher.subscribe(AddOnStateChangedEvent, self.__addon_state_changed)
-        Application().event_dispatcher.subscribe(AddOnInstalledEvent, self.__addon_installed)
-        Application().event_dispatcher.subscribe(AddOnUninstalledEvent, self.__addon_uninstalled)
+        Application().event_dispatcher.subscribe(AddOnInstalledEvent, self.__addon_list_changed)
+        Application().event_dispatcher.subscribe(AddOnUninstalledEvent, self.__addon_list_changed)
+        Application().event_dispatcher.subscribe(AddOnUpdatedEvent, self.__addon_list_changed)
     
     @property
     def _addons(self):
@@ -101,8 +103,5 @@ class InstalledAddOnList(AddOnListWidget):
             buttons.start.setEnabled(event.addon.state in (AddOnState.stopped, AddOnState.error))
             buttons.stop.setEnabled(event.addon.state == AddOnState.started)
     
-    def __addon_installed(self, event):
-        self.refresh()
-
-    def __addon_uninstalled(self, event):
+    def __addon_list_changed(self, event):
         self.refresh()
