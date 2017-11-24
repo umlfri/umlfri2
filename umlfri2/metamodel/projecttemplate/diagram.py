@@ -1,12 +1,13 @@
-from enum import Enum
+from enum import Enum, unique
 
 from .checkdata import check_any
 
 
+@unique
 class DiagramTemplateState(Enum):
-    closed = 0
-    opened = 1
-    locked = 2
+    closed = 1
+    opened = 2
+    locked = 3
 
 
 class DiagramTemplate:
