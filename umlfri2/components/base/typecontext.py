@@ -5,8 +5,11 @@ class TypeContext:
     def get_variable_type(self, name):
         return self.__local_types[name]
     
-    def as_dict(self):
-        return self.__local_types.copy()
+    def as_dict(self, prefix=None):
+        if prefix is None:
+            return self.__local_types.copy()
+        else:
+            return {prefix + k: v for k, v in self.__local_types.items()}
     
     def set_variable_type(self, name, type):
         ret = TypeContext()

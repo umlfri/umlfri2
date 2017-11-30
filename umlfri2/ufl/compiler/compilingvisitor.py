@@ -7,9 +7,10 @@ class UflCompilingVisitor(UflVisitor):
     """
     Compiles UflExpression into python code
     """
-    def __init__(self, params, enums):
+    def __init__(self, params, enums, variable_prefix):
         self.__params = params
         self.__enums = {name: UflTypedEnumType(enum) for name, enum in enums.items()}
+        self.__variable_prefix = variable_prefix
     
     def visit_attribute_access(self, node):
         objtype, objcode = self.__demeta(node.object.accept(self))
@@ -66,8 +67,13 @@ class UflCompilingVisitor(UflVisitor):
     def visit_variable(self, node):
         if node.name in ('true', 'false'):
             return UflBoolType(), node.name.capitalize()
-        return self.__params[node.name], node.name
-
+        
+        var_name = node.name
+        if self.__variable_prefix is not None:
+            var_name = self.__variable_prefix + var_name
+        
+        return self.__params[var_name], var_name
+    
     def visit_binary(self, node):
         ltype, lvalue = self.__demeta(node.operand1.accept(self))
         rtype, rvalue = self.__demeta(node.operand2.accept(self))

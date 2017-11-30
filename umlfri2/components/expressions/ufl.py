@@ -4,6 +4,8 @@ from umlfri2.ufl.compiler import compile_ufl
 
 
 class UflExpression(Expression):
+    __VARIABLE_PREFIX="ufl_"
+    
     def __init__(self, expression):
         self.__expression = expression
         self.__compiled = None
@@ -13,12 +15,13 @@ class UflExpression(Expression):
         self.__type, self.__compiled = compile_ufl(
             self.__expression,
             expected_type,
-            type_context.as_dict(),
-            ALL_ENUMS
+            type_context.as_dict(self.__VARIABLE_PREFIX),
+            variable_prefix=self.__VARIABLE_PREFIX,
+            enums=ALL_ENUMS
         )
     
     def get_type(self):
         return self.__type
     
     def __call__(self, context):
-        return self.__compiled(**context.as_dict())
+        return self.__compiled(**context.as_dict(self.__VARIABLE_PREFIX))

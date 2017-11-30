@@ -3,8 +3,8 @@ from ..parser import parse_ufl
 from umlfri2.ufl.types import UflBoolType, UflStringType, UflDataWithMetadataType
 
 
-def compile_ufl(expression, expected_type, variables, enums={}):
-    visitor = UflCompilingVisitor(variables, enums)
+def compile_ufl(expression, expected_type, variables, variable_prefix=None, enums={}):
+    visitor = UflCompilingVisitor(variables, enums, variable_prefix)
     tree = parse_ufl(expression)
     
     return_type, code = tree.accept(visitor)
