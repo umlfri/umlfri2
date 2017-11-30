@@ -1,4 +1,4 @@
-from umlfri2.ufl.types import UflDataWithMetadataType
+from umlfri2.ufl.types import UflDataWithMetadataType, UflNullableType, UflAnyType
 from ..types import UflTypedEnumType, UflObjectType, UflBoolType, UflStringType, UflIntegerType
 from ..tree.visitor import UflVisitor
 
@@ -65,9 +65,6 @@ class UflCompilingVisitor(UflVisitor):
         )
 
     def visit_variable(self, node):
-        if node.name in ('true', 'false'):
-            return UflBoolType(), node.name.capitalize()
-        
         var_name = node.name
         if self.__variable_prefix is not None:
             var_name = self.__variable_prefix + var_name
@@ -95,8 +92,14 @@ class UflCompilingVisitor(UflVisitor):
     def visit_literal(self, node):
         if isinstance(node.value, str):
             return UflStringType(), repr(node.value)
-        else:
+        elif isinstance(node.value, bool):
+            return UflBoolType(), repr(node.value)
+        elif isinstance(node.value, int):
             return UflIntegerType(), repr(node.value)
+        elif node.value is None:
+            return UflNullableType(UflAnyType()), 'None'
+        else:
+            raise Exception('Invalid literal')
     
     def visit_metadata_access(self, node):
         type, object = node.object.accept(self)

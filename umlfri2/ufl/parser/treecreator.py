@@ -13,7 +13,17 @@ def target(data):
 
 d.TARGET.addParseAction(target)
 
-d.VARIABLE.addParseAction(lambda data: UflVariable(data[0]))
+def variable(data):
+    if data[0] == 'true':
+        return UflLiteral(True)
+    elif data[0] == 'false':
+        return UflLiteral(False)
+    elif data[0] == 'null':
+        return UflLiteral(None)
+    else:
+        return UflVariable(data[0])
+
+d.VARIABLE.addParseAction(variable)
 
 def number(data):
     if '.' in data[0]:
