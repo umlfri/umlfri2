@@ -43,7 +43,7 @@ class UflCompilingVisitor(UflVisitor):
         params = []
         
         for param in node.parameters:
-            type, code = param.accept(self)
+            type, code = self.__demeta(param.accept(self))
             paramtypes.append(type)
             params.append(code)
         
