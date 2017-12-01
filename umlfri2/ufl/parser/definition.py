@@ -1,5 +1,7 @@
 import pyparsing as pp
 
+from .operators import BINARY_OPERATORS, UNARY_OPERATORS
+
 EXPRESSION = pp.Forward()
 
 METADATA_ACCESS = '@(' + EXPRESSION + ')'
@@ -23,9 +25,9 @@ NUMBER = pp.Regex("[0-9]+(\\.[0-9]+)?")
 
 VALUE = METHODORATTRORENUM ^ STRING ^ NUMBER
 
-UNARY = pp.ZeroOrMore("!") + VALUE
+UNARY = pp.ZeroOrMore(pp.oneOf(UNARY_OPERATORS)) + VALUE
 
-BINARY = UNARY + pp.Optional(pp.oneOf(["<=", "<", "==", "!=", ">=", ">"]) + UNARY)
+BINARY = UNARY + pp.ZeroOrMore(pp.oneOf(BINARY_OPERATORS) + UNARY)
 
 EXPRESSION << BINARY
 

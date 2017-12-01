@@ -1,7 +1,7 @@
 from . import definition as d
 from pyparsing import ParseException
 from ..tree import *
-
+from .operators import make_binary_operator_tree, make_unary_operator_tree
 
 d.METADATA_ACCESS.addParseAction(lambda data: UflMetadataAccess(data[1]))
 
@@ -35,25 +35,9 @@ d.NUMBER.addParseAction(number)
 
 d.STRING.addParseAction(lambda data: UflLiteral(data[0].strip("''")))
 
-def unary(data):
-    x = data[:]
-    value = x.pop(-1)
-    
-    while x:
-        operator = x.pop(-1)
-        value = UflUnary(operator, value)
-    
-    return value
+d.UNARY.setParseAction(lambda data: make_unary_operator_tree(data, UflUnary))
 
-d.UNARY.setParseAction(unary)
-
-def binary(data):
-    if len(data) > 2:
-        return UflBinary(data[0], data[1], data[2])
-    else:
-        return data[0]
-
-d.BINARY.addParseAction(binary)
+d.BINARY.addParseAction(lambda data: make_binary_operator_tree(data, UflBinary))
 
 def method_or_attribute_or_enum(data):
     node = data[0]
