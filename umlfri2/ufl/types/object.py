@@ -56,15 +56,15 @@ class UflObjectType(UflType):
         
         return UflObject(self, ret)
     
-    def is_same_as(self, other):
-        if not super().is_same_as(other):
+    def is_assignable_from(self, other):
+        if not isinstance(other, UflObjectType):
             return False
         
         if self.__attributes.keys() != other.__attributes.keys():
             return False
         
         for name, type in self.__attributes:
-            if not other.__attributes[name].type.is_same_as(type):
+            if not type.is_assignable_from(other.__attributes[name].type):
                 return False
         
         return True

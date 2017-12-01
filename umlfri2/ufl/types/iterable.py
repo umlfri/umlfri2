@@ -11,9 +11,9 @@ class UflIterableType(UflType):
     def item_type(self):
         return self.__item_type
 
-    def is_same_as(self, other):
+    def is_assignable_from(self, other):
         if isinstance(other, (UflListType, UflFlagsType, UflIterableType)):
-            return self.__item_type.is_same_as(other.item_type)
+            return self.__item_type.is_assignable_from(other.item_type)
         else:
             return False
 

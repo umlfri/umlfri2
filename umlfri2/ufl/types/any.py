@@ -2,7 +2,7 @@ from .type import UflType
 
 
 class UflAnyType(UflType):
-    def is_same_as(self, other):
+    def is_assignable_from(self, other):
         return True
     
     @staticmethod

@@ -15,17 +15,17 @@ class UflNullableType(UflType):
     def parse(self, value):
         return self.__inner_type.parse(value)
     
-    def is_same_as(self, other):
-        if other is None:
-            return True
-        
-        if not super().is_same_as(other):
-            return self.__inner_type.is_same_as(other)
-        
-        if self.__inner_type.is_same_as(other.__inner_type):
-            return True
-        
-        return False
+    def is_assignable_from(self, other):
+        if isinstance(other, UflNullableType):
+            return self.__inner_type.is_assignable_from(other.__inner_type)
+        else:
+            return self.__inner_type.is_assignable_from(other)
+    
+    def is_equatable_to(self, other):
+        if isinstance(other, UflNullableType):
+            return self.__inner_type.is_equatable_to(other.__inner_type)
+        else:
+            return self.__inner_type.is_equatable_to(other)
     
     def __str__(self):
         return "Nullable[{0}]".format(self.__inner_type)

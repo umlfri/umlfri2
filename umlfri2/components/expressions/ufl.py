@@ -25,3 +25,6 @@ class UflExpression(Expression):
     
     def __call__(self, context):
         return self.__compiled(**context.as_dict(self.__VARIABLE_PREFIX))
+    
+    def __repr__(self):
+        return '<UflExpression "{0}" of type {1}>'.format(self.__expression, self.__type)

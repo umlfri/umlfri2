@@ -1,4 +1,4 @@
-from umlfri2.ufl.types import UflDataWithMetadataType, UflNullableType, UflAnyType
+from umlfri2.ufl.types import UflDataWithMetadataType, UflNullableType, UflAnyType, UflDecimalType
 from ..types import UflTypedEnumType, UflObjectType, UflBoolType, UflStringType, UflIntegerType
 from ..tree.visitor import UflVisitor
 
@@ -55,7 +55,7 @@ class UflCompilingVisitor(UflVisitor):
             raise Exception("Incorrect param count")
         
         for actual, expected in zip(paramtypes, methoddesc.parameters):
-            if not actual.is_same_as(expected):
+            if not expected.is_assignable_from(actual):
                 raise Exception("Incorrect param types")
         
         return methoddesc.return_type, "{0}.{1}({2})".format(
@@ -75,11 +75,31 @@ class UflCompilingVisitor(UflVisitor):
         ltype, lvalue = self.__demeta(node.operand1.accept(self))
         rtype, rvalue = self.__demeta(node.operand2.accept(self))
         
-        if ltype.is_same_as(rtype):
-            raise Exception("Incompatible types {0} and {1}".format(ltype, rtype))
-        
-        if node.operator in ('<', '>', '<=', '>=', '!=', '=='):
-             return UflBoolType(), lvalue + node.operator + rvalue
+        if node.operator in ('!=', '=='):
+            if not (ltype.is_equatable_to(rtype) or rtype.is_equatable_to(ltype)):
+                raise Exception("Incompatible types {0} and {1}".format(ltype, rtype))
+            
+            return UflBoolType(), '({0}) {1} ({2})'.format(lvalue, node.operator, rvalue)
+        elif node.operator in ('<', '>', '<=', '>='):
+            if not (ltype.is_comparable_with(rtype) or rtype.is_comparable_with(ltype)):
+                raise Exception("Incompatible types {0} and {1}".format(ltype, rtype))
+            
+            return UflBoolType(), '({0}) {1} ({2})'.format(lvalue, node.operator, rvalue)
+        elif node.operator in ('+', '-', '*', '/', '//', '%'):
+            if not isinstance(ltype, (UflIntegerType, UflDecimalType)) or not isinstance(rtype, (UflIntegerType, UflDecimalType)):
+                raise Exception("Cannot apply arithmetic operator to {0} and {1}".format(ltype, rtype))
+            if isinstance(ltype, UflDecimalType) or isinstance(rtype, UflDecimalType):
+                return UflDecimalType(), lvalue + node.operator + rvalue
+            else:
+                return UflIntegerType(), '({0}) {1} ({2})'.format(lvalue, node.operator, rvalue)
+        elif node.operator in ('||', '&&'):
+            if not isinstance(ltype, UflBoolType) or not isinstance(rtype, UflBoolType):
+                raise Exception("Cannot apply logic operator to {0} and {1}".format(ltype, rtype))
+            
+            if node.operator == '&&':
+                return UflDecimalType(), '({0}) and ({1})'.format(lvalue, rvalue)
+            else:
+                return UflDecimalType(), '({0}) or ({1})'.format(lvalue, rvalue)
     
     def visit_unary(self, node):
         type, value = self.__demeta(node.operand.accept(self))
@@ -88,6 +108,10 @@ class UflCompilingVisitor(UflVisitor):
             if not isinstance(type, UflBoolType):
                 raise Exception("Cannot apply operator ! to anything but boolean value")
             return UflBoolType(), "not ({0})".format(value)
+        elif node.operator in ('+', '-'):
+            if not isinstance(type, UflIntegerType):
+                raise Exception("Cannot apply arithmetic operator to anything but number")
+            return UflIntegerType(), "{0} ({1})".format(node.operator, value)
     
     def visit_literal(self, node):
         if isinstance(node.value, str):

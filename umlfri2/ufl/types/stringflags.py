@@ -11,8 +11,14 @@ class UflStringFlagsType(UflFlagsType):
     def item_type(self):
         return UflStringType()
     
-    def is_same_as(self, other):
-        if not super().is_same_as(other):
+    def is_assignable_from(self, other):
+        if not isinstance(other, UflStringFlagsType):
+            return False
+        
+        return self.possibilities == other.possibilities
+
+    def is_equatable_to(self, other):
+        if not isinstance(other, UflStringFlagsType):
             return False
         
         return self.possibilities == other.possibilities

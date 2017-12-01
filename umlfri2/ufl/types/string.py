@@ -39,6 +39,9 @@ class UflStringType(UflType):
     def is_immutable(self):
         return True
     
+    def is_equatable_to(self, other):
+        return isinstance(other, UflStringType)
+    
     def is_valid_value(self, value):
         return isinstance(value, str)
     

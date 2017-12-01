@@ -27,7 +27,7 @@ class Component:
             expression.compile(type_context, expected_type)
             
             actual_type = expression.get_type()
-            if not expected_type.is_same_as(actual_type):
+            if not expected_type.is_assignable_from(actual_type):
                 raise Exception("Invalid type for attribute {0} ({1}, but {2} expected)".format(name, actual_type, expected_type))
     
     def _compile_children(self, type_context):

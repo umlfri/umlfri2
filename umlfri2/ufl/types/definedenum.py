@@ -17,10 +17,16 @@ class UflDefinedEnumType(UflEnumType):
     def type(self):
         return self.__type
     
-    def is_same_as(self, other):
-        if not super().is_same_as(other):
+    def is_assignable_from(self, other):
+        if not isinstance(other, UflDefinedEnumType):
             return False
         
+        return self.__type == other.__type
+    
+    def is_equatable_to(self, other):
+        if not isinstance(other, UflDefinedEnumType):
+            return False
+
         return self.__type == other.__type
     
     def __str__(self):

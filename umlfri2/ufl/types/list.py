@@ -13,11 +13,11 @@ class UflListType(UflType):
     def build_default(self, generator):
         return UflList(self)
     
-    def is_same_as(self, other):
-        if not super().is_same_as(other):
+    def is_assignable_from(self, other):
+        if not isinstance(other, UflListType):
             return False
         
-        return self.__item_type.is_same_as(other.__item_type)
+        return self.__item_type.is_assignable_from(other.__item_type)
     
     def is_default_value(self, value):
         return value.get_length() == 0

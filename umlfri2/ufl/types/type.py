@@ -15,19 +15,8 @@ class UflType:
     def build_default(self, generator):
         raise NotImplementedError
     
-    def is_same_as(self, other):
-        if isinstance(other, self.__class__):
-            return True
-        
-        from .any import UflAnyType
-        if isinstance(other, UflAnyType):
-            return True
-        
-        from .nullable import UflNullableType
-        if isinstance(other, UflNullableType) and other.inner_type.is_same_as(self):
-            return True
-        
-        return False
+    def is_assignable_from(self, other):
+        return isinstance(other, self.__class__)
     
     def set_parent(self, parent):
         if self.__parent is not None:
@@ -40,6 +29,12 @@ class UflType:
     
     @property
     def is_convertable_to_string(self):
+        return False
+    
+    def is_equatable_to(self, other):
+        return False
+    
+    def is_comparable_with(self, other):
         return False
     
     def is_valid_value(self, value):
