@@ -33,3 +33,7 @@ class UflVisitor(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def visit_metadata_access(self, node):
         pass
+
+    @abc.abstractmethod
+    def visit_iterator_access(self, node):
+        pass

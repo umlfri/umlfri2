@@ -132,6 +132,9 @@ class UflCompilingVisitor(UflVisitor):
         
         return type.metadata_type, object
     
+    def visit_iterator_access(self, node):
+        raise NotImplementedError
+    
     def __demeta(self, type_and_value):
         if isinstance(type_and_value[0], UflDataWithMetadataType):
             return type_and_value[0].underlying_type, '({0}).value'.format(type_and_value[1])

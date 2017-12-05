@@ -8,11 +8,11 @@ METADATA_ACCESS = '@(' + EXPRESSION + ')'
 
 VARIABLE = pp.pyparsing_common.identifier.copy()
 
-TARGET = VARIABLE ^ ('(' + EXPRESSION + ')') ^ METADATA_ACCESS
+TARGET = VARIABLE | ('(' + EXPRESSION + ')') | METADATA_ACCESS
 
 METHODORATTRORENUM = TARGET + (
     pp.OneOrMore(
-        '.' + pp.pyparsing_common.identifier.copy()
+        pp.oneOf(('.', '->')) + pp.pyparsing_common.identifier.copy()
         + pp.Optional('(' + pp.Optional(
             pp.Optional(EXPRESSION) + pp.ZeroOrMore("," + pp.Optional(EXPRESSION))
         ) + ')')
@@ -23,7 +23,7 @@ METHODORATTRORENUM = TARGET + (
 STRING = pp.QuotedString(quoteChar="'", escChar="\\")
 NUMBER = pp.Regex("[0-9]+(\\.[0-9]+)?")
 
-VALUE = METHODORATTRORENUM ^ STRING ^ NUMBER
+VALUE = METHODORATTRORENUM | STRING | NUMBER
 
 UNARY = pp.ZeroOrMore(pp.oneOf(UNARY_OPERATORS)) + VALUE
 
