@@ -34,11 +34,11 @@ class PropertiesDialog(QDialog):
         self.__tabs = []
         tab = dialog.get_lonely_tab()
         if isinstance(tab, UflDialogListTab):
-            qt_tab = ListPropertyTab(self, tab)
+            qt_tab = ListPropertyTab(self, tab, lonely=True)
             layout.addWidget(qt_tab)
             self.__tabs.append(qt_tab)
         elif isinstance(tab, (UflDialogObjectTab, UflDialogValueTab)):
-            qt_tab = ObjectPropertyTab(self, tab)
+            qt_tab = ObjectPropertyTab(self, tab, lonely=True)
             layout.addWidget(qt_tab)
             self.__tabs.append(qt_tab)
         else:

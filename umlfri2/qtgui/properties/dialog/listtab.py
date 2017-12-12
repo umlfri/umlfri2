@@ -7,11 +7,13 @@ from .tab import PropertyTab
 
 
 class ListPropertyTab(PropertyTab):
-    def __init__(self, window, tab): 
+    def __init__(self, window, tab, lonely=False): 
         super().__init__(window, tab)
         self.__disable_selection_handling = False
         
         layout = QVBoxLayout()
+        if lonely:
+            layout.setContentsMargins(0, 0, 0, 0)
         layout.addLayout(self._create_layout())
         
         layout.addWidget(HLineWidget())
