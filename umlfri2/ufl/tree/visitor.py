@@ -1,39 +1,27 @@
-import abc
-
-
-class UflVisitor(metaclass=abc.ABCMeta):
-    @abc.abstractmethod
+class UflVisitor:
     def visit_attribute_access(self, node):
-        pass
+        raise NotImplementedError
     
-    @abc.abstractmethod
     def visit_enum(self, node):
-        pass
+        raise NotImplementedError
     
-    @abc.abstractmethod
     def visit_method_call(self, node):
-        pass
+        raise NotImplementedError
     
-    @abc.abstractmethod
     def visit_variable(self, node):
-        pass
+        raise NotImplementedError
     
-    @abc.abstractmethod
     def visit_literal(self, node):
-        pass
+        raise NotImplementedError
     
-    @abc.abstractmethod
     def visit_binary(self, node):
-        pass
+        raise NotImplementedError
     
-    @abc.abstractmethod
     def visit_unary(self, node):
-        pass
+        raise NotImplementedError
     
-    @abc.abstractmethod
     def visit_metadata_access(self, node):
-        pass
+        raise NotImplementedError
 
-    @abc.abstractmethod
     def visit_iterator_access(self, node):
-        pass
+        raise NotImplementedError

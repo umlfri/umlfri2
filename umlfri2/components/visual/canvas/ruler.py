@@ -1,11 +1,6 @@
-import abc
-
-
-class Ruler(metaclass=abc.ABCMeta):
-    @abc.abstractmethod
+class Ruler:
     def measure_text(self, font, text):
-        pass
+        raise NotImplementedError
     
-    @abc.abstractmethod
     def measure_image(self, image):
-        pass
+        raise NotImplementedError
