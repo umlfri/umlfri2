@@ -131,13 +131,17 @@ class ElementObject:
         if not connection.is_connected_with(self):
             raise Exception
         self.__connections.append(connection)
-        connection.get_other_end(self).__connections.append(connection)
+        other = connection.get_other_end(self)
+        if other is not self:
+            other.__connections.append(connection)
     
     def disconnect(self, connection):
         if connection not in self.__connections:
             raise Exception
         self.__connections.remove(connection)
-        connection.get_other_end(self).__connections.remove(connection)
+        other = connection.get_other_end(self)
+        if other is not self:
+            other.__connections.remove(connection)
     
     @property
     def project(self):
