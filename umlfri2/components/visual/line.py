@@ -69,6 +69,7 @@ class LineComponent(VisualComponent):
                     return LineOrientation.horizontal
                 elif isinstance(parent, HBoxComponent):
                     return LineOrientation.vertical
+                parent = parent._get_parent()
             return LineOrientation.horizontal
         return orientation
     
