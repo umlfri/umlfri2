@@ -53,6 +53,12 @@ class ConditionComponent(ControlComponent):
         if self.__else_component is None:
             self.__else_component = ElseComponent(())
     
+    def _get_semantic_children(self):
+        if self.__then_component:
+            yield from self.__then_component._get_semantic_children()
+        if self.__else_component:
+            yield from self.__then_component._get_semantic_children()
+    
     def compile(self, type_context):
         self._compile_expressions(
             type_context,

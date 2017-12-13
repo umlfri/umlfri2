@@ -61,6 +61,10 @@ class SwitchComponent(ControlComponent):
                 case.retype(self.__value.get_type())
             case.compile(type_context)
     
+    def _get_semantic_children(self):
+        for case in self.__cases:
+            yield from case._get_semantic_children()
+    
     def filter_children(self, context):
         for case in self.__cases:
             if isinstance(case, SwitchDefaultComponent):

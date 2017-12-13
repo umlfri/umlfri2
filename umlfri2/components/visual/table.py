@@ -64,15 +64,33 @@ class TableColumn(HelperComponent):
 
 class TableComponent(VisualComponent):
     CHILDREN_TYPE = ComponentType.table
+
+    def __init__(self, children):
+        super().__init__(children)
+        
+        is_column = None
+        
+        for child in self._get_semantic_children():
+            if isinstance(child, TableRow):
+                if is_column is True:
+                    raise Exception("Cannot mix rows and columns in a table")
+                is_column = False
+            elif isinstance(child, TableColumn):
+                if is_column is False:
+                    raise Exception("Cannot mix rows and columns in a table")
+                is_column = True
+            else:
+                raise Exception("Weird table")
+        
+        if is_column is None:
+            raise Exception("Table contains no row nor column")
+        
+        self.__is_column = is_column
     
     def _create_object(self, context, ruler):
-        iscolumn = False # is this table with columns?
         ret = []
         
         for local, child in self._get_children(context):
-            if isinstance(child, TableColumn):
-                iscolumn = True
-            
             row = []
             
             for locallocal, localchild in child.get_children(local):
@@ -80,7 +98,7 @@ class TableComponent(VisualComponent):
             
             ret.append(row)
         
-        if iscolumn:
+        if self.__is_column:
             return TableObject(list(zip(*ret))) # transpose to get table with rows instead
         else:
             return TableObject(ret)

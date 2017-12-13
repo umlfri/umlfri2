@@ -41,5 +41,12 @@ class Component:
             else:
                 yield context, child
     
+    def _get_semantic_children(self):
+        for child in self.__children:
+            if child.IS_CONTROL:
+                yield from child._get_semantic_children()
+            else:
+                yield child
+    
     def _get_parent(self):
         return self.__parent()
