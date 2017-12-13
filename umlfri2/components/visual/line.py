@@ -2,6 +2,7 @@ from umlfri2.types.enums import LineOrientation
 from umlfri2.types.threestate import Maybe
 from ..expressions import ConstantExpression
 from .hbox import HBoxComponent
+from .table import TableRow, TableColumn
 from umlfri2.types.color import Colors
 from umlfri2.types.geometry import Size
 from umlfri2.ufl.types import UflTypedEnumType, UflColorType
@@ -65,9 +66,9 @@ class LineComponent(VisualComponent):
         if orientation == LineOrientation.auto:
             parent = self._get_parent()
             while parent is not None:
-                if isinstance(parent, VBoxComponent):
+                if isinstance(parent, (VBoxComponent, TableColumn)):
                     return LineOrientation.horizontal
-                elif isinstance(parent, HBoxComponent):
+                elif isinstance(parent, (HBoxComponent, TableRow)):
                     return LineOrientation.vertical
                 parent = parent._get_parent()
             return LineOrientation.horizontal
