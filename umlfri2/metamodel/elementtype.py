@@ -3,31 +3,22 @@ from weakref import ref
 
 from umlfri2.components.base.context import Context
 from umlfri2.components.base.typecontext import TypeContext
-from umlfri2.ufl.types import UflType, UflListType, UflImageType, UflStringType, UflIterableType
+from umlfri2.ufl.types import UflDataWithMetadataType, UflStringType, UflImageType, UflAnyType, UflIterableType
+
+ElementAccessDepth = namedtuple('ElementAccessDepth', ('parent', 'child'))
 
 
-class UflNodeType(UflType):
-    def __init__(self, node_access_depth):
-        allowed_attributes = {
-            'icon': ('icon', UflImageType()),
-            'label': ('label', UflStringType()),
-        }
-        
-        if node_access_depth.child > 0:
-            deeper_node_access_depth = ElementAccessDepth(node_access_depth.parent + 1, node_access_depth.child - 1)
-            allowed_attributes['children'] = ('children', UflIterableType(UflNodeType(deeper_node_access_depth)))
-        
-        self.ALLOWED_DIRECT_ATTRIBUTES = allowed_attributes
-
-
-class UflNode:
-    def __init__(self, element):
+class NodeMetadata:
+    def __init__(self, element, node_access_depth):
         self.__element = element
+        self.__node_access_depth = node_access_depth
     
     @property
     def children(self):
-        for child in self.__element.children:
-            yield UflNode(child)
+        if self.__node_access_depth.child > 0:
+            child_access_depth = ElementAccessDepth(self.__node_access_depth.parent + 1, self.__node_access_depth.child - 1)
+            for child in self.__element.children:
+                yield NodeMetadata(child, child_access_depth)
     
     @property
     def icon(self):
@@ -36,9 +27,26 @@ class UflNode:
     @property
     def label(self):
         return self.__element.get_display_name()
-
-
-ElementAccessDepth = namedtuple('ElementAccessDepth', ('parent', 'child'))
+    
+    @property
+    def value(self):
+        return self.__element.data
+    
+    @staticmethod
+    def build_node_metadata_types(element_type=None):
+        metadata = {
+            'icon': UflImageType(),
+            'label': UflStringType(),
+        }
+        
+        if element_type is None:
+            ret = UflDataWithMetadataType(UflAnyType(), **metadata)
+            ret._add_metadata_type('children', UflIterableType(ret))
+        else:
+            ret = UflDataWithMetadataType(element_type.ufl_type, **metadata)
+            ret._add_metadata_type('children', UflIterableType(NodeMetadata.build_node_metadata_types(None)))
+        
+        return ret
 
 
 class ElementType:
@@ -90,18 +98,26 @@ class ElementType:
         type_context = TypeContext() \
             .set_variable_type('self', self.__ufl_type) \
             .set_variable_type('cfg', self.__metamodel().config_structure)
+
+        appearance_type_context = type_context
         
-        self.__appearance.compile(
-            type_context.set_variable_type('node', UflNodeType(self.__node_access_depth))
-        )
+        if self.__node_access_depth.child > 0 or self.__node_access_depth.parent > 0:
+            appearance_type_context = appearance_type_context \
+                .set_variable_type('self', NodeMetadata.build_node_metadata_types(self))
+        
+        self.__appearance.compile(appearance_type_context)
         
         self.__display_name.compile(type_context)
     
     def create_appearance_object(self, element, ruler):
+        if self.__node_access_depth.child > 0 or self.__node_access_depth.parent > 0:
+            data = NodeMetadata(element, self.__node_access_depth)
+        else:
+            data = element.data
+        
         context = Context()\
-            .set_variable('self', element.data)\
-            .set_variable('cfg', self.__metamodel().config)\
-            .set_variable('node', UflNode(element))
+            .set_variable('self', data)\
+            .set_variable('cfg', self.__metamodel().config)
         return self.__appearance.create_visual_object(context, ruler)
     
     def get_display_name(self, element):
