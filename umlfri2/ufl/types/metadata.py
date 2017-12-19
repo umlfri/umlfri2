@@ -2,10 +2,20 @@ from .type import UflType
 
 
 class UflMetadataType(UflType):
-    def __init__(self, metadata_type):
+    def __init__(self, metadata_type, underlying_type):
         metadata = {}
         for name, type in metadata_type.items():
             metadata[name] = (name, type)
+        
+        next_type = underlying_type
+        next_prefix = 'value.'
+        
+        while isinstance(next_type, UflDataWithMetadataType):
+            for name, type in next_type.metadata_types:
+                if name not in metadata:
+                    metadata[name] = (next_prefix + name, type)
+            next_type = next_type.underlying_type
+            next_prefix = 'value.' + next_prefix
 
         self.ALLOWED_DIRECT_ATTRIBUTES = metadata
     
@@ -22,13 +32,21 @@ class UflDataWithMetadataType(UflType):
         self.__underlying_type = underlying_type
         self.__metadata_types = metadata_types
     
+    # use with caution, only for recursive metadata
+    def _add_metadata_type(self, name, type):
+        self.__metadata_types[name] = type
+    
+    @property
+    def metadata_types(self):
+        yield from self.__metadata_types.items()
+    
     @property
     def underlying_type(self):
         return self.__underlying_type
     
     @property
     def metadata_type(self):
-        return UflMetadataType(self.__metadata_types)
+        return UflMetadataType(self.__metadata_types, self.__underlying_type)
     
     def is_equatable_to(self, other):
         if isinstance(other, UflDataWithMetadataType):

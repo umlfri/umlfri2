@@ -136,6 +136,6 @@ class UflCompilingVisitor(UflVisitor):
         raise NotImplementedError
     
     def __demeta(self, type_and_value):
-        if isinstance(type_and_value[0], UflDataWithMetadataType):
-            return type_and_value[0].underlying_type, '({0}).value'.format(type_and_value[1])
+        while isinstance(type_and_value[0], UflDataWithMetadataType):
+            type_and_value = type_and_value[0].underlying_type, '({0}).value'.format(type_and_value[1])
         return type_and_value
