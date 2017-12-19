@@ -137,5 +137,5 @@ class UflCompilingVisitor(UflVisitor):
     
     def __demeta(self, type_and_value):
         while isinstance(type_and_value[0], UflDataWithMetadataType):
-            type_and_value = type_and_value[0].underlying_type, '({0}).value'.format(type_and_value[1])
+            type_and_value = type_and_value[0].underlying_type, '({0}).{1}'.format(type_and_value[1], UflDataWithMetadataType.VALUE_ATTRIBUTE)
         return type_and_value

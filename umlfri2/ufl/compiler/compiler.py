@@ -10,7 +10,7 @@ def compile_ufl(expression, expected_type, variables, variable_prefix=None, enum
     return_type, code = tree.accept(visitor)
     
     if not isinstance(expected_type, UflDataWithMetadataType) and isinstance(return_type, UflDataWithMetadataType):
-        code = '({0}).value'.format(code)
+        code = '({0}).{1}'.format(code, UflDataWithMetadataType.VALUE_ATTRIBUTE)
         return_type = return_type.underlying_type
     
     if isinstance(expected_type, UflBoolType) and not isinstance(return_type, UflBoolType):

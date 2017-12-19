@@ -8,14 +8,14 @@ class UflMetadataType(UflType):
             metadata[name] = (name, type)
         
         next_type = underlying_type
-        next_prefix = 'value.'
+        next_prefix = '{0}.'.format(UflDataWithMetadataType.VALUE_ATTRIBUTE)
         
         while isinstance(next_type, UflDataWithMetadataType):
             for name, type in next_type.metadata_types:
                 if name not in metadata:
                     metadata[name] = (next_prefix + name, type)
             next_type = next_type.underlying_type
-            next_prefix = 'value.' + next_prefix
+            next_prefix = '{0}.{1}'.format(UflDataWithMetadataType.VALUE_ATTRIBUTE, next_prefix)
 
         self.ALLOWED_DIRECT_ATTRIBUTES = metadata
     
@@ -28,6 +28,8 @@ class UflMetadataType(UflType):
 
 
 class UflDataWithMetadataType(UflType):
+    VALUE_ATTRIBUTE = 'value'
+    
     def __init__(self, underlying_type, **metadata_types):
         self.__underlying_type = underlying_type
         self.__metadata_types = metadata_types
