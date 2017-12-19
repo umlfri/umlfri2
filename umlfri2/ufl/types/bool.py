@@ -13,9 +13,9 @@ class UflBoolType(UflType):
         return self.__default
     
     def parse(self, value):
-        if value not in ('true', 'false'):
+        if value not in ('true', 'false', 'True', 'False'):
             raise ValueError("The given value is not boolean")
-        return value == 'true'
+        return value in ('true', 'True')
     
     @property
     def is_immutable(self):
