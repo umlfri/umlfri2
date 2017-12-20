@@ -1,6 +1,6 @@
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QFont, QFontMetrics
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLabel, QPushButton, QFontDialog
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLabel, QPushButton, QFontDialog, QFrame
 
 from umlfri2.types.enums import FontStyle
 from umlfri2.types.font import Font, Fonts
@@ -17,7 +17,10 @@ class FontSelectionWidget(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
 
         self.__selected_font_label = QLabel()
-
+        self.__selected_font_label.setFrameShape(QFrame.StyledPanel)
+        self.__selected_font_label.setFrameShadow(QFrame.Sunken)
+        self.__selected_font_label.setMinimumWidth(50)
+        
         layout.addWidget(self.__selected_font_label, 1)
         choose_button = btn_class()
         choose_button.setText("...")

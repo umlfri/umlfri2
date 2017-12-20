@@ -1,6 +1,6 @@
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QColor
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLabel, QPushButton, QColorDialog
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLabel, QPushButton, QColorDialog, QFrame
 
 from umlfri2.types.color import Color, Colors
 
@@ -15,9 +15,12 @@ class ColorSelectionWidget(QWidget):
         layout = QHBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
         
-        self.__selectedColorLabel = QLabel()
+        self.__selected_color_label = QLabel()
+        self.__selected_color_label.setFrameShape(QFrame.StyledPanel)
+        self.__selected_color_label.setFrameShadow(QFrame.Sunken)
+        self.__selected_color_label.setMinimumWidth(50)
         
-        layout.addWidget(self.__selectedColorLabel, 1)
+        layout.addWidget(self.__selected_color_label, 1)
         chooseButton = btn_class()
         chooseButton.setText("...")
         chooseButton.clicked.connect(self.__choose_color)
@@ -46,4 +49,4 @@ class ColorSelectionWidget(QWidget):
             self.color_changed.emit(self.__color)
     
     def __refresh_label(self):
-        self.__selectedColorLabel.setStyleSheet('QLabel { background-color: %s }' % self.__color.to_rgb_str())
+        self.__selected_color_label.setStyleSheet('QLabel { background-color: %s }' % self.__color.to_rgb_str())
