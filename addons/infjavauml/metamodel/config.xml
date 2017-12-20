@@ -3,8 +3,6 @@
     <Attribute id="element" type="object">
         <Attribute id="line" type="color" default="black" />
         <Attribute id="fill" type="color" default="lightyellow" />
-        <Attribute id="fill2" type="color" default="lightyellow" />
-        <Attribute id="fill3" type="color" default="black" />
         <Attribute id="shadow" type="color" default="#B0000000" />
         <Attribute id="heading" type="color" default="black" />
         <Attribute id="text" type="color" default="black" />
