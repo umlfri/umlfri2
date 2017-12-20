@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-21 11:13+0100\n"
-"PO-Revision-Date: 2017-11-21 16:38+0100\n"
+"POT-Creation-Date: 2017-12-20 10:32+0100\n"
+"PO-Revision-Date: 2017-12-20 10:32+0100\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -90,11 +90,11 @@ msgstr "Pridať diagram"
 msgid "Add Element"
 msgstr "Pridať element"
 
-msgid "Add-ons"
-msgstr "Rozšírenia"
-
 msgid "Add-on is already installed"
 msgstr "Rozšírenie už je nainštalované"
+
+msgid "Add-ons"
+msgstr "Rozšírenia"
 
 msgid "Align Bottom"
 msgstr "Zarovnať dole"
@@ -275,6 +275,9 @@ msgstr "O jeden dozadu"
 
 msgid "Lower to Bottom"
 msgstr "Presunúť dole"
+
+msgid "Metamodel config..."
+msgstr "Konfigurácia metamodelu..."
 
 msgid "Metamodel version"
 msgstr "Verzia metamodelu"

@@ -1,5 +1,6 @@
 from umlfri2.application import Application
 from umlfri2.application.commands.model import CreateElementCommand
+from umlfri2.qtgui.properties import PropertiesDialog
 from ..base.contextmenu import ContextMenu
 from ..properties import ProjectPropertiesDialog
 
@@ -24,6 +25,10 @@ class ProjectTreeProjectMenu(ContextMenu):
         
         self.addSeparator()
         
+        self._add_menu_item(None, _("Metamodel config..."), None, self.__open_metamodel_config_action)
+        
+        self.addSeparator()
+        
         self._add_menu_item(None, _("Properties..."), None, self.__open_project_properties_action)
     
     def __create_element_action(self, element_type, checked=False):
@@ -32,3 +37,6 @@ class ProjectTreeProjectMenu(ContextMenu):
     
     def __open_project_properties_action(self, checked=False):
         ProjectPropertiesDialog.open_for(self.__main_window, self.__project)
+    
+    def __open_metamodel_config_action(self, checked=False):
+        PropertiesDialog.open_config(self.__main_window, self.__project.metamodel)

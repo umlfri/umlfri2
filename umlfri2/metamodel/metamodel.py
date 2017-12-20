@@ -1,6 +1,8 @@
 from collections import OrderedDict
 from weakref import ref
 
+from umlfri2.ufl.dialog import UflDialog
+from umlfri2.ufl.types import UflObjectType
 from .translation import TranslationList
 
 
@@ -13,7 +15,7 @@ class Metamodel:
         self.__templates.sort(key=lambda item: item.id)
         self.__translations = TranslationList(translations)
         
-        if config is None:
+        if config is None or not config.has_attributes:
             self.__config_structure = UflObjectType({})
             self.__has_config = False
         else:
@@ -82,6 +84,18 @@ class Metamodel:
     @property
     def has_config(self):
         return self.__has_config
+    
+    def apply_config_patch(self, patch):
+        if not self.__has_config:
+            raise Exception
+        self.__config.apply_patch(patch)
+    
+    def create_config_dialog(self):
+        if not self.__has_config:
+            raise Exception
+        dialog = UflDialog(self.__config_structure)
+        dialog.associate(self.__config)
+        return dialog
     
     def compile(self):
         for diagram in self.__diagrams.values():

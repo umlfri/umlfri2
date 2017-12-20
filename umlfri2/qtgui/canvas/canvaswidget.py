@@ -11,6 +11,7 @@ from umlfri2.application.events.application import ZoomChangedEvent
 from umlfri2.application.events.diagram import DiagramChangedEvent, SelectionChangedEvent
 from umlfri2.application.events.model import ObjectDataChangedEvent, ConnectionChangedEvent, ElementCreatedEvent, \
     ElementDeletedEvent, NodeMovedEvent
+from umlfri2.application.events.solution import MetamodelConfigChangedEvent
 from umlfri2.constants.keys import DELETE_FROM_PROJECT, Z_ORDER_RAISE, Z_ORDER_LOWER, Z_ORDER_TO_BOTTOM, Z_ORDER_TO_TOP
 from umlfri2.metamodel import DefaultElementAction
 from umlfri2.model import ElementObject
@@ -45,6 +46,7 @@ class CanvasWidget(QWidget):
         Application().event_dispatcher.subscribe(ElementCreatedEvent, self.__something_changed)
         Application().event_dispatcher.subscribe(ElementDeletedEvent, self.__something_changed)
         Application().event_dispatcher.subscribe(NodeMovedEvent, self.__something_changed)
+        Application().event_dispatcher.subscribe(MetamodelConfigChangedEvent, self.__something_changed)
         
         QShortcut(QKeySequence(QKeySequence.Delete), self).activated.connect(self.__hide_object)
         QShortcut(QKeySequence(DELETE_FROM_PROJECT), self).activated.connect(self.__delete_object)

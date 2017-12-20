@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-21 11:13+0100\n"
+"POT-Creation-Date: 2017-12-20 10:32+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -90,10 +90,10 @@ msgstr ""
 msgid "Add Element"
 msgstr ""
 
-msgid "Add-ons"
+msgid "Add-on is already installed"
 msgstr ""
 
-msgid "Add-on is already installed"
+msgid "Add-ons"
 msgstr ""
 
 msgid "Align Bottom"
@@ -272,6 +272,9 @@ msgid "Lower"
 msgstr ""
 
 msgid "Lower to Bottom"
+msgstr ""
+
+msgid "Metamodel config..."
 msgstr ""
 
 msgid "Metamodel version"

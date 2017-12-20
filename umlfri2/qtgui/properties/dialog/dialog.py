@@ -3,20 +3,21 @@ from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QTabWidget
 
 from umlfri2.application import Application
 from umlfri2.application.commands.model import ApplyPatchCommand
+from umlfri2.application.commands.solution import ApplyMetamodelConfigPatchCommand
 from .listtab import ListPropertyTab
 from .objecttab import ObjectPropertyTab
 from umlfri2.ufl.dialog import UflDialogListTab, UflDialogObjectTab, UflDialogValueTab
 
 
 class PropertiesDialog(QDialog):
-    def __init__(self, main_window, dialog, object): 
+    def __init__(self, main_window, dialog, mk_apply_patch_command): 
         super().__init__(main_window)
         self.__main_window = main_window
         self.setWindowTitle(_("Properties"))
         self.__dialog = dialog
-        self.__object = object
+        self.__mk_apply_patch_command = mk_apply_patch_command
         
-        if object:
+        if mk_apply_patch_command:
             button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel | QDialogButtonBox.Apply)
             button_box.button(QDialogButtonBox.Ok).setText(_("Ok"))
             button_box.button(QDialogButtonBox.Cancel).setText(_("Cancel"))
@@ -68,7 +69,7 @@ class PropertiesDialog(QDialog):
                 return
         
         self.__dialog.finish()
-        command = ApplyPatchCommand(self.__object, self.__dialog.make_patch())
+        command = self.__mk_apply_patch_command(self.__dialog.make_patch())
         Application().commands.execute(command)
         self.__dialog.reset()
         
@@ -79,6 +80,10 @@ class PropertiesDialog(QDialog):
         if self.__dialog.should_save_tab:
             if not self.__tabs[self.__dialog.current_tab.tab_index].handle_needed_save():
                 return
+
+        self.__dialog.finish()
+        command = self.__mk_apply_patch_command(self.__dialog.make_patch())
+        Application().commands.execute(command)
         
         self.accept()
     
@@ -98,9 +103,15 @@ class PropertiesDialog(QDialog):
     def open_for(main_window, object):
         dialog = object.create_ufl_dialog()
         dialog.translate(object.type.metamodel.get_translation(Application().language.current_language))
-        qt_dialog = PropertiesDialog(main_window, dialog, object)
+        qt_dialog = PropertiesDialog(main_window, dialog, lambda patch: ApplyPatchCommand(object, patch))
         qt_dialog.setModal(True)
-        if qt_dialog.exec_() == PropertiesDialog.Accepted:
-            dialog.finish()
-            command = ApplyPatchCommand(object, dialog.make_patch())
-            Application().commands.execute(command)
+        qt_dialog.exec_()
+    
+    @staticmethod
+    def open_config(main_window, metamodel):
+        dialog = metamodel.create_config_dialog()
+        dialog.translate(metamodel.get_translation(Application().language.current_language))
+        solution = Application().solution
+        qt_dialog = PropertiesDialog(main_window, dialog, lambda patch: ApplyMetamodelConfigPatchCommand(solution, metamodel, patch))
+        qt_dialog.setModal(True)
+        qt_dialog.exec_()
