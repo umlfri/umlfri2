@@ -146,7 +146,7 @@ class PropertyTab(QWidget):
                     elif isinstance(widget, UflDialogComboWidget):
                         qt_widget.setEditText(widget.value)
                     elif isinstance(widget, UflDialogFontWidget):
-                        qt_widget.selected_color = widget.value
+                        qt_widget.selected_font = widget.value
                     elif isinstance(widget, UflDialogIntegerWidget):
                         qt_widget.setValue(widget.value)
                     elif isinstance(widget, UflDialogMultiSelectWidget):
