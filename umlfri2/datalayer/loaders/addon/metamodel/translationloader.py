@@ -25,6 +25,8 @@ class TranslationLoader:
                 translations.append(('enumitem', child.attrib["path"], child.attrib["label"]))
             elif child.tag == "{{{0}}}Template".format(ADDON_NAMESPACE):
                 translations.append(('template', child.attrib["id"], child.attrib["label"]))
+            elif child.tag == "{{{0}}}ConfigAttribute".format(ADDON_NAMESPACE):
+                translations.append(('config', child.attrib["id"], child.attrib["label"]))
             else:
                 raise Exception
         

@@ -70,4 +70,20 @@
 
     <Template id="empty" label="Prázdny model UML"/>
     <Template id="empty_class" label="UML model s diagramom tried"/>
+    
+    <ConfigAttribute id="element" label="Element" />
+    <ConfigAttribute id="element/fill" label="Farba výplne" />
+    
+    <ConfigAttribute id="connection" label="Spojenie" />
+    <ConfigAttribute id="connection/arrow" label="Farba šípky" />
+    <ConfigAttribute id="connection/fill" label="Farba výplne šípky" />
+    
+    <ConfigAttribute id="*/line" label="Farba čiary" />
+    <ConfigAttribute id="*/shadow" label="Farba tieňa" />
+    <ConfigAttribute id="*/heading" label="Farba textu nadpisu" />
+    <ConfigAttribute id="*/text" label="Farba textu" />
+    <ConfigAttribute id="*/headingfont" label="Font nadpisu" />
+    <ConfigAttribute id="*/textfont" label="Font textu" />
+    
+    <ConfigAttribute id="background" label="Diagram background color" />
 </Translation>

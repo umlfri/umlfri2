@@ -41,6 +41,12 @@
                         <xs:attribute name="label" type="xs:string"/>
                     </xs:complexType>
                 </xs:element>
+                <xs:element name="ConfigAttribute">
+                    <xs:complexType>
+                        <xs:attribute name="id" type="xs:string"/>
+                        <xs:attribute name="label" type="xs:string"/>
+                    </xs:complexType>
+                </xs:element>
             </xs:choice>
             <xs:attribute name="lang" type="xs:string" use="required"/>
         </xs:complexType>

@@ -10,7 +10,7 @@ class AttributeTranslation:
     
     def add_parent(self, name):
         if name not in self.__parents:
-            self.__parents[name] = AttributeTranslation(name == '**')
+            self.__parents[name] = self.__class__(name == '**')
         return self.__parents[name]
     
     @property
@@ -20,6 +20,10 @@ class AttributeTranslation:
     @label.setter
     def label(self, value):
         self.__label = value
+    
+    @property
+    def has_parents(self):
+        return bool(self.__parents)
     
     def translate(self, object):
         if isinstance(object, UflObjectAttribute):
@@ -33,7 +37,8 @@ class AttributeTranslation:
             else:
                 return None
         elif isinstance(object, (UflObjectType, UflListType, UflEnumType, UflFlagsType)):
-            return self.translate(object.parent)
+            ret = self.translate(object.parent)
+            return ret
         elif isinstance(object, UflEnumPossibility):
             if object.name in self.__parents:
                 ret = self.__parents[object.name].translate(object.enum)

@@ -21,7 +21,7 @@ class Metamodel:
         else:
             self.__config_structure = config
             self.__has_config = True
-        self.__config_structure.set_parent(None)
+        self.__config_structure.set_parent(self)
         self.__config = self.__config_structure.build_default(None)
         
         self.__addon = None

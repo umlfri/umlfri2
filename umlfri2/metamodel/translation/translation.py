@@ -6,6 +6,7 @@ from ..projecttemplate import ProjectTemplate
 from umlfri2.ufl.types import UflObjectAttribute, UflEnumPossibility
 
 from .attributetranslation import AttributeTranslation
+from .configattributetransslation import ConfigAttributeTranslation
 
 
 class Translation:
@@ -15,6 +16,7 @@ class Translation:
         self.__diagram_names = {}
         self.__connection_names = {}
         self.__attribute_names = AttributeTranslation()
+        self.__config_attribute_names = ConfigAttributeTranslation()
         self.__enum_item_names = AttributeTranslation()
         self.__template_names = {}
         
@@ -27,6 +29,11 @@ class Translation:
                 self.__connection_names[path] = label
             elif type == 'attribute':
                 child = self.__attribute_names
+                for part in reversed(path.split('/')):
+                    child = child.add_parent(part)
+                child.label = label
+            elif type == 'config':
+                child = self.__config_attribute_names
                 for part in reversed(path.split('/')):
                     child = child.add_parent(part)
                 child.label = label
@@ -54,9 +61,10 @@ class Translation:
         elif isinstance(object, UflObjectAttribute):
             ret = self.__attribute_names.translate(object)
             if ret is None:
-                return object.name
-            else:
-                return ret
+                ret = self.__config_attribute_names.translate(object)
+                if ret is None:
+                    return object.name
+            return ret
         elif isinstance(object, UflEnumPossibility):
             ret = self.__enum_item_names.translate(object)
             if ret is None:

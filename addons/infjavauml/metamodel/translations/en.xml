@@ -68,4 +68,20 @@
     
     <Template id="empty" label="Empty UML model"/>
     <Template id="empty_class" label="UML with class diagram"/>
+    
+    <ConfigAttribute id="element" label="Element" />
+    <ConfigAttribute id="element/fill" label="Fill color" />
+    
+    <ConfigAttribute id="connection" label="Connection" />
+    <ConfigAttribute id="connection/line" label="Line color" />
+    <ConfigAttribute id="connection/arrow" label="Arrow color" />
+    
+    <ConfigAttribute id="*/line" label="Line color" />
+    <ConfigAttribute id="*/shadow" label="Shadow color" />
+    <ConfigAttribute id="*/heading" label="Heading text color" />
+    <ConfigAttribute id="*/text" label="Text color" />
+    <ConfigAttribute id="*/headingfont" label="Heading font" />
+    <ConfigAttribute id="*/textfont" label="Text font" />
+    
+    <ConfigAttribute id="background" label="Diagram background color" />
 </Translation>
