@@ -253,3 +253,12 @@ class ElementObject:
         
         for child in self.__children:
             child.__notify_node_change_children(depth+1)
+    
+    def invalidate_all_caches(self):
+        self.__cache.invalidate()
+        
+        for element in self.__children:
+            element.invalidate_all_caches()
+        
+        for connection in self.__connections:
+            connection.cache.invalidate()

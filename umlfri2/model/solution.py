@@ -38,3 +38,7 @@ class Solution:
         
         for project in self.__projects:
             yield from recursion(project)
+    
+    def invalidate_all_caches(self):
+        for project in self.__projects:
+            project.invalidate_all_caches()

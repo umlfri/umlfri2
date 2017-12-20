@@ -13,6 +13,8 @@ class ModelTemporaryDataCache:
     
     def invalidate(self):
         self.__invalidated = True
+        for dependant in self.__reverse_dependencies:
+            dependant.invalidate()
     
     def refresh(self, **kwargs):
         self.__is_refreshing = True

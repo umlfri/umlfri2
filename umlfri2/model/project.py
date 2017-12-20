@@ -80,3 +80,7 @@ class Project:
                 yield from recursion(child)
         
         return recursion(self)
+    
+    def invalidate_all_caches(self):
+        for element in self.__children:
+            element.invalidate_all_caches()
