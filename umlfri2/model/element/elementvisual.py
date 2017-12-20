@@ -10,8 +10,6 @@ class ElementVisual:
         self.__cache = ModelTemporaryDataCache(self.__create_appearance_object)
         self.__cache.depend_on(object.cache)
         
-        self.__cache.depend_on(self.__cache)
-        
         self.__diagram = ref(diagram)
         
         self.__object = object
