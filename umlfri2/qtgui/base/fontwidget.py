@@ -14,6 +14,7 @@ class FontSelectionWidget(QWidget):
         self.__font = Fonts.default
 
         layout = QHBoxLayout()
+        layout.setSpacing(0)
         layout.setContentsMargins(0, 0, 0, 0)
 
         self.__selected_font_label = QLabel()
