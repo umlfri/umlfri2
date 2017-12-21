@@ -73,8 +73,8 @@
     <ConfigAttribute id="element/fill" label="Fill color" />
     
     <ConfigAttribute id="connection" label="Connection" />
-    <ConfigAttribute id="connection/line" label="Line color" />
     <ConfigAttribute id="connection/arrow" label="Arrow color" />
+    <ConfigAttribute id="connection/fill" label="Arrow fill color" />
     
     <ConfigAttribute id="*/line" label="Line color" />
     <ConfigAttribute id="*/shadow" label="Shadow color" />
