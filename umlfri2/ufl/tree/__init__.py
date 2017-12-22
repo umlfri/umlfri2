@@ -8,3 +8,5 @@ from .variable import UflVariableNode
 from .metadataccess import UflMetadataAccessNode
 from .iteratoraccess import UflIteratorAccessNode
 from .unpack import UflUnpackNode
+from .expression import UflExpressionNode
+from .cast import UflCastNode

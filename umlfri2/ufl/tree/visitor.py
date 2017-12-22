@@ -28,3 +28,9 @@ class UflVisitor:
     
     def visit_unpack(self, node):
         raise NotImplementedError
+    
+    def visit_expression(self, node):
+        raise NotImplementedError
+    
+    def visit_cast(self, node):
+        raise NotImplementedError

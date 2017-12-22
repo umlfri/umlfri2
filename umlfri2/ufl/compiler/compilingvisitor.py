@@ -1,5 +1,4 @@
-from umlfri2.ufl.types import UflDataWithMetadataType, UflNullableType, UflAnyType, UflDecimalType
-from ..types import UflTypedEnumType, UflObjectType, UflBoolType, UflStringType, UflIntegerType
+from ..types import UflTypedEnumType, UflDataWithMetadataType, UflStringType, UflBoolType
 from ..tree.visitor import UflVisitor
 
 
@@ -76,3 +75,16 @@ class UflCompilingVisitor(UflVisitor):
     def visit_unpack(self, node):
         object = node.object.accept(self)
         return '({0}).{1}'.format(object, UflDataWithMetadataType.VALUE_ATTRIBUTE)
+    
+    def visit_expression(self, node):
+        return node.result.accept(self)
+    
+    def visit_cast(self, node):
+        object = node.object.accept(self)
+        
+        if isinstance(node.type, UflStringType):
+            return "str({0})".format(object)
+        elif isinstance(node.type, UflBoolType):
+            return "bool({0})".format(object)
+        else:
+            raise Exception

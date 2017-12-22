@@ -1,18 +1,19 @@
-from umlfri2.ufl.types import UflDataWithMetadataType, UflNullableType, UflAnyType, UflDecimalType, UflNumberType
-from ..types import UflTypedEnumType, UflObjectType, UflBoolType, UflStringType, UflIntegerType
+from ..types import UflDataWithMetadataType, UflNullableType, UflAnyType, UflDecimalType, UflNumberType, \
+    UflTypedEnumType, UflObjectType, UflBoolType, UflStringType, UflIntegerType
 from ..tree.visitor import UflVisitor
 from ..tree import *
 
 
 class UflTypingVisitor(UflVisitor):
     """
-    Compiles UflExpression into python code
+    Type checks UflExpression into python code
     """
     
-    def __init__(self, params, enums, variable_prefix):
+    def __init__(self, params, enums, variable_prefix, expected_type):
         self.__params = params
         self.__enums = {name: UflTypedEnumType(enum) for name, enum in enums.items()}
         self.__variable_prefix = variable_prefix
+        self.__expected_type = expected_type
     
     def visit_attribute_access(self, node):
         obj = self.__demeta(node.object.accept(self))
@@ -135,7 +136,20 @@ class UflTypingVisitor(UflVisitor):
         raise NotImplementedError
     
     def visit_unpack(self, node):
-        raise NotImplementedError
+        raise Exception("Weird ufl expression tree")
+    
+    def visit_expression(self, node):
+        ret = self.__demeta(node.result.accept(self))
+
+        if isinstance(self.__expected_type, UflBoolType) and not isinstance(ret.type, UflBoolType):
+            ret = UflCastNode(ret, UflBoolType())
+        elif isinstance(self.__expected_type, UflStringType) and not isinstance(ret.type, UflStringType) and ret.type.is_convertable_to_string:
+            ret = UflCastNode(ret, UflStringType())
+        
+        return UflExpressionNode(ret, ret.type)
+    
+    def visit_cast(self, node):
+        raise Exception("Weird ufl expression tree")
     
     def __demeta(self, node):
         while isinstance(node.type, UflDataWithMetadataType):
