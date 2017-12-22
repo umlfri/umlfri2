@@ -85,5 +85,5 @@
     <ConfigAttribute id="*/headingfont" label="Font nadpisu" />
     <ConfigAttribute id="*/textfont" label="Font textu" />
     
-    <ConfigAttribute id="background" label="Diagram background color" />
+    <ConfigAttribute id="background" label="Farba pozadia diagramu" />
 </Translation>
