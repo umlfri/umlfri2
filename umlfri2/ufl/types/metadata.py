@@ -1,11 +1,11 @@
-from .type import UflType
+from .type import UflType, UflAttributeDescription
 
 
 class UflMetadataType(UflType):
     def __init__(self, metadata_type, underlying_type):
         metadata = {}
         for name, type in metadata_type.items():
-            metadata[name] = (name, type)
+            metadata[name] = UflAttributeDescription(name, type)
         
         next_type = underlying_type
         next_prefix = '{0}.'.format(UflDataWithMetadataType.VALUE_ATTRIBUTE)
@@ -13,7 +13,7 @@ class UflMetadataType(UflType):
         while isinstance(next_type, UflDataWithMetadataType):
             for name, type in next_type.metadata_types:
                 if name not in metadata:
-                    metadata[name] = (next_prefix + name, type)
+                    metadata[name] = UflAttributeDescription(next_prefix + name, type)
             next_type = next_type.underlying_type
             next_prefix = '{0}.{1}'.format(UflDataWithMetadataType.VALUE_ATTRIBUTE, next_prefix)
 

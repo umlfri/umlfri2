@@ -1,4 +1,4 @@
-from .type import UflType, UflMethodDescription
+from .type import UflType, UflMethodDescription, UflAttributeDescription
 from .integer import UflIntegerType
 from .string import UflStringType
 from .typedenum import UflTypedEnumType
@@ -34,9 +34,9 @@ class UflFontType(UflType):
         return "Font"
 
 UflFontType.ALLOWED_DIRECT_ATTRIBUTES = {
-    'size': ('size', UflIntegerType()),
-    'style': ('style', UflTypedEnumType(FontStyle)),
-    'family': ('family', UflStringType()),
+    'size': UflAttributeDescription('size', UflIntegerType()),
+    'style': UflAttributeDescription('style', UflTypedEnumType(FontStyle)),
+    'family': UflAttributeDescription('family', UflStringType()),
 }
 
 UflFontType.ALLOWED_DIRECT_METHODS = {

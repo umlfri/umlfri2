@@ -1,6 +1,7 @@
 from collections import namedtuple
 
 UflMethodDescription = namedtuple('UflMethodDescription', ('selector', 'parameters', 'return_type'))
+UflAttributeDescription = namedtuple('UflAttributeDescription', ('accessor', 'type'))
 
 class UflType:
     ALLOWED_DIRECT_ATTRIBUTES = {}

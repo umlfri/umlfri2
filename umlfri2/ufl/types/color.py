@@ -1,4 +1,4 @@
-from .type import UflType, UflMethodDescription
+from .type import UflType, UflMethodDescription, UflAttributeDescription
 from .integer import UflIntegerType
 from umlfri2.types.color import Colors, Color
 
@@ -31,10 +31,10 @@ class UflColorType(UflType):
         return 'Color'
 
 UflType.ALLOWED_DIRECT_ATTRIBUTES = {
-    'r': ('r', UflIntegerType()),
-    'g': ('g', UflIntegerType()),
-    'b': ('b', UflIntegerType()),
-    'a': ('alpha', UflIntegerType()),
+    'r': UflAttributeDescription('r', UflIntegerType()),
+    'g': UflAttributeDescription('g', UflIntegerType()),
+    'b': UflAttributeDescription('b', UflIntegerType()),
+    'a': UflAttributeDescription('alpha', UflIntegerType()),
 }
 
 UflColorType.ALLOWED_DIRECT_METHODS = {
