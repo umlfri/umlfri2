@@ -19,6 +19,12 @@ class Font:
     def style(self):
         return self.__style
     
+    def change_family(self, new_family):
+        return Font(new_family, self.__size, self.__style)
+    
+    def change_size(self, new_size):
+        return Font(self.__family, new_size, self.__style)
+    
     def change(self, style, value):
         new_style = set(self.__style)
         

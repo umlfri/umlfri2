@@ -2,6 +2,7 @@ from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QFont, QFontMetrics
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLabel, QPushButton, QFontDialog, QFrame
 
+from umlfri2.qtgui.appdialogs.fontdialog import FontDialog
 from umlfri2.types.enums import FontStyle
 from umlfri2.types.font import Font, Fonts
 
@@ -43,31 +44,10 @@ class FontSelectionWidget(QWidget):
         self.__refresh_label()
 
     def __choose_font(self):
-        fontPixelsPerPoint = self.__selected_font_label.physicalDpiY() / 72
-        
-        # TODO: change font dialog to custom dialog, QFontDialog does not work with pixelSize
-        dialog = QFontDialog()
-        qfont = QFont(self.__font.family)
-        qfont.setPointSize(self.__font.size / fontPixelsPerPoint)
-        qfont.setBold(FontStyle.bold in self.__font.style)
-        qfont.setItalic(FontStyle.italic in self.__font.style)
-        qfont.setStrikeOut(FontStyle.strike in self.__font.style)
-        qfont.setUnderline(FontStyle.underline in self.__font.style)
-        dialog.setCurrentFont(qfont)
-        if dialog.exec_() == QFontDialog.Accepted:
-            font = dialog.selectedFont()
-            family = font.family()
-            size = int(font.pointSize() * fontPixelsPerPoint)
-            style = []
-            if font.bold():
-                style.append(FontStyle.bold)
-            if font.italic():
-                style.append(FontStyle.italic)
-            if font.strikeOut():
-                style.append(FontStyle.strike)
-            if font.underline():
-                style.append(FontStyle.underline)
-            self.__font = Font(family, size, style)
+        dialog = FontDialog()
+        dialog.ufl_font = self.__font
+        if dialog.exec() == FontDialog.Accepted:
+            self.__font = dialog.ufl_font
             self.__refresh_label()
             self.font_changed.emit(self.__font)
     

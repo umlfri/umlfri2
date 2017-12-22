@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-20 10:32+0100\n"
+"POT-Creation-Date: 2017-12-22 03:16+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -130,6 +130,9 @@ msgstr ""
 msgid "Automatic Updates"
 msgstr ""
 
+msgid "Bold"
+msgstr ""
+
 msgid "C&ut"
 msgstr ""
 
@@ -232,6 +235,9 @@ msgstr ""
 msgid "Find in the Project Tree"
 msgstr ""
 
+msgid "Font family:"
+msgstr ""
+
 msgid "Free Python-based DSM CASE tool targeted on computer sciences education"
 msgstr ""
 
@@ -254,6 +260,9 @@ msgid "Install"
 msgstr ""
 
 msgid "Installed Add-ons"
+msgstr ""
+
+msgid "Italic"
 msgstr ""
 
 msgid "Latest unstable version available:"
@@ -394,6 +403,9 @@ msgstr ""
 msgid "Select &All"
 msgstr ""
 
+msgid "Select font"
+msgstr ""
+
 msgid "Show Connection"
 msgstr ""
 
@@ -406,6 +418,9 @@ msgstr ""
 msgid "Show in Diagram"
 msgstr ""
 
+msgid "Size (px):"
+msgstr ""
+
 msgid "Snap to Other Objects"
 msgstr ""
 
@@ -416,6 +431,9 @@ msgid "Start Page"
 msgstr ""
 
 msgid "Stop"
+msgstr ""
+
+msgid "Strike Out"
 msgstr ""
 
 msgid "The data on this tab has been modified."
@@ -441,6 +459,9 @@ msgid "UML .FRI 2"
 msgstr ""
 
 msgid "UML .FRI 2 projects"
+msgstr ""
+
+msgid "Underline"
 msgstr ""
 
 msgid "Undo"

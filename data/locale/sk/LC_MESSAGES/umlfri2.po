@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-20 10:32+0100\n"
-"PO-Revision-Date: 2017-12-20 10:32+0100\n"
+"POT-Creation-Date: 2017-12-22 03:16+0100\n"
+"PO-Revision-Date: 2017-12-22 03:17+0100\n"
 "Last-Translator: Ján Janech <jan.janech@kst.uniza.sk>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -130,6 +130,9 @@ msgstr "Autor"
 msgid "Automatic Updates"
 msgstr "Automatické aktualizácie"
 
+msgid "Bold"
+msgstr "Tučné písmo"
+
 msgid "C&ut"
 msgstr "Vy&strihnúť"
 
@@ -232,6 +235,9 @@ msgstr "Exportovať ako &obrázok"
 msgid "Find in the Project Tree"
 msgstr "Nájsť v projektovom strome"
 
+msgid "Font family:"
+msgstr "Typ písma:"
+
 msgid "Free Python-based DSM CASE tool targeted on computer sciences education"
 msgstr ""
 "Slobodný DSM CASE nástroj založený na platforme Python a cielený na výučbu "
@@ -257,6 +263,9 @@ msgstr "Inštalovať"
 
 msgid "Installed Add-ons"
 msgstr "Nainštalované rozšírenia"
+
+msgid "Italic"
+msgstr "Šikmé písmo"
 
 msgid "Latest unstable version available:"
 msgstr "Posledná dostupná testovacia verzia:"
@@ -396,6 +405,9 @@ msgstr "Vybrať"
 msgid "Select &All"
 msgstr "Vybrať &všetko"
 
+msgid "Select font"
+msgstr "Vyber font"
+
 msgid "Show Connection"
 msgstr "Zobraz spojenie"
 
@@ -408,6 +420,9 @@ msgstr "Zobraziť na &celú obrazovku"
 msgid "Show in Diagram"
 msgstr "Zobraziť v diagrame"
 
+msgid "Size (px):"
+msgstr "Veľkosť (px):"
+
 msgid "Snap to Other Objects"
 msgstr "Prichytávanie k iným objektom"
 
@@ -419,6 +434,9 @@ msgstr "Štart"
 
 msgid "Stop"
 msgstr "Zastaviť"
+
+msgid "Strike Out"
+msgstr "Prečiarknutý text"
 
 msgid "The data on this tab has been modified."
 msgstr "Dáta na tejto záložke boli zmenené"
@@ -444,6 +462,9 @@ msgstr "UML .FRI 2"
 
 msgid "UML .FRI 2 projects"
 msgstr "Projekty UML .FRI 2"
+
+msgid "Underline"
+msgstr "Podčiarknutý text"
 
 msgid "Undo"
 msgstr "Späť"
