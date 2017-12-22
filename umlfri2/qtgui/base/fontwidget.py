@@ -44,7 +44,7 @@ class FontSelectionWidget(QWidget):
         self.__refresh_label()
 
     def __choose_font(self):
-        dialog = FontDialog()
+        dialog = FontDialog(self.window())
         dialog.ufl_font = self.__font
         if dialog.exec() == FontDialog.Accepted:
             self.__font = dialog.ufl_font

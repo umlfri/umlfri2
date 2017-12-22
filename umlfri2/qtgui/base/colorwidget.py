@@ -42,7 +42,7 @@ class ColorSelectionWidget(QWidget):
         self.__refresh_label()
     
     def __choose_color(self):
-        dialog = QColorDialog()
+        dialog = QColorDialog(self.window())
         dialog.setOption(QColorDialog.ShowAlphaChannel, True)
         dialog.setCurrentColor(QColor.fromRgba(self.__color.argb))
         if dialog.exec_() == QColorDialog.Accepted:
