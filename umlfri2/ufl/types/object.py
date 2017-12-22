@@ -63,8 +63,8 @@ class UflObjectType(UflType):
         if self.__attributes.keys() != other.__attributes.keys():
             return False
         
-        for name, type in self.__attributes:
-            if not type.is_assignable_from(other.__attributes[name].type):
+        for name, attr in self.__attributes.items():
+            if not attr.type.is_assignable_from(other.__attributes[name].type):
                 return False
         
         return True

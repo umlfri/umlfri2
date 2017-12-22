@@ -11,7 +11,7 @@ class UflStringEnumType(UflEnumType):
         if not isinstance(other, UflStringEnumType):
             return False
         
-        return self.possibilities == other.possibilities
+        return all(x.name == y.name for x, y in zip(self.possibilities, other.possibilities))
 
     @property
     def is_convertable_to_string(self):
