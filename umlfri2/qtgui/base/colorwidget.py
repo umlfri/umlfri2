@@ -43,6 +43,7 @@ class ColorSelectionWidget(QWidget):
     
     def __choose_color(self):
         dialog = QColorDialog()
+        dialog.setOption(QColorDialog.ShowAlphaChannel, True)
         dialog.setCurrentColor(QColor.fromRgba(self.__color.argb))
         if dialog.exec_() == QColorDialog.Accepted:
             self.__color = Color(dialog.currentColor().rgba())
