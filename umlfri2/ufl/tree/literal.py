@@ -1,8 +1,10 @@
 from .node import UflNode
 
 
-class UflLiteral(UflNode):
-    def __init__(self, value):
+class UflLiteralNode(UflNode):
+    def __init__(self, value, type=None):
+        super().__init__(type)
+        
         self.__value = value
     
     @property

@@ -1,8 +1,10 @@
 from .node import UflNode
 
 
-class UflMethodCall(UflNode):
-    def __init__(self, target, selector, parameters):
+class UflMethodCallNode(UflNode):
+    def __init__(self, target, selector, parameters, type=None):
+        super().__init__(type)
+        
         self.__target = target
         self.__selector = selector
         self.__parameters = parameters

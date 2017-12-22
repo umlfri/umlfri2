@@ -1,8 +1,10 @@
 from .node import UflNode
 
 
-class UflUnary(UflNode):
-    def __init__(self, operator, operand):
+class UflUnaryNode(UflNode):
+    def __init__(self, operator, operand, type=None):
+        super().__init__(type)
+        
         self.__operator = operator
         self.__operand = operand
     

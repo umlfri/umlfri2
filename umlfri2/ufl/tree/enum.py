@@ -1,8 +1,10 @@
 from .node import UflNode
 
 
-class UflEnum(UflNode):
-    def __init__(self, enum, item):
+class UflEnumNode(UflNode):
+    def __init__(self, enum, item, type=None):
+        super().__init__(type)
+        
         self.__enum = enum
         self.__item = item
     

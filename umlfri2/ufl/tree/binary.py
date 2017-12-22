@@ -2,8 +2,10 @@ from .node import UflNode
 
 
 
-class UflBinary(UflNode):
-    def __init__(self, operand1, operator, operand2):
+class UflBinaryNode(UflNode):
+    def __init__(self, operand1, operator, operand2, type=None):
+        super().__init__(type)
+        
         self.__operand1 = operand1
         self.__operand2 = operand2
         self.__operator = operator

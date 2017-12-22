@@ -1,8 +1,10 @@
 from .node import UflNode
 
 
-class UflAttributeAccess(UflNode):
-    def __init__(self, obj, attribute):
+class UflAttributeAccessNode(UflNode):
+    def __init__(self, obj, attribute, type=None):
+        super().__init__(type)
+        
         self.__object = obj
         self.__attribute = attribute
     

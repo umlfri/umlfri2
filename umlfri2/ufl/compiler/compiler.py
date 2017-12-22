@@ -1,14 +1,19 @@
+from .typingvisitor import UflTypingVisitor
 from .compilingvisitor import UflCompilingVisitor
 from ..parser import parse_ufl
 from umlfri2.ufl.types import UflBoolType, UflStringType, UflDataWithMetadataType
 
 
 def compile_ufl(expression, expected_type, variables, variable_prefix=None, enums={}):
-    visitor = UflCompilingVisitor(variables, enums, variable_prefix)
     tree = parse_ufl(expression)
     
-    return_type, code = tree.accept(visitor)
+    typing_visitor = UflTypingVisitor(variables, enums, variable_prefix)
+    typed_tree = tree.accept(typing_visitor)
     
+    visitor = UflCompilingVisitor(variable_prefix)
+    code = typed_tree.accept(visitor)
+    
+    return_type = typed_tree.type
     if not isinstance(expected_type, UflDataWithMetadataType) and isinstance(return_type, UflDataWithMetadataType):
         code = '({0}).{1}'.format(code, UflDataWithMetadataType.VALUE_ATTRIBUTE)
         return_type = return_type.underlying_type

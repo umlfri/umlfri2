@@ -1,0 +1,143 @@
+from umlfri2.ufl.types import UflDataWithMetadataType, UflNullableType, UflAnyType, UflDecimalType, UflNumberType
+from ..types import UflTypedEnumType, UflObjectType, UflBoolType, UflStringType, UflIntegerType
+from ..tree.visitor import UflVisitor
+from ..tree import *
+
+
+class UflTypingVisitor(UflVisitor):
+    """
+    Compiles UflExpression into python code
+    """
+    
+    def __init__(self, params, enums, variable_prefix):
+        self.__params = params
+        self.__enums = {name: UflTypedEnumType(enum) for name, enum in enums.items()}
+        self.__variable_prefix = variable_prefix
+    
+    def visit_attribute_access(self, node):
+        obj = self.__demeta(node.object.accept(self))
+        
+        if node.attribute in obj.type.ALLOWED_DIRECT_ATTRIBUTES:
+            attr_type = obj.type.ALLOWED_DIRECT_ATTRIBUTES[node.attribute].type
+        elif isinstance(obj.type, UflObjectType) and obj.type.contains_attribute(node.attribute):
+            attr_type = obj.type.get_attribute(node.attribute).type
+        else:
+            raise Exception("Unknown attribute {0}".format(node.attribute))
+        
+        return UflAttributeAccessNode(obj, node.attribute, attr_type)
+    
+    def visit_enum(self, node):
+        enum_type = self.__enums[node.enum]
+        
+        if not enum_type.is_valid_item(node.item):
+            raise Exception("Unknown enum item {0}::{1}".format(node.enum, node.item))
+        
+        return UflEnumNode(node.enum, node.item, enum_type)
+    
+    def visit_method_call(self, node):
+        target = self.__demeta(node.target.accept(self))
+        
+        params = [self.__demeta(param.accept(self)) for param in node.parameters]
+        
+        if not node.selector in target.type.ALLOWED_DIRECT_METHODS:
+            raise Exception("Unknown method {0}".format(node.selector))
+        
+        methoddesc = target.type.ALLOWED_DIRECT_METHODS[node.selector]
+        if len(params) != len(methoddesc.parameters):
+            raise Exception("Incorrect param count")
+        
+        for param, expected in zip(params, methoddesc.parameters):
+            if not expected.is_assignable_from(param.type):
+                raise Exception("Incorrect param types")
+        
+        return UflMethodCallNode(target, node.selector, params, methoddesc.return_type)
+    
+    def visit_variable(self, node):
+        var_name = node.name
+        if self.__variable_prefix is not None:
+            var_name = self.__variable_prefix + var_name
+        
+        return UflVariableNode(node.name, self.__params[var_name])
+    
+    def visit_binary(self, node):
+        operand1 = self.__demeta(node.operand1.accept(self))
+        operand2 = self.__demeta(node.operand2.accept(self))
+        
+        if node.operator in ('!=', '=='):
+            if not (operand1.type.is_equatable_to(operand2.type) or operand2.type.is_equatable_to(operand1.type)):
+                raise Exception("Incompatible types {0} and {1}".format(operand1.type, operand2.type))
+            
+            type = UflBoolType()
+        elif node.operator in ('<', '>', '<=', '>='):
+            if not (operand1.type.is_comparable_with(operand2.type) or operand2.type.is_comparable_with(operand1.type)):
+                raise Exception("Incompatible types {0} and {1}".format(operand1.type, operand2.type))
+            
+            type = UflBoolType()
+        elif node.operator in ('+', '-', '*', '/', '//', '%'):
+            if not isinstance(operand1.type, UflNumberType) or not isinstance(operand2.type, UflNumberType):
+                raise Exception("Cannot apply arithmetic operator to {0} and {1}".format(operand1.type, operand2.type))
+            
+            if isinstance(operand1.type, UflDecimalType) or isinstance(operand2.type, UflDecimalType):
+                type = UflDecimalType()
+            else:
+                type = UflIntegerType()
+        elif node.operator in ('||', '&&'):
+            if not isinstance(operand1.type, UflBoolType) or not isinstance(operand2.type, UflBoolType):
+                raise Exception("Cannot apply logic operator to {0} and {1}".format(operand1.type, operand2.type))
+            
+            if node.operator == '&&':
+                type = UflBoolType()
+            else:
+                type = UflBoolType()
+        else:
+            raise Exception
+        
+        return UflBinaryNode(operand1, node.operator, operand2, type)
+    
+    def visit_unary(self, node):
+        operand = self.__demeta(node.operand.accept(self))
+        
+        if node.operator == '!':
+            if not isinstance(operand.type, UflBoolType):
+                raise Exception("Cannot apply operator ! to anything but boolean value")
+            type = UflBoolType()
+        elif node.operator in ('+', '-'):
+            if not isinstance(operand.type, UflIntegerType):
+                raise Exception("Cannot apply arithmetic operator to anything but number")
+            type = UflIntegerType()
+        else:
+            raise Exception
+        
+        return UflUnaryNode(node.operator, operand, type)
+    
+    def visit_literal(self, node):
+        if isinstance(node.value, str):
+            type = UflStringType()
+        elif isinstance(node.value, bool):
+            type = UflBoolType()
+        elif isinstance(node.value, int):
+            type = UflIntegerType()
+        elif node.value is None:
+            type = UflNullableType(UflAnyType())
+        else:
+            raise Exception('Invalid literal')
+        
+        return UflLiteralNode(node.value, type)
+    
+    def visit_metadata_access(self, node):
+        object = node.object.accept(self)
+        if not isinstance(object.type, UflDataWithMetadataType):
+            raise Exception('Does not have metadata for the value, cannot apply metadata access operator')
+
+        return UflMetadataAccessNode(object, object.type.metadata_type)
+    
+    def visit_iterator_access(self, node):
+        raise NotImplementedError
+    
+    def visit_unpack(self, node):
+        raise NotImplementedError
+    
+    def __demeta(self, node):
+        while isinstance(node.type, UflDataWithMetadataType):
+            node = UflUnpackNode(node, node.type.underlying_type)
+        return node

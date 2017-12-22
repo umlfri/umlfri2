@@ -1,7 +1,10 @@
 from .node import UflNode
 
-class UflVariable(UflNode):
-    def __init__(self, name):
+
+class UflVariableNode(UflNode):
+    def __init__(self, name, type=None):
+        super().__init__(type)
+        
         self.__name = name
     
     @property
