@@ -103,9 +103,12 @@ class UflTypingVisitor(UflVisitor):
                 raise Exception("Cannot apply operator ! to anything but boolean value")
             type = UflBoolType()
         elif node.operator in ('+', '-'):
-            if not isinstance(operand.type, UflIntegerType):
+            if isinstance(operand.type, UflDecimalType):
+                type = UflDecimalType()
+            elif isinstance(operand.type, UflIntegerType):
+                type = UflIntegerType()
+            else:
                 raise Exception("Cannot apply arithmetic operator to anything but number")
-            type = UflIntegerType()
         else:
             raise Exception
         
