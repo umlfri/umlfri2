@@ -18,7 +18,7 @@ class UflExpression(Expression):
         return self.__compiled.type
     
     def __call__(self, context):
-        return self.__compiled.compiled_function(**context.as_dict(self.__compiled.variable_prefix))
+        return self.__compiled.compiled_function(*context.get_variables(self.__compiled.parameters))
     
     def __repr__(self):
         return '<UflExpression "{0}" of type {1}>'.format(self.__expression, self.__compiled.type)

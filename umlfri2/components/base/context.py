@@ -5,11 +5,8 @@ class Context:
     def get_variable(self, name):
         return self.__locals[name]
     
-    def as_dict(self, prefix=None):
-        if prefix is None:
-            return self.__locals.copy()
-        else:
-            return {prefix + k: v for k, v in self.__locals.items()}
+    def get_variables(self, names):
+        return (self.__locals[name] for name in names)
     
     def set_variable(self, name, item):
         ret = Context()

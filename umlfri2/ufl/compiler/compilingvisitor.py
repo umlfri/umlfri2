@@ -77,7 +77,11 @@ class UflCompilingVisitor(UflVisitor):
         return '({0}).{1}'.format(object, UflDataWithMetadataType.VALUE_ATTRIBUTE)
     
     def visit_expression(self, node):
-        return node.result.accept(self)
+        expression_source = node.result.accept(self)
+        
+        variables = (self.__variable_prefix + name for name in node.variables)
+        
+        return 'lambda {0}: {1}'.format(", ".join(variables), expression_source)
     
     def visit_cast(self, node):
         object = node.object.accept(self)

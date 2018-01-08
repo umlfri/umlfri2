@@ -13,6 +13,7 @@ class UflTypingVisitor(UflVisitor):
         self.__params = params
         self.__enums = {name: UflTypedEnumType(enum) for name, enum in enums.items()}
         self.__expected_type = expected_type
+        self.__used_params = set()
     
     def visit_attribute_access(self, node):
         obj = self.__demeta(node.object.accept(self))
@@ -53,6 +54,7 @@ class UflTypingVisitor(UflVisitor):
         return UflMethodCallNode(target, node.selector, params, methoddesc.return_type)
     
     def visit_variable(self, node):
+        self.__used_params.add(node.name)
         return UflVariableNode(node.name, self.__params[node.name])
     
     def visit_binary(self, node):
@@ -144,7 +146,9 @@ class UflTypingVisitor(UflVisitor):
         elif isinstance(self.__expected_type, UflStringType) and not isinstance(ret.type, UflStringType) and ret.type.is_convertable_to_string:
             ret = UflCastNode(ret, UflStringType())
         
-        return UflExpressionNode(ret, ret.type)
+        variables = {name: self.__params[name] for name in self.__used_params}
+        
+        return UflExpressionNode(ret, variables, ret.type)
     
     def visit_cast(self, node):
         raise Exception("Weird ufl expression tree")
