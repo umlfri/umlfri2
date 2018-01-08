@@ -1,30 +1,24 @@
-from umlfri2.types.enums import ALL_ENUMS
 from .expression import Expression
-from umlfri2.ufl.compiler import compile_ufl
+from umlfri2.ufl.compiler import CompiledUflExpression
 
 
 class UflExpression(Expression):
-    __VARIABLE_PREFIX="ufl_"
-    
     def __init__(self, expression):
         self.__expression = expression
         self.__compiled = None
-        self.__type = None
     
     def compile(self, type_context, expected_type):
-        self.__type, self.__compiled = compile_ufl(
+        self.__compiled = CompiledUflExpression(
             self.__expression,
             expected_type,
-            type_context.as_dict(self.__VARIABLE_PREFIX),
-            variable_prefix=self.__VARIABLE_PREFIX,
-            enums=ALL_ENUMS
+            type_context.as_dict()
         )
     
     def get_type(self):
-        return self.__type
+        return self.__compiled.type
     
     def __call__(self, context):
-        return self.__compiled(**context.as_dict(self.__VARIABLE_PREFIX))
+        return self.__compiled.compiled_function(**context.as_dict(self.__compiled.variable_prefix))
     
     def __repr__(self):
-        return '<UflExpression "{0}" of type {1}>'.format(self.__expression, self.__type)
+        return '<UflExpression "{0}" of type {1}>'.format(self.__expression, self.__compiled.type)

@@ -1,1 +1,1 @@
-from .compiler import compile_ufl
+from .compiledexpression import CompiledUflExpression

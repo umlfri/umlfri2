@@ -9,10 +9,9 @@ class UflTypingVisitor(UflVisitor):
     Type checks UflExpression into python code
     """
     
-    def __init__(self, params, enums, variable_prefix, expected_type):
+    def __init__(self, params, enums, expected_type):
         self.__params = params
         self.__enums = {name: UflTypedEnumType(enum) for name, enum in enums.items()}
-        self.__variable_prefix = variable_prefix
         self.__expected_type = expected_type
     
     def visit_attribute_access(self, node):
@@ -54,11 +53,7 @@ class UflTypingVisitor(UflVisitor):
         return UflMethodCallNode(target, node.selector, params, methoddesc.return_type)
     
     def visit_variable(self, node):
-        var_name = node.name
-        if self.__variable_prefix is not None:
-            var_name = self.__variable_prefix + var_name
-        
-        return UflVariableNode(node.name, self.__params[var_name])
+        return UflVariableNode(node.name, self.__params[node.name])
     
     def visit_binary(self, node):
         operand1 = self.__demeta(node.operand1.accept(self))
