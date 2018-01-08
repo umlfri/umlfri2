@@ -3,6 +3,7 @@ import os.path
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QPushButton
+import sip
 
 from umlfri2.application import Application
 from umlfri2.application.drawingarea.actions import AddElementAction, AddConnectionAction
@@ -36,8 +37,7 @@ class ToolBox(QWidget):
     def _fill(self, drawing_area):
         for widget in self.__widgets:
             self.__vbox.removeWidget(widget)
-            widget.setParent(None)
-            widget.deleteLater()
+            sip.delete(widget)
         
         self.__current_drawing_area = drawing_area
         self.__widgets = []
