@@ -5,6 +5,7 @@ from .enum import UflEnumNode
 from .literal import UflLiteralNode
 from .methodcall import UflMethodCallNode
 from .variable import UflVariableNode
+from .variabledefinition import UflVariableDefinitionNode
 from .metadataccess import UflMetadataAccessNode
 from .iteratoraccess import UflIteratorAccessNode
 from .unpack import UflUnpackNode

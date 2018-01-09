@@ -6,6 +6,14 @@ class UflNode:
     def type(self):
         return self.__type
     
+    def find(self, condition):
+        if condition(self):
+            yield self
+        
+        for param in self._get_params():
+            if isinstance(param, UflNode):
+                yield from param.find(condition)
+    
     def _get_params(self):
         return ()
     

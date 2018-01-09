@@ -42,13 +42,12 @@ class UflCompilingVisitor(UflVisitor):
             methoddesc.selector,
             ", ".join("{0}".format(param) for param in params)
         )
-
+    
     def visit_variable(self, node):
-        var_name = node.name
-        if self.__variable_prefix is not None:
-            var_name = self.__variable_prefix + var_name
-        
-        return var_name
+        return self.__fix_var_name(node.name)
+    
+    def visit_variable_definition(self, node):
+        return self.__fix_var_name(node.name)
     
     def visit_binary(self, node):
         operand1 = node.operand1.accept(self)
@@ -79,9 +78,9 @@ class UflCompilingVisitor(UflVisitor):
     def visit_expression(self, node):
         expression_source = node.result.accept(self)
         
-        variables = (self.__variable_prefix + name for name in node.variables)
+        variables = ", ".join(var.accept(self) for var in node.variables)
         
-        return 'lambda {0}: {1}'.format(", ".join(variables), expression_source)
+        return 'lambda {0}: {1}'.format(variables, expression_source)
     
     def visit_cast(self, node):
         object = node.object.accept(self)
@@ -92,3 +91,9 @@ class UflCompilingVisitor(UflVisitor):
             return "bool({0})".format(object)
         else:
             raise Exception
+    
+    def __fix_var_name(self, name):
+        if self.__variable_prefix is None:
+            return name
+        else:
+            return self.__variable_prefix + name

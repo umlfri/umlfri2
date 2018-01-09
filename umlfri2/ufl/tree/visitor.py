@@ -11,6 +11,9 @@ class UflVisitor:
     def visit_variable(self, node):
         raise NotImplementedError
     
+    def visit_variable_definition(self, node):
+        raise NotImplementedError
+    
     def visit_literal(self, node):
         raise NotImplementedError
     

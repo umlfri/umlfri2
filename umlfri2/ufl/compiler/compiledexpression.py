@@ -25,7 +25,8 @@ class CompiledUflExpression:
     
     @property
     def parameters(self):
-        return self.__typed_tree.variables
+        for var in self.__typed_tree.variables:
+            yield var.name
     
     @property
     def compiled_source(self):

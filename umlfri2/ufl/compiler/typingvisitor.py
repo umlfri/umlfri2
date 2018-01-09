@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from ..types import UflDataWithMetadataType, UflNullableType, UflAnyType, UflDecimalType, UflNumberType, \
     UflTypedEnumType, UflObjectType, UflBoolType, UflStringType, UflIntegerType
 from ..tree.visitor import UflVisitor
@@ -13,7 +15,6 @@ class UflTypingVisitor(UflVisitor):
         self.__params = params
         self.__enums = {name: UflTypedEnumType(enum) for name, enum in enums.items()}
         self.__expected_type = expected_type
-        self.__used_params = set()
     
     def visit_attribute_access(self, node):
         obj = self.__demeta(node.object.accept(self))
@@ -54,8 +55,10 @@ class UflTypingVisitor(UflVisitor):
         return UflMethodCallNode(target, node.selector, params, methoddesc.return_type)
     
     def visit_variable(self, node):
-        self.__used_params.add(node.name)
         return UflVariableNode(node.name, self.__params[node.name])
+    
+    def visit_variable_definition(self, node):
+        return UflVariableDefinitionNode(node.name, self.__params[node.name])
     
     def visit_binary(self, node):
         operand1 = self.__demeta(node.operand1.accept(self))
@@ -140,13 +143,13 @@ class UflTypingVisitor(UflVisitor):
     
     def visit_expression(self, node):
         ret = self.__demeta(node.result.accept(self))
-
+        
+        variables = tuple(var.accept(self) for var in node.variables)
+        
         if isinstance(self.__expected_type, UflBoolType) and not isinstance(ret.type, UflBoolType):
             ret = UflCastNode(ret, UflBoolType())
         elif isinstance(self.__expected_type, UflStringType) and not isinstance(ret.type, UflStringType) and ret.type.is_convertable_to_string:
             ret = UflCastNode(ret, UflStringType())
-        
-        variables = {name: self.__params[name] for name in self.__used_params}
         
         return UflExpressionNode(ret, variables, ret.type)
     
