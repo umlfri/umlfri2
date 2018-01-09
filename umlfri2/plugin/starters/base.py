@@ -6,15 +6,6 @@ import signal
 
 try:
     import msvcrt
-    try:
-        from multiprocessing.forking import duplicate
-    except ImportError:
-        from multiprocessing.reduction import duplicate
-except ImportError:
-    pass
-
-try:
-    from exceptions import WindowsError
 except ImportError:
     pass
 
@@ -40,21 +31,14 @@ class BaseProgramStarter(PluginStarter):
         program = [part.format(path = self.__path) for part in self.program]
         
         if os.name == 'nt':
-            ppin = duplicate(msvcrt.get_osfhandle(channel.child_reader_descriptor), inheritable=True)
-            ppout = duplicate(msvcrt.get_osfhandle(channel.child_writer_descriptor), inheritable=True)
+            ppin = msvcrt.get_osfhandle(channel.child_reader_descriptor)
+            ppout = msvcrt.get_osfhandle(channel.child_writer_descriptor)
             
             env['UMLFRI_PIN'] = str(ppin)
             env['UMLFRI_POUT'] = str(ppout)
             
-            ppin = msvcrt.open_osfhandle(ppin, os.O_RDONLY)
-            ppout = msvcrt.open_osfhandle(ppout, os.O_APPEND)
-            
             self.__process = subprocess.Popen(program, close_fds = False, env = env)
             channel.close_child_descriptors()
-            
-            os.close(ppin)
-            os.close(ppout)
-            
         else:
             env['UMLFRI_PIN'] = str(channel.child_reader_descriptor)
             env['UMLFRI_POUT'] = str(channel.child_writer_descriptor)
@@ -74,7 +58,7 @@ class BaseProgramStarter(PluginStarter):
         if os.name == 'nt':
             try:
                 self.__process.terminate()
-            except WindowsError:
+            except IOError:
                 if self.__process.poll() is None:
                     raise
 
@@ -85,7 +69,7 @@ class BaseProgramStarter(PluginStarter):
         if os.name == 'nt':
             try:
                 self.__process.kill()
-            except WindowsError:
+            except IOError:
                 if self.__process.poll() is None:
                     raise
         else:
