@@ -5,12 +5,11 @@ from .filechannel import FileChannel
 
 class PipeChannel(FileChannel):
     def __init__(self):
-        if hasattr(os, 'pipe2'):
-            read_my, write_child = os.pipe2(0)
-            read_child, write_my = os.pipe2(0)
-        else:
-            read_my, write_child = os.pipe()
-            read_child, write_my = os.pipe()
+        read_my, write_child = os.pipe()
+        read_child, write_my = os.pipe()
+        
+        os.set_inheritable(read_child, True)
+        os.set_inheritable(write_child, True)
         
         super().__init__(os.fdopen(read_my, 'rb'), os.fdopen(write_my, 'wb'))
         
