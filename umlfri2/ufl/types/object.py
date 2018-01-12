@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from .type import UflType
 from ..objects import UflObject
 
@@ -29,7 +31,7 @@ class UflObjectAttribute:
 
 class UflObjectType(UflType):
     def __init__(self, attributes):
-        self.__attributes = attributes.copy()
+        self.__attributes = OrderedDict((i.name, i) for i in attributes)
     
     @property
     def attributes(self):

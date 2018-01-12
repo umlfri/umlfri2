@@ -17,8 +17,6 @@ class UflStructureLoader:
         return UflObjectType(self.__load_attributes(self.__xmlroot))
 
     def __load_attributes(self, node):
-        attributes = OrderedDict()
-        
         for child in node:
             if child.tag == "{{{0}}}Attribute".format(ADDON_NAMESPACE):
                 type_name = child.attrib["type"]
@@ -41,24 +39,19 @@ class UflStructureLoader:
                 else:
                     attr_type = self.__type_parser.parse_with_default(type_name, default)
                 
-                attributes[child.attrib["id"]] = UflObjectAttribute(child.attrib["id"], attr_type)
+                yield UflObjectAttribute(child.attrib["id"], attr_type)
             else:
                 raise Exception
-        
-        return attributes
     
     def __has_possibilities(self, node):
         return node.find("{{{0}}}Value".format(ADDON_NAMESPACE)) is not None
     
     def __load_possibilities(self, node):
-        ret = []
         for child in node:
             if child.tag == "{{{0}}}Value".format(ADDON_NAMESPACE):
-                ret.append(child.attrib["value"])
+                yield child.attrib["value"]
             else:
                 raise Exception
-        
-        return ret
     
     def __has_template(self, node):
         return node.find("{{{0}}}Template".format(ADDON_NAMESPACE)) is not None

@@ -16,7 +16,7 @@ class Metamodel:
         self.__translations = TranslationList(translations)
         
         if config is None or not config.has_attributes:
-            self.__config_structure = UflObjectType({})
+            self.__config_structure = UflObjectType(())
             self.__has_config = False
         else:
             self.__config_structure = config
