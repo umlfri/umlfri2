@@ -19,28 +19,7 @@
             <xs:element name="Template" minOccurs="0" maxOccurs="1" type="text_component"/>
         </xs:choice>
         <xs:attribute name="id" type="xs:string" use="required"/>
-        <xs:attribute name="type" use="required">
-            <xs:simpleType>
-                <xs:restriction base="xs:string">
-                    <xs:enumeration value="str"/>
-                    <xs:enumeration value="str[]"/>
-                    <xs:enumeration value="bool"/>
-                    <xs:enumeration value="bool[]"/>
-                    <xs:enumeration value="object"/>
-                    <xs:enumeration value="object[]"/>
-                    <xs:enumeration value="enum"/>
-                    <xs:enumeration value="enum[]"/>
-                    <xs:enumeration value="flags"/>
-                    <xs:enumeration value="flags[]"/>
-                    <xs:enumeration value="text"/>
-                    <xs:enumeration value="text[]"/>
-                    <xs:enumeration value="color"/>
-                    <xs:enumeration value="color[]"/>
-                    <xs:enumeration value="font"/>
-                    <xs:enumeration value="font[]"/>
-                </xs:restriction>
-            </xs:simpleType>
-        </xs:attribute>
+        <xs:attribute name="type" use="required" type="xs:string"/>
         <xs:attribute name="default" type="xs:string"/>
     </xs:complexType>
 </xs:schema>
