@@ -38,15 +38,15 @@ class UflTypeParserForName:
     
     @property
     def can_have_possibilities(self):
-        return self.__inner_type in ('enum', 'flags', 'str')
+        return self.__inner_type in self.__WITH_POSSIBILITIES
     
     @property
     def can_have_template(self):
-        return self.__inner_type == 'str'
+        return self.__inner_type in self.__WITH_TEMPLATE
     
     @property
     def can_have_attributes(self):
-        return self.__inner_type == 'object'
+        return self.__inner_type in self.__WITH_ATTRIBUTES
     
     def set_default_value(self, value):
         if value is None:
