@@ -1,5 +1,3 @@
-from collections import OrderedDict
-
 from umlfri2.components.base.componenttype import ComponentType
 from umlfri2.components.base.typecontext import TypeContext
 from ....constants import ADDON_NAMESPACE
@@ -20,26 +18,19 @@ class UflStructureLoader:
         for child in node:
             if child.tag == "{{{0}}}Attribute".format(ADDON_NAMESPACE):
                 type_name = child.attrib["type"]
-    
-                default = self.__type_parser.parse_default_value(type_name, child.attrib.get("default"))
                 
-                if self.__type_parser.has_template(type_name) and self.__has_template(child):
-                    if default is not None:
-                        raise Exception("Cannot have both default value and template")
-                    child_template = self.__load_template(child)
-                    attr_type = self.__type_parser.parse_with_template(type_name, child_template)
-                elif self.__type_parser.has_possibilities(type_name) and self.__has_possibilities(child):
-                    child_possibilities = self.__load_possibilities(child)
-                    attr_type = self.__type_parser.parse_with_possibilities_and_default(type_name, child_possibilities, default)
-                elif self.__type_parser.has_attributes(type_name):
-                    if default is not None:
-                        raise Exception("Object types cannot have default value specified")
-                    child_attributes = self.__load_attributes(child)
-                    attr_type = self.__type_parser.parse_with_attributes(type_name, child_attributes)
-                else:
-                    attr_type = self.__type_parser.parse_with_default(type_name, default)
+                type_name_parser = self.__type_parser.parse(type_name)
                 
-                yield UflObjectAttribute(child.attrib["id"], attr_type)
+                type_name_parser.set_default_value_as_string(child.attrib.get("default"))
+                
+                if type_name_parser.can_have_template and self.__has_template(child):
+                    type_name_parser.set_template(self.__load_template(child))
+                elif type_name_parser.can_have_possibilities and self.__has_possibilities(child):
+                    type_name_parser.set_possibilities(self.__load_possibilities(child))
+                elif type_name_parser.can_have_attributes:
+                    type_name_parser.set_attributes(self.__load_attributes(child))
+                
+                yield UflObjectAttribute(child.attrib["id"], type_name_parser.finish())
             else:
                 raise Exception
     

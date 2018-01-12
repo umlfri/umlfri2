@@ -19,173 +19,152 @@ from .stringflags import UflStringFlagsType
 from .typedenum import UflTypedEnumType
 
 
+class UflTypeParserForName:
+    __WITH_POSSIBILITIES = {'enum', 'flags', 'str'}
+    __WITH_TEMPLATE = {'str'}
+    __WITH_ATTRIBUTES = {'object'}
+    __WITH_DEFAULT_VALUE = {'bool', 'color', 'decimal', 'font', 'image',
+                            'int', 'proportion', 'str', 'text', 'enum',
+                            'flags'} | ALL_ENUMS.keys()
+    
+    def __init__(self, abstract, inner_type, outer_type):
+        self.__abstract = abstract
+        self.__inner_type = inner_type
+        self.__outer_type = outer_type
+        self.__default_value = None
+        self.__possibilities = None
+        self.__attributes = None
+        self.__template = None
+    
+    @property
+    def can_have_possibilities(self):
+        return self.__inner_type in ('enum', 'flags', 'str')
+    
+    @property
+    def can_have_template(self):
+        return self.__inner_type == 'str'
+    
+    @property
+    def can_have_attributes(self):
+        return self.__inner_type == 'object'
+    
+    def set_default_value(self, value):
+        if value is None:
+            self.__default_value = None
+            return
+        
+        if self.__template is not None:
+            raise Exception("Cannot have both value and template specified")
+        
+        if self.__inner_type not in self.__WITH_DEFAULT_VALUE:
+            raise Exception('Cannot have default for a type {0}'.format(self.__inner_type))
+        
+        self.__default_value = value
+    
+    def set_default_value_as_string(self, value):
+        if value is None:
+            self.__default_value = None
+            return
+        
+        if self.__template is not None:
+            raise Exception("Cannot have both value and template specified")
+        
+        if value is not None and self.__inner_type not in self.__WITH_DEFAULT_VALUE:
+            raise Exception('Cannot have default for a type {0}'.format(self.__inner_type))
+        
+        if self.__inner_type == 'bool':
+            self.__default_value = UflBoolType().parse(value)
+        elif self.__inner_type == 'color':
+            self.__default_value = UflColorType().parse(value)
+        elif self.__inner_type == 'decimal':
+            self.__default_value = UflDecimalType().parse(value)
+        elif self.__inner_type == 'font':
+            self.__default_value = UflFontType().parse(value)
+        elif self.__inner_type == 'image':
+            self.__default_value = UflImageType().parse(value)
+        elif self.__inner_type == 'int':
+            self.__default_value = UflIntegerType().parse(value)
+        elif self.__inner_type == 'proportion':
+            self.__default_value = UflProportionType().parse(value)
+        else:
+            self.__default_value = value
+    
+    def set_possibilities(self, possibilities):
+        if not self.can_have_possibilities:
+            raise Exception('{0} cannot have possibilities specified'.format(self.__inner_type))
+        
+        self.__possibilities = tuple(possibilities)
+    
+    def set_attributes(self, attributes):
+        if not self.can_have_attributes:
+            raise Exception('{0} cannot have attributes specified'.format(self.__inner_type))
+        
+        self.__attributes = tuple(attributes)
+    
+    def set_template(self, template):
+        if self.__default_value is not None:
+            raise Exception("Cannot have both value and template specified")
+        
+        if not self.can_have_template:
+            raise Exception('{0} cannot have template specified'.format(self.__inner_type))
+        
+        self.__template = template
+    
+    def __parse_inner(self):
+        if self.__inner_type == 'any' and self.__abstract:
+            return UflAnyType()
+        elif self.__inner_type == 'bool':
+            return UflBoolType(default=self.__default_value)
+        elif self.__inner_type == 'color':
+            return UflColorType(default=self.__default_value)
+        elif self.__inner_type == 'decimal':
+            return UflDecimalType(default=self.__default_value)
+        elif self.__inner_type == 'font':
+            return UflFontType(default=self.__default_value)
+        elif self.__inner_type == 'image':
+            return UflImageType(default=self.__default_value)
+        elif self.__inner_type == 'int':
+            return UflIntegerType(default=self.__default_value)
+        elif self.__inner_type == 'number' and self.__abstract:
+            return UflNumberType()
+        elif self.__inner_type == 'proportion':
+            return UflProportionType(default=self.__default_value)
+        elif self.__inner_type == 'str':
+            return UflStringType(possibilities=self.__possibilities, default=self.__default_value, template=self.__template)
+        elif self.__inner_type == 'text':
+            return UflStringType(default=self.__default_value, multiline=True)
+        elif self.__inner_type == 'enum':
+            return UflStringEnumType(possibilities=self.__possibilities, default=self.__default_value)
+        elif self.__inner_type == 'flags':
+            return UflStringFlagsType(possibilities=self.__possibilities, default=self.__default_value)
+        elif self.__inner_type == 'object':
+            return UflObjectType(self.__attributes)
+        elif self.__inner_type in ALL_ENUMS:
+            return UflTypedEnumType(ALL_ENUMS[self.__inner_type], default=self.__default_value)
+    
+    def __parse_outer(self, inner_type):
+        if self.__outer_type == '?':
+            return UflNullableType(inner_type)
+        elif self.__outer_type == '[]':
+            if self.__abstract:
+                return UflIterableType(inner_type)
+            else:
+                return UflListType(inner_type)
+        elif self.__outer_type is None:
+            return inner_type
+    
+    def finish(self):
+        return self.__parse_outer(self.__parse_inner())
+
+
 class UflTypeParser:
     def __init__(self, abstract=False):
         self.__abstract = abstract
     
-    def has_possibilities(self, type_name):
-        return type_name.rstrip('[]?') in ('enum', 'flags', 'str')
-    
-    def has_template(self, type_name):
-        return type_name.rstrip('[]?') == 'str'
-    
-    def has_attributes(self, type_name):
-        return type_name.rstrip('[]?') == 'object'
-    
-    def parse_default_value(self, type_name, default):
-        if default is None:
-            return
-        
-        type_name = type_name.rstrip('[]?')
-
-        if type_name == 'bool':
-            return UflBoolType().parse(default)
-        elif type_name == 'color':
-            return UflColorType().parse(default)
-        elif type_name == 'decimal':
-            return UflDecimalType().parse(default)
-        elif type_name == 'font':
-            return UflFontType().parse(default)
-        elif type_name == 'image':
-            return UflImageType().parse(default)
-        elif type_name == 'int':
-            return UflIntegerType().parse(default)
-        elif type_name == 'proportion':
-            return UflProportionType().parse(default)
-        
-        return default
-    
     def parse(self, type_name):
-        if type_name == 'any' and self.__abstract:
-            return UflAnyType()
-        elif type_name == 'bool':
-            return UflBoolType()
-        elif type_name == 'color':
-            return UflColorType()
-        elif type_name == 'decimal':
-            return UflDecimalType()
-        elif type_name == 'font':
-            return UflFontType()
-        elif type_name == 'image':
-            return UflImageType()
-        elif type_name == 'int':
-            return UflIntegerType()
-        elif type_name == 'number' and self.__abstract:
-            return UflNumberType()
-        elif type_name == 'proportion':
-            return UflProportionType()
-        elif type_name == 'str':
-            return UflStringType()
-        elif type_name == 'text':
-            return UflStringType(multiline=True)
-        elif type_name in ALL_ENUMS:
-            return UflTypedEnumType(ALL_ENUMS[type_name])
-        
-        ret = self.__apply_list(type_name, self.parse)
-        if ret is not None:
-            return ret
-        
-        raise Exception("Unknown type {0}".format(type_name))
-    
-    def parse_with_default(self, type_name, default):
-        if self.__abstract:
-            raise Exception("Abstract type {0} cannot have a default value ({1})".format(type_name, default))
-        
-        if type_name == 'bool':
-            return UflBoolType(default=default)
-        elif type_name == 'color':
-            return UflColorType(default=default)
-        elif type_name == 'decimal':
-            return UflDecimalType(default=default)
-        elif type_name == 'font':
-            return UflFontType(default=default)
-        elif type_name == 'image':
-            return UflImageType(default=default)
-        elif type_name == 'int':
-            return UflIntegerType(default=default)
-        elif type_name == 'proportion':
-            return UflProportionType(default=default)
-        elif type_name == 'str':
-            return UflStringType(default=default)
-        elif type_name == 'text':
-            return UflStringType(default=default, multiline=True)
-        elif type_name in ALL_ENUMS:
-            return UflTypedEnumType(ALL_ENUMS[type_name], default=default)
-        
-        ret = self.__apply_list(type_name, self.parse_with_default, default=default)
-        if ret is not None:
-            return ret
-        
-        raise Exception("Unknown type with default value: {0}".format(type_name))
-    
-    def parse_with_template(self, type_name, template):
-        if self.__abstract:
-            raise Exception("Abstract type {0} cannot have a template".format(type_name))
-        
-        if type_name == 'str':
-            return UflStringType(template=template)
-        
-        ret = self.__apply_list(type_name, self.parse_with_template, template=template)
-        if ret is not None:
-            return ret
-        
-        raise Exception("Unknown type with template: {0}".format(type_name))
-    
-    def parse_with_possibilities(self, type_name, possibilities):
-        if self.__abstract:
-            raise Exception("Abstract type {0} cannot have possibilities".format(type_name))
-        
-        if type_name == 'enum':
-            return UflStringEnumType(possibilities)
-        elif type_name == 'flags':
-            return UflStringFlagsType(possibilities)
-        elif type_name == 'str':
-            return UflStringType(possibilities)
-        
-        ret = self.__apply_list(type_name, self.parse_with_possibilities, possibilities=possibilities)
-        if ret is not None:
-            return ret
-        
-        raise Exception("Unknown type with possibilities: {0}".format(type_name))
-    
-    def parse_with_possibilities_and_default(self, type_name, possibilities, default):
-        if self.__abstract:
-            raise Exception("Abstract type {0} cannot have possibilities".format(type_name))
-        
-        if type_name == 'enum':
-            return UflStringEnumType(possibilities, default=default)
-        elif type_name == 'flags':
-            return UflStringFlagsType(possibilities, default=default)
-        elif type_name == 'str':
-            return UflStringType(possibilities, default=default)
-        
-        ret = self.__apply_list(type_name, self.parse_with_possibilities_and_default, possibilities=possibilities, default=default)
-        if ret is not None:
-            return ret
-        
-        raise Exception("Unknown type with possibilities: {0}".format(type_name))
-    
-    def parse_with_attributes(self, type_name, attributes):
-        if self.__abstract:
-            raise Exception("Abstract type {0} cannot have attributes".format(type_name))
-        
-        if type_name == 'object':
-            return UflObjectType(attributes)
-        
-        ret = self.__apply_list(type_name, self.parse_with_attributes, attributes=attributes)
-        if ret is not None:
-            return ret
-        
-        raise Exception("Unknown type with attributes: {0}".format(type_name))
-    
-    def __apply_list(self, type_name, type_parser_method, **kwargs):
-        if type_name.endswith('[]'):
-            if self.__abstract:
-                return UflIterableType(type_parser_method(type_name[:-2], **kwargs))
-            else:
-                return UflListType(type_parser_method(type_name[:-2], **kwargs))
-        
         if type_name.endswith('?'):
-            return UflNullableType(type_parser_method(type_name[:-1], **kwargs))
-        
-        return None
+            return UflTypeParserForName(self.__abstract, type_name[:-1], '?')
+        elif type_name.endswith('[]'):
+            return UflTypeParserForName(self.__abstract, type_name[:-2], '[]')
+        else:
+            return UflTypeParserForName(self.__abstract, type_name, None)
