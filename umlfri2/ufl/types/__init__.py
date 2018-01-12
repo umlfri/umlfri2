@@ -21,3 +21,4 @@ from .type import UflType
 from .typedenum import UflTypedEnumType
 from .metadata import UflDataWithMetadataType, UflMetadataType
 from .number import UflNumberType
+from .typeparser import UflTypeParser
