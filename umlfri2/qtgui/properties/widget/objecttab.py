@@ -7,8 +7,8 @@ from umlfri2.qtgui.base.colorwidget import ColorSelectionWidget
 from umlfri2.qtgui.base.fontwidget import FontSelectionWidget
 from umlfri2.qtgui.base.multiselectcombobox import MultiSelectComboBox
 from ..dialog import PropertiesDialog
-from .selectionchangingwidgets import QSelectionChangingCheckBox, QSelectionChangingPushButton,\
-    QSelectionChangingComboBox, QSelectionChangingSpinBox, QSelectionChangingLineEdit
+from .selectionchangingwidgets import QSelectionChangingCheckBox, QSelectionChangingPushButton, \
+    QSelectionChangingComboBox, QSelectionChangingSpinBox, QSelectionChangingLineEdit, QSelectionChangingDoubleSpinBox
 from umlfri2.ufl.dialog import *
 from .tabletab import TableTab
 
@@ -48,6 +48,9 @@ class ObjectTab(TableTab):
             elif isinstance(widget, UflDialogIntegerWidget):
                 qt_widget = QSelectionChangingSpinBox(self, no)
                 qt_widget.valueChanged[int].connect(partial(self.__value_changed, widget))
+            elif isinstance(widget, UflDialogDecimalWidget):
+                qt_widget = QSelectionChangingDoubleSpinBox(self, no)
+                qt_widget.valueChanged[float].connect(partial(self.__value_changed, widget))
             elif isinstance(widget, UflDialogMultiSelectWidget):
                 qt_widget = MultiSelectComboBox()
                 for checked, item in widget.possibilities:
@@ -116,6 +119,8 @@ class ObjectTab(TableTab):
             elif isinstance(widget, UflDialogFontWidget):
                 qt_widget.selected_font = widget.value
             elif isinstance(widget, UflDialogIntegerWidget):
+                qt_widget.setValue(widget.value)
+            elif isinstance(widget, UflDialogDecimalWidget):
                 qt_widget.setValue(widget.value)
             elif isinstance(widget, UflDialogMultiSelectWidget):
                 for no, (checked, possibility) in enumerate(widget.possibilities):

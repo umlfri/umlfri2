@@ -1,5 +1,5 @@
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QCheckBox, QPushButton, QComboBox, QSpinBox, QLineEdit
+from PyQt5.QtWidgets import QCheckBox, QPushButton, QComboBox, QSpinBox, QLineEdit, QDoubleSpinBox
 
 
 class QSelectionChangingCheckBox(QCheckBox):
@@ -54,6 +54,18 @@ class QSelectionChangingSpinBox(QSpinBox):
     def focusInEvent(self, event):
         super().focusInEvent(event)
         
+        self.__table.setCurrentCell(self.__row, 1)
+
+
+class QSelectionChangingDoubleSpinBox(QDoubleSpinBox):
+    def __init__(self, table, row):
+        super().__init__()
+        self.__table = table
+        self.__row = row
+
+    def focusInEvent(self, event):
+        super().focusInEvent(event)
+
         self.__table.setCurrentCell(self.__row, 1)
 
 

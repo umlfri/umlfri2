@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QWidget, QFormLayout, QCheckBox, QPushButton, QCombo
 from umlfri2.qtgui.base.colorwidget import ColorSelectionWidget
 from umlfri2.qtgui.base.fontwidget import FontSelectionWidget
 from umlfri2.qtgui.base.multiselectcombobox import MultiSelectComboBox
+from umlfri2.qtgui.base.selectalldoublespinbox import SelectAllDoubleSpinBox
 from umlfri2.qtgui.base.selectalllineedit import SelectAllLineEdit
 from umlfri2.qtgui.base.selectallspinbox import SelectAllSpinBox
 from umlfri2.ufl.dialog import *
@@ -63,6 +64,11 @@ class PropertyTab(QWidget):
                 qt_widget = SelectAllSpinBox()
                 self.__qt_widgets[widget.id] = qt_widget
                 qt_widget.valueChanged[int].connect(partial(self.__value_changed, widget))
+                ret.addRow(widget.label, qt_widget)
+            elif isinstance(widget, UflDialogDecimalWidget):
+                qt_widget = SelectAllDoubleSpinBox()
+                self.__qt_widgets[widget.id] = qt_widget
+                qt_widget.valueChanged[float].connect(partial(self.__value_changed, widget))
                 ret.addRow(widget.label, qt_widget)
             elif isinstance(widget, UflDialogMultiSelectWidget):
                 qt_widget = MultiSelectComboBox()
@@ -148,6 +154,8 @@ class PropertyTab(QWidget):
                     elif isinstance(widget, UflDialogFontWidget):
                         qt_widget.selected_font = widget.value
                     elif isinstance(widget, UflDialogIntegerWidget):
+                        qt_widget.setValue(widget.value)
+                    elif isinstance(widget, UflDialogDecimalWidget):
                         qt_widget.setValue(widget.value)
                     elif isinstance(widget, UflDialogMultiSelectWidget):
                         for index, (checked, item) in enumerate(widget.possibilities):

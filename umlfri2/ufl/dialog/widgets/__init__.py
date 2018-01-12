@@ -2,6 +2,7 @@ from .check import UflDialogCheckWidget
 from .child import UflDialogChildWidget
 from .color import UflDialogColorWidget
 from .combo import UflDialogComboWidget
+from .decimal import UflDialogDecimalWidget
 from .font import UflDialogFontWidget
 from .integer import UflDialogIntegerWidget
 from .multiselect import UflDialogMultiSelectWidget

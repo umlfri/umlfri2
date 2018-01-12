@@ -100,6 +100,8 @@ class UflDialog:
             return UflDialogFontWidget(tab, attr)
         elif isinstance(type, UflIntegerType):
             return UflDialogIntegerWidget(tab, attr)
+        elif isinstance(type, UflDecimalType):
+            return UflDialogDecimalWidget(tab, attr)
         elif isinstance(type, (UflObjectType, UflListType)):
             return UflDialogChildWidget(tab, attr, UflDialog(type, self.__options))
         elif isinstance(type, UflStringType):
