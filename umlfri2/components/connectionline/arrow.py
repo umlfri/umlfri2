@@ -65,8 +65,7 @@ class ArrowComponent(ConnectionLineComponent):
     def __init__(self, position, style, orientation=None, color=None, fill=None):
         super().__init__(())
         self.__position = position
-        self.__orientation = orientation or ConstantExpression(ArrowOrientation.destination,
-                                                               UflTypedEnumType(ArrowOrientation))
+        self.__orientation = orientation or ConstantExpression(ArrowOrientation.destination)
         self.__style = style
         self.__color = color or ConstantExpression(Colors.black)
         self.__fill = fill or NoneConstantExpression()
