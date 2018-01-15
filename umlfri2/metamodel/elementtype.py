@@ -2,7 +2,6 @@ from collections import namedtuple
 from weakref import ref
 
 from umlfri2.components.base.context import Context
-from umlfri2.components.base.typecontext import TypeContext
 from umlfri2.ufl.types import UflDataWithMetadataType, UflStringType, UflImageType, UflAnyType, UflIterableType
 
 ElementAccessDepth = namedtuple('ElementAccessDepth', ('parent', 'child'))
@@ -94,8 +93,8 @@ class ElementType:
     def allow_direct_add(self):
         return self.__allow_direct_add
     
-    def compile(self):
-        type_context = TypeContext() \
+    def compile(self, type_context):
+        type_context = type_context \
             .set_variable_type('self', self.__ufl_type) \
             .set_variable_type('cfg', self.__metamodel().config_structure)
 

@@ -8,10 +8,9 @@ from umlfri2.metamodel import ElementType, DefaultElementAction, ElementAccessDe
 
 
 class ElementTypeLoader:
-    def __init__(self, storage, xmlroot, definitions):
+    def __init__(self, storage, xmlroot):
         self.__storage = storage
         self.__xmlroot = xmlroot
-        self.__defintions = definitions
         if not ADDON_SCHEMA.validate(xmlroot):
             raise Exception("Cannot load element type: {0}".format(ADDON_SCHEMA.error_log.last_error))
     
@@ -62,7 +61,7 @@ class ElementTypeLoader:
                     else:
                         raise Exception
             elif child.tag == "{{{0}}}Appearance".format(ADDON_NAMESPACE):
-                appearance = ComponentLoader(child, ComponentType.visual, self.__defintions).load()[0]
+                appearance = ComponentLoader(child, ComponentType.visual).load()[0]
             else:
                 raise Exception
         

@@ -11,10 +11,9 @@ from umlfri2.ufl.types import UflProportionType
 
 
 class ConnectionTypeLoader:
-    def __init__(self, storage, xmlroot, definitions):
+    def __init__(self, storage, xmlroot):
         self.__storage = storage
         self.__xmlroot = xmlroot
-        self.__definitions = definitions
         if not ADDON_SCHEMA.validate(xmlroot):
             raise Exception("Cannot load connection type: {0}".format(ADDON_SCHEMA.error_log.last_error))
     
@@ -41,14 +40,14 @@ class ConnectionTypeLoader:
                     
                     label_position = UflProportionType().parse(label.attrib["position"])
                     label_id = label.attrib["id"]
-                    label_appearance = ComponentLoader(label, ComponentType.visual, self.__definitions).load()
+                    label_appearance = ComponentLoader(label, ComponentType.visual).load()
                     label_appearance = SimpleComponent(label_appearance)
                     
                     labels.append(ConnectionTypeLabel(label_position, label_id, label_appearance))
                     
                     del appearance_children[-1]
                 
-                appearance = ConnectionLineContainerComponent(ComponentLoader(appearance_children, ComponentType.connection, self.__definitions).load())
+                appearance = ConnectionLineContainerComponent(ComponentLoader(appearance_children, ComponentType.connection).load())
             else:
                 raise Exception
         

@@ -1,7 +1,6 @@
 from weakref import ref
 
 from umlfri2.components.base.context import Context
-from umlfri2.components.base.typecontext import TypeContext
 
 
 class ConnectionTypeLabel:
@@ -26,11 +25,7 @@ class ConnectionTypeLabel:
     def id(self):
         return self.__id
     
-    def compile(self):
-        type_context = TypeContext() \
-            .set_variable_type('self', self.__connection_type().ufl_type) \
-            .set_variable_type('cfg', self.__connection_type().metamodel.config_structure)
-        
+    def compile(self, type_context):
         self.__appearance.compile(type_context)
     
     def create_appearance_object(self, connection, ruler):

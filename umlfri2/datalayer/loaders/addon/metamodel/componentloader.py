@@ -2,17 +2,15 @@ from collections import namedtuple
 
 from ....constants import ADDON_NAMESPACE
 from umlfri2.components.all import ALL_COMPONENTS
-from umlfri2.components.expressions import UflExpression, ConstantExpression
-from umlfri2.ufl.types import UflDefinedEnumType, UflNullableType
+from umlfri2.components.expressions import UflExpression, LoadedConstantExpression
 
 ChildAttribute = namedtuple('ChildAttribute', ["name", "type", "values"])
 
 
 class ComponentLoader:
-    def __init__(self, xmlroot, type, definitions={}):
+    def __init__(self, xmlroot, type):
         self.__xmlroot = xmlroot
         self.__type = type
-        self.__definitions = definitions
     
     def load(self):
         return list(self.__load_children(self.__xmlroot, self.__type, {}, {}, False))
@@ -34,28 +32,20 @@ class ComponentLoader:
                 params = {}
                 for attrname, attrvalue in child.attrib.items():
                     if attrname in children_attributes:
-                        type = children_attributes[attrname].type
+                        is_str = children_attributes[attrname].type is str
                         is_children_param = True
                     else:
-                        type = component.ATTRIBUTES[attrname]
+                        is_str = component.ATTRIBUTES[attrname] is str
                         is_children_param = False
                     
-                    if isinstance(type, UflDefinedEnumType):
-                        if type.name in self.__definitions:
-                            type = UflDefinedEnumType(type.type, self.__definitions[type.name])
-                    elif isinstance(type, UflNullableType) and isinstance(type.inner_type, UflDefinedEnumType):
-                        if type.inner_type.name in self.__definitions:
-                            definition = self.__definitions[type.inner_type.name]
-                            type = UflNullableType(UflDefinedEnumType(type.inner_type.type, definition))
-                    
-                    if attrvalue.startswith("##"):
-                        value = ConstantExpression(type.parse(attrvalue[1:]), type)
+                    if is_str:
+                        value = attrvalue
+                    elif attrvalue.startswith("##"):
+                        value = LoadedConstantExpression(attrvalue[1:])
                     elif attrvalue.startswith("#"):
                         value = UflExpression(attrvalue[1:])
-                    elif type is str:
-                        value = attrvalue
                     else:
-                        value = ConstantExpression(type.parse(attrvalue), type)
+                        value = LoadedConstantExpression(attrvalue)
                     
                     if is_children_param:
                         children_params[attrname] = value

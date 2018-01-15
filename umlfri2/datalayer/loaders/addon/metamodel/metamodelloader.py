@@ -1,7 +1,7 @@
 import lxml.etree
 
 from .templateloader import TemplateLoader
-from ....constants import ADDON_NAMESPACE, MODEL_NAMESPACE
+from ....constants import ADDON_NAMESPACE
 from .elementtypeloader import ElementTypeLoader
 from .diagramtypeloader import DiagramTypeLoader
 from .connectiontypeloader import ConnectionTypeLoader
@@ -56,12 +56,12 @@ class MetamodelLoader:
         
         connections = {}
         for file, connection in connectionXMLs:
-            loaded = ConnectionTypeLoader(self.__addon_storage, connection, definitions).load()
+            loaded = ConnectionTypeLoader(self.__addon_storage, connection).load()
             connections[loaded.id] = loaded
         
         elements = {}
         for file, element in elementXMLs:
-            loaded = ElementTypeLoader(self.__addon_storage, element, definitions).load()
+            loaded = ElementTypeLoader(self.__addon_storage, element).load()
             elements[loaded.id] = loaded
         
         diagrams = {}
@@ -78,4 +78,4 @@ class MetamodelLoader:
             loaded = TranslationLoader(translation).load()
             translations.append(loaded)
         
-        return Metamodel(diagrams, elements, connections, templates, translations, config)
+        return Metamodel(diagrams, elements, connections, templates, definitions, translations, config)

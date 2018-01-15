@@ -43,7 +43,7 @@ class LineComponent(ConnectionLineComponent):
         super().__init__(())
         self.__start = start or ConstantExpression(0, UflProportionType())
         self.__end = end or ConstantExpression(1, UflProportionType())
-        self.__style = style or ConstantExpression(LineStyle.solid, UflTypedEnumType(LineStyle))
+        self.__style = style or ConstantExpression(LineStyle.solid)
         self.__color = color or ConstantExpression(Colors.black)
     
     def compile(self, type_context):

@@ -1,6 +1,6 @@
 import math
 
-from umlfri2.components.expressions import NoneExpression, ConstantExpression
+from umlfri2.components.expressions import NoneConstantExpression
 from umlfri2.types.threestate import Maybe
 from umlfri2.ufl.types import UflColorType, UflDefinedEnumType, UflNullableType
 from .visualcomponent import VisualComponent, VisualObject
@@ -243,8 +243,8 @@ class RectangleComponent(VisualComponent):
     def __init__(self, children, fill=None, border=None, topleft=None, topright=None, bottomleft=None, bottomright=None,
                  left=None, right=None, top=None, bottom=None):
         super().__init__(children)
-        self.__fill = fill or ConstantExpression(None, UflColorType())
-        self.__border = border or ConstantExpression(None, UflColorType())
+        self.__fill = fill or NoneConstantExpression()
+        self.__border = border or NoneConstantExpression()
         
         if left and (topleft or bottomleft or top or bottom):
             raise Exception
@@ -259,14 +259,14 @@ class RectangleComponent(VisualComponent):
             raise Exception
         
         if topleft or topright or bottomleft or bottomright:
-            self.__corners = (topleft or NoneExpression, topright or NoneExpression,
-                              bottomright or NoneExpression, bottomleft or NoneExpression)
+            self.__corners = (topleft or NoneConstantExpression(), topright or NoneConstantExpression(),
+                              bottomright or NoneConstantExpression(), bottomleft or NoneConstantExpression())
         else:
             self.__corners = None
         
         if top or right or bottom or left:
-            self.__sides = (left or NoneExpression, top or NoneExpression,
-                            right or NoneExpression, bottom or NoneExpression)
+            self.__sides = (left or NoneConstantExpression(), top or NoneConstantExpression(),
+                            right or NoneConstantExpression(), bottom or NoneConstantExpression())
         else:
             self.__sides = None
     

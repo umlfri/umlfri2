@@ -1,19 +1,22 @@
 from collections import OrderedDict
 from weakref import ref
 
+from umlfri2.components.base.typecontext import TypeContext
 from umlfri2.ufl.dialog import UflDialog
 from umlfri2.ufl.types import UflObjectType
 from .translation import TranslationList
 
 
 class Metamodel:
-    def __init__(self, diagrams, elements, connections, templates, translations, config):
+    def __init__(self, diagrams, elements, connections, templates, definitions, translations, config):
         self.__diagrams = OrderedDict(item for item in sorted(diagrams.items()))
         self.__elements = OrderedDict(item for item in sorted(elements.items()))
         self.__connections = OrderedDict(item for item in sorted(connections.items()))
         self.__templates = list(templates)
         self.__templates.sort(key=lambda item: item.id)
         self.__translations = TranslationList(translations)
+        
+        self.__definitions = definitions
         
         if config is None or not config.has_attributes:
             self.__config_structure = UflObjectType(())
@@ -98,14 +101,15 @@ class Metamodel:
         return dialog
     
     def compile(self):
+        type_context = TypeContext(self.__definitions)
         for diagram in self.__diagrams.values():
-            diagram.compile()
+            diagram.compile(type_context)
         
         for element in self.__elements.values():
-            element.compile()
+            element.compile(type_context)
         
         for connection in self.__connections.values():
-            connection.compile()
+            connection.compile(type_context)
         
         for template in self.__templates:
             template.compile()

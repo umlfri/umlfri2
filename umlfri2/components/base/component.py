@@ -20,6 +20,9 @@ class Component:
     def compile(self, type_context):
         pass
     
+    def _change_attribute_type(self, attrname, type):
+        self.ATTRIBUTES = {**self.ATTRIBUTES, attrname: type}
+    
     def _compile_expressions(self, type_context, **expressions):
         for name, expression in expressions.items():
             expected_type = self.ATTRIBUTES[name]

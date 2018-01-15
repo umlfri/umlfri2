@@ -3,11 +3,9 @@ from umlfri2.types.image import Image
 from .componentloader import ComponentLoader
 from ....constants import ADDON_NAMESPACE, ADDON_SCHEMA
 from .structureloader import UflStructureLoader
-from umlfri2.components.expressions import ConstantExpression, UflExpression
+from umlfri2.components.expressions import LoadedConstantExpression, UflExpression
 from umlfri2.components.text import TextContainerComponent
 from umlfri2.metamodel import DiagramType
-from umlfri2.types.color import Color
-from umlfri2.ufl.types import UflColorType
 
 
 class DiagramTypeLoader:
@@ -49,14 +47,13 @@ class DiagramTypeLoader:
                     if childchild.tag == "{{{0}}}Background".format(ADDON_NAMESPACE):
                         attrvalue = childchild.attrib["color"]
                         if attrvalue.startswith("##"):
-                            background = ConstantExpression(Color.from_string(attrvalue[1:]), UflColorType())
+                            background = LoadedConstantExpression(attrvalue[1:])
                         elif attrvalue.startswith("#"):
                             background = UflExpression(attrvalue[1:])
                         else:
-                            background = ConstantExpression(Color.from_string(attrvalue), UflColorType())
+                            background = LoadedConstantExpression(attrvalue)
             else:
                 raise Exception
-        
         
         elements = tuple(self.__elements[id] for id in elements)
         connections = tuple(self.__connections[id] for id in connections)

@@ -16,8 +16,7 @@ class SwitchCaseComponent(HelperComponent):
         return self.__value(context)
     
     def retype(self, type):
-        if hasattr(self.__value, 'change_type'):
-            self.__value = self.__value.change_type(type)
+        self._change_attribute_type('value', type)
     
     def compile(self, type_context):
         self._compile_expressions(

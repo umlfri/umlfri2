@@ -51,7 +51,7 @@ class UflStructureLoader:
         for child in node:
             if child.tag == "{{{0}}}Template".format(ADDON_NAMESPACE):
                 template = TextContainerComponent(ComponentLoader(child, ComponentType.text).load())
-                type_context = TypeContext()\
+                type_context = TypeContext({})\
                     .set_variable_type('parent', UflStringType())\
                     .set_variable_type('no', UflIntegerType())
                 template.compile(type_context)
