@@ -16,4 +16,7 @@ class NoneConstantExpression(Expression):
         return None
     
     def __repr__(self):
-        return "<NoneConstantExpression of type {0}>".format(self.__type)
+        if self.__type is None:
+            return "<NoneConstantExpression untyped>"
+        else:
+            return "<NoneConstantExpression of type {0}>".format(self.__type)

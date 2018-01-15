@@ -21,4 +21,7 @@ class UflExpression(Expression):
         return self.__compiled.compiled_function(*context.get_variables(self.__compiled.parameters))
     
     def __repr__(self):
-        return '<UflExpression "{0}" of type {1}>'.format(self.__expression, self.__compiled.type)
+        if self.__compiled is None:
+            return '<UflExpression "{0}" uncompiled>'.format(self.__expression)
+        else:
+            return '<UflExpression "{0}" of type {1}>'.format(self.__expression, self.__compiled.type)
