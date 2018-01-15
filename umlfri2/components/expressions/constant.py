@@ -25,7 +25,7 @@ class ConstantExpression(Expression):
     def compile(self, type_context, expected_type):
         resolved_expected_type = type_context.resolve_defined_enum(expected_type)
         
-        if self.__type.is_assignable_from(resolved_expected_type):
+        if resolved_expected_type.is_assignable_from(self.__type):
             self.__type = resolved_expected_type
     
     def get_type(self):
