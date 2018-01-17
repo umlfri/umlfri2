@@ -1,10 +1,10 @@
-from umlfri2.components.base.componenttype import ComponentType
+from umlfri2.ufl.components.base.componenttype import ComponentType
 from umlfri2.types.image import Image
 from .componentloader import ComponentLoader
 from ....constants import ADDON_NAMESPACE, ADDON_SCHEMA
 from .structureloader import UflStructureLoader
-from umlfri2.components.connectionline import ConnectionLineContainerComponent
-from umlfri2.components.visual import SimpleComponent
+from umlfri2.ufl.components.connectionline import ConnectionLineContainerComponent
+from umlfri2.ufl.components.visual import SimpleComponent
 from umlfri2.metamodel import ConnectionType
 from umlfri2.metamodel.connectiontypelabel import ConnectionTypeLabel
 from umlfri2.ufl.types import UflProportionType

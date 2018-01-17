@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt, QPoint, QRect
 from PyQt5.QtGui import QPainter, QPen, QBrush, QColor, QFont, QFontMetrics, QPainterPath
 
-from umlfri2.components.visual.canvas import Canvas
+from umlfri2.ufl.components.visual.canvas import Canvas
 from umlfri2.qtgui.base import image_loader
 from umlfri2.qtgui.rendering.qtruler import QTRuler
 from umlfri2.types.enums import LineStyle

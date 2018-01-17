@@ -1,6 +1,6 @@
 import math
 
-from umlfri2.components.expressions import NoneConstantExpression
+from ..expressions import NoneConstantExpression
 from umlfri2.types.threestate import Maybe
 from umlfri2.ufl.types import UflColorType, UflDefinedEnumType, UflNullableType
 from .visualcomponent import VisualComponent, VisualObject

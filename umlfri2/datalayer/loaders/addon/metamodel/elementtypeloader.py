@@ -1,9 +1,9 @@
-from umlfri2.components.base.componenttype import ComponentType
+from umlfri2.ufl.components.base.componenttype import ComponentType
 from umlfri2.types.image import Image
 from .componentloader import ComponentLoader
 from ....constants import ADDON_NAMESPACE, ADDON_SCHEMA
 from .structureloader import UflStructureLoader
-from umlfri2.components.text import TextContainerComponent
+from umlfri2.ufl.components.text import TextContainerComponent
 from umlfri2.metamodel import ElementType, DefaultElementAction, ElementAccessDepth
 
 

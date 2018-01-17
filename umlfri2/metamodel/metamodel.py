@@ -1,7 +1,7 @@
 from collections import OrderedDict
 from weakref import ref
 
-from umlfri2.components.base.typecontext import TypeContext
+from umlfri2.ufl.context import TypeContext
 from umlfri2.ufl.dialog import UflDialog
 from umlfri2.ufl.types import UflObjectType
 from .translation import TranslationList

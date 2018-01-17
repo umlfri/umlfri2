@@ -1,5 +1,5 @@
 from .expression import Expression
-from umlfri2.ufl.compiler import CompiledUflExpression
+from ...expressions import CompiledUflExpression
 
 
 class UflExpression(Expression):

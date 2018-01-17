@@ -1,6 +1,6 @@
 from weakref import ref
 
-from umlfri2.components.base.context import Context
+from umlfri2.ufl.context import Context
 
 
 class ConnectionType:

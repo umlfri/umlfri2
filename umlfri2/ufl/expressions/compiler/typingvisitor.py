@@ -1,6 +1,4 @@
-from collections import OrderedDict
-
-from ..types import UflDataWithMetadataType, UflNullableType, UflAnyType, UflDecimalType, UflNumberType, \
+from ...types import UflDataWithMetadataType, UflNullableType, UflAnyType, UflDecimalType, UflNumberType, \
     UflTypedEnumType, UflObjectType, UflBoolType, UflStringType, UflIntegerType
 from ..tree.visitor import UflVisitor
 from ..tree import *

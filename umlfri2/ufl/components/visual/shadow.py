@@ -1,5 +1,5 @@
 from collections import namedtuple
-from umlfri2.components.expressions import ConstantExpression
+from ..expressions import ConstantExpression
 from umlfri2.types.color import Colors
 from umlfri2.types.geometry import Size, Rectangle, Vector
 from umlfri2.ufl.types import UflColorType, UflIntegerType

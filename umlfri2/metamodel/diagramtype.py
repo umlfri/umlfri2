@@ -1,4 +1,4 @@
-from umlfri2.components.base.context import Context
+from umlfri2.ufl.context import Context
 from umlfri2.types.color import Color
 from weakref import ref
 

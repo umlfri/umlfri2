@@ -1,4 +1,4 @@
-from umlfri2.components.expressions import NoneConstantExpression
+from ..expressions import NoneConstantExpression
 from umlfri2.types.geometry import PathBuilder
 from umlfri2.types.geometry import Size
 from umlfri2.types.geometry import Transformation

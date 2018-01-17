@@ -1,4 +1,4 @@
-from ..types import UflTypedEnumType, UflDataWithMetadataType, UflStringType, UflBoolType
+from ...types import UflTypedEnumType, UflDataWithMetadataType, UflStringType, UflBoolType
 from ..tree.visitor import UflVisitor
 
 

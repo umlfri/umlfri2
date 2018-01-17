@@ -1,8 +1,8 @@
 from collections import namedtuple
 
 from ....constants import ADDON_NAMESPACE
-from umlfri2.components.all import ALL_COMPONENTS
-from umlfri2.components.expressions import UflExpression, LoadedConstantExpression
+from umlfri2.ufl.components.all import ALL_COMPONENTS
+from umlfri2.ufl.components.expressions import UflExpression, LoadedConstantExpression
 
 ChildAttribute = namedtuple('ChildAttribute', ["name", "type", "values"])
 
