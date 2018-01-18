@@ -1,3 +1,4 @@
+from umlfri2.types.proportion import EMPTY_PROPORTION, WHOLE_PROPORTION
 from .connectionlinecomponent import ConnectionLineComponent, ConnectionLineObject
 from ..expressions import ConstantExpression
 from umlfri2.types.enums import LineStyle
@@ -41,8 +42,8 @@ class LineComponent(ConnectionLineComponent):
     
     def __init__(self, start=None, end=None, style=None, color=None):
         super().__init__(())
-        self.__start = start or ConstantExpression(0, UflProportionType())
-        self.__end = end or ConstantExpression(1, UflProportionType())
+        self.__start = start or ConstantExpression(EMPTY_PROPORTION)
+        self.__end = end or ConstantExpression(WHOLE_PROPORTION)
         self.__style = style or ConstantExpression(LineStyle.solid)
         self.__color = color or ConstantExpression(Colors.black)
     
@@ -56,4 +57,4 @@ class LineComponent(ConnectionLineComponent):
         )
     
     def _create_object(self, context):
-        return LineObject(self.__start(context), self.__end(context), self.__style(context), self.__color(context))
+        return LineObject(self.__start(context).value, self.__end(context).value, self.__style(context), self.__color(context))

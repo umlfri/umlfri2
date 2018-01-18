@@ -1,9 +1,11 @@
+from umlfri2.types.proportion import Proportion
 from .expression import Expression
 
 from umlfri2.types.enums import ALL_ENUMS
 from umlfri2.types.color import Color
 from umlfri2.types.font import Font
-from umlfri2.ufl.types import UflIntegerType, UflStringType, UflColorType, UflFontType, UflTypedEnumType
+from umlfri2.ufl.types import UflIntegerType, UflStringType, UflColorType, UflFontType, UflTypedEnumType, \
+    UflProportionType
 
 
 class ConstantExpression(Expression):
@@ -12,15 +14,13 @@ class ConstantExpression(Expression):
         str: UflStringType(),
         Color: UflColorType(),
         Font: UflFontType(),
+        Proportion: UflProportionType(),
         **{x: UflTypedEnumType(x) for x in ALL_ENUMS.values()}
     }
     
-    def __init__(self, value, value_type=None):
+    def __init__(self, value):
         self.__value = value
-        if value_type is None:
-            self.__type = self.__types[type(value)]
-        else:
-            self.__type = value_type
+        self.__type = self.__types[type(value)]
     
     def compile(self, type_context, expected_type):
         resolved_expected_type = type_context.resolve_defined_enum(expected_type)

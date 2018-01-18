@@ -1,14 +1,11 @@
+from umlfri2.types.proportion import WHOLE_PROPORTION, Proportion
+
 from .type import UflType
 
 
 class UflProportionType(UflType):
-    def __init__(self, allow_over_one=False, default=None):
-        self.__default = default or 1.
-        self.__allow_over_one = allow_over_one
-    
-    @property
-    def allow_over_one(self):
-        return self.__allow_over_one
+    def __init__(self, default=None):
+        self.__default = default or WHOLE_PROPORTION
     
     @property
     def default(self):
@@ -18,29 +15,14 @@ class UflProportionType(UflType):
         return self.__default
     
     def parse(self, value):
-        if ':' in value:
-            antecedent, consequent = value.split(':', 1)
-            return int(antecedent) / (int(consequent) + int(antecedent))
-        elif '/' in value:
-            numerator, denominator = value.split('/', 1)
-            return int(numerator) / int(denominator)
-        elif value.endswith('%'):
-            return float(value[:-1]) / 100
-        else:
-            return float(value)
+        return Proportion.from_string(value)
     
     @property
     def is_immutable(self):
         return True
     
     def is_valid_value(self, value):
-        if not isinstance(value, float):
-            return False
-        
-        if value < 0:
-            return False
-        
-        if not self.allow_over_one and value > 1:
+        if not isinstance(value, Proportion):
             return False
         
         return True

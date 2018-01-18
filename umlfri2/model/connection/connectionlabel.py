@@ -14,7 +14,7 @@ class ConnectionLabel:
         self.__id = id
         self.__cached_appearance = None
         self.__line_index = 0
-        self.__line_position = connection.object.type.get_label(id).position
+        self.__line_position = connection.object.type.get_label(id).position.value
         self.__angle = math.pi/2
         self.__distance = 0
     
