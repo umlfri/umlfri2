@@ -8,11 +8,16 @@ class UflExpression(Expression):
         self.__compiled = None
     
     def compile(self, type_context, expected_type):
+        resolved_expected_type = type_context.resolve_defined_enum(expected_type)
+        
         self.__compiled = CompiledUflExpression(
             self.__expression,
-            expected_type,
+            resolved_expected_type,
             type_context.as_dict()
         )
+        
+        if not resolved_expected_type.is_assignable_from(self.__compiled.type):
+            raise Exception("Invalid type: {0}, but {1} expected".format(self.__compiled.type, resolved_expected_type))
     
     def get_type(self):
         return self.__compiled.type

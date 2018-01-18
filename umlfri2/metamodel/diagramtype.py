@@ -2,6 +2,8 @@ from umlfri2.ufl.context import Context
 from umlfri2.types.color import Color
 from weakref import ref
 
+from umlfri2.ufl.types import UflColorType
+
 
 class DiagramType:
     def __init__(self, id, icon, ufl_type, display_name,
@@ -55,7 +57,7 @@ class DiagramType:
             .set_variable_type('cfg', self.__metamodel().config_structure)
         
         self.__display_name.compile(type_context)
-        self.__background_color.compile(type_context, Color)
+        self.__background_color.compile(type_context, UflColorType())
     
     def get_display_name(self, diagram):
         context = Context()\

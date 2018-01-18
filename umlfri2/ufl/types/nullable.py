@@ -17,7 +17,10 @@ class UflNullableType(UflType):
     
     def is_assignable_from(self, other):
         if isinstance(other, UflNullableType):
-            return self.__inner_type.is_assignable_from(other.__inner_type)
+            if other.__inner_type is None:
+                return True
+            else:
+                return self.__inner_type.is_assignable_from(other.__inner_type)
         else:
             return self.__inner_type.is_assignable_from(other)
     

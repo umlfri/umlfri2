@@ -120,7 +120,7 @@ class UflTypingVisitor(UflVisitor):
         elif isinstance(node.value, int):
             type = UflIntegerType()
         elif node.value is None:
-            type = UflNullableType(UflAnyType())
+            type = UflNullableType(None)
         else:
             raise Exception('Invalid literal')
         

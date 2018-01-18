@@ -1,9 +1,9 @@
 from umlfri2.types.enums import HorizontalAlignment, VerticalAlignment
 from umlfri2.types.threestate import Maybe
-from ..expressions import NoneConstantExpression
 from umlfri2.types.geometry import Rectangle
 from umlfri2.ufl.types import UflTypedEnumType, UflNullableType
 from .visualcomponent import VisualComponent, VisualObject
+from ..expressions import ConstantExpression
 
 
 class AlignObject(VisualObject):
@@ -67,8 +67,8 @@ class AlignComponent(VisualComponent):
     
     def __init__(self, children, horizontal=None, vertical=None):
         super().__init__(children)
-        self.__horizontal = horizontal or NoneConstantExpression()
-        self.__vertical = vertical or NoneConstantExpression()
+        self.__horizontal = horizontal or ConstantExpression(None)
+        self.__vertical = vertical or ConstantExpression(None)
     
     def _create_object(self, context, ruler):
         for local, child in self._get_children(context):

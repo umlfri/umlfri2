@@ -1,7 +1,7 @@
-from ..expressions import NoneConstantExpression
 from umlfri2.types.geometry import Size, PathBuilder, Transformation
 from umlfri2.types.threestate import Maybe
 from umlfri2.ufl.types import UflColorType
+from ..expressions import ConstantExpression
 from .visualcomponent import VisualObject, VisualComponent
 
 
@@ -67,8 +67,8 @@ class DiamondComponent(VisualComponent):
     
     def __init__(self, children, fill=None, border=None):
         super().__init__(children)
-        self.__fill = fill or NoneConstantExpression()
-        self.__border = border or NoneConstantExpression()
+        self.__fill = fill or ConstantExpression(None)
+        self.__border = border or ConstantExpression(None)
     
     def _create_object(self, context, ruler):
         found_child = None

@@ -1,8 +1,8 @@
-from ..expressions import NoneConstantExpression
 from umlfri2.types.geometry import Rectangle, Size
 from umlfri2.types.threestate import Maybe
-from umlfri2.ufl.types import UflColorType
+from umlfri2.ufl.types import UflColorType, UflNullableType
 from .visualcomponent import VisualObject, VisualComponent
+from ..expressions import ConstantExpression
 
 
 class EllipseObject(VisualObject):
@@ -57,14 +57,14 @@ class EllipseObject(VisualObject):
 
 class EllipseComponent(VisualComponent):
     ATTRIBUTES = {
-        'fill': UflColorType(),
-        'border': UflColorType()
+        'fill': UflNullableType(UflColorType()),
+        'border': UflNullableType(UflColorType())
     }
     
     def __init__(self, children, fill=None, border=None):
         super().__init__(children)
-        self.__fill = fill or NoneConstantExpression()
-        self.__border = border or NoneConstantExpression()
+        self.__fill = fill or ConstantExpression(None)
+        self.__border = border or ConstantExpression(None)
     
     def _create_object(self, context, ruler):
         found_child = None

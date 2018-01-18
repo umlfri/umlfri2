@@ -2,7 +2,7 @@ import math
 
 from umlfri2.types.enums import ArrowOrientation
 from .connectionlinecomponent import ConnectionLineComponent, ConnectionLineObject
-from ..expressions import ConstantExpression, NoneConstantExpression
+from ..expressions import ConstantExpression
 from umlfri2.types.color import Colors
 from umlfri2.types.geometry import Transformation
 from umlfri2.ufl.types import UflColorType, UflProportionType, UflDefinedEnumType, UflTypedEnumType, UflNullableType
@@ -68,7 +68,7 @@ class ArrowComponent(ConnectionLineComponent):
         self.__orientation = orientation or ConstantExpression(ArrowOrientation.destination)
         self.__style = style
         self.__color = color or ConstantExpression(Colors.black)
-        self.__fill = fill or NoneConstantExpression()
+        self.__fill = fill or ConstantExpression(None)
     
     def compile(self, type_context):
         self._compile_expressions(

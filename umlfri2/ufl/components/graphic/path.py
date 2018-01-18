@@ -1,4 +1,4 @@
-from ..expressions import NoneConstantExpression
+from ..expressions import ConstantExpression
 from umlfri2.types.geometry import PathBuilder
 from umlfri2.types.geometry import Size
 from umlfri2.types.geometry import Transformation
@@ -34,8 +34,8 @@ class PathComponent(GraphicalComponent):
     def __init__(self, children, fill=None, border=None):
         super().__init__(children)
         
-        self.__fill = fill or NoneConstantExpression()
-        self.__border = border or NoneConstantExpression()
+        self.__fill = fill or ConstantExpression(None)
+        self.__border = border or ConstantExpression(None)
 
     def compile(self, type_context):
         self._compile_expressions(

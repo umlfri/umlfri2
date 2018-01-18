@@ -1,10 +1,11 @@
 import math
 
-from ..expressions import NoneConstantExpression
 from umlfri2.types.threestate import Maybe
 from umlfri2.ufl.types import UflColorType, UflDefinedEnumType, UflNullableType
 from .visualcomponent import VisualComponent, VisualObject
 from umlfri2.types.geometry import Rectangle, Transformation, PathBuilder, Size
+
+from ..expressions import ConstantExpression
 
 
 class CornerDefinition:
@@ -228,8 +229,8 @@ class RectangleObject(VisualObject):
 
 class RectangleComponent(VisualComponent):
     ATTRIBUTES = {
-        'fill': UflColorType(),
-        'border': UflColorType(),
+        'fill': UflNullableType(UflColorType()),
+        'border': UflNullableType(UflColorType()),
         'topleft': UflNullableType(UflDefinedEnumType(CornerDefinition)),
         'topright': UflNullableType(UflDefinedEnumType(CornerDefinition)),
         'bottomleft': UflNullableType(UflDefinedEnumType(CornerDefinition)),
@@ -243,8 +244,8 @@ class RectangleComponent(VisualComponent):
     def __init__(self, children, fill=None, border=None, topleft=None, topright=None, bottomleft=None, bottomright=None,
                  left=None, right=None, top=None, bottom=None):
         super().__init__(children)
-        self.__fill = fill or NoneConstantExpression()
-        self.__border = border or NoneConstantExpression()
+        self.__fill = fill or ConstantExpression(None)
+        self.__border = border or ConstantExpression(None)
         
         if left and (topleft or bottomleft or top or bottom):
             raise Exception
@@ -259,14 +260,14 @@ class RectangleComponent(VisualComponent):
             raise Exception
         
         if topleft or topright or bottomleft or bottomright:
-            self.__corners = (topleft or NoneConstantExpression(), topright or NoneConstantExpression(),
-                              bottomright or NoneConstantExpression(), bottomleft or NoneConstantExpression())
+            self.__corners = (topleft or ConstantExpression(None), topright or ConstantExpression(None),
+                              bottomright or ConstantExpression(None), bottomleft or ConstantExpression(None))
         else:
             self.__corners = None
         
         if top or right or bottom or left:
-            self.__sides = (left or NoneConstantExpression(), top or NoneConstantExpression(),
-                            right or NoneConstantExpression(), bottom or NoneConstantExpression())
+            self.__sides = (left or ConstantExpression(None), top or ConstantExpression(None),
+                            right or ConstantExpression(None), bottom or ConstantExpression(None))
         else:
             self.__sides = None
     
