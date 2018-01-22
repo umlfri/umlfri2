@@ -51,8 +51,8 @@ class Font:
         size = int(tmp.pop(-1))
         
         style = set()
-        while tmp[-1] in ('bold', 'italic', 'underline', 'strike'):
-            style.add(getattr(FontStyle, tmp.pop(-1)))
+        while tmp[-1] in FontStyle.__members__:
+            style.add(FontStyle[tmp.pop(-1)])
         
         family = ' '.join(tmp)
         
