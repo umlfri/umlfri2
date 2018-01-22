@@ -1,6 +1,6 @@
 from umlfri2.types.proportion import EMPTY_PROPORTION, WHOLE_PROPORTION
 from .connectionlinecomponent import ConnectionLineComponent, ConnectionLineObject
-from ..expressions import ConstantExpression
+from ..valueproviders import DefaultValueProvider
 from umlfri2.types.enums import LineStyle
 from umlfri2.types.color import Colors
 from umlfri2.types.geometry import PathBuilder
@@ -42,10 +42,10 @@ class LineComponent(ConnectionLineComponent):
     
     def __init__(self, start=None, end=None, style=None, color=None):
         super().__init__(())
-        self.__start = start or ConstantExpression(EMPTY_PROPORTION)
-        self.__end = end or ConstantExpression(WHOLE_PROPORTION)
-        self.__style = style or ConstantExpression(LineStyle.solid)
-        self.__color = color or ConstantExpression(Colors.black)
+        self.__start = start or DefaultValueProvider(EMPTY_PROPORTION)
+        self.__end = end or DefaultValueProvider(WHOLE_PROPORTION)
+        self.__style = style or DefaultValueProvider(LineStyle.solid)
+        self.__color = color or DefaultValueProvider(Colors.black)
     
     def compile(self, type_context):
         self._compile_expressions(

@@ -5,7 +5,7 @@ from umlfri2.ufl.types import UflColorType, UflDefinedEnumType, UflNullableType
 from .visualcomponent import VisualComponent, VisualObject
 from umlfri2.types.geometry import Rectangle, Transformation, PathBuilder, Size
 
-from ..expressions import ConstantExpression
+from ..valueproviders import DefaultValueProvider
 
 
 class CornerDefinition:
@@ -244,8 +244,8 @@ class RectangleComponent(VisualComponent):
     def __init__(self, children, fill=None, border=None, topleft=None, topright=None, bottomleft=None, bottomright=None,
                  left=None, right=None, top=None, bottom=None):
         super().__init__(children)
-        self.__fill = fill or ConstantExpression(None)
-        self.__border = border or ConstantExpression(None)
+        self.__fill = fill or DefaultValueProvider(None)
+        self.__border = border or DefaultValueProvider(None)
         
         if left and (topleft or bottomleft or top or bottom):
             raise Exception
@@ -260,14 +260,14 @@ class RectangleComponent(VisualComponent):
             raise Exception
         
         if topleft or topright or bottomleft or bottomright:
-            self.__corners = (topleft or ConstantExpression(None), topright or ConstantExpression(None),
-                              bottomright or ConstantExpression(None), bottomleft or ConstantExpression(None))
+            self.__corners = (topleft or DefaultValueProvider(None), topright or DefaultValueProvider(None),
+                              bottomright or DefaultValueProvider(None), bottomleft or DefaultValueProvider(None))
         else:
             self.__corners = None
         
         if top or right or bottom or left:
-            self.__sides = (left or ConstantExpression(None), top or ConstantExpression(None),
-                            right or ConstantExpression(None), bottom or ConstantExpression(None))
+            self.__sides = (left or DefaultValueProvider(None), top or DefaultValueProvider(None),
+                            right or DefaultValueProvider(None), bottom or DefaultValueProvider(None))
         else:
             self.__sides = None
     

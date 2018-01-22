@@ -1,6 +1,6 @@
 from umlfri2.types.enums import LineOrientation
 from umlfri2.types.threestate import Maybe
-from ..expressions import ConstantExpression
+from ..valueproviders import DefaultValueProvider
 from .hbox import HBoxComponent
 from .table import TableRow, TableColumn
 from umlfri2.types.color import Colors
@@ -57,8 +57,8 @@ class LineComponent(VisualComponent):
     
     def __init__(self, orientation=None, color=None):
         super().__init__(())
-        self.__orientation = orientation or ConstantExpression(LineOrientation.auto)
-        self.__color = color or ConstantExpression(Colors.black)
+        self.__orientation = orientation or DefaultValueProvider(LineOrientation.auto)
+        self.__color = color or DefaultValueProvider(Colors.black)
     
     def __get_orientation(self, context):
         orientation = self.__orientation(context)

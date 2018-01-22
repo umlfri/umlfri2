@@ -1,4 +1,4 @@
-from ..expressions import ConstantExpression
+from ..valueproviders import DefaultValueProvider
 from umlfri2.types.geometry import Rectangle, Size
 from umlfri2.ufl.types import UflIntegerType
 from .visualcomponent import VisualComponent, VisualObject
@@ -52,10 +52,10 @@ class PaddingComponent(VisualComponent):
             self.__top = padding
             self.__bottom = padding
         else:
-            self.__left = left or ConstantExpression(0)
-            self.__right = right or ConstantExpression(0)
-            self.__top = top or ConstantExpression(0)
-            self.__bottom = bottom or ConstantExpression(0)
+            self.__left = left or DefaultValueProvider(0)
+            self.__right = right or DefaultValueProvider(0)
+            self.__top = top or DefaultValueProvider(0)
+            self.__bottom = bottom or DefaultValueProvider(0)
     
     def _create_object(self, context, ruler):
         for local, child in self._get_children(context):

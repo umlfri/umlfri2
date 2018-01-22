@@ -3,7 +3,7 @@ from umlfri2.types.image import Image
 from .componentloader import ComponentLoader
 from ....constants import ADDON_NAMESPACE, ADDON_SCHEMA
 from .structureloader import UflStructureLoader
-from umlfri2.ufl.components.expressions import LoadedConstantExpression, UflExpression
+from umlfri2.ufl.components.valueproviders import ConstantValueProvider, DynamicValueProvider
 from umlfri2.ufl.components.text import TextContainerComponent
 from umlfri2.metamodel import DiagramType
 
@@ -47,11 +47,11 @@ class DiagramTypeLoader:
                     if childchild.tag == "{{{0}}}Background".format(ADDON_NAMESPACE):
                         attrvalue = childchild.attrib["color"]
                         if attrvalue.startswith("##"):
-                            background = LoadedConstantExpression(attrvalue[1:])
+                            background = ConstantValueProvider(attrvalue[1:])
                         elif attrvalue.startswith("#"):
-                            background = UflExpression(attrvalue[1:])
+                            background = DynamicValueProvider(attrvalue[1:])
                         else:
-                            background = LoadedConstantExpression(attrvalue)
+                            background = ConstantValueProvider(attrvalue)
             else:
                 raise Exception
         

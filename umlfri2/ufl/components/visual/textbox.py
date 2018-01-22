@@ -1,4 +1,4 @@
-from ..expressions import ConstantExpression
+from ..valueproviders import DefaultValueProvider
 from ..text import TextContainerComponent, TextDataComponent
 from umlfri2.types.color import Colors
 from umlfri2.types.font import Fonts
@@ -47,8 +47,8 @@ class TextBoxComponent(VisualComponent):
     
     def __init__(self, children, text=None, color=None, font=None):
         super().__init__(())
-        self.__color = color or ConstantExpression(Colors.black)
-        self.__font = font or ConstantExpression(Fonts.default)
+        self.__color = color or DefaultValueProvider(Colors.black)
+        self.__font = font or DefaultValueProvider(Fonts.default)
         if text is None:
             self.__text = TextContainerComponent(children)
         else:

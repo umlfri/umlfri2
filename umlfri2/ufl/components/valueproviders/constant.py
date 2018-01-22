@@ -1,7 +1,7 @@
-from .expression import Expression
+from .valueprovider import ValueProvider
 
 
-class LoadedConstantExpression(Expression):
+class ConstantValueProvider(ValueProvider):
     def __init__(self, value):
         self.__value = value
         self.__type = None
@@ -18,6 +18,6 @@ class LoadedConstantExpression(Expression):
     
     def __repr__(self):
         if self.__type is None:
-            return "<LoadedExpression {0!r} unparsed>".format(self.__value, self.__type)
+            return "<ConstantValueProvider {0!r} unparsed>".format(self.__value, self.__type)
         else:
-            return "<LoadedExpression {0!r} of type {1}>".format(self.__value, self.__type)
+            return "<ConstantValueProvider {0!r} of type {1}>".format(self.__value, self.__type)

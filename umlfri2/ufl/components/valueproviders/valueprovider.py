@@ -1,4 +1,4 @@
-class Expression:
+class ValueProvider:
     def compile(self, type_context, expected_type):
         raise NotImplementedError
     

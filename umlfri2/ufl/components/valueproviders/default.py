@@ -1,5 +1,5 @@
 from umlfri2.types.proportion import Proportion
-from .expression import Expression
+from .valueprovider import ValueProvider
 
 from umlfri2.types.enums import ALL_ENUMS
 from umlfri2.types.color import Color
@@ -8,7 +8,7 @@ from umlfri2.ufl.types import UflIntegerType, UflStringType, UflColorType, UflFo
     UflProportionType, UflNullableType
 
 
-class ConstantExpression(Expression):
+class DefaultValueProvider(ValueProvider):
     __types = {
         int: UflIntegerType(),
         str: UflStringType(),
@@ -40,6 +40,6 @@ class ConstantExpression(Expression):
     
     def __repr__(self):
         if self.__type is None:
-            return "<ConstantExpression {0!r} untyped>".format(self.__value)
+            return "<DefaultValueProvider {0!r} untyped>".format(self.__value)
         else:
-            return "<ConstantExpression {0!r} of type {1}>".format(self.__value, self.__type)
+            return "<DefaultValueProvider {0!r} of type {1}>".format(self.__value, self.__type)

@@ -1,5 +1,5 @@
 from collections import namedtuple
-from ..expressions import ConstantExpression
+from ..valueproviders import DefaultValueProvider
 from umlfri2.types.color import Colors
 from umlfri2.types.geometry import Size, Rectangle, Vector
 from umlfri2.ufl.types import UflColorType, UflIntegerType
@@ -39,8 +39,8 @@ class ShadowComponent(VisualComponent):
     
     def __init__(self, children, color=None, padding=None):
         super().__init__(children)
-        self.__color = color or ConstantExpression(Colors.lightgray)
-        self.__padding = padding or ConstantExpression(5)
+        self.__color = color or DefaultValueProvider(Colors.lightgray)
+        self.__padding = padding or DefaultValueProvider(5)
     
     def _create_object(self, context, ruler):
         for local, child in self._get_children(context):

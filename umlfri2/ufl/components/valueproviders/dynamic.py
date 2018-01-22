@@ -1,8 +1,8 @@
-from .expression import Expression
+from .valueprovider import ValueProvider
 from ...expressions import CompiledUflExpression
 
 
-class UflExpression(Expression):
+class DynamicValueProvider(ValueProvider):
     def __init__(self, expression):
         self.__expression = expression
         self.__compiled = None
@@ -27,6 +27,6 @@ class UflExpression(Expression):
     
     def __repr__(self):
         if self.__compiled is None:
-            return '<UflExpression "{0}" uncompiled>'.format(self.__expression)
+            return '<DynamicValueProvider "{0}" uncompiled>'.format(self.__expression)
         else:
-            return '<UflExpression "{0}" of type {1}>'.format(self.__expression, self.__compiled.type)
+            return '<DynamicValueProvider "{0}" of type {1}>'.format(self.__expression, self.__compiled.type)

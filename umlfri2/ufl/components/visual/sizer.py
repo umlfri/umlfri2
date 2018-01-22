@@ -2,7 +2,7 @@ from umlfri2.types.threestate import Maybe
 from umlfri2.types.geometry import Size
 from umlfri2.ufl.types import UflIntegerType, UflNullableType
 from .visualcomponent import VisualComponent, VisualObject
-from ..expressions import ConstantExpression
+from ..valueproviders import DefaultValueProvider
 
 
 class SizerObject(VisualObject):
@@ -83,14 +83,14 @@ class SizerComponent(VisualComponent):
         if (minheight is not None or maxheight is not None) and height is not None:
             raise Exception("You cannot specify min/max height together with absolute height")
         
-        self.__minwidth = minwidth or ConstantExpression(None)
-        self.__maxwidth = maxwidth or ConstantExpression(None)
+        self.__minwidth = minwidth or DefaultValueProvider(None)
+        self.__maxwidth = maxwidth or DefaultValueProvider(None)
         
-        self.__minheight = minheight or ConstantExpression(None)
-        self.__maxheight = maxheight or ConstantExpression(None)
+        self.__minheight = minheight or DefaultValueProvider(None)
+        self.__maxheight = maxheight or DefaultValueProvider(None)
         
-        self.__width = width or ConstantExpression(None)
-        self.__height = height or ConstantExpression(None)
+        self.__width = width or DefaultValueProvider(None)
+        self.__height = height or DefaultValueProvider(None)
     
     def _create_object(self, context, ruler):
         child_object = None

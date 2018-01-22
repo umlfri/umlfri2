@@ -2,7 +2,7 @@ from collections import namedtuple
 
 from ....constants import ADDON_NAMESPACE
 from umlfri2.ufl.components.all import ALL_COMPONENTS
-from umlfri2.ufl.components.expressions import UflExpression, LoadedConstantExpression
+from umlfri2.ufl.components.valueproviders import DynamicValueProvider, ConstantValueProvider
 
 ChildAttribute = namedtuple('ChildAttribute', ["name", "type", "values"])
 
@@ -41,11 +41,11 @@ class ComponentLoader:
                     if is_str:
                         value = attrvalue
                     elif attrvalue.startswith("##"):
-                        value = LoadedConstantExpression(attrvalue[1:])
+                        value = ConstantValueProvider(attrvalue[1:])
                     elif attrvalue.startswith("#"):
-                        value = UflExpression(attrvalue[1:])
+                        value = DynamicValueProvider(attrvalue[1:])
                     else:
-                        value = LoadedConstantExpression(attrvalue)
+                        value = ConstantValueProvider(attrvalue)
                     
                     if is_children_param:
                         children_params[attrname] = value
