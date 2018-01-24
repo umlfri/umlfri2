@@ -25,7 +25,7 @@ class AboutUmlFri:
     
     @property
     def author(self):
-        yield "Ján Janech", (2015, 2017)
+        yield "Ján Janech", (2015, 2018)
     
     @property
     def description(self):
