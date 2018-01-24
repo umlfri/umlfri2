@@ -56,7 +56,7 @@ class AddOnManager:
         self.__addons.append(addon)
         self.__application.event_dispatcher.dispatch(AddOnUpdatedEvent(addon))
         
-        return online_addon_version.addon.local_addon # TODO
+        return addon
     
     def uninstall_addon(self, addon):
         if addon.is_system_addon:
