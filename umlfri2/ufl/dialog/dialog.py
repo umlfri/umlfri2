@@ -53,8 +53,8 @@ class UflDialog:
                 tab.add_column(self.__make_column(attr, attr.type))
                 tab.add_widget(self.__make_widget(tab, attr, attr.type))
         else:
-            tab.add_column(self.__make_column(None, type))
-            tab.add_widget(self.__make_widget(tab, None, type))
+            tab.add_column(self.__make_column(None, type.item_type))
+            tab.add_widget(self.__make_widget(tab, None, type.item_type))
         
         return tab
     

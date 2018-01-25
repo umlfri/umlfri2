@@ -148,8 +148,12 @@ class ProjectLoader:
         elif isinstance(ufl_type, UflListType):
             for child in node:
                 if child.tag == "{{{0}}}Item".format(MODEL_NAMESPACE):
-                    new_value = ufl_object.append()
-                    self.__load_ufl(ufl_type.item_type, child, new_value)
+                    if ufl_type.item_type.is_immutable:
+                        new_value = self.__load_ufl(ufl_type.item_type, child, None)
+                        ufl_object.append(new_value)
+                    else:
+                        new_value = ufl_object.append()
+                        self.__load_ufl(ufl_type.item_type, child, new_value)
                 else:
                     raise Exception
             return None

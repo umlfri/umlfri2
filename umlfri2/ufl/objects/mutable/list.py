@@ -78,12 +78,16 @@ class UflMutableList(UflMutable):
         return len(self.__values)
     
     def create_default(self):
-        return self.__type.item_type.build_default(ListItemValueGenerator(self)).make_mutable()
+        ret = self.__type.item_type.build_default(ListItemValueGenerator(self))
+        if self.type.item_type.is_immutable:
+            return ret
+        else:
+            return ret.make_mutable()
     
     def append(self, value=None):
         if value is None:
             value = self.create_default()
-        elif value.type != self.__type.item_type:
+        elif not self.__type.item_type.is_valid_value(value):
             raise ValueError
         elif not self.__type.item_type.is_immutable:
             if not isinstance(value, UflMutable):
