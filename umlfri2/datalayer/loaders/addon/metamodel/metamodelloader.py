@@ -24,7 +24,7 @@ class MetamodelLoader:
         connectionXMLs = []
         diagramXMLs = []
         templateXMLs = []
-        definitionXMLs = None # TODO: multiple definition files
+        definitionXMLs = []
         configXMLs = None
         translationXMLs = []
         for file in self.__storage.get_all_files():
@@ -36,7 +36,7 @@ class MetamodelLoader:
             elif xml.tag == "{{{0}}}DiagramType".format(ADDON_NAMESPACE):
                 diagramXMLs.append((file, xml))
             elif xml.tag == "{{{0}}}Definitions".format(ADDON_NAMESPACE):
-                definitionXMLs = (file, xml)
+                definitionXMLs.append((file, xml))
             elif xml.tag == "{{{0}}}Translation".format(ADDON_NAMESPACE):
                 translationXMLs.append((file, xml))
             elif xml.tag == "{{{0}}}Config".format(ADDON_NAMESPACE):
@@ -45,9 +45,12 @@ class MetamodelLoader:
                 templateXMLs.append((file, xml))
         
         if definitionXMLs is not None:
-            definitions = DefinitionsLoader(definitionXMLs[1]).load()
+            definitions = {}
+            for file, definition in definitionXMLs:
+                for def_name, def_dict in DefinitionsLoader(definition).load().items():
+                    definitions.setdefault(def_name, {}).update(def_dict)
         else:
-            definitions = None
+            definitions = {}
 
         if configXMLs is not None:
             config = UflStructureLoader(configXMLs[1]).load()

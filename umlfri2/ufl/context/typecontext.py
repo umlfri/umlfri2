@@ -17,9 +17,9 @@ class TypeContext:
     
     def resolve_defined_enum(self, type):
         if isinstance(type, UflDefinedEnumType):
-            return UflDefinedEnumType(type.type, self.__definitions[type.type.__name__])
+            return UflDefinedEnumType(type.type, self.__definitions.get(type.type.__name__, {}))
         elif isinstance(type, UflNullableType) and isinstance(type.inner_type, UflDefinedEnumType):
-            return UflNullableType(UflDefinedEnumType(type.inner_type.type, self.__definitions[type.inner_type.type.__name__]))
+            return UflNullableType(self.resolve_defined_enum(type.inner_type))
         else:
             return type
     
