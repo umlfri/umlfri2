@@ -10,8 +10,6 @@ from umlfri2.model import Project
 
 
 class ProjectLoader:
-    # TODO: ignore incorrect attributes
-    
     def __init__(self, xmlfile_or_xmlroot, ruler, addon_manager, save_version):
         if isinstance(xmlfile_or_xmlroot, lxml.etree._Element):
             self.__xmlroot = xmlfile_or_xmlroot
@@ -167,6 +165,8 @@ class ProjectLoader:
 
     def __load_ufl_attribute(self, child, ufl_object, ufl_type):
         id = child.attrib['id']
+        if not ufl_type.contains_attribute(id):
+            return # undefined attribute is ignored
         type = ufl_type.get_attribute(id).type
         current_value = ufl_object.get_value(id)
         new_value = self.__load_ufl(type, child, current_value)
