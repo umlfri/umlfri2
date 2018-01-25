@@ -309,7 +309,6 @@ class MainWindowMenu(QMenuBar):
             if '.' not in os.path.basename(file_name):
                 file_name = file_name + '.' + formats
             
-            # TODO: export to python file?
             exp.export(file_name, formats)
     
     def __diagram_full_screen_action(self):

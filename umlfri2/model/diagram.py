@@ -251,7 +251,6 @@ class Diagram:
         return None
     
     def get_visual_above(self, ruler, visual, skip=set()):
-        # TODO: implement it for connections too
         element_bounds = visual.get_bounds(ruler)
         
         above_visual = None
@@ -265,7 +264,6 @@ class Diagram:
         raise Exception
     
     def get_visual_below(self, ruler, visual, skip=set()):
-        # TODO: implement it for connections too
         element_bounds = visual.get_bounds(ruler)
         
         above_visual = None
