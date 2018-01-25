@@ -3,6 +3,7 @@ from uuid import UUID
 import lxml.etree
 
 from umlfri2.types.geometry import Point, Size
+from umlfri2.types.version import Version
 from umlfri2.ufl.types import UflObjectType, UflListType, UflFlagsType
 from ...constants import MODEL_NAMESPACE, MODEL_SCHEMA
 from umlfri2.model import Project
@@ -63,16 +64,17 @@ class ProjectLoader:
                 name = child.attrib["name"]
             elif child.tag == "{{{0}}}Metamodel".format(MODEL_NAMESPACE):
                 metamodel = child.attrib["id"]
-                metamodel_version = child.attrib["version"]
+                metamodel_version = Version(child.attrib["version"])
             else:
                 raise Exception
         
         addon = self.__addon_manager.get_addon(metamodel)
         
-        # TODO: check version and raise warning if needed
-        
         if addon is None or addon.metamodel is None:
             raise Exception("Add-on not found")
+        
+        if not metamodel_version.is_compatible_with(addon.version):
+            raise Exception("Model was created with incompatible version of the metamodel")
         
         return Project(addon.metamodel, name, save_id)
 
