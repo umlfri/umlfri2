@@ -68,13 +68,19 @@ class SnippetBuilder:
         return self
     
     def __convert_ufl_value(self, ufl_value, ufl_type):
-        # TODO: font/color/image/etc...
         if isinstance(ufl_type, UflObjectType):
             return self.__convert_ufl_object(ufl_value, ufl_type)
         elif isinstance(ufl_type, UflListType):
             return [self.__convert_ufl_value(item, ufl_type.item_type) for item in ufl_value]
+        elif isinstance(ufl_type, UflFlagsType):
+            return list(ufl_value)
+        elif isinstance(ufl_type, UflNullableType):
+            if ufl_value is None:
+                return None
+            else:
+                return self.__convert_ufl_value(ufl_value, ufl_type.inner_type)
         else:
-            return ufl_value
+            return self.__convert_ufl_immutable(ufl_value, ufl_type)
     
     def __convert_ufl_object(self, ufl_object, ufl_type):
         ret = {}
@@ -84,6 +90,14 @@ class SnippetBuilder:
             ret[attribute.name] = self.__convert_ufl_value(value, attribute.type)
         
         return ret
+    
+    def __convert_ufl_immutable(self, ufl_value, ufl_type):
+        if isinstance(ufl_type, (UflColorType, UflFontType, UflProportionType)):
+            return str(ufl_value)
+        elif isinstance(ufl_type, UflImageType):
+            raise NotImplementedError("Image type cannot be copied to a snippet yet") # TODO
+        else:
+            return ufl_value
     
     def build(self):
         ret = {}

@@ -125,8 +125,12 @@ class Snippet:
         return visual
     
     def __update_ufl_immutable(self, type, input):
-        # TODO: font/color/image/etc...
-        return input
+        if isinstance(type, (UflColorType, UflFontType, UflProportionType)):
+            return type.parse(input)
+        elif isinstance(type, UflImageType):
+            raise NotImplementedError("Image type cannot be copied to a snippet yet") # TODO
+        else:
+            return input
     
     def __update_ufl_mutable(self, output, type, input):
         if isinstance(type, UflObjectType):
