@@ -38,11 +38,3 @@ UflFontType.ALLOWED_DIRECT_ATTRIBUTES = {
     'style': UflAttributeDescription('style', UflTypedEnumType(FontStyle)),
     'family': UflAttributeDescription('family', UflStringType()),
 }
-
-UflFontType.ALLOWED_DIRECT_METHODS = {
-    'change': UflMethodDescription(
-        'change',
-        (UflTypedEnumType(FontStyle), UflBoolType()),
-        UflFontType()
-    )
-}

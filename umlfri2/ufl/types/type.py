@@ -5,7 +5,6 @@ UflAttributeDescription = namedtuple('UflAttributeDescription', ('accessor', 'ty
 
 class UflType:
     ALLOWED_DIRECT_ATTRIBUTES = {}
-    ALLOWED_DIRECT_METHODS = {}
     
     __parent = None
     

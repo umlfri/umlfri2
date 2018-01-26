@@ -36,7 +36,3 @@ UflType.ALLOWED_DIRECT_ATTRIBUTES = {
     'b': UflAttributeDescription('b', UflIntegerType()),
     'a': UflAttributeDescription('alpha', UflIntegerType()),
 }
-
-UflColorType.ALLOWED_DIRECT_METHODS = {
-    'invert': UflMethodDescription('invert', (), UflColorType()),
-}
