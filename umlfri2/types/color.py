@@ -36,7 +36,7 @@ class Color:
         return ((self.__value & 0xff000000) >> 24) + (self.__value & 0xffffff) << 8
     
     def invert(self):
-        return Color(self.__value & 0xff000000 + (0xffffff - self.__value & 0xffffff))
+        return Color((self.__value & 0xff000000) + (0xffffff - self.__value & 0xffffff))
     
     def add_alpha(self, alpha):
         return Color(self.__value & 0xffffff + alpha << 24)
