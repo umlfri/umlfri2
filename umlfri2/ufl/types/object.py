@@ -81,6 +81,9 @@ class UflObjectType(UflType):
                 return False
         return True
     
+    def is_valid_value(self, value):
+        return hasattr(value, 'type') and value.type is self
+    
     def set_parent(self, parent):
         super().set_parent(parent)
         for attr in self.__attributes.values():
