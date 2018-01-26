@@ -43,18 +43,29 @@ class UflTypingVisitor(UflVisitor):
         
         target_type = target.type
         
-        if isinstance(target_type, (UflListType, UflFlagsType, UflIterableType, UflNullableType)):
+        multi_invoke = False
+        
+        if isinstance(target_type, (UflListType, UflFlagsType, UflIterableType)):
             if node.inner_type_invoke:
+                multi_invoke = True
                 target_type = target_type.item_type
-        else:
-            if not node.inner_type_invoke:
-                raise Exception("Iterator access operator cannot be applied to the type {0}".format(target_type))
+        elif isinstance(target_type, UflNullableType):
+            if node.inner_type_invoke:
+                multi_invoke = True
+                target_type = target_type.inner_type
+        elif not node.inner_type_invoke:
+            raise Exception("Iterator access operator cannot be applied to the type {0}".format(target_type))
         
         param_types = [param.type for param in params]
         
         found_macro, found_signature = self.__find_macro(node.selector, target_type, param_types)
         
-        return UflMacroInvokeNode(target, node.selector, params, node.inner_type_invoke, found_macro, found_signature.return_type)
+        return_type = found_signature.return_type
+        
+        if multi_invoke:
+            return_type = UflIterableType(return_type)
+        
+        return UflMacroInvokeNode(target, node.selector, params, node.inner_type_invoke, found_macro, return_type)
     
     def visit_variable(self, node):
         return UflVariableNode(node.name, self.__params[node.name])

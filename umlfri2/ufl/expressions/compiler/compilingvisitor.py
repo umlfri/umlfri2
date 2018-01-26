@@ -1,3 +1,5 @@
+from umlfri2.types.enums import ALL_ENUMS
+from .varnameregister import VariableNameRegister
 from ...macro.inlined import InlinedMacro
 from ...types import UflTypedEnumType, UflDataWithMetadataType, UflStringType, UflBoolType, UflListType, UflFlagsType,\
     UflIterableType, UflNullableType
@@ -16,6 +18,8 @@ class UflCompilingVisitor(UflVisitor):
     }
     
     def __init__(self, variable_prefix):
+        self.__name_register = VariableNameRegister(variable_prefix)
+        
         self.__variable_prefix = variable_prefix
     
     def visit_attribute_access(self, node):
@@ -33,11 +37,8 @@ class UflCompilingVisitor(UflVisitor):
             return repr(node.item)
     
     def visit_macro_invoke(self, node):
-        if node.inner_type_invoke and isinstance(node.target.type, (UflListType, UflFlagsType, UflIterableType, UflNullableType)):
-            raise Exception("I cannot use macro multi-invoke yet")
-        
         if isinstance(node.macro, InlinedMacro):
-            return node.macro.compile(self, None, node)
+            return node.macro.compile(self, self.__name_register, node)
         else:
             raise Exception("I can not use non-inline macro yet")
     
@@ -81,9 +82,11 @@ class UflCompilingVisitor(UflVisitor):
         object = node.object.accept(self)
         
         if isinstance(node.type, UflStringType):
-            return "str({0})".format(object)
+            py_str = self.__name_register.register_function(str)
+            return "{0}({1})".format(py_str, object)
         elif isinstance(node.type, UflBoolType):
-            return "bool({0})".format(object)
+            py_bool = self.__name_register.register_function(bool)
+            return "{0}({1})".format(py_bool, object)
         else:
             raise Exception
     
@@ -92,3 +95,10 @@ class UflCompilingVisitor(UflVisitor):
             return name
         else:
             return self.__variable_prefix + name
+    
+    @property
+    def all_globals(self):
+        globals = self.__name_register.build_globals()
+        globals.update(ALL_ENUMS)
+        
+        return globals
