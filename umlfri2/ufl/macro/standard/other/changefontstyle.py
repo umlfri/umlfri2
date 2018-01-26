@@ -18,5 +18,10 @@ class ChangeFontStyleMacro(InlinedMacro):
         
         font_style = node.parameters[0].accept(visitor)
         value = node.parameters[1].accept(visitor)
-        
-        return "({0}).change(({1}), ({2}))".format(target, font_style, value)
+
+        if isinstance(node.target.type, (UflIterableType, UflListType)):
+            var = registrar.register_temp_variable()
+            
+            return "({0}.change(({1}), ({2})) for {0} in ({3}))".format(var, font_style, value, target)
+        else:
+            return "({0}).change(({1}), ({2}))".format(target, font_style, value)

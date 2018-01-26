@@ -14,4 +14,9 @@ class InvertColorMacro(InlinedMacro):
     def compile(self, visitor, registrar, node):
         target = node.target.accept(visitor)
         
-        return "({0}).invert()".format(target)
+        if isinstance(node.target.type, (UflIterableType, UflListType)):
+            var = registrar.register_temp_variable()
+            
+            return "({0}.invert() for {0} in ({1}))".format(var, target)
+        else:
+            return "({0}).invert()".format(target)
