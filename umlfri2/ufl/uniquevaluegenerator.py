@@ -1,8 +1,7 @@
-from umlfri2.ufl.context import Context
-
-
 class UniqueValueGenerator:
     def get_text(self, template):
+        from umlfri2.ufl.context import Context
+        
         i = 1
         prev = None
         context = Context().set_variable('parent', self.get_parent_name())
