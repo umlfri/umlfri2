@@ -7,6 +7,7 @@ from .enum import UflEnumType
 from .enumpossibility import UflEnumPossibility
 from .flags import UflFlagsType
 from .font import UflFontType
+from .generic import UflGenericType
 from .image import UflImageType
 from .integer import UflIntegerType
 from .iterable import UflIterableType
@@ -21,4 +22,6 @@ from .type import UflType
 from .typedenum import UflTypedEnumType
 from .metadata import UflDataWithMetadataType, UflMetadataType
 from .number import UflNumberType
+from .typeidentifier import UflTypeIdentifierType
 from .typeparser import UflTypeParser
+from .ufllambda import UflLambdaType
