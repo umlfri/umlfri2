@@ -4,7 +4,7 @@ from ...inlined import InlinedMacro
 
 
 class EmptyMacro(InlinedMacro):
-    macro_signature = MacroSignature(
+    signature = MacroSignature(
         'empty',
         UflIterableType(UflAnyType()),
         [],

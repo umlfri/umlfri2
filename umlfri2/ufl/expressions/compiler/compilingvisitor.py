@@ -1,4 +1,6 @@
-from ...types import UflTypedEnumType, UflDataWithMetadataType, UflStringType, UflBoolType
+from ...macro.inlined import InlinedMacro
+from ...types import UflTypedEnumType, UflDataWithMetadataType, UflStringType, UflBoolType, UflListType, UflFlagsType,\
+    UflIterableType, UflNullableType
 from ..tree.visitor import UflVisitor
 
 
@@ -30,18 +32,14 @@ class UflCompilingVisitor(UflVisitor):
         else:
             return repr(node.item)
     
-    def visit_method_call(self, node):
-        targetcode = node.target.accept(self)
+    def visit_macro_invoke(self, node):
+        if node.inner_type_invoke and isinstance(node.target.type, (UflListType, UflFlagsType, UflIterableType, UflNullableType)):
+            raise Exception("I cannot use macro multi-invoke yet")
         
-        params = [param.accept(self) for param in node.parameters]
-        
-        methoddesc = node.target.type.ALLOWED_DIRECT_METHODS[node.selector]
-        
-        return "({0}).{1}({2})".format(
-            targetcode,
-            methoddesc.selector,
-            ", ".join("{0}".format(param) for param in params)
-        )
+        if isinstance(node.macro, InlinedMacro):
+            return node.macro.compile(self, None, node)
+        else:
+            raise Exception("I can not use non-inline macro yet")
     
     def visit_variable(self, node):
         return self.__fix_var_name(node.name)
@@ -67,9 +65,6 @@ class UflCompilingVisitor(UflVisitor):
     
     def visit_metadata_access(self, node):
         return node.object.accept(self)
-    
-    def visit_iterator_access(self, node):
-        raise NotImplementedError
     
     def visit_unpack(self, node):
         object = node.object.accept(self)

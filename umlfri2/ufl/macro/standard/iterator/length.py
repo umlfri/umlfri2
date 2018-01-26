@@ -4,7 +4,7 @@ from ...inlined import InlinedMacro
 
 
 class LengthMacro(InlinedMacro):
-    macro_signature = MacroSignature(
+    signature = MacroSignature(
         'length',
         UflIterableType(UflAnyType()),
         [],

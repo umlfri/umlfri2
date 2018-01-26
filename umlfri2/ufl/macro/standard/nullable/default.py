@@ -6,7 +6,7 @@ from ...inlined import InlinedMacro
 class DefaultMacro(InlinedMacro):
     src_type = UflGenericType(UflAnyType())
     
-    macro_signature = MacroSignature(
+    signature = MacroSignature(
         'default',
         UflNullableType(src_type),
         [],
@@ -20,7 +20,7 @@ class DefaultMacro(InlinedMacro):
 class DefaultWithValueMacro(InlinedMacro):
     src_type = UflGenericType(UflAnyType())
     
-    macro_signature = MacroSignature(
+    signature = MacroSignature(
         'default',
         UflNullableType(src_type),
         [src_type],

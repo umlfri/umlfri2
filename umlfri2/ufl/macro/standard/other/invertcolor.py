@@ -4,7 +4,7 @@ from ...inlined import InlinedMacro
 
 
 class InvertColorMacro(InlinedMacro):
-    macro_signature = MacroSignature(
+    signature = MacroSignature(
         'invert',
         UflColorType(),
         [],

@@ -7,7 +7,7 @@ class MapMacro(InlinedMacro):
     src_type = UflGenericType(UflAnyType())
     dest_type = UflGenericType(UflAnyType())
     
-    macro_signature = MacroSignature(
+    signature = MacroSignature(
         'map',
         UflIterableType(src_type),
         [UflLambdaType([src_type], dest_type)],

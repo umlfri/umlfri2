@@ -6,7 +6,7 @@ from ...inlined import InlinedMacro
 class IterateMacro(InlinedMacro):
     src_type = UflGenericType(UflAnyType())
     
-    macro_signature = MacroSignature(
+    signature = MacroSignature(
         'iterate',
         UflNullableType(src_type),
         [],

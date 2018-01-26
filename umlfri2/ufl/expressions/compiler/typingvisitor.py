@@ -1,3 +1,5 @@
+from umlfri2.ufl.types import UflIterableType, UflListType, UflFlagsType
+from ...macro.standard import STANDARD_MACROS
 from ...types import UflDataWithMetadataType, UflNullableType, UflAnyType, UflDecimalType, UflNumberType, \
     UflTypedEnumType, UflObjectType, UflBoolType, UflStringType, UflIntegerType
 from ..tree.visitor import UflVisitor
@@ -34,23 +36,25 @@ class UflTypingVisitor(UflVisitor):
         
         return UflEnumNode(node.enum, node.item, enum_type)
     
-    def visit_method_call(self, node):
+    def visit_macro_invoke(self, node):
         target = self.__demeta(node.target.accept(self))
         
         params = [self.__demeta(param.accept(self)) for param in node.parameters]
         
-        if not node.selector in target.type.ALLOWED_DIRECT_METHODS:
-            raise Exception("Unknown method {0}".format(node.selector))
+        target_type = target.type
         
-        methoddesc = target.type.ALLOWED_DIRECT_METHODS[node.selector]
-        if len(params) != len(methoddesc.parameters):
-            raise Exception("Incorrect param count")
+        if isinstance(target_type, (UflListType, UflFlagsType, UflIterableType, UflNullableType)):
+            if node.inner_type_invoke:
+                target_type = target_type.item_type
+        else:
+            if not node.inner_type_invoke:
+                raise Exception("Iterator access operator cannot be applied to the type {0}".format(target_type))
         
-        for param, expected in zip(params, methoddesc.parameters):
-            if not expected.is_assignable_from(param.type):
-                raise Exception("Incorrect param types")
+        param_types = [param.type for param in params]
         
-        return UflMethodCallNode(target, node.selector, params, methoddesc.return_type)
+        found_macro, found_signature = self.__find_macro(node.selector, target_type, param_types)
+        
+        return UflMacroInvokeNode(target, node.selector, params, node.inner_type_invoke, found_macro, found_signature.return_type)
     
     def visit_variable(self, node):
         return UflVariableNode(node.name, self.__params[node.name])
@@ -133,9 +137,6 @@ class UflTypingVisitor(UflVisitor):
 
         return UflMetadataAccessNode(object, object.type.metadata_type)
     
-    def visit_iterator_access(self, node):
-        raise NotImplementedError
-    
     def visit_unpack(self, node):
         raise Exception("Weird ufl expression tree")
     
@@ -158,3 +159,11 @@ class UflTypingVisitor(UflVisitor):
         while isinstance(node.type, UflDataWithMetadataType):
             node = UflUnpackNode(node, node.type.underlying_type)
         return node
+
+    def __find_macro(self, selector, target_type, argument_types):
+        for macro in STANDARD_MACROS:
+            found_signature = macro.compare_signature(selector, target_type, argument_types)
+            if found_signature is not None:
+                return macro, found_signature
+        
+        raise Exception("Unknown macro {0}".format(selector))

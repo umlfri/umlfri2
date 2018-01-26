@@ -7,7 +7,7 @@ class OfTypeMacro(InlinedMacro):
     base_type = UflGenericType(UflAnyType())
     dest_type = UflGenericType(base_type)
     
-    macro_signature = MacroSignature(
+    signature = MacroSignature(
         'of_type',
         UflIterableType(base_type),
         [UflTypeIdentifierType(dest_type)],

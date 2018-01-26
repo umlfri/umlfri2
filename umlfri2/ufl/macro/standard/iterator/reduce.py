@@ -9,7 +9,7 @@ class ReduceMacro(InlinedMacro):
     src_type = UflGenericType(UflAnyType())
     value_type = UflGenericType(UflAnyType())
     
-    macro_signature = MacroSignature(
+    signature = MacroSignature(
         'reduce',
         UflIterableType(src_type),
         [value_type, UflLambdaType([value_type, src_type], value_type)],
@@ -29,7 +29,7 @@ class ReduceMacro(InlinedMacro):
 class ReduceSimpleMacro(InlinedMacro):
     src_type = UflGenericType(UflAnyType())
     
-    macro_signature = MacroSignature(
+    signature = MacroSignature(
         'reduce',
         UflIterableType(src_type),
         [UflLambdaType([src_type, src_type], src_type)],

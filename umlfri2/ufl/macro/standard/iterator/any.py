@@ -6,7 +6,7 @@ from ...inlined import InlinedMacro
 class AnyMacro(InlinedMacro):
     src_type = UflGenericType(UflAnyType())
     
-    macro_signature = MacroSignature(
+    signature = MacroSignature(
         'any',
         UflIterableType(src_type),
         [UflLambdaType([src_type], UflBoolType())],
@@ -29,7 +29,7 @@ class AnyContainsValueMacro(InlinedMacro):
     # TODO: UflAnyType() should be equatable
     src_type = UflGenericType(UflAnyType())
     
-    macro_signature = MacroSignature(
+    signature = MacroSignature(
         'any',
         UflIterableType(src_type),
         [src_type],
@@ -45,7 +45,7 @@ class AnyContainsValueMacro(InlinedMacro):
 
 
 class AnyNotEmptyMacro(InlinedMacro):
-    macro_signature = MacroSignature(
+    signature = MacroSignature(
         'any',
         UflIterableType(UflAnyType()),
         [],

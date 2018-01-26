@@ -9,7 +9,7 @@ class OrderByMacro(InlinedMacro):
     src_type = UflGenericType(UflAnyType())
     
     # TODO: UflAnyType must be comparable
-    macro_signature = MacroSignature(
+    signature = MacroSignature(
         'order_by',
         UflIterableType(src_type),
         [UflLambdaType([src_type], UflAnyType())],
@@ -29,7 +29,7 @@ class OrderByOrderMacro(InlinedMacro):
     src_type = UflGenericType(UflAnyType())
     
     # TODO: UflAnyType must be comparable
-    macro_signature = MacroSignature(
+    signature = MacroSignature(
         'order_by',
         UflIterableType(src_type),
         [UflLambdaType([src_type], UflAnyType()), UflTypedEnumType(Order)],

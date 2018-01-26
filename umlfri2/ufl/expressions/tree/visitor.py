@@ -5,7 +5,7 @@ class UflVisitor:
     def visit_enum(self, node):
         raise NotImplementedError
     
-    def visit_method_call(self, node):
+    def visit_macro_invoke(self, node):
         raise NotImplementedError
     
     def visit_variable(self, node):
@@ -24,9 +24,6 @@ class UflVisitor:
         raise NotImplementedError
     
     def visit_metadata_access(self, node):
-        raise NotImplementedError
-    
-    def visit_iterator_access(self, node):
         raise NotImplementedError
     
     def visit_unpack(self, node):

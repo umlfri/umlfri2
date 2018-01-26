@@ -6,7 +6,7 @@ from ...inlined import InlinedMacro
 class SelectMacro(InlinedMacro):
     src_type = UflGenericType(UflAnyType())
     
-    macro_signature = MacroSignature(
+    signature = MacroSignature(
         'select',
         UflIterableType(src_type),
         [UflLambdaType([src_type], UflBoolType())],

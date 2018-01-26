@@ -6,7 +6,7 @@ from ...inlined import InlinedMacro
 
 
 class ChangeFontStyleMacro(InlinedMacro):
-    macro_signature = MacroSignature(
+    signature = MacroSignature(
         'change',
         UflFontType(),
         [UflTypedEnumType(FontStyle), UflBoolType()],

@@ -6,7 +6,7 @@ from ...inlined import InlinedMacro
 class AllMacro(InlinedMacro):
     src_type = UflGenericType(UflAnyType())
     
-    macro_signature = MacroSignature(
+    signature = MacroSignature(
         'all',
         UflIterableType(src_type),
         [UflLambdaType([src_type], UflBoolType())],

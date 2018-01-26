@@ -53,15 +53,16 @@ def method_or_attribute_or_enum(data):
                 j = i + 2
                 while data[j] != ')':
                     j += 1
-                if data[i] == '->':
-                    node = UflIteratorAccessNode(node, data[i + 1], data[i + 3: j: 2])
-                else:
-                    node = UflMethodCallNode(node, data[i + 1], data[i + 3: j: 2])
+                
+                node = UflMacroInvokeNode(node, data[i + 1], data[i + 3: j: 2], data[i] == '.')
+                
                 i = j + 1
             else:
                 if data[i] == '->':
                     raise Exception('Invalid use of iterator access operator')
+                
                 node = UflAttributeAccessNode(node, data[i + 1])
+                
                 i = i + 2
         return node
 

@@ -4,7 +4,7 @@ from ...inlined import InlinedMacro
 
 
 class JoinMacro(InlinedMacro):
-    macro_signature = MacroSignature(
+    signature = MacroSignature(
         'join',
         UflIterableType(UflStringType()),
         [UflStringType()],
