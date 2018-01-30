@@ -55,27 +55,29 @@ def binary(data):
 def method_or_attribute_or_enum(data):
     node = data[0]
     
-    if len(data) > 1 and data[1] == '::':
-        if isinstance(data[0], UflVariableNode):
-            return UflEnumNode(data[0].name, data[2])
+    i = 1
+    while i < len(data):
+        if i + 2 < len(data) and data[i + 2] == '(':
+            if data[i] == '::':
+                raise Exception('You can use :: operator only to access enum members')
+            
+            j = i + 2
+            while data[j] != ')':
+                j += 1
+            
+            node = UflMacroInvokeNode(node, data[i + 1], data[i + 3: j: 2], data[i] == '.')
+            
+            i = j + 1
         else:
-            raise Exception('You can use :: operator only to access enum members')
-    else:
-        i = 1
-        while i < len(data):
-            if i + 2 < len(data) and data[i + 2] == '(':
-                j = i + 2
-                while data[j] != ')':
-                    j += 1
-                
-                node = UflMacroInvokeNode(node, data[i + 1], data[i + 3: j: 2], data[i] == '.')
-                
-                i = j + 1
+            if data[i] == '->':
+                raise Exception('Invalid use of iterator access operator')
+            elif data[i] == '::':
+                if isinstance(node, UflVariableNode):
+                    node = UflEnumNode(node.name, data[i + 1])
+                else:
+                    raise Exception('You can use :: operator only to access enum members')
             else:
-                if data[i] == '->':
-                    raise Exception('Invalid use of iterator access operator')
-                
                 node = UflAttributeAccessNode(node, data[i + 1])
-                
-                i = i + 2
-        return node
+            
+            i = i + 2
+    return node

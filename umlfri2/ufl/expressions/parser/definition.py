@@ -11,13 +11,12 @@ VARIABLE = pp.pyparsing_common.identifier.copy()
 TARGET = VARIABLE | ('(' + EXPRESSION + ')') | METADATA_ACCESS
 
 METHODORATTRORENUM = TARGET + (
-    pp.OneOrMore(
-        pp.oneOf(('.', '->')) + pp.pyparsing_common.identifier.copy()
+    pp.ZeroOrMore(
+        pp.oneOf(('.', '->', '::')) + pp.pyparsing_common.identifier.copy()
         + pp.Optional('(' + pp.Optional(
             pp.Optional(EXPRESSION) + pp.ZeroOrMore("," + pp.Optional(EXPRESSION))
         ) + ')')
-    ) |
-    pp.Optional('::' + pp.pyparsing_common.identifier.copy())
+    )
 )
 
 STRING = pp.QuotedString(quoteChar="'", escChar="\\")
