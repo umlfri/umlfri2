@@ -1,7 +1,10 @@
+from umlfri2.types.color import Colors
 from umlfri2.types.enums import ALL_ENUMS
+from umlfri2.types.font import Fonts
+
 from .varnameregister import VariableNameRegister
 from ...macro.inlined import InlinedMacro
-from ...types import UflTypedEnumType, UflDataWithMetadataType, UflStringType, UflBoolType
+from ...types import UflTypedEnumType, UflDataWithMetadataType, UflStringType, UflBoolType, UflColorType, UflFontType
 from ..tree.visitor import UflVisitor
 
 
@@ -33,6 +36,12 @@ class UflCompilingVisitor(UflVisitor):
         if isinstance(node.type, UflTypedEnumType):
             py_enum = self.__name_register.register_class(ALL_ENUMS[node.enum])
             return "{0}.{1}".format(py_enum, node.item)
+        elif isinstance(node.type, UflColorType):
+            py_colors = self.__name_register.register_class(Colors)
+            return "{0}.{1}".format(py_colors, node.item)
+        elif isinstance(node.type, UflFontType):
+            py_fonts = self.__name_register.register_class(Fonts)
+            return "{0}.{1}".format(py_fonts, node.item)
         else:
             return repr(node.item)
     

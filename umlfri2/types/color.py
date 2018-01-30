@@ -60,8 +60,8 @@ class Color:
     
     @staticmethod
     def from_string(color):
-        if hasattr(Colors, color):
-            return getattr(Colors, color)
+        if Colors.exists(color):
+            return Colors.get(color)
         if Color.__RE_HTML_COLOR.match(color): # html rgb/argb
             val = int(color[1:], 16)
             if len(color) == 6:
@@ -637,3 +637,11 @@ class Colors:
     yellow3 = Color(0xffcdcd00)
     yellow4 = Color(0xff8b8b00)
     yellowgreen = Color(0xff9acd32)
+    
+    @staticmethod
+    def exists(name):
+        return isinstance(getattr(Colors, name, None), Color)
+    
+    @staticmethod
+    def get(name):
+        return getattr(Colors, name)

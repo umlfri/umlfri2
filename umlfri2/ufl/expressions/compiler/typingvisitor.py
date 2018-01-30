@@ -1,7 +1,10 @@
-from umlfri2.ufl.types import UflIterableType, UflListType, UflFlagsType
+from umlfri2.types.color import Colors
+from umlfri2.types.font import Fonts
+
 from ...macro.standard import STANDARD_MACROS
-from ...types import UflDataWithMetadataType, UflNullableType, UflAnyType, UflDecimalType, UflNumberType, \
-    UflTypedEnumType, UflObjectType, UflBoolType, UflStringType, UflIntegerType
+from ...types import UflDataWithMetadataType, UflNullableType, UflDecimalType, UflNumberType, \
+    UflTypedEnumType, UflObjectType, UflBoolType, UflStringType, UflIntegerType, UflColorType, UflFontType, \
+    UflListType, UflFlagsType, UflIterableType
 from ..tree.visitor import UflVisitor
 from ..tree import *
 
@@ -29,12 +32,23 @@ class UflTypingVisitor(UflVisitor):
         return UflAttributeAccessNode(obj, node.attribute, attr_type)
     
     def visit_enum(self, node):
-        enum_type = self.__enums[node.enum]
-        
-        if not enum_type.is_valid_item(node.item):
-            raise Exception("Unknown enum item {0}::{1}".format(node.enum, node.item))
-        
-        return UflEnumNode(node.enum, node.item, enum_type)
+        if node.enum == 'Color':
+            if not Colors.exists(node.item):
+                raise Exception("Unknown enum item {0}::{1}".format(node.enum, node.item))
+            
+            return UflEnumNode(node.enum, node.item, UflColorType())
+        elif node.enum == 'Font':
+            if not Fonts.exists(node.item):
+                raise Exception("Unknown enum item {0}::{1}".format(node.enum, node.item))
+            
+            return UflEnumNode(node.enum, node.item, UflFontType())
+        else:
+            enum_type = self.__enums[node.enum]
+            
+            if not enum_type.is_valid_item(node.item):
+                raise Exception("Unknown enum item {0}::{1}".format(node.enum, node.item))
+            
+            return UflEnumNode(node.enum, node.item, enum_type)
     
     def visit_macro_invoke(self, node):
         target = self.__demeta(node.target.accept(self))

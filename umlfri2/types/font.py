@@ -58,5 +58,14 @@ class Font:
         
         return Font(family, size, style)
 
+
 class Fonts:
     default = Font('Arial', 10)
+    
+    @staticmethod
+    def exists(name):
+        return isinstance(getattr(Fonts, name, None), Font)
+    
+    @staticmethod
+    def get(name):
+        return getattr(Fonts, name)
