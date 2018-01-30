@@ -2,16 +2,21 @@ from . import definition as d
 from ..tree import *
 from .operators import make_binary_operator_tree, make_unary_operator_tree
 
-d.METADATA_ACCESS.setParseAction(lambda data: UflMetadataAccessNode(data[1]))
 
+@d.METADATA_ACCESS.setParseAction
+def metadata_access(data):
+    return UflMetadataAccessNode(data[1])
+
+
+@d.TARGET.setParseAction
 def target(data):
     if len(data) > 1:
         return data[1]
     else:
         return data[0]
 
-d.TARGET.setParseAction(target)
 
+@d.VARIABLE.setParseAction
 def variable(data):
     if data[0] == 'true':
         return UflLiteralNode(True)
@@ -22,22 +27,31 @@ def variable(data):
     else:
         return UflVariableNode(data[0])
 
-d.VARIABLE.setParseAction(variable)
 
+@d.NUMBER.setParseAction
 def number(data):
     if '.' in data[0]:
         return UflLiteralNode(float(data[0]))
     else:
         return UflLiteralNode(int(data[0]))
 
-d.NUMBER.setParseAction(number)
 
-d.STRING.setParseAction(lambda data: UflLiteralNode(data[0].strip("''")))
+@d.STRING.setParseAction
+def string(data):
+    return UflLiteralNode(data[0].strip("''"))
 
-d.UNARY.setParseAction(lambda data: make_unary_operator_tree(data, UflUnaryNode))
 
-d.BINARY.setParseAction(lambda data: make_binary_operator_tree(data, UflBinaryNode))
+@d.UNARY.setParseAction
+def unary(data):
+    return make_unary_operator_tree(data, UflUnaryNode)
 
+
+@d.BINARY.setParseAction
+def binary(data):
+    return make_binary_operator_tree(data, UflBinaryNode)
+
+
+@d.METHODORATTRORENUM.setParseAction
 def method_or_attribute_or_enum(data):
     node = data[0]
     
@@ -65,5 +79,3 @@ def method_or_attribute_or_enum(data):
                 
                 i = i + 2
         return node
-
-d.METHODORATTRORENUM.setParseAction(method_or_attribute_or_enum)
