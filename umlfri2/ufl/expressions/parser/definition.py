@@ -11,9 +11,7 @@ VARIABLE = pp.pyparsing_common.identifier.copy()
 TARGET = VARIABLE | ('(' + EXPRESSION + ')') | METADATA_ACCESS
 
 MEMBER_NAME = pp.pyparsing_common.identifier.copy()
-
-ARGUMENTS = '(' + pp.Optional(pp.Optional(EXPRESSION) + pp.ZeroOrMore("," + pp.Optional(EXPRESSION))) + ')'
-
+ARGUMENTS = '(' + pp.Optional(pp.delimitedList(EXPRESSION, delim=",")) + ')'
 METHOD_ATTRIBUTE_OR_ENUM = TARGET + pp.ZeroOrMore(pp.oneOf(('.', '->', '::')) + MEMBER_NAME + pp.Optional(ARGUMENTS))
 
 STRING = pp.QuotedString(quoteChar="'", escChar="\\")

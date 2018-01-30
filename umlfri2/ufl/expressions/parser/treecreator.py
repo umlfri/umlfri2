@@ -53,7 +53,7 @@ def binary(data):
 
 @d.ARGUMENTS.setParseAction
 def arguments(data):
-    return tuple(data[1::2])
+    return tuple(data[1:-1])
 
 
 @d.METHOD_ATTRIBUTE_OR_ENUM.setParseAction
