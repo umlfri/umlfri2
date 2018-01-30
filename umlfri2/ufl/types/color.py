@@ -30,7 +30,8 @@ class UflColorType(UflType):
     def __str__(self):
         return 'Color'
 
-UflType.ALLOWED_DIRECT_ATTRIBUTES = {
+
+UflColorType.ALLOWED_DIRECT_ATTRIBUTES = {
     'r': UflAttributeDescription('r', UflIntegerType()),
     'g': UflAttributeDescription('g', UflIntegerType()),
     'b': UflAttributeDescription('b', UflIntegerType()),
