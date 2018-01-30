@@ -4,25 +4,22 @@ from .operators import BINARY_OPERATORS, UNARY_OPERATORS
 
 EXPRESSION = pp.Forward()
 
-METADATA_ACCESS = '@(' + EXPRESSION + ')'
+METADATA_ACCESS = pp.Literal('@') + '(' + EXPRESSION + ')'
 
 VARIABLE = pp.pyparsing_common.identifier.copy()
 
 TARGET = VARIABLE | ('(' + EXPRESSION + ')') | METADATA_ACCESS
 
-METHODORATTRORENUM = TARGET + (
-    pp.ZeroOrMore(
-        pp.oneOf(('.', '->', '::')) + pp.pyparsing_common.identifier.copy()
-        + pp.Optional('(' + pp.Optional(
-            pp.Optional(EXPRESSION) + pp.ZeroOrMore("," + pp.Optional(EXPRESSION))
-        ) + ')')
-    )
-)
+MEMBER_NAME = pp.pyparsing_common.identifier.copy()
+
+ARGUMENTS = '(' + pp.Optional(pp.Optional(EXPRESSION) + pp.ZeroOrMore("," + pp.Optional(EXPRESSION))) + ')'
+
+METHOD_ATTRIBUTE_OR_ENUM = TARGET + pp.ZeroOrMore(pp.oneOf(('.', '->', '::')) + MEMBER_NAME + pp.Optional(ARGUMENTS))
 
 STRING = pp.QuotedString(quoteChar="'", escChar="\\")
 NUMBER = pp.Regex("[0-9]+(\\.[0-9]+)?")
 
-VALUE = METHODORATTRORENUM | STRING | NUMBER
+VALUE = METHOD_ATTRIBUTE_OR_ENUM | STRING | NUMBER
 
 UNARY = pp.ZeroOrMore(pp.oneOf(UNARY_OPERATORS)) + VALUE
 

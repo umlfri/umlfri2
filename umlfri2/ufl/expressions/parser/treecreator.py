@@ -5,7 +5,7 @@ from .operators import make_binary_operator_tree, make_unary_operator_tree
 
 @d.METADATA_ACCESS.setParseAction
 def metadata_access(data):
-    return UflMetadataAccessNode(data[1])
+    return UflMetadataAccessNode(data[2])
 
 
 @d.TARGET.setParseAction
@@ -51,23 +51,24 @@ def binary(data):
     return make_binary_operator_tree(data, UflBinaryNode)
 
 
-@d.METHODORATTRORENUM.setParseAction
-def method_or_attribute_or_enum(data):
+@d.ARGUMENTS.setParseAction
+def arguments(data):
+    return tuple(data[1::2])
+
+
+@d.METHOD_ATTRIBUTE_OR_ENUM.setParseAction
+def method_attribute_or_enum(data):
     node = data[0]
     
     i = 1
     while i < len(data):
-        if i + 2 < len(data) and data[i + 2] == '(':
+        if i + 2 < len(data) and isinstance(data[i + 2], tuple):
             if data[i] == '::':
                 raise Exception('You can use :: operator only to access enum members')
             
-            j = i + 2
-            while data[j] != ')':
-                j += 1
+            node = UflMacroInvokeNode(node, data[i + 1], data[i + 2], data[i] == '.')
             
-            node = UflMacroInvokeNode(node, data[i + 1], data[i + 3: j: 2], data[i] == '.')
-            
-            i = j + 1
+            i += 3
         else:
             if data[i] == '->':
                 raise Exception('Invalid use of iterator access operator')
@@ -79,5 +80,5 @@ def method_or_attribute_or_enum(data):
             else:
                 node = UflAttributeAccessNode(node, data[i + 1])
             
-            i = i + 2
+            i += 2
     return node
