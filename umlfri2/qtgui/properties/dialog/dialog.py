@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QTabWidget
 from umlfri2.application import Application
 from umlfri2.application.commands.model import ApplyPatchCommand
 from umlfri2.application.commands.solution import ApplyMetamodelConfigPatchCommand
+from umlfri2.qtgui.base.validatingtabbar import ValidatingTabBar
 from .listtab import ListPropertyTab
 from .objecttab import ObjectPropertyTab
 from umlfri2.ufl.dialog import UflDialogListTab, UflDialogObjectTab, UflDialogValueTab
@@ -43,9 +44,13 @@ class PropertiesDialog(QDialog):
             layout.addWidget(qt_tab)
             self.__tabs.append(qt_tab)
         else:
+            tab_bar = ValidatingTabBar()
+            
             self.__tab_widget = QTabWidget()
+            self.__tab_widget.setTabBar(tab_bar)
             self.__tab_widget.setFocusPolicy(Qt.NoFocus)
             self.__tab_widget.currentChanged.connect(self.__tab_changed)
+            tab_bar.validate_tab_change.connect(self.__validate_tab)
             
             for tab in dialog.tabs:
                 if isinstance(tab, UflDialogListTab):
@@ -88,16 +93,16 @@ class PropertiesDialog(QDialog):
         self.accept()
     
     def __tab_changed(self, tab_index):
-        if tab_index == self.__dialog.current_tab.tab_index:
-            return
-        if self.__dialog.should_save_tab:
-            if not self.__tabs[self.__dialog.current_tab.tab_index].handle_needed_save():
-                self.__tab_widget.setCurrentIndex(self.__dialog.current_tab.tab_index)
-                return
         self.__dialog.switch_tab(tab_index)
 
         for tab in self.__tabs:
             tab.refresh()
+    
+    def __validate_tab(self, event):
+        if self.__dialog.should_save_tab:
+            if not self.__tabs[self.__dialog.current_tab.tab_index].handle_needed_save():
+                event.invalidate()
+                return
     
     @staticmethod
     def open_for(main_window, object):
