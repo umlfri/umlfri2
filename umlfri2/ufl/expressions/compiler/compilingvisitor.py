@@ -1,8 +1,7 @@
 from umlfri2.types.enums import ALL_ENUMS
 from .varnameregister import VariableNameRegister
 from ...macro.inlined import InlinedMacro
-from ...types import UflTypedEnumType, UflDataWithMetadataType, UflStringType, UflBoolType, UflListType, UflFlagsType,\
-    UflIterableType, UflNullableType
+from ...types import UflTypedEnumType, UflDataWithMetadataType, UflStringType, UflBoolType
 from ..tree.visitor import UflVisitor
 
 
@@ -32,7 +31,8 @@ class UflCompilingVisitor(UflVisitor):
     
     def visit_enum(self, node):
         if isinstance(node.type, UflTypedEnumType):
-            return "{0}.{1}".format(node.enum, node.item)
+            py_enum = self.__name_register.register_class(ALL_ENUMS[node.enum])
+            return "{0}.{1}".format(py_enum, node.item)
         else:
             return repr(node.item)
     
@@ -98,7 +98,4 @@ class UflCompilingVisitor(UflVisitor):
     
     @property
     def all_globals(self):
-        globals = self.__name_register.build_globals()
-        globals.update(ALL_ENUMS)
-        
-        return globals
+        return self.__name_register.build_globals()
