@@ -105,7 +105,9 @@ class UflTypingVisitor(UflVisitor):
             if not isinstance(operand1.type, UflNumberType) or not isinstance(operand2.type, UflNumberType):
                 raise Exception("Cannot apply arithmetic operator to {0} and {1}".format(operand1.type, operand2.type))
             
-            if isinstance(operand1.type, UflDecimalType) or isinstance(operand2.type, UflDecimalType):
+            if node.operator == '//':
+                type = UflIntegerType()
+            elif isinstance(operand1.type, UflDecimalType) or isinstance(operand2.type, UflDecimalType):
                 type = UflDecimalType()
             else:
                 type = UflIntegerType()

@@ -1,3 +1,5 @@
+import math
+
 from umlfri2.types.color import Colors
 from umlfri2.types.enums import ALL_ENUMS
 from umlfri2.types.font import Fonts
@@ -61,8 +63,37 @@ class UflCompilingVisitor(UflVisitor):
         operand1 = node.operand1.accept(self)
         operand2 = node.operand2.accept(self)
         
-        operator = self.__UFL_TO_PYTHON_OPERATOR.get(node.operator, node.operator)
-        return '({0}) {1} ({2})'.format(operand1, operator, operand2)
+        if node.operator == '/':
+            py_division = self.__name_register.register_function(self.__division)
+            return "{0}({1}, {2})".format(py_division, operand1, operand2)
+        elif node.operator == '//':
+            py_true_division = self.__name_register.register_function(self.__true_division)
+            return "{0}({1}, {2})".format(py_true_division, operand1, operand2)
+        else:
+            operator = self.__UFL_TO_PYTHON_OPERATOR.get(node.operator, node.operator)
+            return '({0}) {1} ({2})'.format(operand1, operator, operand2)
+    
+    @staticmethod
+    def __division(a, b):
+        if b:
+            return a/b
+        elif a < 0:
+            return -math.inf
+        elif a:
+            return math.inf
+        else:
+            return math.nan
+    
+    @staticmethod
+    def __true_division(a, b):
+        if b:
+            return int(a//b)
+        elif a < 0:
+            return -math.inf
+        elif a:
+            return math.inf
+        else:
+            return math.nan
     
     def visit_unary(self, node):
         operand = node.operand.accept(self)
