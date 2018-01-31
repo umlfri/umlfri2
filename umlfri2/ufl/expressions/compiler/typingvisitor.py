@@ -172,10 +172,8 @@ class UflTypingVisitor(UflVisitor):
         
         variables = tuple(var.accept(self) for var in node.variables)
         
-        if isinstance(self.__expected_type, UflBoolType) and not isinstance(ret.type, UflBoolType):
-            ret = UflCastNode(ret, UflBoolType())
-        elif isinstance(self.__expected_type, UflStringType) and not isinstance(ret.type, UflStringType) and ret.type.is_convertable_to_string:
-            ret = UflCastNode(ret, UflStringType())
+        if not self.__expected_type.is_assignable_from(ret.type) and ret.type.is_convertible_to(self.__expected_type):
+            ret = UflCastNode(ret, self.__expected_type)
         
         return UflExpressionNode(ret, variables, ret.type)
     

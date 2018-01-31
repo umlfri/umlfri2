@@ -62,9 +62,8 @@ class UflDataWithMetadataType(UflType):
         else:
             return self.__underlying_type.is_comparable_with(other)
     
-    @property
-    def is_convertable_to_string(self):
-        return self.__underlying_type.is_convertable_to_string
+    def is_convertible_to(self, other):
+        return self.__underlying_type.is_convertible_to(other)
     
     def __str__(self):
         return "[DataWithMetadata {0} {1}]".format(repr(self.__underlying_type), ", ".join(self.__metadata_types.keys()))

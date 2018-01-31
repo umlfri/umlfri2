@@ -1,4 +1,6 @@
 from .type import UflType
+from .bool import UflBoolType
+from .string import UflStringType
 
 
 class UflNumberType(UflType):
@@ -33,6 +35,5 @@ class UflNumberType(UflType):
     def is_comparable_with(self, other):
         return isinstance(other, UflNumberType)
     
-    @property
-    def is_convertable_to_string(self):
-        return True
+    def is_convertible_to(self, other):
+        return isinstance(other, (UflBoolType, UflStringType))

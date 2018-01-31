@@ -1,5 +1,7 @@
 from .enum import UflEnumType
 from .enumpossibility import UflEnumPossibility
+from .bool import UflBoolType
+from .string import UflStringType
 
 
 class UflStringEnumType(UflEnumType):
@@ -13,9 +15,8 @@ class UflStringEnumType(UflEnumType):
         
         return all(x.name == y.name for x, y in zip(self.possibilities, other.possibilities))
 
-    @property
-    def is_convertable_to_string(self):
-        return True
+    def is_convertible_to(self, other):
+        return isinstance(other, UflStringType)
     
     def is_equatable_to(self, other):
         from .string import UflStringType

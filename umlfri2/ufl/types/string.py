@@ -1,4 +1,5 @@
 from .type import UflType
+from .bool import UflBoolType
 
 
 class UflStringType(UflType):
@@ -47,6 +48,9 @@ class UflStringType(UflType):
     
     def is_default_value(self, value):
         return self.__default == value
+    
+    def is_convertible_to(self, other):
+        return isinstance(other, UflBoolType)
     
     def __str__(self):
         return 'String'

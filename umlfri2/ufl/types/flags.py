@@ -2,6 +2,7 @@ from collections import OrderedDict
 
 from .type import UflType
 from ..objects import UflFlags
+from .bool import UflBoolType
 
 
 class UflFlagsType(UflType):
@@ -54,3 +55,6 @@ class UflFlagsType(UflType):
             if possibility not in self.__default and possibility.value in value:
                 return False
         return True
+    
+    def is_convertible_to(self, other):
+        return isinstance(other, UflBoolType)

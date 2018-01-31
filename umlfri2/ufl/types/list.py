@@ -1,5 +1,6 @@
 from .type import UflType
 from ..objects import UflList
+from .bool import UflBoolType
 
 
 class UflListType(UflType):
@@ -29,6 +30,9 @@ class UflListType(UflType):
     def set_parent(self, parent):
         super().set_parent(parent)
         self.__item_type.set_parent(self)
+    
+    def is_convertible_to(self, other):
+        return isinstance(other, UflBoolType)
     
     def __str__(self):
         return "List<{0}>".format(self.__item_type)

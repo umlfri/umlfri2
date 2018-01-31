@@ -1,4 +1,6 @@
 from .type import UflType
+from .bool import UflBoolType
+from .string import UflStringType
 
 
 class UflNullableType(UflType):
@@ -29,6 +31,12 @@ class UflNullableType(UflType):
             return self.__inner_type.is_equatable_to(other.__inner_type)
         else:
             return self.__inner_type.is_equatable_to(other)
+    
+    def is_convertible_to(self, other):
+        if isinstance(other, UflStringType):
+            return self.__inner_type.is_convertible_to(other)
+        
+        return isinstance(other, UflBoolType)
     
     def __str__(self):
         return "Nullable[{0}]".format(self.__inner_type)

@@ -27,8 +27,7 @@ class UflType:
     def is_immutable(self):
         raise NotImplementedError
     
-    @property
-    def is_convertable_to_string(self):
+    def is_convertible_to(self, other):
         return False
     
     def is_equatable_to(self, other):
