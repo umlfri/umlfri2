@@ -24,7 +24,6 @@ class ConditionComponent(ControlComponent):
     }
     
     def __init__(self, children, condition):
-        super().__init__(())
         self.__condition = condition
         
         self.__then_component = None
@@ -52,6 +51,8 @@ class ConditionComponent(ControlComponent):
             self.__then_component = ThenComponent(())
         if self.__else_component is None:
             self.__else_component = ElseComponent(())
+        
+        super().__init__((self.__then_component, self.__else_component))
     
     def _get_semantic_children(self):
         if self.__then_component:
