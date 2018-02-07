@@ -26,11 +26,8 @@ class BoxObject(VisualObject):
     
     def _get_size_component(self, size):
         raise NotImplementedError
-    
-    def _get_default_resizable(self, has_expandable):
-        raise NotImplementedError
 
-    def _combine_resizable(self, ret_x, ret_y, child_x, child_y):
+    def _combine_resizable(self, ret_x, ret_y, child_x, child_y, expand):
         raise NotImplemented
     
     def assign_bounds(self, bounds):
@@ -43,8 +40,9 @@ class BoxObject(VisualObject):
                 self._get_size_component(whole_size)
             )
             for size, delta, child in zip(self.__children_sizes, deltas, self.__children):
-                child.child.assign_bounds(Rectangle.from_point_size(position, self._new_size(size, whole_size, delta)))
-                position = self._new_position(position, size)
+                new_size = self._new_size(size, whole_size, delta)
+                child.child.assign_bounds(Rectangle.from_point_size(position, new_size))
+                position = self._new_position(position, new_size)
     
     def get_minimal_size(self):
         if self.__children_sizes:
@@ -80,18 +78,13 @@ class BoxObject(VisualObject):
             child.child.draw(canvas, shadow)
     
     def is_resizable(self):
-        has_expandable = False
-        for child in self.__children:
-            if child.expand:
-                has_expandable = True
-                break
-        
-        ret_x, ret_y = self._get_default_resizable(has_expandable)
+        ret_x = Maybe
+        ret_y = Maybe
         
         for child in self.__children:
             child_x, child_y = child.child.is_resizable()
             
-            ret_x, ret_y = self._combine_resizable(ret_x, ret_y, child_x, child_y)
+            ret_x, ret_y = self._combine_resizable(ret_x, ret_y, child_x, child_y, child.expand)
         
         return ret_x, ret_y
 

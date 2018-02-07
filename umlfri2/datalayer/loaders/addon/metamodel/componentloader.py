@@ -58,7 +58,7 @@ class ComponentLoader:
                     else:
                         new_component_type = component.CHILDREN_TYPE
                     
-                    if component.IS_CONTROL:
+                    if component.IS_CONTROL or component.IS_HELPER:
                         new_children_attributes = children_attributes
                     else:
                         new_children_attributes = {
@@ -72,7 +72,7 @@ class ComponentLoader:
                     children = list(self.__load_children(child, new_component_type, new_children_attributes,
                                                          new_special_children, new_only_special_children))
                     
-                    if not component.IS_CONTROL:
+                    if not component.IS_CONTROL and not component.IS_HELPER:
                         for attr in new_children_attributes.values():
                             params[attr.name] = attr.values
                     

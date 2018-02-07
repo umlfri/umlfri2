@@ -7,6 +7,7 @@ class Component:
     HAS_CHILDREN = True
     CHILDREN_TYPE = None
     IS_CONTROL = False
+    IS_HELPER = False
     SPECIAL_CHILDREN = {}
     ONLY_SPECIAL_CHILDREN = False
     

@@ -16,14 +16,10 @@ class HBoxObject(BoxObject):
     def _get_size_component(self, size):
         return size.width
     
-    def _get_default_resizable(self, has_expandable):
-        if has_expandable:
-            return True, Maybe
-        else:
-            return Maybe, Maybe
-    
-    def _combine_resizable(self, ret_x, ret_y, child_x, child_y):
-        return ret_x, ret_y & child_y
+    def _combine_resizable(self, ret_x, ret_y, child_x, child_y, expand):
+        if expand:
+            child_x = True
+        return ret_x | child_x, ret_y & child_y
 
 class HBoxComponent(BoxComponent):
     def __init__(self, children, expand):
