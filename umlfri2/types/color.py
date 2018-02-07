@@ -64,8 +64,8 @@ class Color:
             return Colors.get(color)
         if Color.__RE_HTML_COLOR.match(color): # html rgb/argb
             val = int(color[1:], 16)
-            if len(color) == 6:
-                val = (val << 8) + 0xff
+            if len(color) == 7:
+                val = val + 0xff000000
             return Color(val)
         raise ValueError("color")
     
