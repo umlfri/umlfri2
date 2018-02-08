@@ -30,6 +30,13 @@ class Component:
             
             expression.compile(type_context, expected_type)
     
+    def _compile_child_expressions(self, type_context, **expressions):
+        for name, expression_dict in expressions.items():
+            expected_type = self.CHILDREN_ATTRIBUTES[name]
+            
+            for expression in expression_dict.values():
+                expression.compile(type_context, expected_type)
+    
     def _compile_children(self, type_context):
         for child in self.__children:
             child.compile(type_context)

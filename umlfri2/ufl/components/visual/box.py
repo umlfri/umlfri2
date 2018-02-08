@@ -100,10 +100,15 @@ class BoxComponent(VisualComponent):
         self.__expand = expand
     
     def _create_object(self, context, ruler):
-        children = [
-            BoxChild(child._create_object(local, ruler), self.__expand.get(child, False))
-                for local, child in self._get_children(context)
-        ]
+        children = []
+
+        for local, child in self._get_children(context):
+            child_object = child._create_object(local, ruler)
+            if child in self.__expand:
+                child_expand = self.__expand[child](local)
+            else:
+                child_expand = False
+            children.append(BoxChild(child_object, child_expand))
         
         if children:
             return self.__object_type(children)
@@ -111,4 +116,9 @@ class BoxComponent(VisualComponent):
             return EmptyObject()
     
     def compile(self, type_context):
+        self._compile_child_expressions(
+            type_context,
+            expand=self.__expand
+        )
+        
         self._compile_children(type_context)
