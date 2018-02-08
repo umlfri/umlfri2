@@ -1,5 +1,4 @@
 from ..base.component import Component
-from .visualobjectcontainer import VisualObjectContainer
 
 
 class VisualObject:
@@ -19,6 +18,3 @@ class VisualObject:
 class VisualComponent(Component):
     def _create_object(self, context, ruler):
         raise NotImplementedError
-    
-    def create_visual_object(self, context, ruler):
-        return VisualObjectContainer(self._create_object(context, ruler))

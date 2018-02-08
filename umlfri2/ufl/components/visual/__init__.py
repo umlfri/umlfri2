@@ -9,11 +9,11 @@ from .line import LineComponent
 from .padding import PaddingComponent
 from .rectangle import RectangleComponent
 from .shadow import ShadowComponent
-from .simple import SimpleComponent
 from .sizer import SizerComponent
 from .table import TableComponent, TableRow, TableColumn
 from .textbox import TextBoxComponent
 from .vbox import VBoxComponent
+from .visualcontainer import VisualContainerComponent
 
 VISUAL_COMPONENTS = {
     'Align': AlignComponent,

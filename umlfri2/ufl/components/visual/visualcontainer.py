@@ -1,6 +1,9 @@
 from umlfri2.types.geometry import Rectangle, Point
 from umlfri2.types.threestate import Maybe
 
+from ..base.component import Component
+from .empty import EmptyObject
+
 
 class VisualObjectContainer:
     def __init__(self, object):
@@ -42,3 +45,17 @@ class VisualObjectContainer:
     
     def draw(self, canvas):
         self.__object.draw(canvas, None)
+
+
+class VisualContainerComponent(Component):
+    def __init__(self, children):
+        super().__init__(children)
+    
+    def create_visual_object(self, context, ruler):
+        for local, child in self._get_children(context):
+            return VisualObjectContainer(child._create_object(local, ruler))
+        
+        return VisualObjectContainer(EmptyObject())
+    
+    def compile(self, type_context):
+        self._compile_children(type_context)

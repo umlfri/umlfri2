@@ -1,5 +1,6 @@
 from umlfri2.ufl.components.base.componenttype import ComponentType
 from umlfri2.types.image import Image
+from umlfri2.ufl.components.visual import VisualContainerComponent
 from .componentloader import ComponentLoader
 from ....constants import ADDON_NAMESPACE, ADDON_SCHEMA
 from .structureloader import UflStructureLoader
@@ -61,7 +62,7 @@ class ElementTypeLoader:
                     else:
                         raise Exception
             elif child.tag == "{{{0}}}Appearance".format(ADDON_NAMESPACE):
-                appearance = ComponentLoader(child, ComponentType.visual).load()[0]
+                appearance = VisualContainerComponent(ComponentLoader(child, ComponentType.visual).load())
             else:
                 raise Exception
         
