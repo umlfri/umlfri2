@@ -87,8 +87,10 @@ class PropertiesDialog(QDialog):
                 return
 
         self.__dialog.finish()
-        command = self.__mk_apply_patch_command(self.__dialog.make_patch())
-        Application().commands.execute(command)
+        
+        if self.__mk_apply_patch_command is not None:
+            command = self.__mk_apply_patch_command(self.__dialog.make_patch())
+            Application().commands.execute(command)
         
         self.accept()
     
