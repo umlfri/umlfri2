@@ -1,5 +1,4 @@
 from umlfri2.types.geometry import Size, Point
-from umlfri2.types.threestate import Maybe
 from .box import BoxObject, BoxComponent
 
 
@@ -17,9 +16,7 @@ class HBoxObject(BoxObject):
         return size.width
     
     def _combine_resizable(self, ret_x, ret_y, child_x, child_y, expand):
-        if expand:
-            child_x = True
-        return ret_x | child_x, ret_y & child_y
+        return ret_x | expand, ret_y & child_y
 
 class HBoxComponent(BoxComponent):
     def __init__(self, children, expand):
