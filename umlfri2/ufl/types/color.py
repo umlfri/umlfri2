@@ -1,4 +1,4 @@
-from .type import UflType, UflMethodDescription, UflAttributeDescription
+from .type import UflType, UflAttributeDescription
 from .integer import UflIntegerType
 from umlfri2.types.color import Colors, Color
 

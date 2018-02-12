@@ -1,9 +1,8 @@
-from .type import UflType, UflMethodDescription, UflAttributeDescription
+from .type import UflType, UflAttributeDescription
 from .integer import UflIntegerType
 from .string import UflStringType
 from .typedenum import UflTypedEnumType
 from umlfri2.types.font import FontStyle, Font, Fonts
-from umlfri2.ufl.types import UflBoolType
 
 
 class UflFontType(UflType):
