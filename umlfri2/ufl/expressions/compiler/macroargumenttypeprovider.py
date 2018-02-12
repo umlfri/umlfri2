@@ -28,7 +28,7 @@ class MacroArgumentTypeProvider(ArgumentTypeChecker):
             typed_expressions = self.__typed_expressions.setdefault(no, {})
             
             if expected_type not in typed_expressions:
-                typed_arguments = {name: self.__demeta_argument(type) for name, type in zip(expression.parameters, expected_type.parameter_types)}
+                typed_arguments = {name: type for name, type in zip(expression.parameters, expected_type.parameter_types)}
                 
                 lambda_typing_visitor = self.__typing_visitor.create_for_lambda(typed_arguments)
                 
@@ -39,14 +39,14 @@ class MacroArgumentTypeProvider(ArgumentTypeChecker):
             return expected_type.return_type.is_assignable_from(typed_expressions[expected_type].body.type)
         else:
             if no not in self.__typed_expressions:
-                self.__typed_expressions[no] = self.__demeta_argument(self.__expressions[no].accept(self.__typing_visitor))
+                node = self.__expressions[no].accept(self.__typing_visitor)
+                
+                while isinstance(node.type, UflDataWithMetadataType):
+                    node = UflUnpackNode(node, node.type.underlying_type)
+                
+                self.__typed_expressions[no] = node
             
             return expected_type.is_assignable_from(self.__typed_expressions[no].type)
-    
-    def __demeta_argument(self, node):
-        while isinstance(node.type, UflDataWithMetadataType):
-            node = UflUnpackNode(node, node.type.underlying_type)
-        return node
     
     def resolve_for(self, found_signature):
         for no, param_type in enumerate(found_signature.parameter_types):
