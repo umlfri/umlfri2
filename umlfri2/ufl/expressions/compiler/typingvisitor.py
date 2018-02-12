@@ -1,4 +1,5 @@
 from umlfri2.types.color import Colors
+from umlfri2.types.enums import ALL_ENUMS
 from umlfri2.types.font import Fonts
 
 from ...macro.standard import STANDARD_MACROS
@@ -16,9 +17,9 @@ class UflTypingVisitor(UflVisitor):
     Type checks UflExpression into python code
     """
     
-    def __init__(self, params, enums, expected_type):
+    def __init__(self, params, expected_type):
         self.__params = params
-        self.__enums = {name: UflTypedEnumType(enum) for name, enum in enums.items()}
+        self.__enums = {name: UflTypedEnumType(enum) for name, enum in ALL_ENUMS.items()}
         self.__expected_type = expected_type
     
     def visit_attribute_access(self, node):
@@ -188,7 +189,10 @@ class UflTypingVisitor(UflVisitor):
         while isinstance(node.type, UflDataWithMetadataType):
             node = UflUnpackNode(node, node.type.underlying_type)
         return node
-
+    
+    def create_for_lambda(self, lambda_args):
+        return UflTypingVisitor({**self.__params, **lambda_args}, None)
+    
     def __find_macro(self, selector, target_type, argument_types):
         for macro in STANDARD_MACROS:
             found_signature = macro.compare_signature(selector, target_type, argument_types)

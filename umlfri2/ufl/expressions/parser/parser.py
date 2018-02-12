@@ -1,14 +1,17 @@
 # noinspection PyUnresolvedReferences
 from . import treecreator
 from .definition import WHOLE_EXPRESSION
-from ..tree import UflExpressionNode, UflVariableNode, UflVariableDefinitionNode
+from ..tree import UflExpressionNode, UflVariableNode, UflVariableDefinitionNode, UflLambdaExpressionNode
 
 
 def parse_ufl(expression):
     result = WHOLE_EXPRESSION.parseString(expression)[0]
     
     # find all used variable names
-    variable_names = {var.name for var in result.find(lambda node: isinstance(node, UflVariableNode))}
+    variable_names = {var.name for var in result.find(
+        lambda node: isinstance(node, UflVariableNode),
+        lambda node: isinstance(node, UflLambdaExpressionNode)
+    )}
     
     if 'self' in variable_names:
         variable_names.remove('self')

@@ -6,12 +6,12 @@ class UflNode:
     def type(self):
         return self.__type
     
-    def find(self, condition):
+    def find(self, condition, cut_branch=lambda node: False):
         if condition(self):
             yield self
         
         for param in self._get_params():
-            if isinstance(param, UflNode):
+            if isinstance(param, UflNode) and not cut_branch(param):
                 yield from param.find(condition)
     
     def _get_params(self):

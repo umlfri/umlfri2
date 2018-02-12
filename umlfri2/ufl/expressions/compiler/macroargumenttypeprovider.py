@@ -1,4 +1,4 @@
-from ..tree import UflUnpackNode
+from ..tree import UflUnpackNode, UflLambdaExpressionNode
 from ...types import UflDataWithMetadataType
 from ...types import UflLambdaType
 from ...macro.argumenttypechecker import ArgumentTypeChecker
@@ -16,8 +16,27 @@ class MacroArgumentTypeProvider(ArgumentTypeChecker):
         return len(self.__expressions)
     
     def check_argument(self, no, expected_type):
+        expression = self.__expressions[no]
+        
         if isinstance(expected_type, UflLambdaType):
-            return False
+            if not isinstance(expression, UflLambdaExpressionNode):
+                return False
+            
+            if expected_type.parameter_count != expression.parameter_count:
+                return False
+            
+            typed_expressions = self.__typed_expressions.setdefault(no, {})
+            
+            if expected_type not in typed_expressions:
+                typed_arguments = {name: self.__demeta_argument(type) for name, type in zip(expression.parameters, expected_type.parameter_types)}
+                
+                lambda_typing_visitor = self.__typing_visitor.create_for_lambda(typed_arguments)
+                
+                typed_body = expression.body.accept(lambda_typing_visitor)
+                
+                typed_expressions[expected_type] = UflLambdaExpressionNode(typed_body, expression.parameters, expected_type)
+            
+            return expected_type.return_type.is_assignable_from(typed_expressions[expected_type].body.type)
         else:
             if no not in self.__typed_expressions:
                 self.__typed_expressions[no] = self.__demeta_argument(self.__expressions[no].accept(self.__typing_visitor))

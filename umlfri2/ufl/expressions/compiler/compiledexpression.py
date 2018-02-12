@@ -1,7 +1,5 @@
 import linecache
 
-from umlfri2.types.enums import ALL_ENUMS
-
 from .typingvisitor import UflTypingVisitor
 from .compilingvisitor import UflCompilingVisitor
 from ..parser import parse_ufl
@@ -14,7 +12,7 @@ class CompiledUflExpression:
         self.__source = expression
         
         tree = parse_ufl(expression)
-        typing_visitor = UflTypingVisitor(variables, ALL_ENUMS, expected_type)
+        typing_visitor = UflTypingVisitor(variables, expected_type)
         
         typed_tree = tree.accept(typing_visitor)
         
