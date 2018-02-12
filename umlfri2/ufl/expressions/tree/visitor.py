@@ -31,6 +31,9 @@ class UflVisitor:
     
     def visit_expression(self, node):
         raise NotImplementedError
+
+    def visit_lambda_expression(self, node):
+        raise NotImplementedError
     
     def visit_cast(self, node):
         raise NotImplementedError

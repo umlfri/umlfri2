@@ -82,3 +82,8 @@ def method_attribute_or_enum(data):
             
             i += 2
     return node
+
+
+@d.LAMBDA_EXPRESSION.setParseAction
+def lambda_expression(data):
+    return UflLambdaExpressionNode(data[-2], data[2:-3:2])

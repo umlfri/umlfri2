@@ -6,7 +6,7 @@ class UflExpressionNode(UflNode):
         super().__init__(type)
         
         self.__result = result
-        self.__variables = variables
+        self.__variables = tuple(variables)
     
     @property
     def result(self):

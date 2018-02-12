@@ -23,6 +23,8 @@ UNARY = pp.ZeroOrMore(pp.oneOf(UNARY_OPERATORS)) + VALUE
 
 BINARY = UNARY + pp.ZeroOrMore(pp.oneOf(BINARY_OPERATORS) + UNARY)
 
-EXPRESSION << BINARY
+LAMBDA_EXPRESSION = '[' + pp.OneOrMore(':' + pp.pyparsing_common.identifier.copy()) + '|' + EXPRESSION + ']'
+
+EXPRESSION << (BINARY | LAMBDA_EXPRESSION)
 
 WHOLE_EXPRESSION = pp.StringStart() + EXPRESSION + pp.StringEnd()
