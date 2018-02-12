@@ -32,7 +32,7 @@ class DefaultWithValueMacro(InlinedMacro):
         
         target = node.target.accept(visitor)
         
-        default_value = node.parameters[0].accept(visitor)
+        default_value = node.arguments[0].accept(visitor)
         
         return "{0}(({1}), ({2}))".format(py_iterate, target, default_value)
     

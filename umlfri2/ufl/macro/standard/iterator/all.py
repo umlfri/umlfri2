@@ -20,6 +20,6 @@ class AllMacro(InlinedMacro):
         
         target = node.target.accept(visitor)
         
-        inlined_condition_function = node.parameters[0].inline(var).accept(visitor)
+        inlined_condition_function = node.arguments[0].inline(var).accept(visitor)
         
         return "{0}(({1}) for {2} in ({3}))".format(py_all, inlined_condition_function, var, target)

@@ -14,6 +14,6 @@ class JoinMacro(InlinedMacro):
     def compile(self, visitor, registrar, node):
         target = node.target.accept(visitor)
         
-        separator = node.parameters[0].accept(visitor)
+        separator = node.arguments[0].accept(visitor)
         
         return "({0}).join({1})".format(separator, target)

@@ -20,7 +20,7 @@ class OrderByMacro(InlinedMacro):
         py_sorted = registrar.register_function(sorted)
         
         target = node.target.accept(visitor)
-        key_function = node.parameters[0].accept(visitor)
+        key_function = node.arguments[0].accept(visitor)
         
         return "{0}(({1}), key=({2}))".format(py_sorted, target, key_function)
 
@@ -40,7 +40,7 @@ class OrderByOrderMacro(InlinedMacro):
         py_sorted = registrar.register_function(sorted)
         
         target = node.target.accept(visitor)
-        key_function = node.parameters[0].accept(visitor)
-        order = node.parameters[1].accept(visitor)
+        key_function = node.arguments[0].accept(visitor)
+        order = node.arguments[1].accept(visitor)
         
         return "{0}(({1}), key=({2}), reverse=({3}) == Order.desc)".format(py_sorted, target, key_function, order)

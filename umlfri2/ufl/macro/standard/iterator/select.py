@@ -17,6 +17,6 @@ class SelectMacro(InlinedMacro):
         var = registrar.register_temp_variable()
         
         target = node.target.accept(visitor)
-        inlined_select_function = node.parameters[0].inline(var).accept(visitor)
+        inlined_select_function = node.arguments[0].inline(var).accept(visitor)
         
         return "({0} for {0} in ({1}) if ({2}))".format(var, target, inlined_select_function)

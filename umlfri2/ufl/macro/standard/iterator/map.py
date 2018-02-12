@@ -18,6 +18,6 @@ class MapMacro(InlinedMacro):
         py_map = registrar.register_function(map)
         
         target = node.target.accept(visitor)
-        map_function = node.parameters[0].accept(visitor)
+        map_function = node.arguments[0].accept(visitor)
         
         return "{0}(({1}), ({2}))".format(py_map, map_function, target)

@@ -20,8 +20,8 @@ class ReduceMacro(InlinedMacro):
         py_reduce = registrar.register_function(functools.reduce)
         
         target = node.target.accept(visitor)
-        initial_value = node.parameters[0].accept(visitor)
-        reduce_function = node.parameters[1].accept(visitor)
+        initial_value = node.arguments[0].accept(visitor)
+        reduce_function = node.arguments[1].accept(visitor)
         
         return "{0}(({1}), ({2}), ({3}))".format(py_reduce, reduce_function, target, initial_value)
 
@@ -37,9 +37,9 @@ class ReduceSimpleMacro(InlinedMacro):
     )
     
     def compile(self, visitor, registrar, node):
-        py_reduce = registrar.register_function(functool.reduce)
+        py_reduce = registrar.register_function(functools.reduce)
         
         target = node.target.accept(visitor)
-        reduce_function = node.parameters[0].accept(visitor)
+        reduce_function = node.arguments[0].accept(visitor)
         
         return "{0}(({1}), ({2}))".format(py_reduce, reduce_function, target)

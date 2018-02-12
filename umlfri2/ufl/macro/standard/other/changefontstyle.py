@@ -16,9 +16,9 @@ class ChangeFontStyleMacro(InlinedMacro):
     def compile(self, visitor, registrar, node):
         target = node.target.accept(visitor)
         
-        font_style = node.parameters[0].accept(visitor)
-        value = node.parameters[1].accept(visitor)
-
+        font_style = node.arguments[0].accept(visitor)
+        value = node.arguments[1].accept(visitor)
+        
         if isinstance(node.target.type, (UflIterableType, UflListType)):
             var = registrar.register_temp_variable()
             
