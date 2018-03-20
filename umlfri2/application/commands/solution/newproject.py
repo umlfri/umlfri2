@@ -17,7 +17,7 @@ class NewProjectCommand(Command):
         return "Creating a new project from template '{0}'".format(self.__template_id)
     
     def _do(self, ruler):
-        builder = ProjectBuilder(ruler, self.__template)
+        builder = ProjectBuilder(ruler, self.__template, self.__project_name)
         self.__project = builder.project
         self.__tabs = list(builder.tabs)
         
