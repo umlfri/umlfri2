@@ -6,11 +6,11 @@ from .splashscreen import SplashScreen
 from .base.qtthreadmanager import QTThreadManager
 from .exceptionhook import install_exception_hook
 from .rendering import QTRuler
-from .osspecials import apply_os_specials
+from .osspecials import SPECIALS
 
 
 def qt_main(args):
-    apply_os_specials()
+    SPECIALS.init()
 
     app = QApplication(args)
     
@@ -27,7 +27,11 @@ def qt_main(args):
 
     splash.start()
 
+    SPECIALS.before_start()
+    
     no = app.exec_()
+    
+    SPECIALS.after_quit()
 
     Application().stop()
 

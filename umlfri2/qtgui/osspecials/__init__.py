@@ -4,9 +4,11 @@ import platform
 platform_name = platform.system()
 
 if platform_name == 'Windows':
-    from .win32 import apply as apply_os_specials
+    from .win32 import Win32Specials
+    SPECIALS = Win32Specials()
 elif platform_name == 'Darwin':
-    from .macosx import apply as apply_os_specials
+    from .macosx import MacOsXSpecials
+    SPECIALS = MacOsXSpecials()
 else:
-    def apply_os_specials():
-        pass
+    from .base import OSSpecials
+    SPECIALS = OSSpecials()
