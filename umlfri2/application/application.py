@@ -137,7 +137,7 @@ class Application(metaclass=MetaApplication):
         if new_solution:
             self.close_solution()
             
-            builder = ProjectBuilder(self.__ruler, template)
+            builder = ProjectBuilder(self.__ruler, template, name=project_name)
             self.__solution = Solution(builder.project)
             self.__solution_storage_ref = None
             self.__event_dispatcher.dispatch(OpenSolutionEvent(self.__solution))
