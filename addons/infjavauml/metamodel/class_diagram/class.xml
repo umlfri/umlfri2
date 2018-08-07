@@ -155,7 +155,7 @@
                                                         <Text text=" = "/>
                                                         <Text text="#param.default"/>
                                                     </If>
-                                                    <If condition="#!@(param).is_last">
+                                                    <If condition="#!@param.is_last">
                                                         <Text text=", "/>
                                                     </If>
                                                 </ForEach>

@@ -4,7 +4,9 @@ from .operators import BINARY_OPERATORS, UNARY_OPERATORS
 
 EXPRESSION = pp.Forward()
 
-METADATA_ACCESS = pp.Literal('@') + '(' + EXPRESSION + ')'
+METADATA_NAME = pp.pyparsing_common.identifier.copy()
+METADATA_ARGUMENT = ('(' + EXPRESSION + ')') | METADATA_NAME
+METADATA_ACCESS = '@' + METADATA_ARGUMENT
 
 VARIABLE = pp.pyparsing_common.identifier.copy()
 
