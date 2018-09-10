@@ -23,7 +23,7 @@ class UflVisitor:
     def visit_unary(self, node):
         raise NotImplementedError
     
-    def visit_metadata_access(self, node):
+    def visit_variable_metadata_access(self, node):
         raise NotImplementedError
     
     def visit_unpack(self, node):

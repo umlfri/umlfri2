@@ -1,5 +1,5 @@
 from .controlcomponent import ControlComponent
-from umlfri2.ufl.types import UflIterableType, UflAnyType, UflIntegerType, UflDataWithMetadataType, UflBoolType
+from umlfri2.ufl.types import UflIterableType, UflAnyType, UflIntegerType, UflVariableWithMetadataType, UflBoolType
 
 
 class ForEachItemMetadata:
@@ -57,7 +57,7 @@ class ForEachComponent(ControlComponent):
         
         type_context = type_context.set_variable_type(
             self.__item,
-            UflDataWithMetadataType(item_type, **ForEachItemMetadata.METADATA)
+            UflVariableWithMetadataType(item_type, **ForEachItemMetadata.METADATA)
         )
         
         self._compile_children(type_context)

@@ -3,7 +3,7 @@ from umlfri2.types.enums import ALL_ENUMS
 from umlfri2.types.font import Fonts
 
 from ...macro.standard import STANDARD_MACROS
-from ...types import UflDataWithMetadataType, UflNullableType, UflDecimalType, UflNumberType, \
+from ...types import UflVariableWithMetadataType, UflNullableType, UflDecimalType, UflNumberType, \
     UflTypedEnumType, UflObjectType, UflBoolType, UflStringType, UflIntegerType, UflColorType, UflFontType, \
     UflListType, UflFlagsType, UflIterableType
 from ..tree.visitor import UflVisitor
@@ -162,12 +162,12 @@ class UflTypingVisitor(UflVisitor):
         
         return UflLiteralNode(node.value, type)
     
-    def visit_metadata_access(self, node):
+    def visit_variable_metadata_access(self, node):
         object = node.object.accept(self)
-        if not isinstance(object.type, UflDataWithMetadataType):
+        if not isinstance(object.type, UflVariableWithMetadataType):
             raise Exception('Does not have metadata for the value, cannot apply metadata access operator')
 
-        return UflMetadataAccessNode(object, object.type.metadata_type)
+        return UflVariableMetadataAccessNode(object, object.type.metadata_type)
     
     def visit_unpack(self, node):
         raise Exception("Weird ufl expression tree")
@@ -186,7 +186,7 @@ class UflTypingVisitor(UflVisitor):
         raise Exception("Weird ufl expression tree")
     
     def __demeta(self, node):
-        while isinstance(node.type, UflDataWithMetadataType):
+        while isinstance(node.type, UflVariableWithMetadataType):
             node = UflUnpackNode(node, node.type.underlying_type)
         return node
     

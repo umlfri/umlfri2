@@ -3,12 +3,9 @@ from ..tree import *
 from .operators import make_binary_operator_tree, make_unary_operator_tree
 
 
-@d.METADATA_ACCESS.setParseAction
-def metadata_access(data):
-    if data[1] == '(':
-        return UflMetadataAccessNode(data[2])
-    else:
-        return UflMetadataAccessNode(UflVariableNode(data[1]))
+@d.VARIABLE_METADATA_ACCESS.setParseAction
+def variable_metadata_access(data):
+    return UflVariableMetadataAccessNode(UflVariableNode(data[1]))
 
 
 @d.TARGET.setParseAction

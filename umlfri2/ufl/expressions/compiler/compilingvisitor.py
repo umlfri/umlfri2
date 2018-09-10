@@ -6,7 +6,7 @@ from umlfri2.types.font import Fonts
 
 from .varnameregister import VariableNameRegister
 from ...macro.inlined import InlinedMacro
-from ...types import UflTypedEnumType, UflDataWithMetadataType, UflStringType, UflBoolType, UflColorType, UflFontType
+from ...types import UflTypedEnumType, UflVariableWithMetadataType, UflStringType, UflBoolType, UflColorType, UflFontType
 from ..tree.visitor import UflVisitor
 
 
@@ -104,12 +104,12 @@ class UflCompilingVisitor(UflVisitor):
     def visit_literal(self, node):
         return repr(node.value)
     
-    def visit_metadata_access(self, node):
+    def visit_variable_metadata_access(self, node):
         return node.object.accept(self)
     
     def visit_unpack(self, node):
         object = node.object.accept(self)
-        return '({0}).{1}'.format(object, UflDataWithMetadataType.VALUE_ATTRIBUTE)
+        return '({0}).{1}'.format(object, UflVariableWithMetadataType.VALUE_ATTRIBUTE)
     
     def visit_expression(self, node):
         expression_source = node.result.accept(self)

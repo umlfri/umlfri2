@@ -2,7 +2,7 @@ from collections import namedtuple
 from weakref import ref
 
 from umlfri2.ufl.context import Context
-from umlfri2.ufl.types import UflDataWithMetadataType, UflStringType, UflImageType, UflAnyType, UflIterableType
+from umlfri2.ufl.types import UflVariableWithMetadataType, UflStringType, UflImageType, UflAnyType, UflIterableType
 
 ElementAccessDepth = namedtuple('ElementAccessDepth', ('parent', 'child'))
 
@@ -39,10 +39,10 @@ class NodeMetadata:
         }
         
         if element_type is None:
-            ret = UflDataWithMetadataType(UflAnyType(), **metadata)
+            ret = UflVariableWithMetadataType(UflAnyType(), **metadata)
             ret._add_metadata_type('children', UflIterableType(ret))
         else:
-            ret = UflDataWithMetadataType(element_type.ufl_type, **metadata)
+            ret = UflVariableWithMetadataType(element_type.ufl_type, **metadata)
             ret._add_metadata_type('children', UflIterableType(NodeMetadata.build_node_metadata_types(None)))
         
         return ret

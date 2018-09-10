@@ -4,13 +4,12 @@ from .operators import BINARY_OPERATORS, UNARY_OPERATORS
 
 EXPRESSION = pp.Forward()
 
-METADATA_NAME = pp.pyparsing_common.identifier.copy()
-METADATA_ARGUMENT = ('(' + EXPRESSION + ')') | METADATA_NAME
-METADATA_ACCESS = '@' + METADATA_ARGUMENT
+VARIABLE_METADATA_NAME = pp.pyparsing_common.identifier.copy()
+VARIABLE_METADATA_ACCESS = '@' + VARIABLE_METADATA_NAME
 
 VARIABLE = pp.pyparsing_common.identifier.copy()
 
-TARGET = VARIABLE | ('(' + EXPRESSION + ')') | METADATA_ACCESS
+TARGET = VARIABLE | ('(' + EXPRESSION + ')') | VARIABLE_METADATA_ACCESS
 
 MEMBER_NAME = pp.pyparsing_common.identifier.copy()
 ARGUMENTS = '(' + pp.Optional(pp.delimitedList(EXPRESSION, delim=",")) + ')'

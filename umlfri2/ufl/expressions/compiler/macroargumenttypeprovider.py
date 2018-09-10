@@ -1,5 +1,5 @@
 from ..tree import UflUnpackNode, UflLambdaExpressionNode
-from ...types import UflDataWithMetadataType
+from ...types import UflVariableWithMetadataType
 from ...types import UflLambdaType
 from ...macro.argumenttypechecker import ArgumentTypeChecker
 
@@ -41,7 +41,7 @@ class MacroArgumentTypeProvider(ArgumentTypeChecker):
             if no not in self.__typed_expressions:
                 node = self.__expressions[no].accept(self.__typing_visitor)
                 
-                while isinstance(node.type, UflDataWithMetadataType):
+                while isinstance(node.type, UflVariableWithMetadataType):
                     node = UflUnpackNode(node, node.type.underlying_type)
                 
                 self.__typed_expressions[no] = node
