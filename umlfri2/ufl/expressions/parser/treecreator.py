@@ -77,6 +77,8 @@ def method_attribute_or_enum(data):
                     node = UflEnumNode(node.name, data[i + 1])
                 else:
                     raise Exception('You can use :: operator only to access enum members')
+            elif data[i] == '.@':
+                node = UflObjectMetadataAccessNode(node, data[i + 1])
             else:
                 node = UflAttributeAccessNode(node, data[i + 1])
             

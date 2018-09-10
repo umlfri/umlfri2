@@ -168,7 +168,21 @@ class UflTypingVisitor(UflVisitor):
             raise Exception('Does not have metadata for the value, cannot apply metadata access operator')
 
         return UflVariableMetadataAccessNode(object, object.type.metadata_type)
-    
+
+    def visit_object_metadata_access(self, node):
+        object = node.object.accept(self)
+        if not isinstance(object.type, UflVariableWithMetadataType):
+            raise Exception('Does not have metadata for the object, cannot apply object metadata access operator')
+        
+        metadata_type = object.type.metadata_type
+        
+        if node.metadata_name not in metadata_type.ALLOWED_DIRECT_ATTRIBUTES:
+            raise Exception('Does not have metadata "{0}" for the object'.format(node.metadata_name))
+        
+        attr_type = metadata_type.ALLOWED_DIRECT_ATTRIBUTES[node.metadata_name].type
+            
+        return UflObjectMetadataAccessNode(object, node.metadata_name, attr_type)
+
     def visit_unpack(self, node):
         raise Exception("Weird ufl expression tree")
     

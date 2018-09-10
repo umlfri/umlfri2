@@ -107,6 +107,12 @@ class UflCompilingVisitor(UflVisitor):
     def visit_variable_metadata_access(self, node):
         return node.object.accept(self)
     
+    def visit_object_metadata_access(self, node):
+        objcode = node.object.accept(self)
+        metadata_type = node.object.type.metadata_type
+
+        return '{0}.{1}'.format(objcode, metadata_type.ALLOWED_DIRECT_ATTRIBUTES[node.metadata_name].accessor)
+    
     def visit_unpack(self, node):
         object = node.object.accept(self)
         return '({0}).{1}'.format(object, UflVariableWithMetadataType.VALUE_ATTRIBUTE)

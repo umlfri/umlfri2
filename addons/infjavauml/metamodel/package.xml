@@ -52,14 +52,14 @@
                     <Sizer minwidth="60" minheight="60">
                         <Padding padding="5">
                             <Table>
-                                <ForEach src="#@self.children" item="child">
+                                <ForEach src="#self.@children" item="child">
                                     <Row>
                                         <Align vertical="center" horizontal="center">
-                                            <Image image="#@child.icon"/>
+                                            <Image image="#child.@icon"/>
                                         </Align>
                                         <Align vertical="center">
                                             <Padding left="5">
-                                                <TextBox text="#@child.label" font="#cfg.element.textfont" color="#cfg.element.text"/>
+                                                <TextBox text="#child.@label" font="#cfg.element.textfont" color="#cfg.element.text"/>
                                             </Padding>
                                         </Align>
                                     </Row>

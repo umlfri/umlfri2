@@ -13,7 +13,7 @@ TARGET = VARIABLE | ('(' + EXPRESSION + ')') | VARIABLE_METADATA_ACCESS
 
 MEMBER_NAME = pp.pyparsing_common.identifier.copy()
 ARGUMENTS = '(' + pp.Optional(pp.delimitedList(EXPRESSION, delim=",")) + ')'
-METHOD_ATTRIBUTE_OR_ENUM = TARGET + pp.ZeroOrMore(pp.oneOf(('.', '->', '::')) + MEMBER_NAME + pp.Optional(ARGUMENTS))
+METHOD_ATTRIBUTE_OR_ENUM = TARGET + pp.ZeroOrMore(pp.oneOf(('.', '->', '.@' , '::')) + MEMBER_NAME + pp.Optional(ARGUMENTS))
 
 STRING = pp.QuotedString(quoteChar="'", escChar="\\")
 NUMBER = pp.Regex("[0-9]+(\\.[0-9]+)?")
