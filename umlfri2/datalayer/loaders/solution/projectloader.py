@@ -36,6 +36,8 @@ class ProjectLoader:
         for node in self.__xmlroot:
             if node.tag == "{{{0}}}Info".format(MODEL_NAMESPACE):
                 project = self.__load_info(node, save_id)
+            elif node.tag == "{{{0}}}Config".format(MODEL_NAMESPACE):
+                self.__load_config(project, node)
             elif node.tag == "{{{0}}}Element".format(MODEL_NAMESPACE):
                 self.__load_element(project, project, node)
             else:
@@ -75,6 +77,18 @@ class ProjectLoader:
             raise Exception("Model was created with incompatible version of the metamodel")
         
         return Project(addon.metamodel, name, save_id)
+    
+    def __load_config(self, project, node):
+        ufl_object = project.config.make_mutable()
+        ufl_type = project.metamodel.config_structure
+        
+        for child in node:
+            if child.tag == "{{{0}}}Attribute".format(MODEL_NAMESPACE):
+                self.__load_ufl_attribute(child, ufl_object, ufl_type)
+            else:
+                raise Exception
+
+        project.apply_config_patch(ufl_object.make_patch())
 
     def __load_element(self, project, parent, node):
         type = project.metamodel.get_element_type(node.attrib["type"])
