@@ -213,6 +213,7 @@ class Application(metaclass=MetaApplication):
         self.__solution = None
         self.__event_dispatcher.dispatch(CloseSolutionEvent(self.__solution))
         self.__solution_storage_ref = None
+        self.__tabs.reset_lock_status()
     
     @property
     def language(self):
