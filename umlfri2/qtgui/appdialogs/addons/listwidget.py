@@ -143,7 +143,6 @@ class AddOnListWidget(QTableWidget):
             
             addon_button_box_widget = QWidget()
             addon_button_box_widget.setLayout(addon_button_box)
-            addon_button_box_widget.setVisible(False)
             addon_button_box_widget.setObjectName("button_box")
             
             if button_factory is not None:
@@ -160,6 +159,8 @@ class AddOnListWidget(QTableWidget):
         
         self.resizeColumnsToContents()
         self.resizeRowsToContents()
+        
+        self.__selection_changed()
         
         cur_checked = set(addon.identifier for addon in self.__checked_addons)
         
