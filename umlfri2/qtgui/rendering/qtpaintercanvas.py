@@ -36,7 +36,6 @@ class QTPainterCanvas(Canvas):
 
     def __set_pen(self, color=None, width=None, style=None):
         if color:
-            qcolor = self.__convert_color(color)
             if style:
                 qstyle = self.__line_styles[style]
             else:
