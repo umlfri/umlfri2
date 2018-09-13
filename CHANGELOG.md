@@ -38,6 +38,7 @@ All notable changes to this project will be documented in this file.
 ### Power user changes
 - recent files config format has been changed
 - frip2 file contains mimetype identifier and save version as a plaintext files
+- moved to VisualStudio 2017 on the Windows platform
 
 ### Metamodel changes
 - project templates can have name translated in a metamodel definition
