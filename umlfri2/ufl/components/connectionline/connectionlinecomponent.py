@@ -1,5 +1,4 @@
 from collections import namedtuple
-import math
 from ..base.component import Component
 
 

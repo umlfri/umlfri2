@@ -1,7 +1,7 @@
 from collections import namedtuple
 from ..valueproviders import DefaultValueProvider
 from umlfri2.types.color import Colors
-from umlfri2.types.geometry import Size, Rectangle, Vector
+from umlfri2.types.geometry import Vector
 from umlfri2.ufl.types import UflColorType, UflIntegerType
 from .visualcomponent import VisualComponent, VisualObject
 

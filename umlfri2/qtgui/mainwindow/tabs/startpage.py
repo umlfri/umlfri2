@@ -4,7 +4,7 @@ from itertools import islice
 
 from PyQt5.QtCore import QPoint, Qt
 from PyQt5.QtGui import QPixmap, QPainter, QColor, QFont, QPen, QPainterPath, QBrush
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QMenu, QApplication, QMessageBox
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QMenu, QApplication
 
 from umlfri2.application import Application
 from umlfri2.application.events.application import LanguageChangedEvent, RecentFilesChangedEvent

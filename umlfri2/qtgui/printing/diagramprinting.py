@@ -1,7 +1,6 @@
 from PyQt5.QtPrintSupport import QPrintDialog, QPrintPreviewDialog
 
 from umlfri2.qtgui.rendering import PagedRenderer
-from umlfri2.types.geometry import Size
 
 
 class DiagramPrinting:

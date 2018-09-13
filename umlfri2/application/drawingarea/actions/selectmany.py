@@ -1,5 +1,4 @@
 from umlfri2.types.geometry import Rectangle
-from ..drawingareacursor import DrawingAreaCursor
 from .action import Action
 
 

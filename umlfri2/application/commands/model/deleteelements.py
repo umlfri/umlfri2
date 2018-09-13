@@ -1,7 +1,7 @@
 from collections import namedtuple
 
 from umlfri2.application.events.model import ConnectionDeletedEvent, ElementDeletedEvent, DiagramDeletedEvent
-from ..diagram import HideElementsCommand, HideConnectionCommand
+from ..diagram import HideElementsCommand
 from ..base import Command
 
 

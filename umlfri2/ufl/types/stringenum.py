@@ -1,6 +1,5 @@
 from .enum import UflEnumType
 from .enumpossibility import UflEnumPossibility
-from .bool import UflBoolType
 from .string import UflStringType
 
 

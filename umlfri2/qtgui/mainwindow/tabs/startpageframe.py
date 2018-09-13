@@ -1,8 +1,6 @@
-from functools import partial
-
 from PyQt5.QtCore import QSize, QRect, Qt
 from PyQt5.QtGui import QPainter, QBrush, QPen, QColor
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel
+from PyQt5.QtWidgets import QWidget, QVBoxLayout
 
 from .startpageframeaction import StartPageFrameAction
 
