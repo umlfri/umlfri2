@@ -115,10 +115,10 @@ class PropertiesDialog(QDialog):
         qt_dialog.exec_()
     
     @staticmethod
-    def open_config(main_window, metamodel):
-        dialog = metamodel.create_config_dialog()
-        dialog.translate(metamodel.get_translation(Application().language.current_language))
+    def open_config(main_window, project):
+        dialog = project.create_config_dialog()
+        dialog.translate(project.metamodel.get_translation(Application().language.current_language))
         solution = Application().solution
-        qt_dialog = PropertiesDialog(main_window, dialog, lambda patch: ApplyMetamodelConfigPatchCommand(solution, metamodel, patch))
+        qt_dialog = PropertiesDialog(main_window, dialog, lambda patch: ApplyMetamodelConfigPatchCommand(solution, project, patch))
         qt_dialog.setModal(True)
         qt_dialog.exec_()

@@ -116,11 +116,11 @@ class ElementType:
         
         context = Context()\
             .set_variable('self', data)\
-            .set_variable('cfg', self.__metamodel().config)
+            .set_variable('cfg', element.project.config)
         return self.__appearance.create_visual_object(context, ruler)
     
     def get_display_name(self, element):
         context = Context()\
             .set_variable('self', element.data)\
-            .set_variable('cfg', self.__metamodel().config)
+            .set_variable('cfg', element.project.config)
         return self.__display_name.get_text(context)

@@ -48,7 +48,7 @@ class DiagramType:
     def get_background_color(self, diagram):
         context = Context()\
             .set_variable('self', diagram.data)\
-            .set_variable('cfg', self.__metamodel().config)
+            .set_variable('cfg', diagram.project.config)
         return self.__background_color(context)
     
     def compile(self, type_context):
@@ -62,5 +62,5 @@ class DiagramType:
     def get_display_name(self, diagram):
         context = Context()\
             .set_variable('self', diagram.data)\
-            .set_variable('cfg', self.__metamodel().config)
+            .set_variable('cfg', diagram.project.config)
         return self.__display_name.get_text(context)
