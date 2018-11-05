@@ -1,3 +1,4 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication
 
 from umlfri2.application import Application
@@ -11,6 +12,8 @@ from .osspecials import SPECIALS
 
 def qt_main(args):
     SPECIALS.init()
+    
+    QApplication.setAttribute(Qt.AA_DisableWindowContextHelpButton)
 
     app = QApplication(args)
     
