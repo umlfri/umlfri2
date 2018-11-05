@@ -13,7 +13,8 @@ from .osspecials import SPECIALS
 def qt_main(args):
     SPECIALS.init()
     
-    QApplication.setAttribute(Qt.AA_DisableWindowContextHelpButton)
+    if hasattr(Qt, 'AA_DisableWindowContextHelpButton'):
+        QApplication.setAttribute(Qt.AA_DisableWindowContextHelpButton)
 
     app = QApplication(args)
     
