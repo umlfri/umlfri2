@@ -1,6 +1,6 @@
 import os.path
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QEvent
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QPushButton
 import sip
@@ -23,9 +23,11 @@ class ToolBox(QWidget):
         
         self.__show_names = show_names
         
+        self.__buttons = []
+        
         self.__widgets = []
         self.__current_tab = None
-        self._fill(drawing_area)
+        self.__fill(drawing_area)
         
         Application().event_dispatcher.subscribe(LanguageChangedEvent, self.__language_changed)
         
@@ -34,7 +36,7 @@ class ToolBox(QWidget):
     def __language_changed(self, event):
         self.__reload_texts()
     
-    def _fill(self, drawing_area):
+    def __fill(self, drawing_area):
         for widget in self.__widgets:
             self.__vbox.removeWidget(widget)
             sip.delete(widget)
@@ -127,4 +129,4 @@ class ToolBox(QWidget):
         drawing_area.set_action(action)
     
     def __reload_texts(self):
-        self._fill(self.__current_drawing_area)
+        self.__fill(self.__current_drawing_area)
