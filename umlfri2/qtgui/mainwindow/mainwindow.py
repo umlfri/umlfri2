@@ -35,6 +35,7 @@ class UmlFriMainWindow(QMainWindow):
 
         self.__toolbox_dock = QDockWidget()
         self.__toolbox_dock.setObjectName("tools")
+        self.__toolbox_dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
         self.addDockWidget(Qt.LeftDockWidgetArea, self.__toolbox_dock)
         self.__toolbox = MainToolBox()
         self.__toolbox_dock.setWidget(self.__toolbox)
