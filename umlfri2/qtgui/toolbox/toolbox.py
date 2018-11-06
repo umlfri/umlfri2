@@ -26,12 +26,15 @@ class ToolBox(QWidget):
         self.__buttons = []
         
         self.__widgets = []
-        self.__current_tab = None
         self.__fill(drawing_area)
         
         Application().event_dispatcher.subscribe(LanguageChangedEvent, self.__language_changed)
         
         self.__reload_texts()
+    
+    @property
+    def drawing_area(self):
+        return self.__current_drawing_area
     
     def __language_changed(self, event):
         self.__reload_texts()
