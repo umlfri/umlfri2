@@ -9,8 +9,11 @@ from .toolbox import ToolBox
 
 
 class MainToolBox(QWidget):
-    def __init__(self):
+    def __init__(self, dock):
         super().__init__()
+        
+        self.__dock = dock
+        self.__empty_title_bar = QWidget()
         
         self.__layout = QVBoxLayout()
         self.__layout.setContentsMargins(0, 0, 0, 0)
@@ -59,6 +62,9 @@ class MainToolBox(QWidget):
         if not self.__expander.expanded:
             foo = self.__toolbox.sizeHint()
             self.setFixedWidth(foo.width())
+            self.__dock.setTitleBarWidget(self.__empty_title_bar)
+        else:
+            self.__dock.setTitleBarWidget(None)
     
     def __expander_changed(self):
         self.__change_toolbox(self.__toolbox.drawing_area)
