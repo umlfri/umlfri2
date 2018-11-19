@@ -56,10 +56,7 @@ class UflDialogListTab(UflDialogTab):
     
     @property
     def should_save(self):
-        for widget in self.widgets:
-            if widget.changed:
-                return True
-        return False
+        return self.has_changes
     
     @property
     def can_save(self):

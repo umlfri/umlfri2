@@ -118,6 +118,17 @@ class UflDialog:
     def should_save_tab(self):
         return isinstance(self.__current_tab, UflDialogListTab) and self.__current_tab.should_save
     
+    @property
+    def has_changes(self):
+        if self.__current_tab.has_changes:
+            return True
+        
+        patch = self.make_patch()
+        if patch is None:
+            return False
+        
+        return patch.has_changes
+    
     def switch_tab(self, index):
         if isinstance(self.__current_tab, UflDialogListTab):
             if self.__current_tab.should_save:
