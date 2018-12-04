@@ -29,6 +29,9 @@ from .tabs import Tabs
 class UmlFriMainWindow(QMainWindow):
     def __init__(self): 
         super().__init__()
+        
+        self.__update_dialog_shown_for_version = set()
+        
         self.setWindowIcon(QIcon(os.path.join(GRAPHICS, "icon", "icon.ico")))
         self.__tabs = Tabs(self)
         self.setCentralWidget(self.__tabs)
@@ -281,6 +284,11 @@ class UmlFriMainWindow(QMainWindow):
         
         if latest_update.is_ignored:
             return
+        
+        if latest_update in self.__update_dialog_shown_for_version:
+            return
+        
+        self.__update_dialog_shown_for_version.add(latest_update)
         
         current_window = QApplication.instance().activeWindow()
         
