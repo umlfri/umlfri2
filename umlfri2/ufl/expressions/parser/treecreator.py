@@ -3,9 +3,9 @@ from ..tree import *
 from .operators import make_binary_operator_tree, make_unary_operator_tree
 
 
-@d.METADATA_ACCESS.setParseAction
-def metadata_access(data):
-    return UflMetadataAccessNode(data[2])
+@d.VARIABLE_METADATA_ACCESS.setParseAction
+def variable_metadata_access(data):
+    return UflVariableMetadataAccessNode(UflVariableNode(data[1]))
 
 
 @d.TARGET.setParseAction
@@ -77,6 +77,8 @@ def method_attribute_or_enum(data):
                     node = UflEnumNode(node.name, data[i + 1])
                 else:
                     raise Exception('You can use :: operator only to access enum members')
+            elif data[i] == '.@':
+                node = UflObjectMetadataAccessNode(node, data[i + 1])
             else:
                 node = UflAttributeAccessNode(node, data[i + 1])
             

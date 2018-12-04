@@ -1,5 +1,5 @@
 from PyQt5.QtCore import QSize, Qt
-from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QTabWidget
+from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QTabWidget, QMessageBox
 
 from umlfri2.application import Application
 from umlfri2.application.commands.model import ApplyPatchCommand
@@ -64,6 +64,26 @@ class PropertiesDialog(QDialog):
         layout.addWidget(button_box)
         self.setLayout(layout)
     
+    def closeEvent(self, event):
+        if self.__dialog.has_changes:
+            message_box = QMessageBox(self)
+            message_box.setWindowModality(Qt.WindowModal)
+            message_box.setIcon(QMessageBox.Question)
+            message_box.setWindowTitle(_("Properties has been changed"))
+            message_box.setText(_("Properties in this dialog was changed, but not applied."))
+            message_box.setInformativeText(_("Do you want to apply the changes?"))
+            message_box.setStandardButtons(QMessageBox.Save | QMessageBox.Discard | QMessageBox.Cancel)
+            message_box.setDefaultButton(QMessageBox.Save)
+            message_box.button(QMessageBox.Save).setText(_("Apply"))
+            message_box.button(QMessageBox.Discard).setText(_("Close without applying"))
+            message_box.button(QMessageBox.Cancel).setText(_("Cancel"))
+            resp = message_box.exec()
+            
+            if resp == QMessageBox.Save:
+                self.__accept_clicked()
+            elif resp == QMessageBox.Cancel:
+                event.ignore()
+    
     def sizeHint(self):
         orig = super().sizeHint()
         return QSize(500, orig.height())
@@ -115,10 +135,10 @@ class PropertiesDialog(QDialog):
         qt_dialog.exec_()
     
     @staticmethod
-    def open_config(main_window, metamodel):
-        dialog = metamodel.create_config_dialog()
-        dialog.translate(metamodel.get_translation(Application().language.current_language))
+    def open_config(main_window, project):
+        dialog = project.create_config_dialog()
+        dialog.translate(project.metamodel.get_translation(Application().language.current_language))
         solution = Application().solution
-        qt_dialog = PropertiesDialog(main_window, dialog, lambda patch: ApplyMetamodelConfigPatchCommand(solution, metamodel, patch))
+        qt_dialog = PropertiesDialog(main_window, dialog, lambda patch: ApplyMetamodelConfigPatchCommand(solution, project, patch))
         qt_dialog.setModal(True)
         qt_dialog.exec_()

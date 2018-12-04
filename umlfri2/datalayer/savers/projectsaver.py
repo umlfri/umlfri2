@@ -26,6 +26,11 @@ class ProjectSaver:
         info.append(metamodel)
         root.append(info)
         
+        config = lxml.etree.Element('{{{0}}}Config'.format(MODEL_NAMESPACE))
+        self.__save_ufl_object(config, project.config, project.metamodel.config_structure)
+        if len(config):
+            root.append(config)
+        
         for element in project.children:
             root.append(self.__element_to_xml(element))
         

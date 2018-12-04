@@ -2,7 +2,7 @@ from collections import namedtuple
 from weakref import ref
 
 from umlfri2.ufl.context import Context
-from umlfri2.ufl.types import UflDataWithMetadataType, UflStringType, UflImageType, UflAnyType, UflIterableType
+from umlfri2.ufl.types import UflVariableWithMetadataType, UflStringType, UflImageType, UflAnyType, UflIterableType
 
 ElementAccessDepth = namedtuple('ElementAccessDepth', ('parent', 'child'))
 
@@ -39,10 +39,10 @@ class NodeMetadata:
         }
         
         if element_type is None:
-            ret = UflDataWithMetadataType(UflAnyType(), **metadata)
+            ret = UflVariableWithMetadataType(UflAnyType(), **metadata)
             ret._add_metadata_type('children', UflIterableType(ret))
         else:
-            ret = UflDataWithMetadataType(element_type.ufl_type, **metadata)
+            ret = UflVariableWithMetadataType(element_type.ufl_type, **metadata)
             ret._add_metadata_type('children', UflIterableType(NodeMetadata.build_node_metadata_types(None)))
         
         return ret
@@ -116,11 +116,11 @@ class ElementType:
         
         context = Context()\
             .set_variable('self', data)\
-            .set_variable('cfg', self.__metamodel().config)
+            .set_variable('cfg', element.project.config)
         return self.__appearance.create_visual_object(context, ruler)
     
     def get_display_name(self, element):
         context = Context()\
             .set_variable('self', element.data)\
-            .set_variable('cfg', self.__metamodel().config)
+            .set_variable('cfg', element.project.config)
         return self.__display_name.get_text(context)

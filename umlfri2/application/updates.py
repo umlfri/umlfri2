@@ -115,7 +115,7 @@ class UmlFriUpdates:
             if latest_prerelease is None:
                 self.__latest_prerelease = None
             else:
-                self.__latest_prerelease = UmlFriUpdate(latest_prerelease[0], latest_prerelease[1]['html_url'])
+                self.__latest_prerelease = UmlFriUpdate(self.__application, latest_prerelease[0], latest_prerelease[1]['html_url'])
         except Exception as ex:
             self.__check_error = ExceptionInfo.from_exception(ex)
             if __debug__:

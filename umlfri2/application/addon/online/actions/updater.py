@@ -1,4 +1,3 @@
-from functools import partial
 from itertools import chain
 
 from .downloader import OnlineAddonVersionDownloader

@@ -39,4 +39,4 @@ class ProjectTreeProjectMenu(ContextMenu):
         ProjectPropertiesDialog.open_for(self.__main_window, self.__project)
     
     def __open_metamodel_config_action(self, checked=False):
-        PropertiesDialog.open_config(self.__main_window, self.__project.metamodel)
+        PropertiesDialog.open_config(self.__main_window, self.__project)

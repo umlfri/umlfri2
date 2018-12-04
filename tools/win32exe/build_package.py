@@ -120,11 +120,11 @@ shutil.copy(os.path.join(sys.base_prefix, 'python36.dll'), os.path.join(OUT_DIR,
 shutil.copy(os.path.join(sys.base_prefix, 'python3.dll'), os.path.join(OUT_DIR, 'python3.dll'))
 
 if version == 'Debug':
-    shutil.copy(os.path.join('c:', 'Windows', 'SysWOW64', 'vcruntime140d.dll'), os.path.join(OUT_DIR, 'vcruntime140d.dll'))
-    shutil.copy(os.path.join('c:', 'Windows', 'SysWOW64', 'ucrtbased.dll'), os.path.join(OUT_DIR, 'ucrtbased.dll'))
+    shutil.copy(os.path.join('c:\\', 'Windows', 'SysWOW64', 'vcruntime140d.dll'), os.path.join(OUT_DIR, 'vcruntime140d.dll'))
+    shutil.copy(os.path.join('c:\\', 'Windows', 'SysWOW64', 'ucrtbased.dll'), os.path.join(OUT_DIR, 'ucrtbased.dll'))
 else:
-    shutil.copy(os.path.join('c:', 'Windows', 'SysWOW64', 'vcruntime140.dll'), os.path.join(OUT_DIR, 'vcruntime140.dll'))
-    shutil.copy(os.path.join('c:', 'Windows', 'SysWOW64', 'ucrtbase.dll'), os.path.join(OUT_DIR, 'ucrtbase.dll'))
+    shutil.copy(os.path.join('c:\\', 'Windows', 'SysWOW64', 'vcruntime140.dll'), os.path.join(OUT_DIR, 'vcruntime140.dll'))
+    shutil.copy(os.path.join('c:\\', 'Windows', 'SysWOW64', 'ucrtbase.dll'), os.path.join(OUT_DIR, 'ucrtbase.dll'))
 
 print("Python standard library")
 print("=======================")
@@ -156,6 +156,7 @@ print("Copying UML .FRI data")
 print("---------------------")
 shutil.copytree(os.path.join(UML_FRI_DIR, 'data'), os.path.join(OUT_DIR, 'data'), ignore=shutil.ignore_patterns("128x128", "256x256", "api", "*.svg", "icon", "tool_icons"))
 shutil.copy(os.path.join(UML_FRI_DIR, 'LICENSE.txt'), os.path.join(OUT_DIR, 'LICENSE.txt'))
+shutil.copy(os.path.join(UML_FRI_DIR, 'CHANGELOG.md'), os.path.join(OUT_DIR, 'CHANGELOG.md'))
 
 print("Appdirs lib")
 print("-----------")

@@ -10,6 +10,8 @@ from umlfri2.qtgui.base import image_loader
 
 
 class AddOnListWidget(QTableWidget):
+    EXPANDING_BUTTON_BOX = True
+    
     class __NoSelectionItemDelegate(QStyledItemDelegate):
         def initStyleOption(self, option, index):
             super().initStyleOption(option, index)
@@ -143,7 +145,8 @@ class AddOnListWidget(QTableWidget):
             
             addon_button_box_widget = QWidget()
             addon_button_box_widget.setLayout(addon_button_box)
-            addon_button_box_widget.setVisible(False)
+            if self.EXPANDING_BUTTON_BOX:
+                addon_button_box_widget.setVisible(False)
             addon_button_box_widget.setObjectName("button_box")
             
             if button_factory is not None:
@@ -189,13 +192,15 @@ class AddOnListWidget(QTableWidget):
             cell = self.cellWidget(i, 2)
             if cell is None:
                 continue
-            button_box = cell.findChild(QWidget, "button_box")
             
-            if button_box is not None: # no button box present
-                if i in selection:
-                    button_box.show()
-                else:
-                    button_box.hide()
+            if self.EXPANDING_BUTTON_BOX:
+                button_box = cell.findChild(QWidget, "button_box")
+                
+                if button_box is not None: # no button box present
+                    if i in selection:
+                        button_box.show()
+                    else:
+                        button_box.hide()
             
             self.__refresh_selection_colors(cell, i in selection)
         

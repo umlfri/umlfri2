@@ -1,15 +1,8 @@
 from .controlcomponent import ControlComponent
-from umlfri2.ufl.types import UflIterableType, UflAnyType, UflIntegerType, UflDataWithMetadataType, UflBoolType
+from umlfri2.ufl.types import UflIterableType, UflAnyType, UflIntegerType, UflVariableWithMetadataType, UflBoolType
 
 
 class ForEachItemMetadata:
-    METADATA = {
-        'index': UflIntegerType(),
-        'count': UflIntegerType(),
-        'is_first': UflBoolType(),
-        'is_last': UflBoolType(),
-    }
-    
     def __init__(self, value, count, index):
         self.__index = index
         self.__count = count
@@ -35,6 +28,16 @@ class ForEachItemMetadata:
     def is_last(self):
         return self.__index == self.count - 1
 
+    @staticmethod
+    def build_node_metadata_type(item_type):
+        return UflVariableWithMetadataType(
+            item_type,
+            index=UflIntegerType(),
+            count=UflIntegerType(),
+            is_first=UflBoolType(),
+            is_last=UflBoolType()
+        )
+
 
 class ForEachComponent(ControlComponent):
     ATTRIBUTES = {
@@ -57,7 +60,7 @@ class ForEachComponent(ControlComponent):
         
         type_context = type_context.set_variable_type(
             self.__item,
-            UflDataWithMetadataType(item_type, **ForEachItemMetadata.METADATA)
+            ForEachItemMetadata.build_node_metadata_type(item_type)
         )
         
         self._compile_children(type_context)

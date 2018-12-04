@@ -31,5 +31,5 @@ class ConnectionTypeLabel:
     def create_appearance_object(self, connection, ruler):
         context = Context()\
             .set_variable('self', connection.data)\
-            .set_variable('cfg', self.__connection_type().metamodel.config)
+            .set_variable('cfg', connection.project.config)
         return self.__appearance.create_visual_object(context, ruler)

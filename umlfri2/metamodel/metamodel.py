@@ -2,7 +2,6 @@ from collections import OrderedDict
 from weakref import ref
 
 from umlfri2.ufl.context import TypeContext
-from umlfri2.ufl.dialog import UflDialog
 from umlfri2.ufl.types import UflObjectType
 from .translation import TranslationList
 
@@ -25,7 +24,6 @@ class Metamodel:
             self.__config_structure = config
             self.__has_config = True
         self.__config_structure.set_parent(self)
-        self.__config = self.__config_structure.build_default(None)
         
         self.__addon = None
     
@@ -81,24 +79,8 @@ class Metamodel:
         return self.__config_structure
     
     @property
-    def config(self):
-        return self.__config
-    
-    @property
     def has_config(self):
         return self.__has_config
-    
-    def apply_config_patch(self, patch):
-        if not self.__has_config:
-            raise Exception
-        self.__config.apply_patch(patch)
-    
-    def create_config_dialog(self):
-        if not self.__has_config:
-            raise Exception
-        dialog = UflDialog(self.__config_structure)
-        dialog.associate(self.__config)
-        return dialog
     
     def compile(self):
         type_context = TypeContext(self.__definitions)

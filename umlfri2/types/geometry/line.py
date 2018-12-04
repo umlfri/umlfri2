@@ -1,4 +1,3 @@
-import math
 from .point import Point
 
 

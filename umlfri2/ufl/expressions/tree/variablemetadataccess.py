@@ -1,7 +1,7 @@
 from .node import UflNode
 
 
-class UflMetadataAccessNode(UflNode):
+class UflVariableMetadataAccessNode(UflNode):
     def __init__(self, obj, type=None):
         super().__init__(type)
         
@@ -15,4 +15,4 @@ class UflMetadataAccessNode(UflNode):
         return self.__object,
     
     def accept(self, visitor):
-        return visitor.visit_metadata_access(self)
+        return visitor.visit_variable_metadata_access(self)

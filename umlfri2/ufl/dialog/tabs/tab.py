@@ -57,6 +57,13 @@ class UflDialogTab:
     def finish(self):
         raise NotImplementedError
     
+    @property
+    def has_changes(self):
+        for widget in self.__widgets:
+            if widget.changed:
+                return True
+        return False
+    
     def translate(self, translation):
         if self.__attr is not None:
             self.__name = translation.translate(self.__attr)

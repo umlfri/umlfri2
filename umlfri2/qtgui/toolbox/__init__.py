@@ -1,2 +1,2 @@
+from .fullscreentoolbox import FullScreenToolBox
 from .maintoolbox import MainToolBox
-from .toolbox import ToolBox

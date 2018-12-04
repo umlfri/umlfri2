@@ -1,5 +1,5 @@
 #define MyAppName "UML .FRI"
-#define MyAppVersion "2.0"
+#define MyAppVersion "2.1"
 #define MyAppPublisher "Ján Janech"
 #define MyAppURL "http://www.umlfri.org/"
 #define MyAppExeName "umlfri2.exe"

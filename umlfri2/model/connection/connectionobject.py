@@ -50,6 +50,10 @@ class ConnectionObject:
     def destination(self):
         return self.__destination()
     
+    @property
+    def project(self):
+        return self.__source().project
+    
     def reverse(self):
         self.__source, self.__destination = self.__destination, self.__source
         for visual in self.__visuals:

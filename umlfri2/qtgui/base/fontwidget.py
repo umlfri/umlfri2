@@ -1,9 +1,8 @@
 from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5.QtGui import QFont, QFontMetrics
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLabel, QPushButton, QFontDialog, QFrame
+from PyQt5.QtGui import QFontMetrics
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLabel, QPushButton, QFrame
 
 from umlfri2.qtgui.appdialogs.fontdialog import FontDialog
-from umlfri2.types.enums import FontStyle
 from umlfri2.types.font import Font, Fonts
 
 

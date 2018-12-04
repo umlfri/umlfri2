@@ -6,8 +6,9 @@ from .literal import UflLiteralNode
 from .macroinvoke import UflMacroInvokeNode
 from .variable import UflVariableNode
 from .variabledefinition import UflVariableDefinitionNode
-from .metadataccess import UflMetadataAccessNode
+from .variablemetadataccess import UflVariableMetadataAccessNode
 from .unpack import UflUnpackNode
 from .expression import UflExpressionNode
 from .cast import UflCastNode
 from .lambdaexpression import UflLambdaExpressionNode
+from .objectmetadataaccess import UflObjectMetadataAccessNode

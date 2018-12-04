@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QWidget, QHBoxLayout, QShortcut
 
 from umlfri2.constants.keys import FULL_SCREEN
 from umlfri2.qtgui.canvas import ScrolledCanvasWidget
-from umlfri2.qtgui.toolbox import ToolBox
+from umlfri2.qtgui.toolbox import FullScreenToolBox
 
 
 class FullScreenDiagram(QWidget):
@@ -14,7 +14,7 @@ class FullScreenDiagram(QWidget):
         layout = QHBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(0)
-        toolbox = ToolBox(drawing_area, False)
+        toolbox = FullScreenToolBox(drawing_area)
         layout.addWidget(toolbox)
         canvas = ScrolledCanvasWidget(self, drawing_area)
         layout.addWidget(canvas)

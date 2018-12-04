@@ -1,6 +1,7 @@
 from uuid import uuid4
 
 from umlfri2.model import ElementObject
+from umlfri2.ufl.dialog import UflDialog
 
 
 class Project:
@@ -15,7 +16,9 @@ class Project:
             self.__save_id = uuid4()
         else:
             self.__save_id = save_id
-    
+        
+        self.__config = metamodel.config_structure.build_default(None)
+
     @property
     def parent(self):
         return None
@@ -84,3 +87,19 @@ class Project:
     def invalidate_all_caches(self):
         for element in self.__children:
             element.invalidate_all_caches()
+    
+    @property
+    def config(self):
+        return self.__config
+    
+    def apply_config_patch(self, patch):
+        if not self.__metamodel.has_config:
+            raise Exception
+        self.__config.apply_patch(patch)
+    
+    def create_config_dialog(self):
+        if not self.__metamodel.has_config:
+            raise Exception
+        dialog = UflDialog(self.__metamodel.config_structure)
+        dialog.associate(self.__config)
+        return dialog

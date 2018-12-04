@@ -38,8 +38,9 @@ class UmlFriMainWindow(QMainWindow):
 
         self.__toolbox_dock = QDockWidget()
         self.__toolbox_dock.setObjectName("tools")
+        self.__toolbox_dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
         self.addDockWidget(Qt.LeftDockWidgetArea, self.__toolbox_dock)
-        self.__toolbox = MainToolBox()
+        self.__toolbox = MainToolBox(self.__toolbox_dock)
         self.__toolbox_dock.setWidget(self.__toolbox)
         
         self.__project_dock = QDockWidget()
@@ -127,6 +128,7 @@ class UmlFriMainWindow(QMainWindow):
         settings = QSettings(os.path.join(CONFIG, 'qt.ini'), QSettings.IniFormat)
         settings.setValue("geometry", self.saveGeometry())
         settings.setValue("window_state", self.saveState())
+        settings.setValue("toolbox_expanded", self.__toolbox.expanded)
     
     def __restore_window_state(self):
         settings = QSettings(os.path.join(CONFIG, 'qt.ini'), QSettings.IniFormat)
@@ -134,6 +136,8 @@ class UmlFriMainWindow(QMainWindow):
             self.restoreGeometry(settings.value("geometry"))
         if settings.contains("window_state"):
             self.restoreState(settings.value("window_state"))
+        if settings.contains("toolbox_expanded"):
+            self.__toolbox.expanded = settings.value("toolbox_expanded", type=bool)
 
     def __check_save(self, title):
         if Application().unsaved:
