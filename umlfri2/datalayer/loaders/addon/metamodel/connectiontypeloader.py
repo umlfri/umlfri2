@@ -3,7 +3,7 @@ from umlfri2.types.image import Image
 from .componentloader import ComponentLoader
 from ....constants import ADDON_NAMESPACE, ADDON_SCHEMA
 from .structureloader import UflStructureLoader
-from umlfri2.ufl.components.connectionline import ConnectionLineContainerComponent
+from umlfri2.ufl.components.connectionline import ConnectionVisualContainerComponent
 from umlfri2.ufl.components.visual import VisualContainerComponent
 from umlfri2.metamodel import ConnectionType
 from umlfri2.metamodel.connectiontypelabel import ConnectionTypeLabel
@@ -47,7 +47,7 @@ class ConnectionTypeLoader:
                     
                     del appearance_children[-1]
                 
-                appearance = ConnectionLineContainerComponent(ComponentLoader(appearance_children, ComponentType.connection).load())
+                appearance = ConnectionVisualContainerComponent(ComponentLoader(appearance_children, ComponentType.connection_visual).load())
             else:
                 raise Exception
         

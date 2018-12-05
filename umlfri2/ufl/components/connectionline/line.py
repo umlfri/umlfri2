@@ -1,5 +1,5 @@
 from umlfri2.types.proportion import EMPTY_PROPORTION, WHOLE_PROPORTION
-from .connectionlinecomponent import ConnectionLineComponent, ConnectionLineObject
+from .connectionlinecomponent import ConnectionVisualComponent, ConnectionVisualObject
 from ..valueproviders import DefaultValueProvider
 from umlfri2.types.enums import LineStyle
 from umlfri2.types.color import Colors
@@ -7,7 +7,7 @@ from umlfri2.types.geometry import PathBuilder
 from umlfri2.ufl.types import UflColorType, UflProportionType, UflTypedEnumType
 
 
-class LineObject(ConnectionLineObject):
+class LineObject(ConnectionVisualObject):
     def __init__(self, start, end, style, color):
         self.__start = start
         self.__end = end
@@ -31,7 +31,7 @@ class LineObject(ConnectionLineObject):
         canvas.draw_path(self.__path, self.__color, line_style=self.__style)
 
 
-class LineComponent(ConnectionLineComponent):
+class VisualComponent(ConnectionVisualComponent):
     ATTRIBUTES = {
         'start': UflProportionType(),
         'end': UflProportionType(),

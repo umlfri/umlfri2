@@ -1,8 +1,8 @@
 from .arrow import ArrowComponent
-from .line import LineComponent
-from .connectionlinecontainer import ConnectionLineContainerComponent
+from .line import VisualComponent
+from .connectionlinecontainer import ConnectionVisualContainerComponent
 
-CONNECTION_LINE_COMPONENTS = {
+CONNECTION_VISUAL_COMPONENTS = {
     'Arrow': ArrowComponent,
-    'Line': LineComponent,
+    'Line': VisualComponent,
 }

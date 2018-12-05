@@ -1,7 +1,7 @@
 import math
 
 from umlfri2.types.enums import ArrowOrientation
-from .connectionlinecomponent import ConnectionLineComponent, ConnectionLineObject
+from .connectionlinecomponent import ConnectionVisualComponent, ConnectionVisualObject
 from ..valueproviders import DefaultValueProvider
 from umlfri2.types.color import Colors
 from umlfri2.types.geometry import Transformation
@@ -27,7 +27,7 @@ class ArrowDefinition:
         return self.__path
 
 
-class ArrowObject(ConnectionLineObject):
+class ArrowObject(ConnectionVisualObject):
     def __init__(self, position, style, orientation, color, fill):
         self.__style = style
         self.__position = position
@@ -52,7 +52,7 @@ class ArrowObject(ConnectionLineObject):
         canvas.draw_path(self.__path, self.__color, self.__fill)
 
 
-class ArrowComponent(ConnectionLineComponent):
+class ArrowComponent(ConnectionVisualComponent):
     ATTRIBUTES = {
         'position': UflProportionType(),
         'style': UflDefinedEnumType(ArrowDefinition),

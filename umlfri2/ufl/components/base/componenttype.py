@@ -7,4 +7,4 @@ class ComponentType(Enum):
     graphic = 3
     path_part = 4
     text = 5
-    connection = 6
+    connection_visual = 6

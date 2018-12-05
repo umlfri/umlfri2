@@ -1,7 +1,7 @@
-from .connectionlinecomponent import ConnectionLineComponent, ConnectionLineObject
+from .connectionlinecomponent import ConnectionVisualComponent, ConnectionVisualObject
 
 
-class ConnectionLineContainerObject(ConnectionLineObject):
+class ConnectionVisualContainerObject(ConnectionVisualObject):
     def __init__(self, children):
         self.__children = list(children)
     
@@ -14,11 +14,11 @@ class ConnectionLineContainerObject(ConnectionLineObject):
             child.draw(canvas)
 
 
-class ConnectionLineContainerComponent(ConnectionLineComponent):
+class ConnectionVisualContainerComponent(ConnectionVisualComponent):
     def _create_object(self, context):
         children = [child._create_object(local) for local, child in self._get_children(context)]
         
-        return ConnectionLineContainerObject(children)
+        return ConnectionVisualContainerObject(children)
     
     def compile(self, type_context):
         self._compile_children(type_context)

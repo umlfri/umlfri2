@@ -1,6 +1,6 @@
 from .base.componenttype import ComponentType
 from .common import COMMON_COMPONENTS
-from .connectionline import CONNECTION_LINE_COMPONENTS
+from .connectionline import CONNECTION_VISUAL_COMPONENTS
 from .graphic import GRAPHIC_COMPONENTS
 from .pathpart import PATH_COMPONENTS
 from .text import TEXT_COMPONENTS
@@ -12,7 +12,7 @@ ALL_COMPONENTS = {
     ComponentType.graphic: GRAPHIC_COMPONENTS.copy(),
     ComponentType.path_part: PATH_COMPONENTS.copy(),
     ComponentType.text: TEXT_COMPONENTS.copy(),
-    ComponentType.connection: CONNECTION_LINE_COMPONENTS.copy()
+    ComponentType.connection_visual: CONNECTION_VISUAL_COMPONENTS.copy()
 }
 
 for components in ALL_COMPONENTS.values():

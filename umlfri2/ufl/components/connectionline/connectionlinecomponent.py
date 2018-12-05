@@ -5,7 +5,7 @@ from ..base.component import Component
 PointPosition = namedtuple('PointPosition', ('id', 't', 'position', 'orientation'))
 
 
-class ConnectionLineObject:
+class ConnectionVisualObject:
     def assign_points(self, points):
         raise NotImplementedError
     
@@ -49,7 +49,7 @@ class ConnectionLineObject:
         return PointPosition(id=len(points)-2, t=1, position=point, orientation=orientation)
 
 
-class ConnectionLineComponent(Component):
+class ConnectionVisualComponent(Component):
     def _create_object(self, context):
         raise NotImplementedError
     
