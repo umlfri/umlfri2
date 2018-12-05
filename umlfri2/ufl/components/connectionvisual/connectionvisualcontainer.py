@@ -1,4 +1,4 @@
-from .connectionlinecomponent import ConnectionVisualComponent, ConnectionVisualObject
+from .connectionvisualcomponent import ConnectionVisualComponent, ConnectionVisualObject
 
 
 class ConnectionVisualContainerObject(ConnectionVisualObject):

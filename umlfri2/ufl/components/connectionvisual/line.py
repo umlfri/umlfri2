@@ -1,5 +1,5 @@
 from umlfri2.types.proportion import EMPTY_PROPORTION, WHOLE_PROPORTION
-from .connectionlinecomponent import ConnectionVisualComponent, ConnectionVisualObject
+from .connectionvisualcomponent import ConnectionVisualComponent, ConnectionVisualObject
 from ..valueproviders import DefaultValueProvider
 from umlfri2.types.enums import LineStyle
 from umlfri2.types.color import Colors

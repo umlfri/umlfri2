@@ -1,7 +1,7 @@
 import math
 
 from umlfri2.types.enums import ArrowOrientation
-from .connectionlinecomponent import ConnectionVisualComponent, ConnectionVisualObject
+from .connectionvisualcomponent import ConnectionVisualComponent, ConnectionVisualObject
 from ..valueproviders import DefaultValueProvider
 from umlfri2.types.color import Colors
 from umlfri2.types.geometry import Transformation

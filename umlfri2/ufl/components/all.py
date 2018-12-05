@@ -1,6 +1,6 @@
 from .base.componenttype import ComponentType
 from .common import COMMON_COMPONENTS
-from .connectionline import CONNECTION_VISUAL_COMPONENTS
+from .connectionvisual import CONNECTION_VISUAL_COMPONENTS
 from .graphic import GRAPHIC_COMPONENTS
 from .pathpart import PATH_COMPONENTS
 from .text import TEXT_COMPONENTS

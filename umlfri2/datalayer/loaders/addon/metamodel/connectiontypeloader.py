@@ -3,7 +3,7 @@ from umlfri2.types.image import Image
 from .componentloader import ComponentLoader
 from ....constants import ADDON_NAMESPACE, ADDON_SCHEMA
 from .structureloader import UflStructureLoader
-from umlfri2.ufl.components.connectionline import ConnectionVisualContainerComponent
+from umlfri2.ufl.components.connectionvisual import ConnectionVisualContainerComponent
 from umlfri2.ufl.components.visual import VisualContainerComponent
 from umlfri2.metamodel import ConnectionType
 from umlfri2.metamodel.connectiontypelabel import ConnectionTypeLabel
