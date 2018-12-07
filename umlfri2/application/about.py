@@ -3,7 +3,7 @@ import sys
 import appdirs
 import lxml.etree
 import pyparsing
-from PyQt5 import Qt
+from PyQt5 import Qt, QtCore
 
 from .updates import UmlFriUpdates
 from umlfri2.types.version import Version
@@ -34,7 +34,7 @@ class AboutUmlFri:
     @property
     def dependency_versions(self):
         yield 'Python', "%s.%s.%s"%sys.version_info[:3]
-        yield 'Qt', Qt.QT_VERSION_STR
+        yield 'Qt', QtCore.qVersion()
         yield 'PyQt', Qt.PYQT_VERSION_STR
         yield 'AppDirs', appdirs.__version__
         yield 'lxml', lxml.etree.__version__
