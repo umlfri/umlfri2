@@ -43,15 +43,19 @@ class Builder:
         self.__root_namespace = Namespace(None, None)
         self.__cache = {}
     
-    def parse(self, dir=None):
+    def __get_xmls(self, dir=None):
         if dir is None:
             dir = self.__xml_definitions
         
-        for f in os.listdir(dir):
-            if not f.endswith('.xml'):
-                continue
-            
-            root = lxml.etree.parse(os.path.join(dir, f)).getroot()
+        for root, dirs, files in os.walk(dir):
+            for file in files:
+                if file.endswith('.xml'):
+                    yield os.path.join(root, file)
+    
+    def parse(self, dir=None):
+        for f in self.__get_xmls(dir):
+            print(f)
+            root = lxml.etree.parse(f).getroot()
             if not self.__xml_schema.validate(root):
                 raise SyntaxError(self.__xml_schema.error_log.last_error)
             
