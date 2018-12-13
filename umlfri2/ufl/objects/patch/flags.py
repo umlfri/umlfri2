@@ -12,6 +12,9 @@ class UflFlagsPatch(UflPatch):
         
         def make_reverse(self):
             return UflFlagsPatch.ItemRemoved(self.__new_value)
+        
+        def debug_print(self, file, level):
+            print('\t' * level + '+', repr(self.__new_value), file=file)
     
     class ItemRemoved:
         def __init__(self, old_value):
@@ -23,3 +26,6 @@ class UflFlagsPatch(UflPatch):
         
         def make_reverse(self):
             return UflFlagsPatch.ItemAdded(self.__old_value)
+        
+        def debug_print(self, file, level):
+            print('\t' * level + '-', repr(self.__old_value), file=file)

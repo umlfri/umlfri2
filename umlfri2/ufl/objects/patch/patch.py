@@ -22,3 +22,7 @@ class UflPatch:
             return self.__changes[0]
         else:
             return None
+    
+    def debug_print(self, file, indent=0):
+        for change in self.__changes:
+            change.debug_print(file, indent)

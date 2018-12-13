@@ -17,6 +17,9 @@ class UflListPatch(UflPatch):
         
         def make_reverse(self):
             return UflListPatch.ItemRemoved(self.__index, self.__new_value)
+        
+        def debug_print(self, file, level):
+            print('\t' * level + '+', self.__index, repr(self.__new_value), file=file)
     
     class ItemRemoved:
         def __init__(self, index, old_value):
@@ -33,6 +36,9 @@ class UflListPatch(UflPatch):
         
         def make_reverse(self):
             return UflListPatch.ItemAdded(self.__index, self.__old_value)
+        
+        def debug_print(self, file, level):
+            print('\t' * level + '-', self.__index, repr(self.__old_value), file=file)
     
     class ItemMoved:
         def __init__(self, old_index, new_index, value):
@@ -54,6 +60,9 @@ class UflListPatch(UflPatch):
         
         def make_reverse(self):
             return UflListPatch.ItemMoved(self.__new_index, self.__old_index, self.__value)
+        
+        def debug_print(self, file, level):
+            print('\t' * level + '>', self.__old_index, '=>', self.__new_index, '//', repr(self.__value), file=file)
     
     class ItemPatch:
         def __init__(self, index, patch):
@@ -70,3 +79,7 @@ class UflListPatch(UflPatch):
         
         def make_reverse(self):
             return UflListPatch.ItemPatch(self.__index, self.__patch.make_reverse())
+        
+        def debug_print(self, file, level):
+            print('\t' * level + '#', self.__index, file=file)
+            self.__patch.debug_print(file, level+1)
