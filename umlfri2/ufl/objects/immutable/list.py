@@ -51,10 +51,16 @@ class UflList(UflImmutable):
             raise ValueError()
         
         for change in patch:
+            if isinstance(change, UflListPatch.ItemRemoved):
+                del self.__values[change.index]
+            elif isinstance(change, UflListPatch.ItemMoved):
+                del self.__values[change.old_index]
+        
+        for change in patch:
             if isinstance(change, UflListPatch.ItemAdded):
                 self.__values.insert(change.index, change.new_value)
-            elif isinstance(change, UflListPatch.ItemRemoved):
-                del self.__values[change.index]
+            elif isinstance(change, UflListPatch.ItemMoved):
+                self.__values.insert(change.new_index, change.value)
             elif isinstance(change, UflListPatch.ItemPatch):
                 self.__values[change.index].apply_patch(change.patch)
     

@@ -98,6 +98,22 @@ class UflMutableList(UflMutable):
     def delete(self, index):
         del self.__values[index]
     
+    def move_up(self, index):
+        if index <= 0:
+            raise ValueError
+        
+        value_with_index = self.__values[index]
+        del self.__values[index]
+        self.__values.insert(index - 1, value_with_index)
+    
+    def move_down(self, index):
+        if index >= len(self.__values) - 1:
+            raise ValueError
+        
+        value_with_index = self.__values[index]
+        del self.__values[index]
+        self.__values.insert(index + 1, value_with_index)
+    
     def make_immutable(self):
         from ..immutable import UflList
         
@@ -117,16 +133,25 @@ class UflMutableList(UflMutable):
             if index not in kept_indices:
                 changes.append(UflListPatch.ItemRemoved(index, self.__old_values[index]))
         
+        max_index = -1
         for new_index, (index, value) in enumerate(self.__values):
             if index is None:
                 if not self.__type.item_type.is_immutable:
                     value = value.make_immutable()
                 
                 changes.append(UflListPatch.ItemAdded(new_index, value))
+            elif index < max_index:
+                if not self.__type.item_type.is_immutable:
+                    value = value.make_immutable()
+                
+                changes.append(UflListPatch.ItemMoved(index, new_index, value))
             elif not self.__type.item_type.is_immutable:
                 patch = value.make_patch()
                 if patch.has_changes:
                     changes.append(UflListPatch.ItemPatch(new_index, patch))
+            
+            if index is not None and max_index < index:
+                max_index = index
         
         return UflListPatch(self.__type, changes)
     

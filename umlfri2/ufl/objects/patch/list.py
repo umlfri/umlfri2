@@ -34,6 +34,27 @@ class UflListPatch(UflPatch):
         def make_reverse(self):
             return UflListPatch.ItemAdded(self.__index, self.__old_value)
     
+    class ItemMoved:
+        def __init__(self, old_index, new_index, value):
+            self.__old_index = old_index
+            self.__new_index = new_index
+            self.__value = value
+        
+        @property
+        def old_index(self):
+            return self.__old_index
+        
+        @property
+        def new_index(self):
+            return self.__new_index
+        
+        @property
+        def value(self):
+            return self.__value
+        
+        def make_reverse(self):
+            return UflListPatch.ItemMoved(self.__new_index, self.__old_index, self.__value)
+    
     class ItemPatch:
         def __init__(self, index, patch):
             self.__index = index

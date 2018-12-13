@@ -72,6 +72,22 @@ class UflDialogListTab(UflDialogTab):
         self.__current_index = None
     
     @property
+    def can_move_up(self):
+        return self.__current_index is not None and self.__current_index > 0
+    
+    def move_up(self):
+        self.__list.move_up(self.__current_index)
+        self.__current_index -= 1
+    
+    @property
+    def can_move_down(self):
+        return self.__current_index is not None and self.__current_index < self.__list.get_length() - 1
+    
+    def move_down(self):
+        self.__list.move_down(self.__current_index)
+        self.__current_index += 1
+    
+    @property
     def current_index(self):
         return self.__current_index
     

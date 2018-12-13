@@ -26,6 +26,20 @@ class ListPropertyTab(PropertyTab):
         self.__list.itemSelectionChanged.connect(self.__item_changed)
         
         buttons = QHBoxLayout()
+        go_up_icon = QIcon.fromTheme("go-up")
+        if go_up_icon.isNull():
+            self.__move_up_button = QPushButton(_("&Up"))
+        else:
+            self.__move_up_button = QPushButton(go_up_icon, "")
+        self.__move_up_button.clicked.connect(self.__move_up)
+        buttons.addWidget(self.__move_up_button)
+        go_down_icon = QIcon.fromTheme("go-down")
+        if go_up_icon.isNull():
+            self.__move_down_button = QPushButton(_("&Down"))
+        else:
+            self.__move_down_button = QPushButton(go_down_icon, "")
+        self.__move_down_button.clicked.connect(self.__move_down)
+        buttons.addWidget(self.__move_down_button)
         self.__delete_button = QPushButton(QIcon.fromTheme("edit-delete"), _("&Delete"))
         self.__delete_button.clicked.connect(self.__delete)
         buttons.addWidget(self.__delete_button)
@@ -59,6 +73,8 @@ class ListPropertyTab(PropertyTab):
             self.__list.setCurrentItem(None)
 
     def __update_buttons(self):
+        self.__move_down_button.setEnabled(self._tab.can_move_down)
+        self.__move_up_button.setEnabled(self._tab.can_move_up)
         self.__new_button.setEnabled(self._tab.can_new)
         self.__save_button.setEnabled(self._tab.can_save)
         self.__delete_button.setEnabled(self._tab.can_delete)
@@ -116,6 +132,14 @@ class ListPropertyTab(PropertyTab):
     
     def __delete(self):
         self._tab.delete()
+        self.refresh()
+    
+    def __move_up(self):
+        self._tab.move_up()
+        self.refresh()
+    
+    def __move_down(self):
+        self._tab.move_down()
         self.refresh()
     
     def handle_needed_save(self):
