@@ -129,7 +129,7 @@ class UflMutableList(UflMutable):
         
         changes = []
         
-        for index in reversed(range(len(self.__old_values))):
+        for index in range(len(self.__old_values)):
             if index not in kept_indices:
                 changes.append(UflListPatch.ItemRemoved(index, self.__old_values[index]))
         

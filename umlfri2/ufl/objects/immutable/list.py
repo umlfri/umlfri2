@@ -50,18 +50,30 @@ class UflList(UflImmutable):
         if not isinstance(patch, UflListPatch) or patch.type != self.__type:
             raise ValueError()
         
-        for change in patch:
-            if isinstance(change, UflListPatch.ItemRemoved):
-                del self.__values[change.index]
-            elif isinstance(change, UflListPatch.ItemMoved):
-                del self.__values[change.old_index]
+        to_add = []
+        to_remove = []
         
         for change in patch:
-            if isinstance(change, UflListPatch.ItemAdded):
-                self.__values.insert(change.index, change.new_value)
+            if isinstance(change, UflListPatch.ItemRemoved):
+                to_remove.append(change.index)
             elif isinstance(change, UflListPatch.ItemMoved):
-                self.__values.insert(change.new_index, change.value)
-            elif isinstance(change, UflListPatch.ItemPatch):
+                to_remove.append(change.old_index)
+                to_add.append((change.new_index, change.value))
+            elif isinstance(change, UflListPatch.ItemAdded):
+                to_add.append((change.index, change.new_value))
+        
+        to_add.sort()
+        to_remove.sort()
+        to_remove.reverse()
+        
+        for index in to_remove:
+            del self.__values[index]
+        
+        for index, new_value in to_add:
+            self.__values.insert(index, new_value)
+        
+        for change in patch:
+            if isinstance(change, UflListPatch.ItemPatch):
                 self.__values[change.index].apply_patch(change.patch)
     
     def copy(self):
