@@ -1,7 +1,8 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QVBoxLayout, QTreeWidget, QHBoxLayout, QPushButton, QTreeWidgetItem, QMessageBox
+from PyQt5.QtGui import QIcon, QKeySequence
+from PyQt5.QtWidgets import QVBoxLayout, QTreeWidget, QHBoxLayout, QPushButton, QTreeWidgetItem, QMessageBox, QShortcut
 
+from umlfri2.constants.keys import MOVE_DOWN, MOVE_UP
 from umlfri2.qtgui.base.hlinewidget import HLineWidget
 from .tab import PropertyTab
 
@@ -26,29 +27,34 @@ class ListPropertyTab(PropertyTab):
         self.__list.itemSelectionChanged.connect(self.__item_changed)
         
         buttons = QHBoxLayout()
-        go_up_icon = QIcon.fromTheme("go-up")
-        if go_up_icon.isNull():
-            self.__move_up_button = QPushButton(_("&Up"))
-        else:
-            self.__move_up_button = QPushButton(go_up_icon, "")
-        self.__move_up_button.clicked.connect(self.__move_up)
-        buttons.addWidget(self.__move_up_button)
-        go_down_icon = QIcon.fromTheme("go-down")
-        if go_up_icon.isNull():
-            self.__move_down_button = QPushButton(_("&Down"))
-        else:
-            self.__move_down_button = QPushButton(go_down_icon, "")
-        self.__move_down_button.clicked.connect(self.__move_down)
-        buttons.addWidget(self.__move_down_button)
-        self.__delete_button = QPushButton(QIcon.fromTheme("edit-delete"), _("&Delete"))
-        self.__delete_button.clicked.connect(self.__delete)
-        buttons.addWidget(self.__delete_button)
-        self.__save_button = QPushButton(QIcon.fromTheme("document-save"), _("&Save"))
-        self.__save_button.clicked.connect(self.__save)
-        buttons.addWidget(self.__save_button)
-        self.__new_button = QPushButton(QIcon.fromTheme("document-new"), _("&New"))
-        self.__new_button.clicked.connect(self.__new)
-        buttons.addWidget(self.__new_button)
+        
+        def add_icon_button(icon, alt_text, shortcut, fnc):
+            icon_obj = QIcon.fromTheme(icon)
+            if icon_obj.isNull():
+                button = QPushButton(alt_text)
+            else:
+                button = QPushButton(icon_obj, "")
+            button.setToolTip(alt_text + " (" + shortcut + ")")
+            QShortcut(QKeySequence(shortcut), self).activated.connect(fnc)
+            button.clicked.connect(fnc)
+            buttons.addWidget(button)
+            return button
+        
+        def add_text_button(icon, text, fnc):
+            button = QPushButton(QIcon.fromTheme(icon), text)
+            button.clicked.connect(fnc)
+            buttons.addWidget(button)
+            return button
+
+        self.__move_up_button = add_icon_button("go-up", _("Move up"), MOVE_UP, self.__move_up)
+        self.__move_down_button = add_icon_button("go-down", _("Move down"), MOVE_DOWN, self.__move_down)
+        
+        buttons.addStretch()
+        
+        self.__delete_button = add_text_button("edit-delete", _("&Delete"), self.__delete)
+        self.__save_button = add_text_button("document-save", _("&Save"), self.__save)
+        self.__new_button = add_text_button("document-new", _("&New"), self.__new)
+        
         layout.addLayout(buttons)
         
         layout.addWidget(self.__list, stretch=1)

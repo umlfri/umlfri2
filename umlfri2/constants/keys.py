@@ -12,3 +12,6 @@ Z_ORDER_TO_BOTTOM = "End"
 Z_ORDER_TO_TOP = "Home"
 
 STRIKE_OUT = "Alt+Shift+5" # same as the google docs has
+
+MOVE_DOWN = "Ctrl+Down"
+MOVE_UP = "Ctrl+Up"
