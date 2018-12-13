@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UML .FRI 2.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-19 11:33+0100\n"
+"POT-Creation-Date: 2018-12-13 16:49+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -299,6 +299,12 @@ msgid "Missing file"
 msgstr ""
 
 msgid "More info"
+msgstr ""
+
+msgid "Move down"
+msgstr ""
+
+msgid "Move up"
 msgstr ""
 
 msgid "Name"
