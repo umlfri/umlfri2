@@ -141,12 +141,14 @@ class ListPropertyTab(PropertyTab):
         self.refresh()
     
     def __move_up(self):
-        self._tab.move_up()
-        self.refresh()
+        if self._tab.can_move_up:
+            self._tab.move_up()
+            self.refresh()
     
     def __move_down(self):
-        self._tab.move_down()
-        self.refresh()
+        if self._tab.can_move_down:
+            self._tab.move_down()
+            self.refresh()
     
     def handle_needed_save(self):
         message_box = QMessageBox(self)
