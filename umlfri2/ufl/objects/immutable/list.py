@@ -52,6 +52,7 @@ class UflList(UflImmutable):
         
         to_add = []
         to_remove = []
+        to_apply = []
         
         for change in patch:
             if isinstance(change, UflListPatch.ItemRemoved):
@@ -61,6 +62,8 @@ class UflList(UflImmutable):
                 to_add.append((change.new_index, change.value))
             elif isinstance(change, UflListPatch.ItemAdded):
                 to_add.append((change.index, change.new_value))
+            if isinstance(change, UflListPatch.ItemPatch):
+                to_apply.append((change.index, change.patch))
         
         to_add.sort()
         to_remove.sort()
@@ -72,9 +75,8 @@ class UflList(UflImmutable):
         for index, new_value in to_add:
             self.__values.insert(index, new_value)
         
-        for change in patch:
-            if isinstance(change, UflListPatch.ItemPatch):
-                self.__values[change.index].apply_patch(change.patch)
+        for index, inner_patch in to_apply:
+            self.__values[index].apply_patch(inner_patch)
     
     def copy(self):
         if self.__type.item_type.is_immutable:
