@@ -65,5 +65,8 @@ class UflVariableWithMetadataType(UflType):
     def is_convertible_to(self, other):
         return self.__underlying_type.is_convertible_to(other)
     
+    def resolve_generic(self, actual_type, generics_cache):
+        raise Exception("Generic variable metadata is a nonsense, sorry.")
+    
     def __str__(self):
         return "[VariableWithMetadata {0} {1}]".format(repr(self.__underlying_type), ", ".join(self.__metadata_types.keys()))

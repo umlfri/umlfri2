@@ -42,6 +42,11 @@ class UflType:
     def is_default_value(self, value):
         raise NotImplementedError
     
+    def resolve_generic(self, actual_type, generics_cache):
+        if self.is_assignable_from(actual_type):
+            return actual_type
+        return None
+    
     def __str__(self):
         return 'Type'
     

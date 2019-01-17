@@ -84,6 +84,23 @@ class UflObjectType(UflType):
     def is_valid_value(self, value):
         return hasattr(value, 'type') and value.type is self
     
+    def resolve_generic(self, actual_type, generics_cache):
+        if not isinstance(actual_type, UflObjectType):
+            return None
+        
+        if self.__attributes.keys() != actual_type.__attributes.keys():
+            return None
+        
+        resolved_attributes = []
+        for attr_name, self_attr in self.__attributes.items():
+            actual_attr = actual_type.__attributes[attr_name]
+            resolved_attr_type = self_attr.type.resolve_generic(actual_attr.type, generics_cache)
+            if resolved_attr_type is None:
+                return None
+            resolved_attributes.append(UflObjectAttribute(attr_name, resolved_attr_type))
+        
+        return UflObjectType(resolved_attributes)
+    
     def set_parent(self, parent):
         super().set_parent(parent)
         for attr in self.__attributes.values():
