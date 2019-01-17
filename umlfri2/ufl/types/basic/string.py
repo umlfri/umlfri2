@@ -1,4 +1,4 @@
-from .type import UflType
+from ..base.type import UflType
 from .bool import UflBoolType
 
 

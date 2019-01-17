@@ -1,6 +1,9 @@
 from umlfri2.types.enums import FontStyle
 
-from ....types import *
+from ....types.basic import UflBoolType
+from ....types.complex import UflFontType
+from ....types.structured import UflIterableType, UflListType
+from ....types.enum import UflTypedEnumType
 from ...signature import MacroSignature
 from ...inlined import InlinedMacro
 

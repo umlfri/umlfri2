@@ -1,4 +1,4 @@
-from .type import UflType
+from ..base.type import UflType
 
 
 class UflTypeIdentifierType(UflType):

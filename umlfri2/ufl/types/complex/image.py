@@ -1,5 +1,5 @@
 from umlfri2.types.image import Image
-from .type import UflType
+from umlfri2.ufl.types.base.type import UflType
 
 
 class UflImageType(UflType):

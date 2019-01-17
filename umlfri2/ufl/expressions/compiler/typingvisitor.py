@@ -3,9 +3,12 @@ from umlfri2.types.enums import ALL_ENUMS
 from umlfri2.types.font import Fonts
 
 from ...macro.standard import STANDARD_MACROS
-from ...types import UflVariableWithMetadataType, UflNullableType, UflDecimalType, UflNumberType, \
-    UflTypedEnumType, UflObjectType, UflBoolType, UflStringType, UflIntegerType, UflColorType, UflFontType, \
-    UflListType, UflFlagsType, UflIterableType
+from ...types.structured import UflVariableWithMetadataType, UflNullableType, UflObjectType, UflIterableType,\
+    UflListType
+from ...types.basic import UflDecimalType, UflNumberType, UflBoolType, UflStringType, UflIntegerType
+from ...types.enum import UflTypedEnumType, UflFlagsType
+from ...types.complex import UflColorType, UflFontType
+
 from ..tree.visitor import UflVisitor
 from ..tree import *
 
@@ -180,7 +183,7 @@ class UflTypingVisitor(UflVisitor):
             raise Exception('Does not have metadata "{0}" for the object'.format(node.metadata_name))
         
         attr_type = metadata_type.ALLOWED_DIRECT_ATTRIBUTES[node.metadata_name].type
-            
+        
         return UflObjectMetadataAccessNode(object, node.metadata_name, attr_type)
 
     def visit_unpack(self, node):

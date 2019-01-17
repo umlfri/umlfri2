@@ -1,6 +1,6 @@
-from .type import UflType
-from ..objects import UflList
-from .bool import UflBoolType
+from ..base.type import UflType
+from ...objects import UflList
+from ..basic import UflBoolType
 
 
 class UflListType(UflType):

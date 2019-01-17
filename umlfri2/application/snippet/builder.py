@@ -1,5 +1,7 @@
 from .snippet import Snippet
-from umlfri2.ufl.types import *
+from umlfri2.ufl.types.structured import UflObjectType, UflListType, UflNullableType
+from umlfri2.ufl.types.complex import UflFontType, UflColorType, UflImageType, UflProportionType
+from umlfri2.ufl.types.enum import UflFlagsType
 
 
 class SnippetBuilder:

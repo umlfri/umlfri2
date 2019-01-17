@@ -6,7 +6,10 @@ from umlfri2.types.font import Fonts
 
 from .varnameregister import VariableNameRegister
 from ...macro.inlined import InlinedMacro
-from ...types import UflTypedEnumType, UflVariableWithMetadataType, UflStringType, UflBoolType, UflColorType, UflFontType
+from ...types.enum import UflTypedEnumType
+from ...types.structured import UflVariableWithMetadataType
+from ...types.complex import UflColorType, UflFontType
+from ...types.basic import UflStringType, UflBoolType
 from ..tree.visitor import UflVisitor
 
 

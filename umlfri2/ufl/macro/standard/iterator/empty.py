@@ -1,4 +1,6 @@
-from ....types import *
+from ....types.basic import UflBoolType
+from ....types.generic import UflAnyType
+from ....types.structured import UflIterableType, UflListType
 from ...signature import MacroSignature
 from ...inlined import InlinedMacro
 

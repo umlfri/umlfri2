@@ -1,4 +1,5 @@
-from ....types import *
+from ....types.complex import UflColorType
+from ....types.structured import UflIterableType, UflListType
 from ...signature import MacroSignature
 from ...inlined import InlinedMacro
 

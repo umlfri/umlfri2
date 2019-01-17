@@ -2,7 +2,8 @@ import json
 from uuid import UUID
 
 from umlfri2.types.geometry import Point, Size
-from umlfri2.ufl.types import *
+from umlfri2.ufl.types.structured import UflObjectType, UflListType
+from umlfri2.ufl.types.complex import UflFontType, UflColorType, UflImageType, UflProportionType
 
 
 class Snippet:

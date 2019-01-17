@@ -1,4 +1,5 @@
-from umlfri2.ufl.types import UflDefinedEnumType, UflNullableType
+from umlfri2.ufl.types.enum import UflDefinedEnumType
+from umlfri2.ufl.types.structured import UflNullableType
 
 
 class TypeContext:

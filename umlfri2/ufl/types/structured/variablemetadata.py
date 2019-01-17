@@ -1,4 +1,4 @@
-from .type import UflType, UflAttributeDescription
+from ..base.type import UflType, UflAttributeDescription
 
 
 class UflVariableMetadataType(UflType):

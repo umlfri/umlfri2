@@ -2,7 +2,8 @@ from ..valueproviders import DefaultValueProvider
 from ..text import TextContainerComponent, TextDataComponent
 from umlfri2.types.color import Colors
 from umlfri2.types.font import Fonts
-from umlfri2.ufl.types import UflStringType, UflColorType, UflFontType
+from umlfri2.ufl.types.basic import UflStringType
+from umlfri2.ufl.types.complex import UflColorType, UflFontType
 from ..base.componenttype import ComponentType
 from .visualcomponent import VisualComponent, VisualObject
 

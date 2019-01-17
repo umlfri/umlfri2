@@ -4,7 +4,8 @@ from ..valueproviders import DefaultValueProvider
 from umlfri2.types.enums import LineStyle
 from umlfri2.types.color import Colors
 from umlfri2.types.geometry import PathBuilder
-from umlfri2.ufl.types import UflColorType, UflProportionType, UflTypedEnumType
+from umlfri2.ufl.types.complex import UflColorType, UflProportionType
+from umlfri2.ufl.types.enum import UflTypedEnumType
 
 
 class LineObject(ConnectionVisualObject):

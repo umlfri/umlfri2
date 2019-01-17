@@ -1,5 +1,7 @@
 from .controlcomponent import ControlComponent
-from umlfri2.ufl.types import UflIterableType, UflAnyType, UflIntegerType, UflVariableWithMetadataType, UflBoolType
+from umlfri2.ufl.types.structured import UflIterableType, UflVariableWithMetadataType
+from umlfri2.ufl.types.generic import UflAnyType
+from umlfri2.ufl.types.basic import UflIntegerType, UflBoolType
 
 
 class ForEachItemMetadata:

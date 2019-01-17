@@ -1,7 +1,7 @@
 from collections import OrderedDict
 
-from .type import UflType
-from ..objects import UflObject
+from ..base.type import UflType
+from ...objects import UflObject
 
 
 class UflObjectAttribute:

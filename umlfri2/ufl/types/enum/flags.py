@@ -1,8 +1,8 @@
 from collections import OrderedDict
 
-from .type import UflType
-from ..objects import UflFlags
-from .bool import UflBoolType
+from ...objects import UflFlags
+from ..base.type import UflType
+from ..basic.bool import UflBoolType
 
 
 class UflFlagsType(UflType):

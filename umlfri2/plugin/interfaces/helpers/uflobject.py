@@ -1,4 +1,5 @@
-from umlfri2.ufl.types import UflObjectType, UflListType, UflColorType, UflFontType
+from umlfri2.ufl.types.structured import UflObjectType, UflListType
+from umlfri2.ufl.types.complex import UflColorType, UflFontType
 
 
 class UflObjectApiHelper:

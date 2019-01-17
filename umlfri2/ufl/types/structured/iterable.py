@@ -1,6 +1,6 @@
 from .list import UflListType
-from .flags import UflFlagsType
-from .type import UflType
+from ..enum.flags import UflFlagsType
+from ..base.type import UflType
 
 
 class UflIterableType(UflType):

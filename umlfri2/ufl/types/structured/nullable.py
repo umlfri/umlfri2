@@ -1,6 +1,6 @@
-from .type import UflType
-from .bool import UflBoolType
-from .string import UflStringType
+from ..base.type import UflType
+from ..basic.bool import UflBoolType
+from ..basic.string import UflStringType
 
 
 class UflNullableType(UflType):

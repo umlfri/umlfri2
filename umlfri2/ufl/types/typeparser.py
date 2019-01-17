@@ -1,22 +1,11 @@
 from umlfri2.types.enums import ALL_ENUMS
 
-from .any import UflAnyType
-from .bool import UflBoolType
-from .color import UflColorType
-from .decimal import UflDecimalType
-from .font import UflFontType
-from .image import UflImageType
-from .integer import UflIntegerType
-from .iterable import UflIterableType
-from .list import UflListType
-from .nullable import UflNullableType
-from .number import UflNumberType
-from .object import UflObjectType
-from .proportion import UflProportionType
-from .string import UflStringType
-from .stringenum import UflStringEnumType
-from .stringflags import UflStringFlagsType
-from .typedenum import UflTypedEnumType
+from .generic import UflAnyType
+from .complex import UflColorType
+from .basic import UflBoolType, UflDecimalType, UflIntegerType, UflNumberType, UflStringType
+from .complex import UflFontType, UflImageType, UflProportionType
+from .structured import UflIterableType, UflListType, UflNullableType, UflObjectType
+from .enum import UflStringEnumType, UflStringFlagsType, UflTypedEnumType
 
 
 class UflTypeParserForName:

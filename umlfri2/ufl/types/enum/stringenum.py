@@ -1,6 +1,6 @@
 from .enum import UflEnumType
 from .enumpossibility import UflEnumPossibility
-from .string import UflStringType
+from ..basic.string import UflStringType
 
 
 class UflStringEnumType(UflEnumType):
@@ -18,7 +18,7 @@ class UflStringEnumType(UflEnumType):
         return isinstance(other, UflStringType)
     
     def is_equatable_to(self, other):
-        from .string import UflStringType
+        from umlfri2.ufl.types.basic.string import UflStringType
         if isinstance(other, UflStringType):
             return True
         

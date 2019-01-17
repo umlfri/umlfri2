@@ -1,6 +1,6 @@
 from collections import OrderedDict
 
-from .type import UflType
+from ..base.type import UflType
 
 
 class UflEnumType(UflType):

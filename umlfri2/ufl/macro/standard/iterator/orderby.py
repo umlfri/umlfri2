@@ -1,6 +1,9 @@
 from umlfri2.types.enums import Order
 
-from ....types import *
+from ....types.enum import UflTypedEnumType
+from ....types.generic import UflAnyType, UflGenericType
+from ....types.structured import UflIterableType
+from ....types.executable import UflLambdaType
 from ...signature import MacroSignature
 from ...inlined import InlinedMacro
 

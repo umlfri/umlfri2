@@ -3,7 +3,10 @@ from ..objects.mutable import UflMutable
 from .tabs import *
 from .columns import *
 from .widgets import *
-from ..types import *
+from ..types.structured import UflListType, UflObjectType
+from ..types.basic import UflStringType, UflBoolType, UflIntegerType, UflDecimalType
+from ..types.complex import UflColorType, UflFontType
+from ..types.enum import UflEnumType, UflFlagsType
 
 
 class UflDialog:

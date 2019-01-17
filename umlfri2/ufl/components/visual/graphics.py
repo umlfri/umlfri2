@@ -1,5 +1,5 @@
 from umlfri2.types.geometry import Size
-from umlfri2.ufl.types import UflDecimalType
+from umlfri2.ufl.types.basic import UflDecimalType
 from ..base.componenttype import ComponentType
 from .visualcomponent import VisualComponent, VisualObject
 

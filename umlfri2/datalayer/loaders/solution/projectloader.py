@@ -4,7 +4,8 @@ import lxml.etree
 
 from umlfri2.types.geometry import Point, Size
 from umlfri2.types.version import Version
-from umlfri2.ufl.types import UflObjectType, UflListType, UflFlagsType
+from umlfri2.ufl.types.structured import UflObjectType, UflListType
+from umlfri2.ufl.types.enum import UflFlagsType
 from ...constants import MODEL_NAMESPACE, MODEL_SCHEMA
 from umlfri2.model import Project
 

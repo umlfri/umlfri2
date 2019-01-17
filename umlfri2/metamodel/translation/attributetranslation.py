@@ -1,5 +1,5 @@
-from umlfri2.ufl.types import UflObjectAttribute, UflObjectType, UflListType, UflEnumType, UflEnumPossibility, \
-    UflFlagsType
+from umlfri2.ufl.types.structured import UflObjectAttribute, UflObjectType, UflListType
+from umlfri2.ufl.types.enum import UflEnumType, UflEnumPossibility, UflFlagsType
 
 
 class AttributeTranslation:

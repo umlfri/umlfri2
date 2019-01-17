@@ -3,7 +3,8 @@ from ..elementtype import ElementType
 from ..connectiontype import ConnectionType
 from ..projecttemplate import ProjectTemplate
 
-from umlfri2.ufl.types import UflObjectAttribute, UflEnumPossibility
+from umlfri2.ufl.types.structured import UflObjectAttribute
+from umlfri2.ufl.types.enum import UflEnumPossibility
 
 from .attributetranslation import AttributeTranslation
 from .configattributetransslation import ConfigAttributeTranslation

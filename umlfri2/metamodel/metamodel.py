@@ -2,7 +2,7 @@ from collections import OrderedDict
 from weakref import ref
 
 from umlfri2.ufl.context import TypeContext
-from umlfri2.ufl.types import UflObjectType
+from umlfri2.ufl.types.structured import UflObjectType
 from .translation import TranslationList
 
 

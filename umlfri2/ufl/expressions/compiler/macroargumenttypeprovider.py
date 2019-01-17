@@ -1,6 +1,6 @@
 from ..tree import UflUnpackNode, UflLambdaExpressionNode
-from ...types import UflVariableWithMetadataType
-from ...types import UflLambdaType
+from ...types.structured import UflVariableWithMetadataType
+from ...types.executable import UflLambdaType
 from ...macro.argumenttypechecker import ArgumentTypeChecker
 
 

@@ -3,7 +3,9 @@ from umlfri2.ufl.context import TypeContext
 from ....constants import ADDON_NAMESPACE
 from .componentloader import ComponentLoader
 from umlfri2.ufl.components.text import TextContainerComponent
-from umlfri2.ufl.types import UflTypeParser, UflObjectType, UflObjectAttribute, UflStringType, UflIntegerType
+from umlfri2.ufl.types.typeparser import UflTypeParser
+from umlfri2.ufl.types.structured import UflObjectType, UflObjectAttribute
+from umlfri2.ufl.types.basic import UflStringType, UflIntegerType
 
 
 class UflStructureLoader:

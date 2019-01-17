@@ -1,6 +1,7 @@
 from umlfri2.types.threestate import Maybe
 from umlfri2.types.geometry import Size
-from umlfri2.ufl.types import UflIntegerType, UflNullableType
+from umlfri2.ufl.types.basic import UflIntegerType
+from umlfri2.ufl.types.structured import UflNullableType
 from .visualcomponent import VisualComponent, VisualObject
 from ..valueproviders import DefaultValueProvider
 
@@ -45,7 +46,7 @@ class SizerObject(VisualObject):
                 h = self.__maxheight
         
         return Size(w, h)
-            
+        
     def draw(self, canvas, shadow):
         if self.__child is not None:
             self.__child.draw(canvas, shadow)

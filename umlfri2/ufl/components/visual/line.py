@@ -5,7 +5,8 @@ from .hbox import HBoxComponent
 from .table import TableRow, TableColumn
 from umlfri2.types.color import Colors
 from umlfri2.types.geometry import Size
-from umlfri2.ufl.types import UflTypedEnumType, UflColorType
+from umlfri2.ufl.types.enum import UflTypedEnumType
+from umlfri2.ufl.types.complex import UflColorType
 from .visualcomponent import VisualComponent, VisualObject
 from .vbox import VBoxComponent
 

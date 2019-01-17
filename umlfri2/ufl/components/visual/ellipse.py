@@ -1,6 +1,7 @@
 from umlfri2.types.geometry import Rectangle, Size
 from umlfri2.types.threestate import Maybe
-from umlfri2.ufl.types import UflColorType, UflNullableType
+from umlfri2.ufl.types.complex import UflColorType
+from umlfri2.ufl.types.structured import UflNullableType
 from .visualcomponent import VisualObject, VisualComponent
 from ..valueproviders import DefaultValueProvider
 

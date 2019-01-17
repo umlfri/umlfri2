@@ -1,5 +1,5 @@
 from umlfri2.types.geometry import Point
-from umlfri2.ufl.types import UflDecimalType
+from umlfri2.ufl.types.basic import UflDecimalType
 from .pathpartcomponent import PathPartComponent
 
 

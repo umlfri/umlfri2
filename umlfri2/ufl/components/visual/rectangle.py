@@ -1,7 +1,9 @@
 import math
 
 from umlfri2.types.threestate import Maybe
-from umlfri2.ufl.types import UflColorType, UflDefinedEnumType, UflNullableType
+from umlfri2.ufl.types.complex import UflColorType
+from umlfri2.ufl.types.enum import UflDefinedEnumType
+from umlfri2.ufl.types.structured import UflNullableType
 from .visualcomponent import VisualComponent, VisualObject
 from umlfri2.types.geometry import Rectangle, Transformation, PathBuilder, Size
 

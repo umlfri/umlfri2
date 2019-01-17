@@ -1,7 +1,8 @@
 from umlfri2.types.enums import HorizontalAlignment, VerticalAlignment
 from umlfri2.types.threestate import Maybe
 from umlfri2.types.geometry import Rectangle
-from umlfri2.ufl.types import UflTypedEnumType, UflNullableType
+from umlfri2.ufl.types.enum import UflTypedEnumType
+from umlfri2.ufl.types.structured import UflNullableType
 from .visualcomponent import VisualComponent, VisualObject
 from ..valueproviders import DefaultValueProvider
 

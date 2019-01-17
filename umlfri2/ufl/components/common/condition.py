@@ -1,6 +1,6 @@
 from .controlcomponent import ControlComponent
 from ..base.helpercomponent import HelperComponent
-from umlfri2.ufl.types import UflBoolType
+from umlfri2.ufl.types.basic import UflBoolType
 
 
 class ThenComponent(HelperComponent):

@@ -2,7 +2,10 @@ from collections import namedtuple
 from weakref import ref
 
 from umlfri2.ufl.context import Context
-from umlfri2.ufl.types import UflVariableWithMetadataType, UflStringType, UflImageType, UflAnyType, UflIterableType
+from umlfri2.ufl.types.structured import UflVariableWithMetadataType, UflIterableType
+from umlfri2.ufl.types.basic import UflStringType
+from umlfri2.ufl.types.complex import UflImageType
+from umlfri2.ufl.types.generic import UflAnyType
 
 ElementAccessDepth = namedtuple('ElementAccessDepth', ('parent', 'child'))
 

@@ -1,5 +1,5 @@
-from .type import UflType, UflAttributeDescription
-from .integer import UflIntegerType
+from umlfri2.ufl.types.base.type import UflType, UflAttributeDescription
+from umlfri2.ufl.types.basic.integer import UflIntegerType
 from umlfri2.types.color import Colors, Color
 
 

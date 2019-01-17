@@ -1,7 +1,7 @@
-from .type import UflType, UflAttributeDescription
-from .integer import UflIntegerType
-from .string import UflStringType
-from .typedenum import UflTypedEnumType
+from umlfri2.ufl.types.base.type import UflType, UflAttributeDescription
+from umlfri2.ufl.types.basic.integer import UflIntegerType
+from umlfri2.ufl.types.basic.string import UflStringType
+from umlfri2.ufl.types.enum.typedenum import UflTypedEnumType
 from umlfri2.types.font import FontStyle, Font, Fonts
 
 

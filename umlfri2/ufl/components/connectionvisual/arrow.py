@@ -5,7 +5,9 @@ from .connectionvisualcomponent import ConnectionVisualComponent, ConnectionVisu
 from ..valueproviders import DefaultValueProvider
 from umlfri2.types.color import Colors
 from umlfri2.types.geometry import Transformation
-from umlfri2.ufl.types import UflColorType, UflProportionType, UflDefinedEnumType, UflTypedEnumType, UflNullableType
+from umlfri2.ufl.types.complex import UflColorType, UflProportionType
+from umlfri2.ufl.types.enum import UflDefinedEnumType, UflTypedEnumType
+from umlfri2.ufl.types.structured import UflNullableType
 
 
 class ArrowDefinition:
@@ -15,7 +17,7 @@ class ArrowDefinition:
             .transform(
                 Transformation.make_translate(-center.as_vector())
                 # transformation is clock-wise, given rotation is counter-clockwise
-                * Transformation.make_rotation(-(-rotation))  
+                * Transformation.make_rotation(-(-rotation))
             )
     
     @property

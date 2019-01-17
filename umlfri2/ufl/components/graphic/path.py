@@ -2,7 +2,8 @@ from ..valueproviders import DefaultValueProvider
 from umlfri2.types.geometry import PathBuilder
 from umlfri2.types.geometry import Size
 from umlfri2.types.geometry import Transformation
-from umlfri2.ufl.types import UflColorType, UflNullableType
+from umlfri2.ufl.types.complex import UflColorType
+from umlfri2.ufl.types.structured import UflNullableType
 from ..base.componenttype import ComponentType
 from .graphicalcomponent import GraphicalComponent, GraphicalObject
 

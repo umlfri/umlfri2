@@ -1,6 +1,6 @@
 from umlfri2.types.geometry import Size, PathBuilder, Transformation
 from umlfri2.types.threestate import Maybe
-from umlfri2.ufl.types import UflColorType
+from umlfri2.ufl.types.complex import UflColorType
 from ..valueproviders import DefaultValueProvider
 from .visualcomponent import VisualObject, VisualComponent
 

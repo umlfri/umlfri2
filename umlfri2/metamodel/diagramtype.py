@@ -1,7 +1,7 @@
 from umlfri2.ufl.context import Context
 from weakref import ref
 
-from umlfri2.ufl.types import UflColorType
+from umlfri2.ufl.types.complex import UflColorType
 
 
 class DiagramType:

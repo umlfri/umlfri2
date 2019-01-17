@@ -1,5 +1,5 @@
 from .textcomponent import TextComponent
-from umlfri2.ufl.types import UflStringType
+from umlfri2.ufl.types.basic import UflStringType
 
 
 class TextDataComponent(TextComponent):

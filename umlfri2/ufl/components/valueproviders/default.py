@@ -4,8 +4,10 @@ from .valueprovider import ValueProvider
 from umlfri2.types.enums import ALL_ENUMS
 from umlfri2.types.color import Color
 from umlfri2.types.font import Font
-from umlfri2.ufl.types import UflIntegerType, UflStringType, UflColorType, UflFontType, UflTypedEnumType, \
-    UflProportionType, UflNullableType
+from umlfri2.ufl.types.basic import UflIntegerType, UflStringType
+from umlfri2.ufl.types.complex import UflColorType, UflFontType, UflProportionType
+from umlfri2.ufl.types.enum import UflTypedEnumType
+from umlfri2.ufl.types.structured import UflNullableType
 
 
 class DefaultValueProvider(ValueProvider):

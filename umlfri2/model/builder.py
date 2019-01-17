@@ -1,7 +1,8 @@
 from collections import namedtuple
 
 from umlfri2.metamodel.projecttemplate import DiagramTemplateState
-from umlfri2.ufl.types import UflObjectType, UflListType, UflFlagsType
+from umlfri2.ufl.types.structured import UflObjectType, UflListType
+from umlfri2.ufl.types.enum import UflFlagsType
 from .project import Project
 
 

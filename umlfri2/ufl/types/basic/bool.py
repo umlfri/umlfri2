@@ -1,11 +1,9 @@
-from umlfri2.types.proportion import WHOLE_PROPORTION, Proportion
-
-from .type import UflType
+from ..base.type import UflType
 
 
-class UflProportionType(UflType):
+class UflBoolType(UflType):
     def __init__(self, default=None):
-        self.__default = default or WHOLE_PROPORTION
+        self.__default = default or False
     
     @property
     def default(self):
@@ -15,20 +13,22 @@ class UflProportionType(UflType):
         return self.__default
     
     def parse(self, value):
-        return Proportion.from_string(value)
+        if value not in ('true', 'false', 'True', 'False'):
+            raise ValueError("The given value is not boolean")
+        return value in ('true', 'True')
     
     @property
     def is_immutable(self):
         return True
     
     def is_valid_value(self, value):
-        if not isinstance(value, Proportion):
-            return False
-        
-        return True
+        return isinstance(value, bool)
     
     def is_default_value(self, value):
         return self.__default == value
     
+    def is_equatable_to(self, other):
+        return isinstance(other, UflBoolType)
+    
     def __str__(self):
-        return 'Proportion'
+        return 'Bool'

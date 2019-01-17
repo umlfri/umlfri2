@@ -1,6 +1,6 @@
 from .enumpossibility import UflEnumPossibility
 from .flags import UflFlagsType
-from .string import UflStringType
+from ..basic.string import UflStringType
 
 
 class UflStringFlagsType(UflFlagsType):

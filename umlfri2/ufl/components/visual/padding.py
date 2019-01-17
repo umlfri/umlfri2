@@ -1,6 +1,6 @@
 from ..valueproviders import DefaultValueProvider
 from umlfri2.types.geometry import Rectangle, Size
-from umlfri2.ufl.types import UflIntegerType
+from umlfri2.ufl.types.basic import UflIntegerType
 from .visualcomponent import VisualComponent, VisualObject
 
 

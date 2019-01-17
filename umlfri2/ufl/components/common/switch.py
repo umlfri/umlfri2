@@ -1,6 +1,6 @@
 from .controlcomponent import ControlComponent
 from ..base.helpercomponent import HelperComponent
-from umlfri2.ufl.types import UflAnyType
+from umlfri2.ufl.types.generic import UflAnyType
 
 
 class SwitchCaseComponent(HelperComponent):

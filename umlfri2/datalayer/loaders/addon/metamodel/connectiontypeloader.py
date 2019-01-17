@@ -7,7 +7,7 @@ from umlfri2.ufl.components.connectionvisual import ConnectionVisualContainerCom
 from umlfri2.ufl.components.visual import VisualContainerComponent
 from umlfri2.metamodel import ConnectionType
 from umlfri2.metamodel.connectiontypelabel import ConnectionTypeLabel
-from umlfri2.ufl.types import UflProportionType
+from umlfri2.ufl.types.complex import UflProportionType
 
 
 class ConnectionTypeLoader:

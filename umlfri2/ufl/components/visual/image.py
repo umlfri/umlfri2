@@ -1,5 +1,5 @@
 from umlfri2.types.geometry import Rectangle
-from umlfri2.ufl.types import UflImageType
+from umlfri2.ufl.types.complex import UflImageType
 from .visualcomponent import VisualComponent, VisualObject
 
 
@@ -14,7 +14,7 @@ class ImageObject(VisualObject):
     
     def get_minimal_size(self):
         return self.__size
-            
+        
     def draw(self, canvas, shadow):
         if shadow:
             canvas.draw_rectangle(
@@ -35,7 +35,7 @@ class ImageComponent(VisualComponent):
     }
     HAS_CHILDREN = False
     
-    def __init__(self, image): 
+    def __init__(self, image):
         super().__init__(())
         self.__image = image
     

@@ -2,7 +2,7 @@ from collections import namedtuple
 
 from umlfri2.types.geometry import Size, Rectangle
 from umlfri2.types.threestate import Maybe
-from umlfri2.ufl.types import UflBoolType
+from umlfri2.ufl.types.basic import UflBoolType
 from .empty import EmptyObject
 from .visualcomponent import VisualComponent, VisualObject
 
