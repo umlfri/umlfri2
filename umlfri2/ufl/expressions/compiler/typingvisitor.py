@@ -158,6 +158,8 @@ class UflTypingVisitor(UflVisitor):
             type = UflBoolType()
         elif isinstance(node.value, int):
             type = UflIntegerType()
+        elif isinstance(node.value, float):
+            type = UflDecimalType()
         elif node.value is None:
             type = UflNullableType(None)
         else:
