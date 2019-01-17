@@ -127,6 +127,13 @@ class UflCompilingVisitor(UflVisitor):
         
         return 'lambda {0}: {1}'.format(variables, expression_source)
     
+    def visit_lambda_expression(self, node):
+        body_source = node.body.accept(self)
+
+        parameters = ", ".join(node.parameters)
+        
+        return 'lambda {0}: ({1})'.format(parameters, body_source)
+    
     def visit_cast(self, node):
         object = node.object.accept(self)
         
