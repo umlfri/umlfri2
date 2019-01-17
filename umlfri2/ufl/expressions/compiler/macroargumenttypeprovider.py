@@ -50,4 +50,7 @@ class MacroArgumentTypeProvider(ArgumentTypeChecker):
     
     def resolve_for(self, found_signature):
         for no, param_type in enumerate(found_signature.parameter_types):
-            yield self.__typed_expressions[no]
+            param_node = self.__typed_expressions[no]
+            if isinstance(param_node, dict):
+                param_node = param_node[param_type]
+            yield param_node
