@@ -18,6 +18,20 @@ class UflLambdaType(UflType):
     def return_type(self):
         return self.__return_type
     
+    def resolve_unknown_generic(self, generics_cache):
+        resolved_return_type = self.__return_type.resolve_unknown_generic(generics_cache)
+        if resolved_return_type is None:
+            return None
+        
+        resolved_parameter_types = []
+        for param in self.__parameter_types:
+            resolved_parameter_type = param.resolve_unknown_generic(generics_cache)
+            if resolved_parameter_type is None:
+                return None
+            resolved_parameter_types.append(resolved_parameter_type)
+        
+        return UflLambdaType(resolved_parameter_types, resolved_return_type)
+    
     def resolve_generic(self, actual_type, generics_cache):
         if not isinstance(actual_type, UflLambdaType):
             return None

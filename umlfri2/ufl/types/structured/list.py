@@ -34,6 +34,13 @@ class UflListType(UflType):
     def is_convertible_to(self, other):
         return isinstance(other, UflBoolType)
     
+    def resolve_unknown_generic(self, generics_cache):
+        resolved_item_type = self.__item_type.resolve_unknown_generic(generics_cache)
+        if resolved_item_type is None:
+            return None
+        
+        return UflListType(resolved_item_type)
+    
     def resolve_generic(self, actual_type, generics_cache):
         if not isinstance(actual_type, UflListType):
             return None

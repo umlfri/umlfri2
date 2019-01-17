@@ -5,6 +5,9 @@ class UflAnyType(UflType):
     def is_assignable_from(self, other):
         return True
     
+    def resolve_unknown_generic(self, generics_cache):
+        return None
+    
     def resolve_generic(self, actual_type, generics_cache):
         return actual_type
     

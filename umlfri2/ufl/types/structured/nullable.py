@@ -38,6 +38,13 @@ class UflNullableType(UflType):
         
         return isinstance(other, UflBoolType)
     
+    def resolve_unknown_generic(self, generics_cache):
+        resolved_inner_type = self.__inner_type.resolve_unknown_generic(generics_cache)
+        if resolved_inner_type is None:
+            return None
+        
+        return UflNullableType(resolved_inner_type)
+    
     def resolve_generic(self, actual_type, generics_cache):
         if not isinstance(actual_type, UflNullableType):
             return None

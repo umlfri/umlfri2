@@ -17,6 +17,13 @@ class UflIterableType(UflType):
         else:
             return False
     
+    def resolve_unknown_generic(self, generics_cache):
+        resolved_item_type = self.__item_type.resolve_unknown_generic(generics_cache)
+        if resolved_item_type is None:
+            return None
+        
+        return UflIterableType(resolved_item_type)
+    
     def resolve_generic(self, actual_type, generics_cache):
         if not isinstance(actual_type, (UflListType, UflFlagsType, UflIterableType)):
             return None
