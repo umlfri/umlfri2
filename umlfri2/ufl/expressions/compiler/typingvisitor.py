@@ -59,8 +59,6 @@ class UflTypingVisitor(UflVisitor):
     def visit_macro_invoke(self, node):
         target = self.__demeta(node.target.accept(self))
         
-        params = MacroArgumentTypeProvider(node.arguments, self)
-        
         target_type = target.type
         
         multi_invoke = False
@@ -77,7 +75,9 @@ class UflTypingVisitor(UflVisitor):
         elif not node.inner_type_invoke:
             raise Exception("Iterator access operator cannot be applied to the type {0}".format(target_type))
         
-        found_macro, found_signature = self.__find_macro(node.selector, target_type, params)
+        params = MacroArgumentTypeProvider(target_type, node.arguments, self)
+        
+        found_macro, found_signature = self.__find_macro(node.selector, params)
         
         return_type = found_signature.return_type
         
@@ -212,9 +212,9 @@ class UflTypingVisitor(UflVisitor):
     def create_for_lambda(self, lambda_args):
         return UflTypingVisitor({**self.__params, **lambda_args}, None)
     
-    def __find_macro(self, selector, target_type, argument_types):
+    def __find_macro(self, selector, argument_types):
         for macro in STANDARD_MACROS:
-            found_signature = macro.compare_signature(selector, target_type, argument_types)
+            found_signature = macro.compare_signature(selector, argument_types)
             if found_signature is not None:
                 return macro, found_signature
         

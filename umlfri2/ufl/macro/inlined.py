@@ -6,8 +6,8 @@ class InlinedMacro(Macro):
     def signature(self):
         raise NotImplementedError
     
-    def compare_signature(self, selector, self_type, argument_types):
-        return self.signature.compare(selector, self_type, argument_types)
+    def compare_signature(self, selector, argument_types):
+        return self.signature.compare(selector, argument_types)
     
     def compile(self, visitor, registrar, node):
         raise NotImplementedError

@@ -1,7 +1,3 @@
 class ArgumentTypeChecker:
-    @property
-    def argument_count(self):
-        raise NotImplementedError
-    
-    def check_argument(self, no, expected_type):
+    def check_arguments(self, self_type, expected_types):
         raise NotImplementedError
