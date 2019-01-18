@@ -37,7 +37,10 @@ class CompiledUflExpression:
             ["{0} # ufl: {1}".format(self.__compiled_source, self.__source)],
             temp_file_name
         )
-
+        
+        all_globals = all_globals.copy()
+        all_globals['__builtins__'] = None
+        
         return eval(to_eval, all_globals)
     
     @property
