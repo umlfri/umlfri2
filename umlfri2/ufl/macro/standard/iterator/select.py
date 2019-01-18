@@ -5,12 +5,12 @@ from ...signature import MacroSignature
 from ...inlined import InlinedMacro
 
 
-class MapMacro(InlinedMacro):
+class SelectMacro(InlinedMacro):
     src_type = UflGenericType(UflAnyType())
     dest_type = UflGenericType(UflAnyType())
     
     signature = MacroSignature(
-        'map',
+        'select',
         UflIterableType(src_type),
         [UflLambdaType([src_type], dest_type)],
         UflIterableType(dest_type)

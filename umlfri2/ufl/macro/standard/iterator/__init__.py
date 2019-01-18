@@ -3,7 +3,7 @@ from .any import AnyMacro, AnyContainsValueMacro, AnyNotEmptyMacro
 from .empty import EmptyMacro
 from .join import JoinMacro
 from .length import LengthMacro
-from .map import MapMacro
+from .select import SelectMacro
 from .oftype import OfTypeMacro
 from .orderby import OrderByMacro, OrderByOrderMacro
 from .reduce import ReduceMacro, ReduceSimpleMacro
@@ -18,12 +18,12 @@ STANDARD_ITERATOR_MACROS = (
     EmptyMacro(),
     JoinMacro(),
     LengthMacro(),
-    MapMacro(),
     # OfTypeMacro(), TODO
     OrderByMacro(),
     OrderByOrderMacro(),
     ReduceMacro(),
     ReduceSimpleMacro(),
     ReverseMacro(),
+    SelectMacro(),
     WhereMacro(),
 )
