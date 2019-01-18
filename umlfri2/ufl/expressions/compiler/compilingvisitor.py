@@ -130,7 +130,7 @@ class UflCompilingVisitor(UflVisitor):
     def visit_lambda_expression(self, node):
         body_source = node.body.accept(self)
 
-        parameters = ", ".join(node.parameters)
+        parameters = ", ".join(self.__fix_var_name(param) for param in node.parameters)
         
         return 'lambda {0}: ({1})'.format(parameters, body_source)
     
