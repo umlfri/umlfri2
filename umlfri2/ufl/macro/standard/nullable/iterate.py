@@ -15,7 +15,7 @@ class IterateMacro(InlinedMacro):
     )
     
     def compile(self, visitor, registrar, node):
-        py_iterate = registrar.register(self.__iterate)
+        py_iterate = registrar.register_function(self.__iterate)
         
         target = node.target.accept(visitor)
         

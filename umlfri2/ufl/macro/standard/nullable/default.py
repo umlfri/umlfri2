@@ -29,7 +29,7 @@ class DefaultWithValueMacro(InlinedMacro):
     )
     
     def compile(self, visitor, registrar, node):
-        py_iterate = registrar.register(self.__default)
+        py_iterate = registrar.register_function(self.__default)
         
         target = node.target.accept(visitor)
         
