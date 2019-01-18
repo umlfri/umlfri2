@@ -33,7 +33,7 @@
 
         <Label position="50%" id="name">
             <VBox>
-                <If condition="#self.stereotype">
+                <If condition="#self.stereotype.has_text()">
                     <Align horizontal="center">
                         <Rectangle fill="#cfg.background">
                             <TextBox font="#cfg.connection.textfont" color="#cfg.connection.text">
@@ -45,7 +45,7 @@
                     </Align>
                 </If>
 
-                <If condition="#self.name">
+                <If condition="#self.name.has_text()">
                     <Align horizontal="center">
                         <Rectangle fill="#cfg.background">
                             <TextBox text="#self.name" font="#cfg.connection.headingfont"
@@ -57,7 +57,7 @@
         </Label>
 
         <Label position="0%" id="cardinality">
-            <If condition="#self.cardinality">
+            <If condition="#self.cardinality.has_text()">
                 <Rectangle fill="#cfg.background">
                     <TextBox text="#self.cardinality" font="#cfg.connection.textfont"
                              color="#cfg.connection.text"/>
@@ -66,7 +66,7 @@
         </Label>
 
         <Label position="10%" id="role">
-            <If condition="#self.role">
+            <If condition="#self.role.has_text()">
                 <Rectangle fill="#cfg.background">
                     <TextBox font="#cfg.connection.textfont" color="#cfg.connection.text">
                         <If condition="#self.visibility != 'unspecified'">

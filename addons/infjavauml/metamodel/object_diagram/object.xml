@@ -33,8 +33,8 @@
 
     <DisplayName>
         <Text text="#self.name"/>
-        <If condition="#self.class">
-            <If condition="#self.name">
+        <If condition="#self.class.has_text()">
+            <If condition="#self.name.has_text()">
                 <Text text=" "/>
             </If>
             <Text text=": "/>
@@ -48,7 +48,7 @@
                 <VBox>
                     <Padding padding="5">
                         <VBox>
-                            <If condition="#self.stereotype">
+                            <If condition="#self.stereotype.has_text()">
                                 <Align horizontal="center">
                                     <TextBox font="#cfg.element.textfont" color="#cfg.element.text">
                                         <Text text="&#171;"/>
@@ -62,8 +62,8 @@
                                         font="#cfg.element.headingfont.change(FontStyle::underline, true)"
                                         color="#cfg.element.heading">
                                     <Text text="#self.name"/>
-                                    <If condition="#self.class">
-                                        <If condition="#self.name">
+                                    <If condition="#self.class.has_text()">
+                                        <If condition="#self.name.has_text()">
                                             <Text text=" "/>
                                         </If>
                                         <Text text=": "/>
@@ -76,20 +76,20 @@
                     <Line color="#cfg.element.line"/>
                     <Padding padding="5">
                         <Table>
-                            <ForEach src="#self.attributes->where([:x | x.name != ''])" item="attr">
+                            <ForEach src="#self.attributes->where([:x | x.name.has_text()])" item="attr">
                                 <Row>
                                     <TextBox font="#cfg.element.textfont" color="#cfg.element.text">
                                         <Text text="#attr.visibility"/>
                                         <Text text=" "/>
                                     </TextBox>
                                     <TextBox color="#cfg.element.text" font="#cfg.element.textfont">
-                                        <If condition="#attr.stereotype">
+                                        <If condition="#attr.stereotype.has_text()">
                                             <Text text="&#171;"/>
                                             <Text text="#attr.stereotype"/>
                                             <Text text="&#187;  "/>
                                         </If>
                                         <Text text="#attr.name"/>
-                                        <If condition="#attr.value">
+                                        <If condition="#attr.value.has_text()">
                                             <Text text=" = "/>
                                             <Text text="#attr.value"/>
                                         </If>

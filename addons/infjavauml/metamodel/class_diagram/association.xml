@@ -72,7 +72,7 @@
 
         <Label position="50%" id="name">
             <VBox>
-                <If condition="#self.stereotype">
+                <If condition="#self.stereotype.has_text()">
                     <Align horizontal="center">
                         <Rectangle fill="#cfg.background">
                             <TextBox font="#cfg.connection.textfont" color="#cfg.connection.text">
@@ -84,7 +84,7 @@
                     </Align>
                 </If>
 
-                <If condition="#self.name">
+                <If condition="#self.name.has_text()">
                     <Align horizontal="center">
                         <Rectangle fill="#cfg.background">
                             <TextBox text="#self.name" font="#cfg.connection.headingfont"
@@ -96,7 +96,7 @@
         </Label>
 
         <Label position="0%" id="src_card">
-            <If condition="#self.source.cardinality">
+            <If condition="#self.source.cardinality.has_text()">
                 <Rectangle fill="#cfg.background">
                     <TextBox text="#self.source.cardinality" font="#cfg.connection.textfont"
                              color="#cfg.connection.text"/>
@@ -105,7 +105,7 @@
         </Label>
 
         <Label position="100%" id="dest_card">
-            <If condition="#self.destination.cardinality">
+            <If condition="#self.destination.cardinality.has_text()">
                 <Rectangle fill="#cfg.background">
                     <TextBox text="#self.destination.cardinality" font="#cfg.connection.textfont"
                              color="#cfg.connection.text"/>
@@ -114,7 +114,7 @@
         </Label>
 
         <Label position="10%" id="src_role">
-            <If condition="#self.source.role">
+            <If condition="#self.source.role.has_text()">
                 <Rectangle fill="#cfg.background">
                     <TextBox font="#cfg.connection.textfont" color="#cfg.connection.text">
                         <If condition="#self.source.visibility != 'unspecified'">
@@ -127,7 +127,7 @@
         </Label>
 
         <Label position="90%" id="dest_role">
-            <If condition="#self.destination.role">
+            <If condition="#self.destination.role.has_text()">
                 <Rectangle fill="#cfg.background">
                     <TextBox font="#cfg.connection.textfont" color="#cfg.connection.text">
                         <If condition="#self.destination.visibility != 'unspecified'">

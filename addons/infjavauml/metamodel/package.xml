@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ElementType id="package" xmlns="http://umlfri.org/v2/addon.xsd">
     <Icon path="icons/package.png" />
-    
+
     <Structure>
         <Attribute id="name" type="str">
             <Template>
@@ -16,13 +16,13 @@
     <DisplayName>
         <Text text="#self.name"/>
     </DisplayName>
-    
+
     <Config>
         <DefaultAction action="subdiagram"/>
         <AllowChildAccess depth="1" />
         <AllowDirectAdd />
     </Config>
-    
+
     <Appearance>
         <Shadow padding="5" color="#cfg.element.shadow">
             <VBox>
@@ -31,7 +31,7 @@
                         <Rectangle fill="#cfg.element.fill" border="#cfg.element.line">
                             <Padding padding="5">
                                 <VBox>
-                                    <If condition="#self.stereotype">
+                                    <If condition="#self.stereotype.has_text()">
                                         <Align horizontal="center">
                                             <TextBox font="#cfg.element.textfont" color="#cfg.element.text">
                                                 <Text text="&#171;"/>

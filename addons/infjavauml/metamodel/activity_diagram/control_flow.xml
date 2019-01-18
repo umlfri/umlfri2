@@ -12,7 +12,7 @@
         <Arrow position="100%" style="simple" color="#cfg.connection.arrow"/>
 
         <Label position="0%" id="guard">
-            <If condition="#self.guard">
+            <If condition="#self.guard.has_text()">
                 <Rectangle fill="#cfg.background">
                     <TextBox font="#cfg.connection.textfont" color="#cfg.connection.text">
                         <Text text="["/>

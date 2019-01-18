@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ElementType id="final_activity" xmlns="http://umlfri.org/v2/addon.xsd">
     <Icon path="icons/final.png" />
-    
+
     <Structure>
         <Attribute id="name" type="str"/>
         <Attribute id="note" type="text"/>
     </Structure>
 
     <DisplayName>
-        <If condition="#self.name">
+        <If condition="#self.name.has_text()">
             <Then>
                 <Text text="#self.name"/>
             </Then>
@@ -17,7 +17,7 @@
             </Else>
         </If>
     </DisplayName>
-    
+
     <Appearance>
         <VBox>
             <Align horizontal="center">
@@ -29,7 +29,7 @@
                     </Ellipse>
                 </Sizer>
             </Align>
-            <If condition="#self.name">
+            <If condition="#self.name.has_text()">
                 <Align horizontal="center">
                     <Rectangle fill="#cfg.background">
                         <TextBox text="#self.name" font="#cfg.element.textfont" color="#cfg.element.text"/>

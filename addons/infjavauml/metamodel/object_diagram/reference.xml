@@ -22,7 +22,7 @@
 
         <Label position="90%" id="name">
             <VBox>
-                <If condition="#self.stereotype">
+                <If condition="#self.stereotype.has_text()">
                     <Align horizontal="center">
                         <Rectangle fill="#cfg.background">
                             <TextBox font="#cfg.connection.textfont" color="#cfg.connection.text">
@@ -34,7 +34,7 @@
                     </Align>
                 </If>
 
-                <If condition="#self.role">
+                <If condition="#self.role.has_text()">
                     <Rectangle fill="#cfg.background">
                         <TextBox font="#cfg.connection.textfont" color="#cfg.connection.text">
                             <If condition="#self.visibility != 'unspecified'">

@@ -68,7 +68,7 @@
                 <VBox>
                     <Padding padding="5">
                         <VBox>
-                            <If condition="#self.stereotype">
+                            <If condition="#self.stereotype.has_text()">
                                 <Align horizontal="center">
                                     <TextBox font="#cfg.element.textfont" color="#cfg.element.text">
                                         <Text text="&#171;"/>
@@ -95,17 +95,18 @@
                                     </TextBox>
                                     <TextBox color="#cfg.element.text"
                                              font="#cfg.element.textfont.change(FontStyle::underline, attr.static)">
-                                        <If condition="#attr.stereotype">
+                                        <If condition="#attr.stereotype.has_text()">
+                                            <Text text="&#171;"/>
                                             <Text text="&#171;"/>
                                             <Text text="#attr.stereotype"/>
                                             <Text text="&#187;  "/>
                                         </If>
                                         <Text text="#attr.name"/>
-                                        <If condition="#attr.type">
+                                        <If condition="#attr.type.has_text()">
                                             <Text text=": "/>
                                             <Text text="#attr.type"/>
                                         </If>
-                                        <If condition="#attr.default">
+                                        <If condition="#attr.default.has_text()">
                                             <Text text=" = "/>
                                             <Text text="#attr.default"/>
                                         </If>
@@ -114,11 +115,11 @@
                             </ForEach>
                         </Table>
                     </Padding>
-                    <If condition="#self.operations->any([:x | x.name != ''])">
+                    <If condition="#self.operations->any([:x | x.name.has_text()])">
                         <Line color="#cfg.element.line"/>
                         <Padding padding="5">
                             <Table>
-                                <ForEach src="#self.operations->where([:x | x.name != ''])" item="op">
+                                <ForEach src="#self.operations->where([:x | x.name.has_text()])" item="op">
                                     <Row>
                                         <TextBox font="#cfg.element.textfont"
                                                  color="#cfg.element.text">
@@ -129,7 +130,7 @@
                                         <TextBox
                                                 font="#cfg.element.textfont.change(FontStyle::underline, op.static).change(FontStyle::italic, op.abstract)"
                                                 color="#cfg.element.text">
-                                            <If condition="#op.stereotype">
+                                            <If condition="#op.stereotype.has_text()">
                                                 <Text text="&#171;"/>
                                                 <Text text="#op.stereotype"/>
                                                 <Text text="&#187;  "/>
@@ -139,18 +140,18 @@
 
                                             <Text text="("/>
 
-                                            <ForEach src="#op.parameters->where([:x | x.name != '' || x.type != ''])" item="param">
-                                                <If condition="#param.name">
+                                            <ForEach src="#op.parameters->where([:x | x.name.has_text() || x.type.has_text()])" item="param">
+                                                <If condition="#param.name.has_text()">
                                                     <Text text="#param.name"/>
                                                 </If>
-                                                <If condition="#param.type">
+                                                <If condition="#param.type.has_text()">
                                                     <Text text=":"/>
-                                                    <If condition="#param.name">
+                                                    <If condition="#param.name.has_text()">
                                                         <Text text=" "/>
                                                     </If>
                                                     <Text text="#param.type"/>
                                                 </If>
-                                                <If condition="#param.default">
+                                                <If condition="#param.default.has_text()">
                                                     <Text text=" = "/>
                                                     <Text text="#param.default"/>
                                                 </If>
@@ -160,7 +161,7 @@
                                             </ForEach>
 
                                             <Text text=")"/>
-                                            <If condition="#op.rtype">
+                                            <If condition="#op.rtype.has_text()">
                                                 <Text text=": "/>
                                                 <Text text="#op.rtype"/>
                                             </If>
