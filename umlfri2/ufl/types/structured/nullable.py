@@ -1,5 +1,4 @@
 from ..base.type import UflType
-from ..basic.bool import UflBoolType
 from ..basic.string import UflStringType
 
 
@@ -36,7 +35,7 @@ class UflNullableType(UflType):
         if isinstance(other, UflStringType):
             return self.__inner_type.is_convertible_to(other)
         
-        return isinstance(other, UflBoolType)
+        return False
     
     def resolve_unknown_generic(self, generics_cache):
         resolved_inner_type = self.__inner_type.resolve_unknown_generic(generics_cache)

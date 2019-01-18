@@ -9,7 +9,7 @@ from ...macro.inlined import InlinedMacro
 from ...types.enum import UflTypedEnumType
 from ...types.structured import UflVariableWithMetadataType
 from ...types.complex import UflColorType, UflFontType
-from ...types.basic import UflStringType, UflBoolType
+from ...types.basic import UflStringType
 from ..tree.visitor import UflVisitor
 
 
@@ -143,9 +143,6 @@ class UflCompilingVisitor(UflVisitor):
         if isinstance(node.type, UflStringType):
             py_str = self.__name_register.register_function(str)
             return "{0}({1})".format(py_str, object)
-        elif isinstance(node.type, UflBoolType):
-            py_bool = self.__name_register.register_function(bool)
-            return "{0}({1})".format(py_bool, object)
         else:
             raise Exception
     

@@ -1,6 +1,5 @@
 from ..base.type import UflType
 from ...objects import UflList
-from ..basic import UflBoolType
 
 
 class UflListType(UflType):
@@ -30,9 +29,6 @@ class UflListType(UflType):
     def set_parent(self, parent):
         super().set_parent(parent)
         self.__item_type.set_parent(self)
-    
-    def is_convertible_to(self, other):
-        return isinstance(other, UflBoolType)
     
     def resolve_unknown_generic(self, generics_cache):
         resolved_item_type = self.__item_type.resolve_unknown_generic(generics_cache)

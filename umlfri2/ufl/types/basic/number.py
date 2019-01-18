@@ -1,5 +1,4 @@
 from ..base.type import UflType
-from .bool import UflBoolType
 from .string import UflStringType
 
 
@@ -36,4 +35,4 @@ class UflNumberType(UflType):
         return isinstance(other, UflNumberType)
     
     def is_convertible_to(self, other):
-        return isinstance(other, (UflBoolType, UflStringType))
+        return isinstance(other, (UflStringType))
