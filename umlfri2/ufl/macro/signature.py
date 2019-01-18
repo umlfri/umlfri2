@@ -1,6 +1,7 @@
 from collections import namedtuple
 
-FoundSignature = namedtuple('FoundSignature', ('self_type', 'parameter_types', 'return_type'))
+FoundSignature = namedtuple('FoundSignature', ('self_type', 'parameter_types', 'return_type',
+                                               'true_argument_types', 'true_result_type'))
 
 
 class MacroSignature:
@@ -14,6 +15,10 @@ class MacroSignature:
         if self.__identifier != selector:
             return None
         
-        if argument_type_checker.check_arguments(self.__self_type, self.__parameter_types):
-            return FoundSignature(self.__self_type, self.__parameter_types, self.__return_type)
+        result = argument_type_checker.check_arguments(self.__self_type, self.__parameter_types, self.__return_type)
+        if result is not None:
+            return FoundSignature(
+                self.__self_type, self.__parameter_types, self.__return_type,
+                tuple(result.argument_types), result.result_type
+            )
         return None

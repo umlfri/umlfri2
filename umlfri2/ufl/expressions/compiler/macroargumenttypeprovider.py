@@ -1,7 +1,7 @@
 from ..tree import UflUnpackNode, UflLambdaExpressionNode
 from ...types.structured import UflVariableWithMetadataType
 from ...types.executable import UflLambdaType
-from ...macro.argumenttypechecker import ArgumentTypeChecker
+from ...macro.argumenttypechecker import ArgumentTypeChecker, ArgumentTypeCheckerResult
 
 
 class MacroArgumentTypeProvider(ArgumentTypeChecker):
@@ -13,28 +13,32 @@ class MacroArgumentTypeProvider(ArgumentTypeChecker):
         
         self.__typed_expressions = {}
     
-    def check_arguments(self, self_type, expected_types):
+    def check_arguments(self, self_type, expected_types, return_type):
         generic_cache = {}
         
         resolved_self_type = self_type.resolve_generic(self.__target_type, generic_cache)
         if resolved_self_type is None:
-            return False
+            return None
         
         expected_types = tuple(expected_types)
         
         if len(expected_types) != len(self.__expressions):
-            return False
+            return None
         
         typed_node_list = []
         for macro_parameter_node, macro_parameter_type in zip(self.__expressions, expected_types):
             typed_node = self.__resolve_argument(macro_parameter_node, macro_parameter_type, generic_cache)
             if typed_node is None:
-                return False
+                return None
             typed_node_list.append(typed_node)
         
         self.__typed_expressions[expected_types] = typed_node_list
         
-        return True
+        resolved_return_type = return_type.resolve_unknown_generic(generic_cache)
+        if resolved_return_type is None:
+            return None
+        
+        return ArgumentTypeCheckerResult([node.type for node in typed_node_list], resolved_return_type)
     
     def __resolve_argument(self, expression, expected_type, generic_cache):
         if isinstance(expression, UflLambdaExpressionNode):

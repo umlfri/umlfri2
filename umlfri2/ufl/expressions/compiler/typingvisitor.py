@@ -79,7 +79,7 @@ class UflTypingVisitor(UflVisitor):
         
         found_macro, found_signature = self.__find_macro(node.selector, params)
         
-        return_type = found_signature.return_type
+        return_type = found_signature.true_result_type
         
         if multi_invoke:
             return_type = UflIterableType(return_type)
