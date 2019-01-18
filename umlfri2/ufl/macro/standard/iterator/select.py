@@ -1,3 +1,4 @@
+from ...support.lambdainlining import LambdaInliningVisitor
 from ....types.generic import UflAnyType, UflGenericType
 from ....types.structured import UflIterableType
 from ....types.executable import UflLambdaType
@@ -17,9 +18,10 @@ class SelectMacro(InlinedMacro):
     )
     
     def compile(self, visitor, registrar, node):
-        py_map = registrar.register_function(map)
-        
+        var = registrar.register_temp_variable()
+    
         target = node.target.accept(visitor)
-        map_function = node.arguments[0].accept(visitor)
-        
-        return "{0}(({1}), ({2}))".format(py_map, map_function, target)
+        inlining_visitor = LambdaInliningVisitor(var)
+        inlined_collection_function = node.arguments[0].accept(inlining_visitor).accept(visitor)
+    
+        return "(({0}) for {1} in ({2}))".format(inlined_collection_function, var, target)
