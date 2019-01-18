@@ -8,7 +8,7 @@ from .oftype import OfTypeMacro
 from .orderby import OrderByMacro, OrderByOrderMacro
 from .reduce import ReduceMacro, ReduceSimpleMacro
 from .reverse import ReverseMacro
-from .select import SelectMacro
+from .where import WhereMacro
 
 STANDARD_ITERATOR_MACROS = (
     AllMacro(),
@@ -25,5 +25,5 @@ STANDARD_ITERATOR_MACROS = (
     ReduceMacro(),
     ReduceSimpleMacro(),
     ReverseMacro(),
-    SelectMacro(),
+    WhereMacro(),
 )

@@ -7,11 +7,11 @@ from ...signature import MacroSignature
 from ...inlined import InlinedMacro
 
 
-class SelectMacro(InlinedMacro):
+class WhereMacro(InlinedMacro):
     src_type = UflGenericType(UflAnyType())
     
     signature = MacroSignature(
-        'select',
+        'where',
         UflIterableType(src_type),
         [UflLambdaType([src_type], UflBoolType())],
         UflIterableType(src_type)
@@ -22,6 +22,6 @@ class SelectMacro(InlinedMacro):
         
         target = node.target.accept(visitor)
         inlining_visitor = LambdaInliningVisitor(var)
-        inlined_select_function = node.arguments[0].accept(inlining_visitor).accept(visitor)
+        inlined_condition_function = node.arguments[0].accept(inlining_visitor).accept(visitor)
         
-        return "({0} for {0} in ({1}) if ({2}))".format(var, target, inlined_select_function)
+        return "({0} for {0} in ({1}) if ({2}))".format(var, target, inlined_condition_function)
