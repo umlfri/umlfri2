@@ -53,23 +53,23 @@ class MetamodelLoader:
             definitions = {}
 
         if configXMLs is not None:
-            config = UflStructureLoader(configXMLs[1]).load()
+            config = UflStructureLoader(configXMLs[1], configXMLs[0]).load()
         else:
             config = None
         
         connections = {}
         for file, connection in connectionXMLs:
-            loaded = ConnectionTypeLoader(self.__addon_storage, connection).load()
+            loaded = ConnectionTypeLoader(self.__addon_storage, connection, file).load()
             connections[loaded.id] = loaded
         
         elements = {}
         for file, element in elementXMLs:
-            loaded = ElementTypeLoader(self.__addon_storage, element).load()
+            loaded = ElementTypeLoader(self.__addon_storage, element, file).load()
             elements[loaded.id] = loaded
         
         diagrams = {}
         for file, diagram in diagramXMLs:
-            loaded = DiagramTypeLoader(self.__addon_storage, diagram, elements, connections).load()
+            loaded = DiagramTypeLoader(self.__addon_storage, diagram, file, elements, connections).load()
             diagrams[loaded.id] = loaded
         
         templates = []

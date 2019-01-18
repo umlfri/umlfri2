@@ -2,14 +2,15 @@ from collections import namedtuple
 
 from ....constants import ADDON_NAMESPACE
 from umlfri2.ufl.components.all import ALL_COMPONENTS
-from umlfri2.ufl.components.valueproviders import DynamicValueProvider, ConstantValueProvider
+from umlfri2.ufl.components.valueproviders import DynamicValueProvider, ConstantValueProvider, ValueSourcePosition
 
 ChildAttribute = namedtuple('ChildAttribute', ["name", "type", "values"])
 
 
 class ComponentLoader:
-    def __init__(self, xmlroot, type):
+    def __init__(self, xmlroot, type, file_name):
         self.__xmlroot = xmlroot
+        self.__file_name = file_name
         self.__type = type
     
     def load(self):
@@ -30,6 +31,7 @@ class ComponentLoader:
                 
                 children_params = {}
                 params = {}
+                child_source_position = ValueSourcePosition(self.__file_name, child.sourceline)
                 for attrname, attrvalue in child.attrib.items():
                     if attrname in children_attributes:
                         is_str = children_attributes[attrname].type is str
@@ -41,11 +43,11 @@ class ComponentLoader:
                     if is_str:
                         value = attrvalue
                     elif attrvalue.startswith("##"):
-                        value = ConstantValueProvider(attrvalue[1:])
+                        value = ConstantValueProvider(attrvalue[1:], child_source_position)
                     elif attrvalue.startswith("#"):
-                        value = DynamicValueProvider(attrvalue[1:])
+                        value = DynamicValueProvider(attrvalue[1:], child_source_position)
                     else:
-                        value = ConstantValueProvider(attrvalue)
+                        value = ConstantValueProvider(attrvalue, child_source_position)
                     
                     if is_children_param:
                         children_params[attrname] = value

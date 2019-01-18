@@ -9,8 +9,9 @@ from umlfri2.ufl.types.basic import UflStringType, UflIntegerType
 
 
 class UflStructureLoader:
-    def __init__(self, xmlroot):
+    def __init__(self, xmlroot, file_name):
         self.__xmlroot = xmlroot
+        self.__file_name = file_name
         self.__type_parser = UflTypeParser()
     
     def load(self):
@@ -52,7 +53,9 @@ class UflStructureLoader:
     def __load_template(self, node):
         for child in node:
             if child.tag == "{{{0}}}Template".format(ADDON_NAMESPACE):
-                template = TextContainerComponent(ComponentLoader(child, ComponentType.text).load())
+                template = TextContainerComponent(
+                    ComponentLoader(child, ComponentType.text, self.__file_name).load()
+                )
                 type_context = TypeContext({})\
                     .set_variable_type('parent', UflStringType())\
                     .set_variable_type('no', UflIntegerType())

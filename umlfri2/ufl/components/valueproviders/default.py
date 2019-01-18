@@ -1,4 +1,5 @@
 from umlfri2.types.proportion import Proportion
+from .compilationerror import ValueCompilationError
 from .valueprovider import ValueProvider
 
 from umlfri2.types.enums import ALL_ENUMS
@@ -26,13 +27,19 @@ class DefaultValueProvider(ValueProvider):
         self.__type = None
     
     def compile(self, type_context, expected_type):
-        resolved_expected_type = type_context.resolve_defined_enum(expected_type)
-        
-        actual_type = self.__types[type(self.__value)]
-        if resolved_expected_type.is_assignable_from(actual_type):
-            self.__type = resolved_expected_type
-        else:
-            raise Exception("Invalid type: {0}, but {1} expected".format(actual_type, resolved_expected_type))
+        try:
+            resolved_expected_type = type_context.resolve_defined_enum(expected_type)
+            
+            actual_type = self.__types[type(self.__value)]
+            if resolved_expected_type.is_assignable_from(actual_type):
+                self.__type = resolved_expected_type
+            else:
+                raise Exception("Invalid type: {0}, but {1} expected".format(actual_type, resolved_expected_type))
+        except Exception as e:
+            raise ValueCompilationError(None) from e
+    
+    def get_source(self):
+        return None
     
     def get_type(self):
         return self.__type

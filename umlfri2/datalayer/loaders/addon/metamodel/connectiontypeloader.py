@@ -11,9 +11,10 @@ from umlfri2.ufl.types.complex import UflProportionType
 
 
 class ConnectionTypeLoader:
-    def __init__(self, storage, xmlroot):
+    def __init__(self, storage, xmlroot, file_name):
         self.__storage = storage
         self.__xmlroot = xmlroot
+        self.__file_name = file_name
         if not ADDON_SCHEMA.validate(xmlroot):
             raise Exception("Cannot load connection type: {0}".format(ADDON_SCHEMA.error_log.last_error))
     
@@ -31,7 +32,7 @@ class ConnectionTypeLoader:
                     raise Exception("Unknown icon {0}".format(icon_path))
                 icon = Image(self.__storage, icon_path)
             elif child.tag == "{{{0}}}Structure".format(ADDON_NAMESPACE):
-                ufl_type = UflStructureLoader(child).load()
+                ufl_type = UflStructureLoader(child, self.__file_name).load()
             elif child.tag == "{{{0}}}Appearance".format(ADDON_NAMESPACE):
                 appearance_children = list(child)
                 
@@ -40,14 +41,16 @@ class ConnectionTypeLoader:
                     
                     label_position = UflProportionType().parse(label.attrib["position"])
                     label_id = label.attrib["id"]
-                    label_appearance = ComponentLoader(label, ComponentType.visual).load()
+                    label_appearance = ComponentLoader(label, ComponentType.visual, self.__file_name).load()
                     label_appearance = VisualContainerComponent(label_appearance)
                     
                     labels.append(ConnectionTypeLabel(label_position, label_id, label_appearance))
                     
                     del appearance_children[-1]
                 
-                appearance = ConnectionVisualContainerComponent(ComponentLoader(appearance_children, ComponentType.connection_visual).load())
+                appearance = ConnectionVisualContainerComponent(
+                    ComponentLoader(appearance_children,ComponentType.connection_visual, self.__file_name).load()
+                )
             else:
                 raise Exception
         

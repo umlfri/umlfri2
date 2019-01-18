@@ -9,9 +9,10 @@ from umlfri2.metamodel import ElementType, DefaultElementAction, ElementAccessDe
 
 
 class ElementTypeLoader:
-    def __init__(self, storage, xmlroot):
+    def __init__(self, storage, xmlroot, file_name):
         self.__storage = storage
         self.__xmlroot = xmlroot
+        self.__file_name = file_name
         if not ADDON_SCHEMA.validate(xmlroot):
             raise Exception("Cannot load element type: {0}".format(ADDON_SCHEMA.error_log.last_error))
     
@@ -35,9 +36,11 @@ class ElementTypeLoader:
                     raise Exception("Unknown icon {0}".format(icon_path))
                 icon = Image(self.__storage, icon_path)
             elif child.tag == "{{{0}}}Structure".format(ADDON_NAMESPACE):
-                ufl_type = UflStructureLoader(child).load()
+                ufl_type = UflStructureLoader(child, self.__file_name).load()
             elif child.tag == "{{{0}}}DisplayName".format(ADDON_NAMESPACE):
-                display_name = TextContainerComponent(ComponentLoader(child, ComponentType.text).load())
+                display_name = TextContainerComponent(
+                    ComponentLoader(child, ComponentType.text, self.__file_name).load()
+                )
             elif child.tag == "{{{0}}}Config".format(ADDON_NAMESPACE):
                 for childchild in child:
                     if childchild.tag == "{{{0}}}DefaultAction".format(ADDON_NAMESPACE):
@@ -62,7 +65,9 @@ class ElementTypeLoader:
                     else:
                         raise Exception
             elif child.tag == "{{{0}}}Appearance".format(ADDON_NAMESPACE):
-                appearance = VisualContainerComponent(ComponentLoader(child, ComponentType.visual).load())
+                appearance = VisualContainerComponent(
+                    ComponentLoader(child, ComponentType.visual, self.__file_name).load()
+                )
             else:
                 raise Exception
         
