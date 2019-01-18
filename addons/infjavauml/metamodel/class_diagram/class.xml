@@ -87,7 +87,7 @@
                     <Line color="#cfg.element.line"/>
                     <Padding padding="5">
                         <Table>
-                            <ForEach src="#self.attributes" item="attr">
+                            <ForEach src="#self.attributes->where([:x | x.name != ''])" item="attr">
                                 <Row>
                                     <TextBox font="#cfg.element.textfont" color="#cfg.element.text">
                                         <Text text="#attr.visibility"/>
@@ -114,60 +114,58 @@
                             </ForEach>
                         </Table>
                     </Padding>
-                    <If condition="#self.operations">
+                    <If condition="#self.operations->any([:x | x.name != ''])">
                         <Line color="#cfg.element.line"/>
                         <Padding padding="5">
                             <Table>
-                                <ForEach src="#self.operations" item="op">
-                                    <If condition="#op.name">
-                                        <Row>
-                                            <TextBox font="#cfg.element.textfont"
-                                                     color="#cfg.element.text">
-                                                <Text text="#op.visibility"/>
-                                                <Text text=" "/>
-                                            </TextBox>
+                                <ForEach src="#self.operations->where([:x | x.name != ''])" item="op">
+                                    <Row>
+                                        <TextBox font="#cfg.element.textfont"
+                                                 color="#cfg.element.text">
+                                            <Text text="#op.visibility"/>
+                                            <Text text=" "/>
+                                        </TextBox>
 
-                                            <TextBox
-                                                    font="#cfg.element.textfont.change(FontStyle::underline, op.static).change(FontStyle::italic, op.abstract)"
-                                                    color="#cfg.element.text">
-                                                <If condition="#op.stereotype">
-                                                    <Text text="&#171;"/>
-                                                    <Text text="#op.stereotype"/>
-                                                    <Text text="&#187;  "/>
+                                        <TextBox
+                                                font="#cfg.element.textfont.change(FontStyle::underline, op.static).change(FontStyle::italic, op.abstract)"
+                                                color="#cfg.element.text">
+                                            <If condition="#op.stereotype">
+                                                <Text text="&#171;"/>
+                                                <Text text="#op.stereotype"/>
+                                                <Text text="&#187;  "/>
+                                            </If>
+
+                                            <Text text="#op.name"/>
+
+                                            <Text text="("/>
+
+                                            <ForEach src="#op.parameters->where([:x | x.name != '' || x.type != ''])" item="param">
+                                                <If condition="#param.name">
+                                                    <Text text="#param.name"/>
                                                 </If>
-
-                                                <Text text="#op.name"/>
-
-                                                <Text text="("/>
-
-                                                <ForEach src="#op.parameters" item="param">
+                                                <If condition="#param.type">
+                                                    <Text text=":"/>
                                                     <If condition="#param.name">
-                                                        <Text text="#param.name"/>
+                                                        <Text text=" "/>
                                                     </If>
-                                                    <If condition="#param.type">
-                                                        <Text text=":"/>
-                                                        <If condition="#param.name">
-                                                            <Text text=" "/>
-                                                        </If>
-                                                        <Text text="#param.type"/>
-                                                    </If>
-                                                    <If condition="#param.default">
-                                                        <Text text=" = "/>
-                                                        <Text text="#param.default"/>
-                                                    </If>
-                                                    <If condition="#!@param.is_last">
-                                                        <Text text=", "/>
-                                                    </If>
-                                                </ForEach>
-
-                                                <Text text=")"/>
-                                                <If condition="#op.rtype">
-                                                    <Text text=": "/>
-                                                    <Text text="#op.rtype"/>
+                                                    <Text text="#param.type"/>
                                                 </If>
-                                            </TextBox>
-                                        </Row>
-                                    </If>
+                                                <If condition="#param.default">
+                                                    <Text text=" = "/>
+                                                    <Text text="#param.default"/>
+                                                </If>
+                                                <If condition="#!@param.is_last">
+                                                    <Text text=", "/>
+                                                </If>
+                                            </ForEach>
+
+                                            <Text text=")"/>
+                                            <If condition="#op.rtype">
+                                                <Text text=": "/>
+                                                <Text text="#op.rtype"/>
+                                            </If>
+                                        </TextBox>
+                                    </Row>
                                 </ForEach>
                             </Table>
                         </Padding>
