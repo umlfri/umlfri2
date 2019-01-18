@@ -201,6 +201,9 @@ class UflTypingVisitor(UflVisitor):
         
         return UflExpressionNode(ret, variables, ret.type)
     
+    def visit_lambda_expression(self, node):
+        raise Exception("Lambda expression used in invalid context")
+    
     def visit_cast(self, node):
         raise Exception("Weird ufl expression tree")
     
