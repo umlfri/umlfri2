@@ -39,8 +39,8 @@ class MacroArgumentTypeProvider(ArgumentTypeChecker):
     def __resolve_argument(self, no, expected_type, generic_cache):
         expression = self.__expressions[no]
         
-        if isinstance(expected_type, UflLambdaType):
-            if not isinstance(expression, UflLambdaExpressionNode):
+        if isinstance(expression, UflLambdaExpressionNode):
+            if not isinstance(expected_type, UflLambdaType):
                 return False
             
             if expected_type.parameter_count != expression.parameter_count:
