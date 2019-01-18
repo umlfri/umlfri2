@@ -41,10 +41,10 @@ class MacroArgumentTypeProvider(ArgumentTypeChecker):
         
         if isinstance(expression, UflLambdaExpressionNode):
             if not isinstance(expected_type, UflLambdaType):
-                return False
+                return None
             
             if expected_type.parameter_count != expression.parameter_count:
-                return False
+                return None
             
             typed_arguments = {}
             resolved_param_types = []
