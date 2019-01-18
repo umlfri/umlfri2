@@ -11,8 +11,8 @@ from .reverse import ReverseMacro
 from .select import SelectMacro
 
 STANDARD_ITERATOR_MACROS = (
-    # AllMacro(), TODO
-    # AnyMacro(), TODO
+    AllMacro(),
+    AnyMacro(),
     AnyContainsValueMacro(),
     AnyNotEmptyMacro(),
     EmptyMacro(),
@@ -25,5 +25,5 @@ STANDARD_ITERATOR_MACROS = (
     ReduceMacro(),
     ReduceSimpleMacro(),
     ReverseMacro(),
-    # SelectMacro(), TODO
+    SelectMacro(),
 )

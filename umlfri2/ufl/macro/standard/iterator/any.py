@@ -1,3 +1,4 @@
+from ...support.lambdainlining import LambdaInliningVisitor
 from ....types.basic import UflBoolType
 from ....types.generic import UflAnyType, UflGenericType
 from ....types.structured import UflIterableType, UflListType
@@ -23,7 +24,8 @@ class AnyMacro(InlinedMacro):
         
         target = node.target.accept(visitor)
         
-        inlined_condition_function = node.arguments[0].inline(var).accept(visitor)
+        inlining_visitor = LambdaInliningVisitor(var)
+        inlined_condition_function = node.arguments[0].accept(inlining_visitor).accept(visitor)
         
         return "{0}(({1}) for {2} in ({3}))".format(py_any, inlined_condition_function, var, target)
 

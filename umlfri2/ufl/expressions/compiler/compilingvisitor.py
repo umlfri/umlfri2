@@ -56,6 +56,9 @@ class UflCompilingVisitor(UflVisitor):
         else:
             raise Exception("I can not use non-inline macro yet")
     
+    def visit_technical_variable(self, node):
+        return node.name
+    
     def visit_variable(self, node):
         return self.__fix_var_name(node.name)
     

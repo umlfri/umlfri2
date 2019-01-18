@@ -8,6 +8,9 @@ class UflVisitor:
     def visit_macro_invoke(self, node):
         raise NotImplementedError
     
+    def visit_technical_variable(self, node):
+        raise NotImplementedError
+    
     def visit_variable(self, node):
         raise NotImplementedError
     

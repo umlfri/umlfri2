@@ -1,3 +1,4 @@
+from ...support.lambdainlining import LambdaInliningVisitor
 from ....types.basic import UflBoolType
 from ....types.generic import UflAnyType, UflGenericType
 from ....types.structured import UflIterableType
@@ -20,6 +21,7 @@ class SelectMacro(InlinedMacro):
         var = registrar.register_temp_variable()
         
         target = node.target.accept(visitor)
-        inlined_select_function = node.arguments[0].inline(var).accept(visitor)
+        inlining_visitor = LambdaInliningVisitor(var)
+        inlined_select_function = node.arguments[0].accept(inlining_visitor).accept(visitor)
         
         return "({0} for {0} in ({1}) if ({2}))".format(var, target, inlined_select_function)

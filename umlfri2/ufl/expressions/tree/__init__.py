@@ -12,3 +12,4 @@ from .expression import UflExpressionNode
 from .cast import UflCastNode
 from .lambdaexpression import UflLambdaExpressionNode
 from .objectmetadataaccess import UflObjectMetadataAccessNode
+from .technicalvariable import UflTechnicalVariableNode

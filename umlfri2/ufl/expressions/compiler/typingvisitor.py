@@ -89,6 +89,9 @@ class UflTypingVisitor(UflVisitor):
         return UflMacroInvokeNode(target, node.selector, params.resolve_for(found_signature), node.inner_type_invoke,
                                   found_macro, return_type)
     
+    def visit_technical_variable(self, node):
+        raise Exception("Something weird happen. Cannot type technical variable")
+    
     def visit_variable(self, node):
         return UflVariableNode(node.name, self.__params[node.name])
     
