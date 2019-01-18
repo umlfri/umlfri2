@@ -26,8 +26,8 @@ class MacroArgumentTypeProvider(ArgumentTypeChecker):
             return False
         
         typed_node_list = []
-        for no, macro_parameter_type in enumerate(expected_types):
-            typed_node = self.__resolve_argument(no, macro_parameter_type, generic_cache)
+        for macro_parameter_node, macro_parameter_type in zip(self.__expressions, expected_types):
+            typed_node = self.__resolve_argument(macro_parameter_node, macro_parameter_type, generic_cache)
             if typed_node is None:
                 return False
             typed_node_list.append(typed_node)
@@ -36,9 +36,7 @@ class MacroArgumentTypeProvider(ArgumentTypeChecker):
         
         return True
     
-    def __resolve_argument(self, no, expected_type, generic_cache):
-        expression = self.__expressions[no]
-        
+    def __resolve_argument(self, expression, expected_type, generic_cache):
         if isinstance(expression, UflLambdaExpressionNode):
             if not isinstance(expected_type, UflLambdaType):
                 return None
