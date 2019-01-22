@@ -5,3 +5,4 @@ qtconsole
 jinja2
 lxml
 pyparsing
+sentry-sdk
