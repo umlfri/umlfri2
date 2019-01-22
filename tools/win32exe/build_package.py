@@ -187,6 +187,15 @@ shutil.copytree(os.path.dirname(PyQt5.__file__), os.path.join(OUT_DIR, 'dlls', '
     "audio", "bearer", "generic", "geoservices", "iconengines", "mediaservice", "qminimal.dll", "qoffscreen.dll", "playlistformats", "position", "sceneparsers", "sensorgestures",
     "sensors", "sqldrivers"))
 
+print("Sentry SDK with dependencies")
+print("----------------------------")
+import sentry_sdk
+import urllib3
+import certifi
+shutil.copytree(os.path.dirname(sentry_sdk.__file__), os.path.join(OUT_DIR, 'dlls', 'sentry_sdk'), ignore=shutil.ignore_patterns("__pycache__"))
+shutil.copytree(os.path.dirname(urllib3.__file__), os.path.join(OUT_DIR, 'dlls', 'urllib3'), ignore=shutil.ignore_patterns("__pycache__"))
+shutil.copytree(os.path.dirname(certifi.__file__), os.path.join(OUT_DIR, 'dlls', 'certifi'), ignore=shutil.ignore_patterns("__pycache__", "__main__.py"))
+
 print("Compiling dependencies")
 print("----------------------")
 compileall.compile_dir(os.path.join(OUT_DIR, 'dlls'), optimize=2)
