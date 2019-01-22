@@ -4,6 +4,10 @@ import appdirs
 import lxml.etree
 import pyparsing
 from PyQt5 import Qt, QtCore
+try:
+    import sentry_sdk
+except ImportError:
+    sentry_sdk = None
 
 from .updates import UmlFriUpdates
 from umlfri2.types.version import Version
@@ -39,6 +43,8 @@ class AboutUmlFri:
         yield 'AppDirs', appdirs.__version__
         yield 'lxml', lxml.etree.__version__
         yield 'Pyparsing', pyparsing.__version__
+        if sentry_sdk is not None:
+            yield 'Sentry-SDK', sentry_sdk.VERSION
     
     @property
     def version_1_contributions(self):
