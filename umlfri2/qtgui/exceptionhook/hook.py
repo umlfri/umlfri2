@@ -18,17 +18,14 @@ def exception_hook(exc_class, exc, tb):
     if __debug__:
         traceback.print_exception(exc_class, exc, tb)
     elif USE_SENTRY:
-        try:
-            hub = sentry_sdk.hub.Hub.current
-            with sentry_sdk.utils.capture_internal_exceptions():
-                event, hint = sentry_sdk.utils.event_from_exception(
-                    (exc_class, exc, tb),
-                    client_options=hub.client.options,
-                    mechanism={"type": "excepthook", "handled": False},
-                )
-                hub.capture_event(event, hint=hint)
-        except Exception:
-            pass
+        hub = sentry_sdk.hub.Hub.current
+        with sentry_sdk.utils.capture_internal_exceptions():
+            event, hint = sentry_sdk.utils.event_from_exception(
+                (exc_class, exc, tb),
+                client_options=hub.client.options,
+                mechanism={"type": "excepthook", "handled": False},
+            )
+            hub.capture_event(event, hint=hint)
     
     dialog = ExceptionDialog(exc)
     dialog.exec_()
