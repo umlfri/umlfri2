@@ -1,8 +1,9 @@
-#define MyAppName "UML .FRI"
-#define MyAppVersion "2.1"
-#define MyAppPublisher "J�n Janech"
+﻿#define MyAppName "UML .FRI"
+#define MyAppPublisher "Ján Janech"
 #define MyAppURL "http://www.umlfri.org/"
 #define MyAppExeName "umlfri2.exe"
+
+#include "config.iss"
 
 [Setup]
 AppId={{374E0B55-CD17-4AC4-8C1F-69DC99C3EBEB}
