@@ -1,7 +1,7 @@
 from ....types.complex import UflColorType
-from ....types.structured import UflIterableType, UflListType
 from ...signature import MacroSignature
 from ...inlined import InlinedMacro
+from ...support.automultiresolver import resolve_multi
 
 
 class InvertColorMacro(InlinedMacro):
@@ -15,9 +15,4 @@ class InvertColorMacro(InlinedMacro):
     def compile(self, visitor, registrar, node):
         target = node.target.accept(visitor)
         
-        if isinstance(node.target.type, (UflIterableType, UflListType)):
-            var = registrar.register_temp_variable()
-            
-            return "({0}.invert() for {0} in ({1}))".format(var, target)
-        else:
-            return "({0}).invert()".format(target)
+        return resolve_multi(registrar, node.target.type, "({0}).invert()", target)
