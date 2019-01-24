@@ -2,7 +2,7 @@ from .widget import UflDialogWidget
 
 
 class UflDialogMultiSelectWidget(UflDialogWidget):
-    def __init__(self, tab, attr): 
+    def __init__(self, tab, attr):
         super().__init__(tab, attr)
         
         self.__items = tuple((None, possibility.value) for possibility in attr.type.possibilities)
@@ -22,6 +22,10 @@ class UflDialogMultiSelectWidget(UflDialogWidget):
         else:
             self.__value = ufl_object.get_value(self.id)
         self.__old_value = self.__value.copy()
+    
+    def associate_default(self):
+        self.__value = self.attribute.type.build_default(None)
+        self.__old_value = self.__value
     
     @property
     def changed(self):

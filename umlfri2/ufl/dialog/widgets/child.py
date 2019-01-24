@@ -2,7 +2,7 @@ from .widget import UflDialogWidget
 
 
 class UflDialogChildWidget(UflDialogWidget):
-    def __init__(self, tab, attr, dialog): 
+    def __init__(self, tab, attr, dialog):
         super().__init__(tab, attr)
         self.__dialog = dialog
         self.__value = None
@@ -28,6 +28,10 @@ class UflDialogChildWidget(UflDialogWidget):
             self.__old_value = self.__value.copy()
         
         self.__dialog.associate(self.__value)
+    
+    def associate_default(self):
+        self.__value = self.attribute.type.build_default(None)
+        self.__old_value = self.__value
     
     def translate(self, translation):
         super().translate(translation)

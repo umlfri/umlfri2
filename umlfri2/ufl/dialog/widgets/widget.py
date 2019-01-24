@@ -9,6 +9,10 @@ class UflDialogWidget:
         self.__attr = attr
     
     @property
+    def tab(self):
+        return self.__tab()
+    
+    @property
     def value(self):
         raise NotImplementedError
     
@@ -28,6 +32,9 @@ class UflDialogWidget:
         return self.__label
     
     def associate(self, ufl_object):
+        raise NotImplementedError
+    
+    def associate_default(self):
         raise NotImplementedError
     
     def translate(self, translation):

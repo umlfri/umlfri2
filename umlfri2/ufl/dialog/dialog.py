@@ -3,7 +3,7 @@ from ..objects.mutable import UflMutable
 from .tabs import *
 from .columns import *
 from .widgets import *
-from ..types.structured import UflListType, UflObjectType
+from ..types.structured import UflListType, UflObjectType, UflNullableType
 from ..types.basic import UflStringType, UflBoolType, UflIntegerType, UflDecimalType
 from ..types.complex import UflColorType, UflFontType
 from ..types.enum import UflEnumType, UflFlagsType
@@ -107,6 +107,8 @@ class UflDialog:
             return UflDialogDecimalWidget(tab, attr)
         elif isinstance(type, (UflObjectType, UflListType)):
             return UflDialogChildWidget(tab, attr, UflDialog(type, self.__options))
+        elif isinstance(type, UflNullableType):
+            return UflDialogNullableWidget(tab, attr, self.__make_widget(tab, attr.create_as_non_nullable(), type.inner_type))
         elif isinstance(type, UflStringType):
             if type.multiline:
                 return UflDialogTextAreaWidget(tab, attr)

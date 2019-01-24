@@ -32,75 +32,82 @@ class PropertyTab(QWidget):
         ret.setFieldGrowthPolicy(QFormLayout.AllNonFixedFieldsGrow)
         
         for widget in self.__tab.widgets:
-            if isinstance(widget, UflDialogCheckWidget):
-                qt_widget = QCheckBox(widget.label)
-                self.__qt_widgets[widget.id] = qt_widget
-                qt_widget.stateChanged.connect(partial(self.__state_changed, widget))
-                ret.addRow("", qt_widget)
-            elif isinstance(widget, UflDialogChildWidget):
-                qt_widget = QPushButton(_("Edit..."))
-                self.__qt_widgets[widget.id] = qt_widget
-                qt_widget.clicked.connect(partial(self.__show_dialog, widget))
-                ret.addRow(widget.label, qt_widget)
-            elif isinstance(widget, UflDialogColorWidget):
-                qt_widget = ColorSelectionWidget()
-                qt_widget.color_changed.connect(partial(self.__value_changed, widget))
-                self.__qt_widgets[widget.id] = qt_widget
-                ret.addRow(widget.label, qt_widget)
-            elif isinstance(widget, UflDialogComboWidget):
-                qt_widget = QComboBox()
-                qt_widget.setEditable(True)
-                for item in widget.possibilities:
-                    qt_widget.addItem(item)
-                self.__qt_widgets[widget.id] = qt_widget
-                qt_widget.editTextChanged.connect(partial(self.__value_changed, widget))
-                ret.addRow(widget.label, qt_widget)
-            elif isinstance(widget, UflDialogFontWidget):
-                qt_widget = FontSelectionWidget()
-                qt_widget.font_changed.connect(partial(self.__value_changed, widget))
-                self.__qt_widgets[widget.id] = qt_widget
-                ret.addRow(widget.label, qt_widget)
-            elif isinstance(widget, UflDialogIntegerWidget):
-                qt_widget = SelectAllSpinBox()
-                self.__qt_widgets[widget.id] = qt_widget
-                qt_widget.valueChanged[int].connect(partial(self.__value_changed, widget))
-                ret.addRow(widget.label, qt_widget)
-            elif isinstance(widget, UflDialogDecimalWidget):
-                qt_widget = SelectAllDoubleSpinBox()
-                self.__qt_widgets[widget.id] = qt_widget
-                qt_widget.valueChanged[float].connect(partial(self.__value_changed, widget))
-                ret.addRow(widget.label, qt_widget)
-            elif isinstance(widget, UflDialogMultiSelectWidget):
-                qt_widget = MultiSelectComboBox()
-                self.__qt_widgets[widget.id] = qt_widget
-                for checked, item in widget.possibilities:
-                    qt_widget.add_check_item(checked, item)
-                qt_widget.check_changed.connect(partial(self.__multi_changed, widget))
-                ret.addRow(widget.label, qt_widget)
-            elif isinstance(widget, UflDialogSelectWidget):
-                qt_widget = QComboBox()
-                self.__qt_widgets[widget.id] = qt_widget
-                for item in widget.possibilities:
-                    qt_widget.addItem(item)
-                qt_widget.currentIndexChanged[int].connect(partial(self.__index_changed, widget))
-                ret.addRow(widget.label, qt_widget)
-            elif isinstance(widget, UflDialogTextWidget):
-                qt_widget = SelectAllLineEdit()
-                self.__qt_widgets[widget.id] = qt_widget
-                qt_widget.textChanged.connect(partial(self.__value_changed, widget))
-                ret.addRow(widget.label, qt_widget)
-            elif isinstance(widget, UflDialogTextAreaWidget):
-                if widget.label is not None:
-                    ret.addRow(QLabel(widget.label))
-                qt_widget = SmallTextEdit()
-                policy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-                policy.setVerticalStretch(1)
-                qt_widget.setSizePolicy(policy)
-                qt_widget.setTabChangesFocus(True)
-                self.__qt_widgets[widget.id] = qt_widget
-                qt_widget.textChanged.connect(partial(self.__text_changed, widget, qt_widget))
-                ret.addRow(qt_widget)
+            self.__create_qt_widget(ret, widget, False)
         return ret
+    
+    def __create_qt_widget(self, layout, widget, nullable):
+        if isinstance(widget, UflDialogCheckWidget):
+            qt_widget = QCheckBox(widget.label)
+            self.__qt_widgets[widget.id] = qt_widget
+            qt_widget.stateChanged.connect(partial(self.__state_changed, widget))
+            layout.addRow("", qt_widget)
+        elif isinstance(widget, UflDialogChildWidget):
+            qt_widget = QPushButton(_("Edit..."))
+            self.__qt_widgets[widget.id] = qt_widget
+            qt_widget.clicked.connect(partial(self.__show_dialog, widget))
+            layout.addRow(widget.label, qt_widget)
+        elif isinstance(widget, UflDialogColorWidget):
+            qt_widget = ColorSelectionWidget()
+            qt_widget.color_changed.connect(partial(self.__value_changed, widget))
+            self.__qt_widgets[widget.id] = qt_widget
+            layout.addRow(widget.label, qt_widget)
+        elif isinstance(widget, UflDialogComboWidget):
+            qt_widget = QComboBox()
+            qt_widget.setEditable(True)
+            for item in widget.possibilities:
+                qt_widget.addItem(item)
+            self.__qt_widgets[widget.id] = qt_widget
+            qt_widget.editTextChanged.connect(partial(self.__value_changed, widget))
+            layout.addRow(widget.label, qt_widget)
+        elif isinstance(widget, UflDialogFontWidget):
+            qt_widget = FontSelectionWidget()
+            qt_widget.font_changed.connect(partial(self.__value_changed, widget))
+            self.__qt_widgets[widget.id] = qt_widget
+            layout.addRow(widget.label, qt_widget)
+        elif isinstance(widget, UflDialogIntegerWidget):
+            qt_widget = SelectAllSpinBox()
+            self.__qt_widgets[widget.id] = qt_widget
+            qt_widget.valueChanged[int].connect(partial(self.__value_changed, widget))
+            layout.addRow(widget.label, qt_widget)
+        elif isinstance(widget, UflDialogDecimalWidget):
+            qt_widget = SelectAllDoubleSpinBox()
+            self.__qt_widgets[widget.id] = qt_widget
+            qt_widget.valueChanged[float].connect(partial(self.__value_changed, widget))
+            layout.addRow(widget.label, qt_widget)
+        elif isinstance(widget, UflDialogMultiSelectWidget):
+            qt_widget = MultiSelectComboBox()
+            self.__qt_widgets[widget.id] = qt_widget
+            for checked, item in widget.possibilities:
+                qt_widget.add_check_item(checked, item)
+            qt_widget.check_changed.connect(partial(self.__multi_changed, widget))
+            layout.addRow(widget.label, qt_widget)
+        elif isinstance(widget, UflDialogSelectWidget):
+            qt_widget = QComboBox()
+            self.__qt_widgets[widget.id] = qt_widget
+            for item in widget.possibilities:
+                qt_widget.addItem(item)
+            qt_widget.currentIndexChanged[int].connect(partial(self.__index_changed, widget))
+            layout.addRow(widget.label, qt_widget)
+        elif isinstance(widget, UflDialogTextWidget):
+            qt_widget = SelectAllLineEdit()
+            self.__qt_widgets[widget.id] = qt_widget
+            qt_widget.textChanged.connect(partial(self.__value_changed, widget))
+            layout.addRow(widget.label, qt_widget)
+        elif isinstance(widget, UflDialogTextAreaWidget):
+            if widget.label is not None:
+                layout.addRow(QLabel(widget.label))
+            qt_widget = SmallTextEdit()
+            policy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            policy.setVerticalStretch(1)
+            qt_widget.setSizePolicy(policy)
+            qt_widget.setTabChangesFocus(True)
+            self.__qt_widgets[widget.id] = qt_widget
+            qt_widget.textChanged.connect(partial(self.__text_changed, widget, qt_widget))
+            layout.addRow(qt_widget)
+        elif isinstance(widget, UflDialogNullableWidget):
+            self.__create_qt_widget(layout, widget.inner_widget, True)
+        else:
+            raise Exception()
     
     def __show_dialog(self, widget, checked=False):
         from .dialog import PropertiesDialog
