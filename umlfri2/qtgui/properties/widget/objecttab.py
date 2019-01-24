@@ -26,7 +26,13 @@ class ObjectTab(TableTab):
         self.currentCellChanged.connect(self.__cell_changed)
         
         for no, widget in enumerate(tab.widgets):
-            self.setCellWidget(no, 1, self.__build_qt_widget(no, widget))
+            if isinstance(widget, UflDialogNullableWidget):
+                qt_nullable_checkbox = QSelectionChangingCheckBox(self, no)
+                qt_nullable_checkbox.stateChanged.connect(partial(self.__nullable_state_changed, widget, no))
+                self.setCellWidget(no, 0, qt_nullable_checkbox)
+                self.setCellWidget(no, 1, self.__build_qt_widget(no, widget.inner_widget))
+            else:
+                self.setCellWidget(no, 1, self.__build_qt_widget(no, widget))
         
         self.content_updated()
         
@@ -72,8 +78,6 @@ class ObjectTab(TableTab):
             qt_widget = QSelectionChangingLineEdit(self, no)
             qt_widget.lostFocus.connect(partial(self.__value_changed, widget))
             qt_widget.returnPressed.connect(partial(self.__value_accepted, widget, qt_widget))
-        elif isinstance(widget, UflDialogNullableWidget):
-            qt_widget = self.__build_qt_widget(no, widget.inner_widget)
         else:
             raise Exception()
         
@@ -87,7 +91,14 @@ class ObjectTab(TableTab):
     def __show_dialog(self, widget, checked=False):
         PropertiesDialog(self.__main_window, widget.dialog, None).exec_()
         self.__widget.apply()
+    
+    def __nullable_state_changed(self, widget, no, state):
+        widget.is_null = state == Qt.Unchecked
+        qt_widget = self.cellWidget(no, 1)
+        qt_widget.setEnabled(not widget.is_null)
         
+        self.__widget.apply()
+    
     def __state_changed(self, widget, state):
         widget.value = state == Qt.Checked
         self.__widget.apply()
@@ -114,7 +125,13 @@ class ObjectTab(TableTab):
     def reload_data(self):
         for no, widget in enumerate(self.__tab.widgets):
             qt_widget = self.cellWidget(no, 1)
-            self.__reload_widget_data(qt_widget, widget)
+            if isinstance(widget, UflDialogNullableWidget):
+                qt_nullable_checkbox = self.cellWidget(no, 0)
+                qt_nullable_checkbox.setChecked(not widget.is_null)
+                qt_widget.setEnabled(not widget.is_null)
+                self.__reload_widget_data(qt_widget, widget.inner_widget)
+            else:
+                self.__reload_widget_data(qt_widget, widget)
         
         self.content_updated()
     
@@ -140,8 +157,6 @@ class ObjectTab(TableTab):
             qt_widget.setCurrentIndex(widget.current_index)
         elif isinstance(widget, UflDialogTextWidget):
             qt_widget.setText(widget.value)
-        elif isinstance(widget, UflDialogNullableWidget):
-            self.__reload_widget_data(qt_widget, widget.inner_widget)
         else:
             raise Exception()
     
@@ -149,21 +164,31 @@ class ObjectTab(TableTab):
         super().reload_texts()
         
         for no, widget in enumerate(self.__tab.widgets):
-            label = QTableWidgetItem(widget.label)
-            label.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
-            self.setItem(no, 0, label)
-            
             qt_widget = self.cellWidget(no, 1)
-            if isinstance(widget, UflDialogChildWidget):
-                qt_widget.setText(_("Edit..."))
-            elif isinstance(widget, UflDialogSelectWidget):
-                for no, possibility in enumerate(widget.possibilities):
-                    qt_widget.setItemText(no, possibility)
-            elif isinstance(widget, UflDialogMultiSelectWidget):
-                for no, (checked, possibility) in enumerate(widget.possibilities):
-                    qt_widget.set_item_text(no, possibility)
+            
+            if isinstance(widget, UflDialogNullableWidget):
+                qt_nullable_checkbox = self.cellWidget(no, 0)
+                qt_nullable_checkbox.setText(widget.label)
+                
+                self.__reload_widget_text(widget.inner_widget, qt_widget)
+            else:
+                label = QTableWidgetItem(widget.label)
+                label.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
+                self.setItem(no, 0, label)
+                
+                self.__reload_widget_text(widget, qt_widget)
         
         self.content_updated()
+    
+    def __reload_widget_text(self, widget, qt_widget):
+        if isinstance(widget, UflDialogChildWidget):
+            qt_widget.setText(_("Edit..."))
+        elif isinstance(widget, UflDialogSelectWidget):
+            for no, possibility in enumerate(widget.possibilities):
+                qt_widget.setItemText(no, possibility)
+        elif isinstance(widget, UflDialogMultiSelectWidget):
+            for no, (checked, possibility) in enumerate(widget.possibilities):
+                qt_widget.set_item_text(no, possibility)
     
     @property
     def label(self):
