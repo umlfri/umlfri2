@@ -1,4 +1,4 @@
-from ...support.lambdainlining import LambdaInliningVisitor
+from ....compilerhelpers.lambdainlining import LambdaInliningVisitor
 from ....types.generic import UflAnyType, UflGenericType
 from ....types.structured import UflIterableType
 from ....types.executable import UflLambdaType

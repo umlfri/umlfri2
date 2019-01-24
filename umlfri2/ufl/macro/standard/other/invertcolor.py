@@ -1,7 +1,7 @@
 from ....types.complex import UflColorType
 from ...signature import MacroSignature
 from ...inlined import InlinedMacro
-from ...support.automultiresolver import resolve_multi
+from ....compilerhelpers.automultiresolver import resolve_multi_source
 
 
 class InvertColorMacro(InlinedMacro):
@@ -15,4 +15,4 @@ class InvertColorMacro(InlinedMacro):
     def compile(self, visitor, registrar, node):
         target = node.target.accept(visitor)
         
-        return resolve_multi(registrar, node.target.type, "({0}).invert()", target)
+        return resolve_multi_source(registrar, node.target.type, "({0}).invert()", target)

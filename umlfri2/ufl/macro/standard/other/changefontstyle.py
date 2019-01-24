@@ -5,7 +5,7 @@ from ....types.complex import UflFontType
 from ....types.enum import UflTypedEnumType
 from ...signature import MacroSignature
 from ...inlined import InlinedMacro
-from ...support.automultiresolver import resolve_multi
+from ....compilerhelpers.automultiresolver import resolve_multi_source
 
 
 class ChangeFontStyleMacro(InlinedMacro):
@@ -22,4 +22,4 @@ class ChangeFontStyleMacro(InlinedMacro):
         font_style = node.arguments[0].accept(visitor)
         value = node.arguments[1].accept(visitor)
 
-        return resolve_multi(registrar, node.target.type, "({{0}}).change(({0}), ({1}))".format(font_style, value), target)
+        return resolve_multi_source(registrar, node.target.type, "({{0}}).change(({0}), ({1}))".format(font_style, value), target)

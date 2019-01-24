@@ -1,7 +1,7 @@
 from ....types.basic import UflStringType, UflBoolType
 from ...signature import MacroSignature
 from ...inlined import InlinedMacro
-from ...support.automultiresolver import resolve_multi
+from ....compilerhelpers.automultiresolver import resolve_multi_source
 
 
 class StringHasTextMacro(InlinedMacro):
@@ -17,4 +17,4 @@ class StringHasTextMacro(InlinedMacro):
         
         py_bool = registrar.register_function(bool)
 
-        return resolve_multi(registrar, node.target.type, "{0}(({{0}}).strip())".format(py_bool), target)
+        return resolve_multi_source(registrar, node.target.type, "{0}(({{0}}).strip())".format(py_bool), target)

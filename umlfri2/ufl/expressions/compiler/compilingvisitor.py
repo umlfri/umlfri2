@@ -4,6 +4,7 @@ from umlfri2.types.color import Colors
 from umlfri2.types.enums import ALL_ENUMS
 from umlfri2.types.font import Fonts
 
+from ...compilerhelpers.automultiresolver import resolve_multi_source, resolve_multi_type
 from .varnameregister import VariableNameRegister
 from ...macro.inlined import InlinedMacro
 from ...types.enum import UflTypedEnumType
@@ -31,11 +32,13 @@ class UflCompilingVisitor(UflVisitor):
     
     def visit_attribute_access(self, node):
         objcode = node.object.accept(self)
-        
-        if node.attribute in node.object.type.ALLOWED_DIRECT_ATTRIBUTES:
-            return '{0}.{1}'.format(objcode, node.object.type.ALLOWED_DIRECT_ATTRIBUTES[node.attribute].accessor)
-        
-        return '{0}.get_value({1!r})'.format(objcode, node.attribute)
+        checked_type, multi_invoke, inner_invoke = resolve_multi_type(node.object.type)
+
+        if node.attribute in checked_type.ALLOWED_DIRECT_ATTRIBUTES:
+            accessor = checked_type.ALLOWED_DIRECT_ATTRIBUTES[node.attribute].accessor
+            return resolve_multi_source(self.__name_register, node.object.type, '({{0}}).{0}'.format(accessor), objcode)
+
+        return resolve_multi_source(self.__name_register, node.object.type, '({{0}}).get_value({0!r})'.format(node.attribute), objcode)
     
     def visit_enum(self, node):
         if isinstance(node.type, UflTypedEnumType):

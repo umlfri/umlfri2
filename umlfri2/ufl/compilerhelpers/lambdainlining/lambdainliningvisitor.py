@@ -1,6 +1,6 @@
 from .lambdainliningvisitorimpl import LambdaInliningVisitorImpl
-from ....expressions.tree import UflTechnicalVariableNode
-from ....expressions.tree.visitor import UflVisitor
+from ...expressions.tree import UflTechnicalVariableNode
+from ...expressions.tree.visitor import UflVisitor
 
 
 class LambdaInliningVisitor(UflVisitor):
