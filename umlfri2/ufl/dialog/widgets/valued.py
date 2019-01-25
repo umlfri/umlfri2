@@ -2,8 +2,8 @@ from .widget import UflDialogWidget
 
 
 class UflDialogValuedWidget(UflDialogWidget):
-    def __init__(self, tab, attr):
-        super().__init__(tab, attr)
+    def __init__(self, tab, attr, type):
+        super().__init__(tab, attr, type)
         self.__value = None
         self.__old_value = None
     
@@ -25,7 +25,7 @@ class UflDialogValuedWidget(UflDialogWidget):
         self.__old_value = self.__value
     
     def associate_default(self):
-        self.__value = self.attribute.type.build_default(None)
+        self.__value = self.type.build_default(None)
         self.__old_value = self.__value
     
     @property

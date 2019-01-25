@@ -2,8 +2,8 @@ from .widget import UflDialogWidget
 
 
 class UflDialogNullableWidget(UflDialogWidget):
-    def __init__(self, tab, attr, inner_widget):
-        super().__init__(tab, attr)
+    def __init__(self, tab, attr, type, inner_widget):
+        super().__init__(tab, attr, type)
         
         self.__is_null = False
         self.__old_is_null = False

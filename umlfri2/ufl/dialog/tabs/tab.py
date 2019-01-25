@@ -30,6 +30,12 @@ class UflDialogTab:
     def current_object(self):
         return self.__ufl_object
     
+    def _set_current_object_null(self):
+        self.__ufl_object = None
+        
+        for widget in self.__widgets:
+            widget.associate_default()
+    
     def _set_current_object(self, ufl_object):
         self.__ufl_object = ufl_object
         
