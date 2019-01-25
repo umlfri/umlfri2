@@ -40,7 +40,10 @@ class UflNullableType(UflType):
     @property
     def is_immutable(self):
         return self.__inner_type.is_immutable
-
+    
+    def is_default_value(self, value):
+        return value is None
+    
     def is_valid_value(self, value):
         if value is None:
             return True
