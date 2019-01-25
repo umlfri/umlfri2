@@ -64,12 +64,10 @@ class UflTypingVisitor(UflVisitor):
     
     def visit_macro_invoke(self, node):
         target = self.__demeta(node.target.accept(self))
-        
-        if node.inner_type_invoke:
-            target_type, multi_invoke, null_invoke = resolve_multi_type(target.type)
-        else:
+
+        target_type, multi_invoke, null_invoke = resolve_multi_type(target.type)
+        if not node.inner_type_invoke:
             target_type = target.type
-            _, multi_invoke, null_invoke = resolve_multi_type(target.type)
             if not multi_invoke and not null_invoke:
                 raise Exception("Iterator access operator cannot be applied to the type {0}".format(target_type))
             multi_invoke = False
