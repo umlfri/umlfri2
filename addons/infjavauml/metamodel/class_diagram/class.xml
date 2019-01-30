@@ -87,7 +87,7 @@
                     <Line color="#cfg.element.line"/>
                     <Padding padding="5">
                         <Table>
-                            <ForEach src="#self.attributes->where([:x | x.name != ''])" item="attr">
+                            <ForEach src="#self.attributes->where([:x | x.name.has_text()])" item="attr">
                                 <Row>
                                     <TextBox font="#cfg.element.textfont" color="#cfg.element.text">
                                         <Text text="#attr.visibility"/>
