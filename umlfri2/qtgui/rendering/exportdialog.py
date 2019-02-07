@@ -24,6 +24,7 @@ class ExportDialog(QDialog):
         self.__padding.setValue(5)
         
         self.__transparent = QCheckBox(_("Copy without background (transparent)"))
+        self.__transparent.setChecked(True)
         
         layout.addRow(_("Zoom") + ":", self.__zoom)
         layout.addRow(_("Padding") + ":", self.__padding)

@@ -1,4 +1,6 @@
-from PyQt5.QtCore import QSize, QSizeF, QRect, Qt, QPoint
+import base64
+
+from PyQt5.QtCore import QSize, QSizeF, QRect, Qt, QPoint, QMimeData, QByteArray, QBuffer
 from PyQt5.QtGui import QPixmap, QPainter
 from PyQt5.QtWidgets import QApplication
 
@@ -76,7 +78,15 @@ class ImageExport:
 
         self.__draw(bounds, output)
 
-        QApplication.clipboard().setPixmap(output)
+        clipboard_data = QMimeData()
+        clipboard_data.setImageData(output)
+        if self.__transparent:
+            image_data = QByteArray()
+            image_buffer = QBuffer(image_data)
+            output.save(image_buffer, 'PNG')
+            image_base64 = base64.decodebytes(bytes(image_data))
+            clipboard_data.setHtml('<img src="data:image/png;base64,{0}">'.format(image_base64))
+        QApplication.clipboard().setMimeData(clipboard_data)
     
     def __get_bounds(self):
         if isinstance(self.__diagram_or_selection, Diagram):
