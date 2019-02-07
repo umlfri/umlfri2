@@ -84,7 +84,7 @@ class ImageExport:
             image_data = QByteArray()
             image_buffer = QBuffer(image_data)
             output.save(image_buffer, 'PNG')
-            image_base64 = base64.decodebytes(bytes(image_data))
+            image_base64 = base64.b64encode(bytes(image_data)).decode('ascii')
             clipboard_data.setHtml('<img src="data:image/png;base64,{0}">'.format(image_base64))
         QApplication.clipboard().setMimeData(clipboard_data)
     
