@@ -2,11 +2,11 @@ from umlfri2.types.color import Colors
 from umlfri2.types.enums import ALL_ENUMS
 from umlfri2.types.font import Fonts
 
+from ...compilerhelpers.automultiresolver import resolve_multi_type
 from ...macro.standard import STANDARD_MACROS
-from ...types.structured import UflVariableWithMetadataType, UflNullableType, UflObjectType, UflIterableType,\
-    UflListType
+from ...types.structured import UflVariableWithMetadataType, UflNullableType, UflObjectType, UflIterableType
 from ...types.basic import UflDecimalType, UflNumberType, UflBoolType, UflStringType, UflIntegerType
-from ...types.enum import UflTypedEnumType, UflFlagsType
+from ...types.enum import UflTypedEnumType
 from ...types.complex import UflColorType, UflFontType
 
 from ..tree.visitor import UflVisitor
@@ -27,13 +27,19 @@ class UflTypingVisitor(UflVisitor):
     
     def visit_attribute_access(self, node):
         obj = self.__demeta(node.object.accept(self))
+        obj_type, multi_invoke, null_invoke = resolve_multi_type(obj.type)
         
-        if node.attribute in obj.type.ALLOWED_DIRECT_ATTRIBUTES:
-            attr_type = obj.type.ALLOWED_DIRECT_ATTRIBUTES[node.attribute].type
-        elif isinstance(obj.type, UflObjectType) and obj.type.contains_attribute(node.attribute):
-            attr_type = obj.type.get_attribute(node.attribute).type
+        if node.attribute in obj_type.ALLOWED_DIRECT_ATTRIBUTES:
+            attr_type = obj_type.ALLOWED_DIRECT_ATTRIBUTES[node.attribute].type
+        elif isinstance(obj_type, UflObjectType) and obj_type.contains_attribute(node.attribute):
+            attr_type = obj_type.get_attribute(node.attribute).type
         else:
             raise Exception("Unknown attribute {0}".format(node.attribute))
+        
+        if multi_invoke:
+            attr_type = UflIterableType(attr_type)
+        elif null_invoke and not isinstance(attr_type, UflNullableType):
+            attr_type = UflNullableType(attr_type)
         
         return UflAttributeAccessNode(obj, node.attribute, attr_type)
     
@@ -58,22 +64,14 @@ class UflTypingVisitor(UflVisitor):
     
     def visit_macro_invoke(self, node):
         target = self.__demeta(node.target.accept(self))
-        
-        target_type = target.type
-        
-        multi_invoke = False
-        null_invoke = False
-        
-        if isinstance(target_type, (UflListType, UflFlagsType, UflIterableType)):
-            if node.inner_type_invoke:
-                multi_invoke = True
-                target_type = target_type.item_type
-        elif isinstance(target_type, UflNullableType):
-            if node.inner_type_invoke:
-                null_invoke = True
-                target_type = target_type.inner_type
-        elif not node.inner_type_invoke:
-            raise Exception("Iterator access operator cannot be applied to the type {0}".format(target_type))
+
+        target_type, multi_invoke, null_invoke = resolve_multi_type(target.type)
+        if not node.inner_type_invoke:
+            target_type = target.type
+            if not multi_invoke and not null_invoke:
+                raise Exception("Iterator access operator cannot be applied to the type {0}".format(target_type))
+            multi_invoke = False
+            null_invoke = False
         
         params = MacroArgumentTypeProvider(target_type, node.arguments, self)
         

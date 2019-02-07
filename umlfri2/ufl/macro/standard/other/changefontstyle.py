@@ -2,10 +2,10 @@ from umlfri2.types.enums import FontStyle
 
 from ....types.basic import UflBoolType
 from ....types.complex import UflFontType
-from ....types.structured import UflIterableType, UflListType
 from ....types.enum import UflTypedEnumType
 from ...signature import MacroSignature
 from ...inlined import InlinedMacro
+from ....compilerhelpers.automultiresolver import resolve_multi_source
 
 
 class ChangeFontStyleMacro(InlinedMacro):
@@ -21,10 +21,5 @@ class ChangeFontStyleMacro(InlinedMacro):
         
         font_style = node.arguments[0].accept(visitor)
         value = node.arguments[1].accept(visitor)
-        
-        if isinstance(node.target.type, (UflIterableType, UflListType)):
-            var = registrar.register_temp_variable()
-            
-            return "({0}.change(({1}), ({2})) for {0} in ({3}))".format(var, font_style, value, target)
-        else:
-            return "({0}).change(({1}), ({2}))".format(target, font_style, value)
+
+        return resolve_multi_source(registrar, node.target.type, "({{0}}).change(({0}), ({1}))".format(font_style, value), target)

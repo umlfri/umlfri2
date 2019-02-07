@@ -37,6 +37,22 @@ class UflNullableType(UflType):
         
         return False
     
+    @property
+    def is_immutable(self):
+        return self.__inner_type.is_immutable
+    
+    def is_default_value(self, value):
+        return value is None
+    
+    def is_valid_value(self, value):
+        if value is None:
+            return True
+        return self.__inner_type.is_valid_value(value)
+    
+    def set_parent(self, parent):
+        super().set_parent(parent)
+        self.__inner_type.set_parent(self)
+    
     def resolve_unknown_generic(self, generics_cache):
         resolved_inner_type = self.__inner_type.resolve_unknown_generic(generics_cache)
         if resolved_inner_type is None:

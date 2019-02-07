@@ -3,7 +3,7 @@ from ..objects.mutable import UflMutable
 from .tabs import *
 from .columns import *
 from .widgets import *
-from ..types.structured import UflListType, UflObjectType
+from ..types.structured import UflListType, UflObjectType, UflNullableType
 from ..types.basic import UflStringType, UflBoolType, UflIntegerType, UflDecimalType
 from ..types.complex import UflColorType, UflFontType
 from ..types.enum import UflEnumType, UflFlagsType
@@ -36,6 +36,8 @@ class UflDialog:
                 self.__add_list_tab(attr, attr.type)
             elif self.__options.multiline_as_tab and isinstance(attr.type, UflStringType) and attr.type.multiline:
                 self.__add_multiline_tab(attr, attr.type)
+            elif self.__options.multiline_as_tab and isinstance(attr.type, UflNullableType) and isinstance(attr.type.inner_type, UflStringType) and attr.type.inner_type.multiline:
+                self.__add_nullable_multiline_tab(attr, attr.type)
             elif self.__options.object_as_tab and isinstance(attr.type, UflObjectType):
                 self.__add_object_tab(attr, attr.type)
             else:
@@ -77,7 +79,15 @@ class UflDialog:
         tab.add_widget(self.__make_widget(tab, None, type))
         
         return tab
-
+    
+    def __add_nullable_multiline_tab(self, attr, type):
+        tab = UflDialogNullableValueTab(attr, type)
+        self.__tabs.append(tab)
+        
+        tab.add_widget(self.__make_widget(tab, None, type.inner_type))
+        
+        return tab
+    
     def __make_column(self, attr, type):
         if isinstance(type, UflBoolType):
             return UflDialogCheckColumn(attr)
@@ -92,28 +102,30 @@ class UflDialog:
         
     def __make_widget(self, tab, attr, type):
         if isinstance(type, UflBoolType):
-            return UflDialogCheckWidget(tab, attr)
+            return UflDialogCheckWidget(tab, attr, type)
         elif isinstance(type, UflColorType):
-            return UflDialogColorWidget(tab, attr)
+            return UflDialogColorWidget(tab, attr, type)
         elif isinstance(type, UflEnumType):
-            return UflDialogSelectWidget(tab, attr)
+            return UflDialogSelectWidget(tab, attr, type)
         elif isinstance(type, UflFlagsType):
-            return UflDialogMultiSelectWidget(tab, attr)
+            return UflDialogMultiSelectWidget(tab, attr, type)
         elif isinstance(type, UflFontType):
-            return UflDialogFontWidget(tab, attr)
+            return UflDialogFontWidget(tab, attr, type)
         elif isinstance(type, UflIntegerType):
-            return UflDialogIntegerWidget(tab, attr)
+            return UflDialogIntegerWidget(tab, attr, type)
         elif isinstance(type, UflDecimalType):
-            return UflDialogDecimalWidget(tab, attr)
+            return UflDialogDecimalWidget(tab, attr, type)
         elif isinstance(type, (UflObjectType, UflListType)):
-            return UflDialogChildWidget(tab, attr, UflDialog(type, self.__options))
+            return UflDialogChildWidget(tab, attr, type, UflDialog(type, self.__options))
+        elif isinstance(type, UflNullableType):
+            return UflDialogNullableWidget(tab, attr, type, self.__make_widget(tab, attr.create_as_non_nullable(), type.inner_type))
         elif isinstance(type, UflStringType):
             if type.multiline:
-                return UflDialogTextAreaWidget(tab, attr)
+                return UflDialogTextAreaWidget(tab, attr, type)
             elif type.possibilities:
-                return UflDialogComboWidget(tab, attr)
+                return UflDialogComboWidget(tab, attr, type)
             else:
-                return UflDialogTextWidget(tab, attr)
+                return UflDialogTextWidget(tab, attr, type)
         else:
             raise ValueError
     
@@ -152,7 +164,7 @@ class UflDialog:
     def finish(self):
         for tab in self.__tabs:
             tab.finish()
-            if isinstance(tab, UflDialogValueTab):
+            if isinstance(tab, (UflDialogValueTab, UflDialogNullableValueTab)):
                 self.__mutable_object.set_value(tab.id, tab.current_object)
     
     def make_patch(self):

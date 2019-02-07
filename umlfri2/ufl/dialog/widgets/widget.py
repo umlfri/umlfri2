@@ -2,11 +2,16 @@ from weakref import ref
 
 
 class UflDialogWidget:
-    def __init__(self, tab, attr):
+    def __init__(self, tab, attr, type):
         self.__tab = ref(tab)
         self.__attr = attr
         self.__label = None
         self.__attr = attr
+        self.__type = type
+    
+    @property
+    def tab(self):
+        return self.__tab()
     
     @property
     def value(self):
@@ -15,6 +20,10 @@ class UflDialogWidget:
     @property
     def attribute(self):
         return self.__attr
+    
+    @property
+    def type(self):
+        return self.__type
     
     @property
     def id(self):
@@ -28,6 +37,9 @@ class UflDialogWidget:
         return self.__label
     
     def associate(self, ufl_object):
+        raise NotImplementedError
+    
+    def associate_default(self):
         raise NotImplementedError
     
     def translate(self, translation):

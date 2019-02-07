@@ -8,11 +8,12 @@ from umlfri2.application.events.model import ObjectDataChangedEvent, ProjectChan
 from umlfri2.application.events.solution import CloseSolutionEvent
 from umlfri2.application.events.tabs import ChangedCurrentTabEvent
 from umlfri2.model import Project
-from umlfri2.ufl.dialog import UflDialogOptions, UflDialogObjectTab, UflDialogValueTab
+from umlfri2.ufl.dialog import UflDialogOptions, UflDialogObjectTab, UflDialogValueTab, UflDialogNullableValueTab
 from .emptytab import EmptyTab
 from .objecttab import ObjectTab
 from .projecttab import ProjectTab
 from .texttab import TextTab
+from .nullabletexttab import NullableTextTab
 
 
 class PropertiesWidget(QTabWidget):
@@ -92,6 +93,10 @@ class PropertiesWidget(QTabWidget):
                     self.addTab(ObjectTab(self.__main_window, self, tab), None)
                 elif isinstance(tab, UflDialogValueTab):
                     self.addTab(TextTab(self, tab), None)
+                elif isinstance(tab, UflDialogNullableValueTab):
+                    self.addTab(NullableTextTab(self, tab), None)
+                else:
+                    raise Exception
         else:
             self.addTab(EmptyTab(), None)
             self.__dialog = None

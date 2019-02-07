@@ -7,11 +7,11 @@ from umlfri2.application.commands.solution import ApplyMetamodelConfigPatchComma
 from umlfri2.qtgui.base.validatingtabbar import ValidatingTabBar
 from .listtab import ListPropertyTab
 from .objecttab import ObjectPropertyTab
-from umlfri2.ufl.dialog import UflDialogListTab, UflDialogObjectTab, UflDialogValueTab
+from umlfri2.ufl.dialog import UflDialogListTab, UflDialogObjectTab, UflDialogValueTab, UflDialogNullableValueTab
 
 
 class PropertiesDialog(QDialog):
-    def __init__(self, main_window, dialog, mk_apply_patch_command): 
+    def __init__(self, main_window, dialog, mk_apply_patch_command):
         super().__init__(main_window)
         self.__main_window = main_window
         self.setWindowTitle(_("Properties"))

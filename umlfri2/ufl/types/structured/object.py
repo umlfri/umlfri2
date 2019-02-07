@@ -1,5 +1,6 @@
 from collections import OrderedDict
 
+from ..structured import UflNullableType
 from ..base.type import UflType
 from ...objects import UflObject
 
@@ -27,6 +28,12 @@ class UflObjectAttribute:
             raise Exception
         self.__parent = parent
         self.__type.set_parent(self)
+    
+    def create_as_non_nullable(self):
+        if isinstance(self.__type, UflNullableType):
+            return UflObjectAttribute(self.__name, self.__type.inner_type)
+        else:
+            return self
 
 
 class UflObjectType(UflType):

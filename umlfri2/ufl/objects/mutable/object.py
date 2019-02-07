@@ -7,7 +7,9 @@ class UflMutableObject(UflMutable):
         self.__type = type
         self.__attributes = {}
         for name, value in attributes.items():
-            if self.__type.get_attribute(name).type.is_immutable:
+            if value is None:
+                new_value = None
+            elif self.__type.get_attribute(name).type.is_immutable:
                 new_value = value
             else:
                 new_value = value.make_mutable()

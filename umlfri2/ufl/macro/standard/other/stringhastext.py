@@ -1,7 +1,7 @@
 from ....types.basic import UflStringType, UflBoolType
-from ....types.structured import UflIterableType, UflListType
 from ...signature import MacroSignature
 from ...inlined import InlinedMacro
+from ....compilerhelpers.automultiresolver import resolve_multi_source
 
 
 class StringHasTextMacro(InlinedMacro):
@@ -16,10 +16,5 @@ class StringHasTextMacro(InlinedMacro):
         target = node.target.accept(visitor)
         
         py_bool = registrar.register_function(bool)
-        
-        if isinstance(node.target.type, (UflIterableType, UflListType)):
-            var = registrar.register_temp_variable()
-            
-            return "({0}(({1}).strip()) for {1} in ({2}))".format(py_bool, var, target)
-        else:
-            return "{0}(({1}).strip())".format(py_bool, target)
+
+        return resolve_multi_source(registrar, node.target.type, "{0}(({{0}}).strip())".format(py_bool), target)

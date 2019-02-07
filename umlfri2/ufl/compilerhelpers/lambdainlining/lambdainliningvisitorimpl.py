@@ -1,5 +1,5 @@
-from ....expressions.tree import *
-from ....expressions.tree.visitor import UflVisitor
+from ...expressions.tree import *
+from ...expressions.tree.visitor import UflVisitor
 
 
 class LambdaInliningVisitorImpl(UflVisitor):

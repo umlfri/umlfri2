@@ -6,6 +6,7 @@ from .decimal import UflDialogDecimalWidget
 from .font import UflDialogFontWidget
 from .integer import UflDialogIntegerWidget
 from .multiselect import UflDialogMultiSelectWidget
+from .nullable import UflDialogNullableWidget
 from .select import UflDialogSelectWidget
 from .text import UflDialogTextWidget
 from .textarea import UflDialogTextAreaWidget
