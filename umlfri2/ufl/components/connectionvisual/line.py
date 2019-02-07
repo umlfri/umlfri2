@@ -8,7 +8,7 @@ from umlfri2.ufl.types.complex import UflColorType, UflProportionType
 from umlfri2.ufl.types.enum import UflTypedEnumType
 
 
-class LineObject(ConnectionVisualObject):
+class ConnectionLineObject(ConnectionVisualObject):
     def __init__(self, start, end, style, color):
         self.__start = start
         self.__end = end
@@ -32,7 +32,7 @@ class LineObject(ConnectionVisualObject):
         canvas.draw_path(self.__path, self.__color, line_style=self.__style)
 
 
-class VisualComponent(ConnectionVisualComponent):
+class ConnectionLineComponent(ConnectionVisualComponent):
     ATTRIBUTES = {
         'start': UflProportionType(),
         'end': UflProportionType(),
@@ -58,4 +58,4 @@ class VisualComponent(ConnectionVisualComponent):
         )
     
     def _create_object(self, context):
-        return LineObject(self.__start(context).value, self.__end(context).value, self.__style(context), self.__color(context))
+        return ConnectionLineObject(self.__start(context).value, self.__end(context).value, self.__style(context), self.__color(context))

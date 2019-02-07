@@ -29,7 +29,7 @@ class ArrowDefinition:
         return self.__path
 
 
-class ArrowObject(ConnectionVisualObject):
+class ConnectionArrowObject(ConnectionVisualObject):
     def __init__(self, position, style, orientation, color, fill):
         self.__style = style
         self.__position = position
@@ -54,7 +54,7 @@ class ArrowObject(ConnectionVisualObject):
         canvas.draw_path(self.__path, self.__color, self.__fill)
 
 
-class ArrowComponent(ConnectionVisualComponent):
+class ConnectionArrowComponent(ConnectionVisualComponent):
     ATTRIBUTES = {
         'position': UflProportionType(),
         'style': UflDefinedEnumType(ArrowDefinition),
@@ -83,5 +83,5 @@ class ArrowComponent(ConnectionVisualComponent):
         )
     
     def _create_object(self, context):
-        return ArrowObject(self.__position(context).value, self.__style(context), self.__orientation(context),
-                           self.__color(context), self.__fill(context))
+        return ConnectionArrowObject(self.__position(context).value, self.__style(context), self.__orientation(context),
+                                     self.__color(context), self.__fill(context))
