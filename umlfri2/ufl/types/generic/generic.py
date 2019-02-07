@@ -19,3 +19,6 @@ class UflGenericType(UflType):
             generics_cache[self] = actual_type
             return actual_type
         return None
+    
+    def __str__(self):
+        return 'Generic<{0}, {1:016X}>'.format(self.__base_type, id(self))
