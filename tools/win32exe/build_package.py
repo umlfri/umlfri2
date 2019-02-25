@@ -11,6 +11,7 @@ import sys
 import zipfile
 import shutil
 import compileall
+import glob
 
 ########################################
 # Config
@@ -143,6 +144,15 @@ else:
 
 print_h1("Python standard library")
 print_h2("Copying into temp")
+
+for dll_path in glob.glob(os.path.join('c:\\', 'Windows', 'SysWOW64', 'downlevel', 'api-ms-win-crt-*')):
+    dll_name = os.path.basename(dll_path)
+    shutil.copy(dll_path, os.path.join(OUT_DIR, dll_name))
+
+for dll_path in glob.glob(os.path.join('c:\\', 'Windows', 'SysWOW64', 'downlevel', 'api-ms-win-core-*')):
+    dll_name = os.path.basename(dll_path)
+    shutil.copy(dll_path, os.path.join(OUT_DIR, dll_name))
+
 shutil.copytree(os.path.join(sys.base_prefix, 'Lib'), os.path.join(OUT_DIR, 'python'), ignore=shutil.ignore_patterns("__pycache__", "site-packages", "test", "idlelib", "tkinter", "turtledemo", "turtle.py"))
 
 print_h2("Compilation")
