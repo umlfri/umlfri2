@@ -11,7 +11,7 @@ from umlfri2.types.version import Version
 
 class AboutUmlFri:
     name = "UML .FRI"
-    version = Version("2.1")
+    version = Version("2.1.1")
     
     is_debug_version = __debug__
     

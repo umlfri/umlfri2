@@ -11,6 +11,7 @@ import sys
 import zipfile
 import shutil
 import compileall
+import glob
 
 ########################################
 # Config
@@ -125,6 +126,14 @@ if version == 'Debug':
 else:
     shutil.copy(os.path.join('c:\\', 'Windows', 'SysWOW64', 'vcruntime140.dll'), os.path.join(OUT_DIR, 'vcruntime140.dll'))
     shutil.copy(os.path.join('c:\\', 'Windows', 'SysWOW64', 'ucrtbase.dll'), os.path.join(OUT_DIR, 'ucrtbase.dll'))
+
+for dll_path in glob.glob(os.path.join('c:\\', 'Windows', 'SysWOW64', 'downlevel', 'api-ms-win-crt-*')):
+    dll_name = os.path.basename(dll_path)
+    shutil.copy(dll_path, os.path.join(OUT_DIR, dll_name))
+
+for dll_path in glob.glob(os.path.join('c:\\', 'Windows', 'SysWOW64', 'downlevel', 'api-ms-win-core-*')):
+    dll_name = os.path.basename(dll_path)
+    shutil.copy(dll_path, os.path.join(OUT_DIR, dll_name))
 
 print("Python standard library")
 print("=======================")
