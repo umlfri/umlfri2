@@ -3,6 +3,12 @@ Changelog
 
 All notable changes to this project will be documented in this file.
 
+[2.1.1] 2019-02-25
+------------------
+
+### Fixes
+- fixed problem with missing DLLs on Windows 7 installation
+
 [2.1.0] 2018-09-13
 ------------------
 
