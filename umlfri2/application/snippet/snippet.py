@@ -99,7 +99,7 @@ class Snippet:
                 source = all_elements.get(obj['source'])
                 destination = all_elements.get(obj['destination'])
                 
-                if source is not None and destination is not None:
+                if source is not None and destination is not None and diagram.contains(source) and diagram.contains(destination):
                     o = source.connect_with(metamodel.get_connection_type(obj['type']), destination)
                     
                     mutable = o.data.make_mutable()
