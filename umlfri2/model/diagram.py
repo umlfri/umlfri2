@@ -300,6 +300,8 @@ class Diagram:
             for visual in self.__connections:
                 if visual is object:
                     return True
+        
+        return False
     
     def apply_ufl_patch(self, patch):
         self.__data.apply_patch(patch)
