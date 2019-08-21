@@ -1,6 +1,6 @@
 from ....compilerhelpers.lambdainlining import LambdaInliningVisitor
 from ....types.basic import UflBoolType
-from ....types.generic import UflAnyType, UflGenericType
+from ....types.generic import UflAnyType, UflAnyEquatableType, UflGenericType
 from ....types.structured import UflIterableType, UflListType
 from ....types.executable import UflLambdaType
 from ...signature import MacroSignature
@@ -31,8 +31,7 @@ class AnyMacro(InlinedMacro):
 
 
 class AnyContainsValueMacro(InlinedMacro):
-    # TODO: UflAnyType() should be equatable
-    src_type = UflGenericType(UflAnyType())
+    src_type = UflGenericType(UflAnyEquatableType())
     
     signature = MacroSignature(
         'any',

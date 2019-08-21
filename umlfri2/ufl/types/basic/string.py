@@ -27,6 +27,10 @@ class UflStringType(UflType):
     def template(self):
         return self.__template
     
+    @property
+    def has_default(self):
+        return True
+    
     def build_default(self, generator):
         if generator is not None and self.__template is not None:
             return generator.get_text(self.__template)

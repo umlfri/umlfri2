@@ -13,6 +13,10 @@ class UflFontType(UflType):
     def default(self):
         return self.__default
     
+    @property
+    def has_default(self):
+        return True
+    
     def build_default(self, generator):
         return self.__default
     

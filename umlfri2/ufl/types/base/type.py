@@ -12,6 +12,10 @@ class UflType:
     def parent(self):
         return self.__parent
     
+    @property
+    def has_default(self):
+        return False
+    
     def build_default(self, generator):
         raise NotImplementedError
     

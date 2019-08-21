@@ -1,4 +1,4 @@
-from ....types.generic import UflAnyType, UflGenericType
+from ....types.generic import UflAnyType, UflAnyWithDefault, UflGenericType
 from ....types.structured import UflNullableType
 from ...signature import MacroSignature
 from ...inlined import InlinedMacro
@@ -17,8 +17,7 @@ class DefaultUniqueValueGenerator(UniqueValueGenerator):
 
 
 class DefaultMacro(InlinedMacro):
-    # TODO: UflAnyType() should have default
-    src_type = UflGenericType(UflAnyType())
+    src_type = UflGenericType(UflAnyWithDefault())
     
     signature = MacroSignature(
         'default',

@@ -17,6 +17,10 @@ class UflFlagsType(UflType):
     def default_possibilities(self):
         yield from self.__default
     
+    @property
+    def has_default(self):
+        return True
+    
     def build_default(self, generator):
         default = set()
         for possibility in self.__default:

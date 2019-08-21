@@ -1,7 +1,7 @@
 from umlfri2.types.enums import Order
 
 from ....types.enum import UflTypedEnumType
-from ....types.generic import UflAnyType, UflGenericType
+from ....types.generic import UflAnyType, UflAnyComparableType, UflGenericType
 from ....types.structured import UflIterableType
 from ....types.executable import UflLambdaType
 from ...signature import MacroSignature
@@ -11,11 +11,10 @@ from ...inlined import InlinedMacro
 class OrderByMacro(InlinedMacro):
     src_type = UflGenericType(UflAnyType())
     
-    # TODO: UflAnyType must be comparable
     signature = MacroSignature(
         'order_by',
         UflIterableType(src_type),
-        [UflLambdaType([src_type], UflAnyType())],
+        [UflLambdaType([src_type], UflAnyComparableType())],
         UflIterableType(src_type)
     )
     
@@ -31,11 +30,10 @@ class OrderByMacro(InlinedMacro):
 class OrderByOrderMacro(InlinedMacro):
     src_type = UflGenericType(UflAnyType())
     
-    # TODO: UflAnyType must be comparable
     signature = MacroSignature(
         'order_by',
         UflIterableType(src_type),
-        [UflLambdaType([src_type], UflAnyType()), UflTypedEnumType(Order)],
+        [UflLambdaType([src_type], UflAnyComparableType()), UflTypedEnumType(Order)],
         UflIterableType(src_type)
     )
     

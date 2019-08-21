@@ -54,6 +54,10 @@ class UflObjectType(UflType):
     def contains_attribute(self, name):
         return name in self.__attributes
     
+    @property
+    def has_default(self):
+        return True
+    
     def build_default(self, generator):
         ret = {}
         for attr in self.__attributes.values():

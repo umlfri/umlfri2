@@ -22,6 +22,10 @@ class UflEnumType(UflType):
     def default(self):
         return self.__default.value
     
+    @property
+    def has_default(self):
+        return True
+    
     def build_default(self, generator):
         return self.default
     

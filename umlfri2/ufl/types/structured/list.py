@@ -10,6 +10,10 @@ class UflListType(UflType):
     def item_type(self):
         return self.__item_type
     
+    @property
+    def has_default(self):
+        return True
+    
     def build_default(self, generator):
         return UflList(self)
     

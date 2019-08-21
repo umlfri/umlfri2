@@ -10,6 +10,10 @@ class UflNullableType(UflType):
     def inner_type(self):
         return self.__inner_type
     
+    @property
+    def has_default(self):
+        return True
+    
     def build_default(self, generator):
         return None
     
