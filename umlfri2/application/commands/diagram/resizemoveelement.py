@@ -1,5 +1,5 @@
 from umlfri2.application.events.diagram import ElementResizedMovedEvent
-from ..base import Command
+from ..base import Command, CommandNotDone
 
 
 class ResizeMoveElementCommand(Command):
@@ -15,6 +15,9 @@ class ResizeMoveElementCommand(Command):
     
     def _do(self, ruler):
         self.__old_bounds = self.__element.get_bounds(ruler)
+        
+        if self.__new_bounds == self.__old_bounds:
+            raise CommandNotDone
         
         self._redo(ruler)
     

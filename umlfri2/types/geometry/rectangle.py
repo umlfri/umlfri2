@@ -174,6 +174,12 @@ class Rectangle:
             return Rectangle.from_point_size(self.top_left - other, self.size)
         return NotImplemented
     
+    def __eq__(self, other):
+        if not isinstance(other, Rectangle):
+            return False
+        
+        return self.__x == other.__x and self.__y == other.__y and self.__width == other.__width and self.__height == other.__height
+    
     def __str__(self):
         return "[{0}, {1}], [{2}, {3}]".format(self.__x, self.__y, self.__x + self.__width, self.__y + self.__height)
     
