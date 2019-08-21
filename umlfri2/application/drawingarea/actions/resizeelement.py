@@ -7,6 +7,8 @@ from .action import Action
 
 class ResizeElementAction(Action):
     __box = None
+    __orig_box = None
+    __old_point = None
     
     def __init__(self, element, horizontal, vertical):
         super().__init__()
@@ -30,14 +32,14 @@ class ResizeElementAction(Action):
             return DrawingAreaCursor.anti_diagonal_resize
     
     def mouse_down(self, point):
-        self.__box = self.drawing_area.selection.get_bounds()
+        self.__orig_box = self.__box = self.drawing_area.selection.get_bounds()
         self.__old_point = point
     
     def mouse_move(self, point):
-        x1 = self.__box.x1
-        y1 = self.__box.y1
-        x2 = self.__box.x2
-        y2 = self.__box.y2
+        x1 = self.__orig_box.x1
+        y1 = self.__orig_box.y1
+        x2 = self.__orig_box.x2
+        y2 = self.__orig_box.y2
         
         vector = point - self.__old_point
         
@@ -66,9 +68,6 @@ class ResizeElementAction(Action):
                 y2 = y1 + min_size.height
         
         self.__box = Rectangle(x1, y1, x2 - x1, y2 - y1)
-        
-        # TODO: don't move current point
-        self.__old_point = point
     
     def mouse_up(self):
         command = ResizeMoveElementCommand(
