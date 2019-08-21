@@ -12,6 +12,9 @@ try:
     USE_SENTRY = True
 except ImportError:
     USE_SENTRY = False
+    
+    import warnings
+    warnings.warn('Sentry is not installed, exceptions are not being sent to developers automatically')
 
 
 def exception_hook(exc_class, exc, tb):
