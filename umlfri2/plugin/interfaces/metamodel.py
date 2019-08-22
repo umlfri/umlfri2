@@ -1,4 +1,5 @@
 from .interface import Interface
+from .partnotfound import PartNotFound
 
 
 class IMetamodel(Interface):
@@ -17,7 +18,11 @@ class IMetamodel(Interface):
     def get_connection(self, name: str):
         from .connectiontype import IConnectionType
         
-        type = self.__metamodel().get_connection_type(name)
+        try:
+            type = self.__metamodel().get_connection_type(name)
+        except KeyError as e:
+            raise PartNotFound(name) from e
+        
         return IConnectionType(self._executor, type)
 
     def get_connections(self):
@@ -29,7 +34,11 @@ class IMetamodel(Interface):
     def get_diagram(self, name: str):
         from .diagramtype import IDiagramType
         
-        type = self.__metamodel().get_diagram_type(name)
+        try:
+            type = self.__metamodel().get_diagram_type(name)
+        except KeyError as e:
+            raise PartNotFound(name) from e
+        
         return IDiagramType(self._executor, type)
 
     def get_diagrams(self):
@@ -41,7 +50,11 @@ class IMetamodel(Interface):
     def get_element(self, name: str):
         from .elementtype import IElementType
         
-        type = self.__metamodel().get_element_type(name)
+        try:
+            type = self.__metamodel().get_element_type(name)
+        except KeyError as e:
+            raise PartNotFound(name) from e
+        
         return IElementType(self._executor, type)
 
     def get_elements(self):
