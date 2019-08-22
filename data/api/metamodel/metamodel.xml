@@ -23,7 +23,6 @@
         <Value type="string" readable="true"/>
     </Property>
     
-    <!-- TODO: exception for element/connection/diagram not found by name -->
     <Property name="diagrams" singular="diagram">
         <Documentation>
             Diagram types defined in the metamodel.
@@ -36,6 +35,10 @@
         </Index>
         
         <Value type="org.umlfri.api.metamodel.DiagramType" readable="true" iterable="true" nullable="true"/>
+        
+        <Getter>
+            <Throws exception="org.umlfri.api.metamodel.PartNotFound" />
+        </Getter>
     </Property>
     
     <Property name="elements" singular="element">
@@ -50,6 +53,10 @@
         </Index>
         
         <Value type="org.umlfri.api.metamodel.ElementType" readable="true" iterable="true" nullable="true"/>
+        
+        <Getter>
+            <Throws exception="org.umlfri.api.metamodel.PartNotFound" />
+        </Getter>
     </Property>
     
     <Property name="connections" singular="connection">
@@ -64,5 +71,9 @@
         </Index>
         
         <Value type="org.umlfri.api.metamodel.ConnectionType" readable="true" iterable="true" nullable="true"/>
+        
+        <Getter>
+            <Throws exception="org.umlfri.api.metamodel.PartNotFound" />
+        </Getter>
     </Property>
 </Interface>
