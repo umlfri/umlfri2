@@ -70,13 +70,13 @@ class FileList:
     
     def __append_generator(self, inputFile, outputFile, fqn):
         if fqn is None:
-            self.__fileList.append(Generator(inputFile, outputFile, None))
+            self.__fileList.append(Generator(inputFile, outputFile, self.__builder.get_root_namespace()))
         else:
             self.__fileList.append(Generator(inputFile, outputFile, self.__builder.get_type_by_fqn(fqn)))
 
     def __append_template(self, inputFile, outputFile, fqn):
         if fqn is None:
-            self.__fileList.append(Template(inputFile, outputFile, None, self.__modules))
+            self.__fileList.append(Template(inputFile, outputFile, self.__builder.get_root_namespace(), self.__modules))
         else:
             self.__fileList.append(Template(inputFile, outputFile, self.__builder.get_type_by_fqn(fqn), self.__modules))
 
