@@ -4,7 +4,7 @@ import sys
 from base64 import b64encode
 from collections import Iterable
 
-from ..interfaces import IApplication, Interface
+from ..interfaces import IApplication, Interface, InterfaceException
 
 
 class PluginExecutor:
@@ -141,7 +141,7 @@ class PluginExecutor:
             return data
     
     def __encode_exception(self, ex):
-        return {
+        ret = {
             'type': ex.__class__.__name__,
             'message': str(ex),
             'traceback': [
@@ -153,6 +153,11 @@ class PluginExecutor:
                 for record in traceback.extract_tb(self.__filter_tb(ex.__traceback__))
             ]
         }
+        
+        if isinstance(ex, InterfaceException):
+            ret['data'] = ex.data
+        
+        return ret
     
     def __filter_tb(self, tb):
         filename = sys._getframe().f_code.co_filename
