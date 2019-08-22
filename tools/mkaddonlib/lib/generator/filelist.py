@@ -69,10 +69,16 @@ class FileList:
         self.__fileList.append(File(inputFile, outputFile))
     
     def __append_generator(self, inputFile, outputFile, fqn):
-        self.__fileList.append(Generator(inputFile, outputFile, self.__builder.get_type_by_fqn(fqn)))
-            
+        if fqn is None:
+            self.__fileList.append(Generator(inputFile, outputFile, None))
+        else:
+            self.__fileList.append(Generator(inputFile, outputFile, self.__builder.get_type_by_fqn(fqn)))
+
     def __append_template(self, inputFile, outputFile, fqn):
-        self.__fileList.append(Template(inputFile, outputFile, self.__builder.get_type_by_fqn(fqn), self.__modules))
-            
+        if fqn is None:
+            self.__fileList.append(Template(inputFile, outputFile, None, self.__modules))
+        else:
+            self.__fileList.append(Template(inputFile, outputFile, self.__builder.get_type_by_fqn(fqn), self.__modules))
+
     def __append_directory(self, inputFile, outputFile, glob):
         self.__fileList.append(Directory(inputFile, outputFile, glob))

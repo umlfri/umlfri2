@@ -32,3 +32,11 @@ def compute_event_registrar_api_name(identifier):
 
 def compute_event_deregistrar_api_name(identifier):
     return ('deregister' + identifier).lower_underscore_separated
+
+
+def compute_exception_api_name(name):
+    return name.upper_camel_case
+
+
+def compute_exception_property_api_name(singular):
+    return singular.lower_underscore_separated

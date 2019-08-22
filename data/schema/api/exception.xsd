@@ -7,11 +7,11 @@
 			<xs:sequence>
 				<xs:element name="Documentation" type="xs:string" minOccurs="0"/>
 				<xs:element name="Property" type="exception_property_type" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="Stringify" type="exception_stringify_type" minOccurs="0"/>
 			</xs:sequence>
 			<xs:attribute name="name" type="xs:string" use="required"/>
 			<xs:attribute name="api_name" type="xs:string"/>
 			<xs:attribute name="base" type="xs:string"/>
-			<xs:attribute name="throws_from" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:complexType name="exception_property_type">
@@ -26,6 +26,20 @@
 			</xs:element>
 		</xs:sequence>
 		<xs:attribute name="name" type="xs:string" use="required"/>
-		<xs:attribute name="index" type="xs:int" use="required"/>
+		<xs:attribute name="api_name" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="exception_stringify_type">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="Property">
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Text">
+				<xs:complexType>
+					<xs:attribute name="text" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
 	</xs:complexType>
 </xs:schema>

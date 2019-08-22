@@ -57,7 +57,11 @@
 {% else %}
                 .send(self.__server)
 {% for exception in method.throws %}
+{% if exception.exception.has_children_of_type('ExceptionProperty') %}
+                .throws_exception_with_data('{{ exception.exception.api_name }}', {{ exception.exception.identifier.upper_camel_case }})
+{% else %}
                 .throws_exception('{{ exception.exception.api_name }}', {{ exception.exception.identifier.upper_camel_case }})
+{% endif %}
 {% endfor %}
                 .check_unknown_exceptions()
 {% if not method.return_type %}
@@ -74,7 +78,7 @@
 from ..implementation import Message, ApiProperty, ApiEvent
 from ..implementation.communication import Server
 {% for depend in root.referenced %}
-{% if depend.type_name == 'Exception' %}
+{% if depend.type_name == 'ExceptionDefinition' %}
 from {{ paths.get_import_path(depend, root) }} import {{ depend.identifier.upper_camel_case }}
 {% endif %}
 {% endfor %}
@@ -87,7 +91,7 @@ class {{root.identifier.upper_camel_case}}{% if root.base %}({{ root.base.identi
     """
     {{ root.documentation.indent(4) }}
     """
-    
+
 {% endif %}
     def __init__(self, server, id):
 {% if root.base %}
@@ -95,52 +99,52 @@ class {{root.identifier.upper_camel_case}}{% if root.base %}({{ root.base.identi
 {% endif %}
         self.__server = server
         self.__id = id
-    
+
     @property
     def __interface__(self):
         return "{{ root.api_name }}"
-    
+
     @property
     def __id__(self):
         return self.__id
 {% for method in root.children_of_type('InterfaceMethod') %}
-    
+
 {{ interface_method(method, True) }}
 {% endfor %}
 {% for property in root.children_of_type('InterfaceProperty') %}
-    
+
     {{ property.identifier.lower_underscore_separated }} = ApiProperty(
         '{{ property.identifier.lower_underscore_separated }}',
         {% if property.index %}True{% else %}False{% endif %},
         {{ repr(property.documentation) }}
     )
 {% for method in property.children_of_type('InterfacePropertyGetter') %}
-    
+
     @{{property.identifier.lower_underscore_separated}}.getter
 {{ interface_method(method.create_method()) }}
 {% endfor %}
 {% for method in property.children_of_type('InterfacePropertySetter') %}
-    
+
     @{{property.identifier.lower_underscore_separated}}.setter
 {{ interface_method(method.create_method()) }}
 {% endfor %}
 {% for method in property.children_of_type('InterfacePropertyIterator') %}
-    
+
     @{{property.identifier.lower_underscore_separated}}.iterator
 {{ interface_method(method.create_method()) }}
 {% endfor %}
 {% endfor %}
 {% for event in root.children_of_type('InterfaceEvent') %}
-    
+
     {{ event.identifier.lower_underscore_separated }} = ApiEvent(
         '{{ event.identifier.lower_underscore_separated }}',
         {{ repr(event.documentation) }}
     )
-    
+
     @{{ event.identifier.lower_underscore_separated }}.connector
     def {{ event.identifier.lower_underscore_separated }}(self, handler):
         self.__server.connect_event(self.__id, "{{ event.name }}", "{{ event.registrar.api_name }}", handler)
-    
+
     @{{ event.identifier.lower_underscore_separated }}.disconnector
     def {{ event.identifier.lower_underscore_separated }}(self, handler):
         self.__server.disconnect_event(self.__id, "{{ event.name }}", "{{ event.deregistrar.api_name }}", handler)

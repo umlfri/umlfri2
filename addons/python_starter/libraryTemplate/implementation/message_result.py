@@ -16,6 +16,11 @@ class MessageResult:
             raise exception()
         return self
     
+    def throws_exception_with_data(self, name, exception):
+        if 'exception' in self.__data and self.__data['exception']['type'] == name:
+            raise exception(self.__data['exception']['data'])
+        return self
+    
     def check_unknown_exceptions(self):
         if 'exception' in self.__data:
             raise Exception("Unknown exception {0}".format(self.__data['exception']['type']))

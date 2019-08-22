@@ -4,8 +4,11 @@ from .delegateparameter import DelegateParameter
 from .delegatereturn import DelegateReturn
 from .delegatethrows import DelegateThrows
 from .documentation import Documentation
-from .exception import Exception as ExceptionDefinition
+from .exception import ExceptionDefinition
 from .exceptionproperty import ExceptionProperty
+from .exceptionstringify import ExceptionStringify
+from .exceptionstringifyproperty import ExceptionStringifyProperty
+from .exceptionstringifytext import ExceptionStringifyText
 from .interface import Interface
 from .interfaceevent import InterfaceEvent
 from .interfaceeventregistrar import InterfaceEventRegistrar
@@ -68,7 +71,6 @@ class Builder:
     
     def finish(self):
         self.__root_namespace._link(self)
-        self.__add_auto_throws()
         self.__add_to_cache(self.__root_namespace)
     
     def validate(self):
@@ -336,7 +338,6 @@ class Builder:
             namespace,
             api_name=root.attrib.get('api_name'),
             base=root.attrib.get('base'),
-            throws_from=root.attrib.get('throws_from'),
             documentation=self.__parse_documentation(root.find(self.__xml_ns.format('Documentation')))
         )
         namespace.add_child(exception)
@@ -354,12 +355,22 @@ class Builder:
                 property = ExceptionProperty(
                     child.attrib['name'],
                     exception,
+                    api_name=child.attrib.get('api_name'),
                     type=value.attrib['type'],
-                    index=int(child.attrib['index']),
                     iterable=iterable,
                     documentation=self.__parse_documentation(child.find(self.__xml_ns.format('Documentation')))
                 )
                 exception.add_child(property)
+            if child.tag == self.__xml_ns.format('Stringify'):
+                stringify = ExceptionStringify(exception)
+                exception.add_child(stringify)
+                for stringify_child in child:
+                    if stringify_child.tag == self.__xml_ns.format('Property'):
+                        stringify_property = ExceptionStringifyProperty(stringify, stringify_child.get('name'))
+                        stringify.add_child(stringify_property)
+                    elif stringify_child.tag == self.__xml_ns.format('Text'):
+                        stringify_text = ExceptionStringifyText(stringify, stringify_child.get('text'))
+                        stringify.add_child(stringify_text)
     
     ################
     ### Delegate
@@ -449,63 +460,12 @@ class Builder:
         return Documentation('\n'.join(line.strip() for line in text.strip().split('\n')))
     
     def __add_to_cache(self, object):
-        if object.fqn in self.__cache:
-            raise Exception("{0} is already in cache".format(object.fqn))
-        
-        self.__cache[object.fqn] = object
+        if object.name is not None:
+            if object.fqn in self.__cache:
+                raise Exception("{0} is already in cache".format(object.fqn))
+            
+            self.__cache[object.fqn] = object
         
         if isinstance(object, BaseContainer):
             for child in object.children:
                 self.__add_to_cache(child)
-
-    ########################
-    # Auto throws processing
-    
-    def __add_auto_throws(self):
-        exceptions = {'all': [], 'mutator': [], 'transactional': [], 'getter': [], 'setter': [], 'iterator': []}
-        self.__find_auto_throws(self.__root_namespace, exceptions)
-        self.__set_auto_throws(self.__root_namespace, exceptions)
-    
-    def __find_auto_throws(self, ns, exceptions):
-        for child in ns.children:
-            if isinstance(child, Namespace):
-                self.__find_auto_throws(child, exceptions)
-            elif isinstance(child, ExceptionDefinition):
-                for type in child.throws_from:
-                    exceptions[type].append(child)
-    
-    def __set_auto_throws(self, ns, exceptions):
-        for child in ns.children:
-            if isinstance(child, Namespace):
-                self.__set_auto_throws(child, exceptions)
-            elif isinstance(child, Interface):
-                for member in child.children:
-                    if isinstance(member, InterfaceMethod):
-                        self.__set_auto_throws_to_method(member, exceptions['all'])
-                        if member.mutator:
-                            self.__set_auto_throws_to_method(member, exceptions['mutator'])
-                        if member.transactional:
-                            self.__set_auto_throws_to_method(member, exceptions['transactional'])
-                    elif isinstance(member, InterfaceProperty):
-                        if member.getter is not None:
-                            self.__set_auto_throws_to_property(member.getter, exceptions['all'])
-                            self.__set_auto_throws_to_property(member.getter, exceptions['getter'])
-                        if member.setter is not None:
-                            self.__set_auto_throws_to_property(member.setter, exceptions['all'])
-                            self.__set_auto_throws_to_property(member.setter, exceptions['setter'])
-                            self.__set_auto_throws_to_property(member.setter, exceptions['mutator'])
-                            if member.setter.transactional:
-                                self.__set_auto_throws_to_property(member.setter, exceptions['transactional'])
-                        if member.iterator is not None:
-                            self.__set_auto_throws_to_property(member.iterator, exceptions['all'])
-                            self.__set_auto_throws_to_property(member.iterator, exceptions['iterator'])
-    
-    def __set_auto_throws_to_method(self, member, exceptions):
-        for exc in exceptions:
-            throws = InterfaceMethodThrows(member, exc)
-            member.add_child(throws)
-    
-    def __set_auto_throws_to_property(self, member, exceptions):
-        for exc in exceptions:
-            throws = InterfacePropertyThrows(member, exc)
-            member.add_child(throws)

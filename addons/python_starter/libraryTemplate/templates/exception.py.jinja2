@@ -1,7 +1,38 @@
-class {{ root.identifier.upper_cammel_case }}({% if root.base %}{{ root.base.identifier.upper_cammel_case }}{% else %}Exception{% endif %}):
+class {{ root.identifier.upper_camel_case }}({% if root.base %}{{ root.base.identifier.upper_cammel_case }}{% else %}Exception{% endif %}):
 {% if root.documentation %}
     """
     {{ root.documentation.indent(4) }}
     """
 {% endif %}
-    pass
+{% if root.has_children_of_type('ExceptionProperty') %}
+    def __init__(self, data):
+        self.__data = data
+
+{% endif %}
+    @property
+    def __exception__(self):
+        return "{{ root.api_name }}"
+{% for property in root.children_of_type('ExceptionProperty') %}
+
+    @property
+    def {{ property.identifier.lower_underscore_separated }}(self):
+{% if property.documentation %}
+        """
+        {{ property.documentation.indent(8) }}
+        """
+{% endif %}
+        return self.__data["{{ property.api_name }}"]
+{% endfor %}
+{% for stringify in root.children_of_type('ExceptionStringify') %}
+
+    def __str__(self):
+        return (""
+{% for stringify_part in stringify.children %}
+{% if stringify_part.type_name == 'ExceptionStringifyText' %}
+            + {{ stringify_part.text | pprint }}
+{% elif stringify_part.type_name == 'ExceptionStringifyProperty' %}
+            + self.{{ stringify_part.exception_property.identifier.lower_underscore_separated }}
+{% endif %}
+{% endfor %}
+        )
+{% endfor %}

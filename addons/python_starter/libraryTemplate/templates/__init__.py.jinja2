@@ -1,5 +1,7 @@
 {% for type in root.children %}
-{% if type.type_name in ('Interface', 'Exception') %}
+{% if type.type_name == 'Interface' %}
+from .{{ type.identifier.lower_case }} import {{ type.identifier.upper_camel_case }}
+{% elif type.type_name == 'ExceptionDefinition' %}
 from .{{ type.identifier.lower_case }} import {{ type.identifier.upper_camel_case }}
 {% endif %}
 {% endfor %}

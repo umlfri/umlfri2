@@ -1,3 +1,5 @@
+import sys
+
 from .base import Base
 
 
@@ -53,4 +55,11 @@ class BaseContainer(Base):
         self.__children[child.name] = child
         self.__ordered_children.append(child)
         if self.__sorted:
-            self.__ordered_children.sort(key = lambda x: x.name)
+            self.__ordered_children.sort(key = self.__child_sort_key)
+    
+    @staticmethod
+    def __child_sort_key(x):
+        if x.name is None:
+            return chr(sys.maxunicode) * 10
+        else:
+            return x.name

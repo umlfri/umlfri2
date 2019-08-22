@@ -1,13 +1,19 @@
 from .base import Base
-from .primitivetype import PRIMITIVE_TYPES, PrimitiveType
+from .primitivetype import PRIMITIVE_TYPES
+
+from . import helper
 
 
 class ExceptionProperty(Base):
-    def __init__(self, name, exception, type, index, iterable=False, documentation=None):
+    def __init__(self, name, exception, type, api_name=None, iterable=False, documentation=None):
         Base.__init__(self, name, exception)
         self.__documentation = documentation
         self.__iterable = iterable
-        self.__index = index
+        
+        if api_name is not None:
+            self.__api_name = api_name
+        else:
+            self.__api_name = helper.compute_exception_property_api_name(self.identifier)
         
         self.__type = type
     
@@ -20,16 +26,16 @@ class ExceptionProperty(Base):
         return self.__type
     
     @property
+    def api_name(self):
+        return self.__api_name
+    
+    @property
     def iterable(self):
         return self.__iterable
     
     @property
     def documentation(self):
         return self.__documentation
-    
-    @property
-    def index(self):
-        return self.__index
     
     def _link(self, builder):
         Base._link(self, builder)
