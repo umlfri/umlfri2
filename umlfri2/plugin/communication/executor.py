@@ -103,15 +103,14 @@ class PluginExecutor:
                 if value is None:
                     typed_parameters[name] = None
                 else:
-                    # TODO: exception - object not found
                     typed_parameters[name] = self.__objects[value]
             elif type is None:
                 typed_parameters[name] = value # variant does not have to be retyped
             else:
-                # TODO: exception - incorrect parameter type
                 typed_parameters[name] = type(value)
         
-        # TODO: exception - some parameters left unprocessed
+        if real_parameters:
+            raise Exception('Some parameters left unprocessed {0}'.format(tuple(real_parameters.keys())))
         
         return typed_parameters
     
