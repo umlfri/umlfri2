@@ -73,9 +73,7 @@ class PluginExecutor:
                         'exception': self.__encode_exception(ex)
                     }
                 )
-                # TODO: remove
-                traceback.print_exc()
-            elif __debug__:
+            if __debug__:
                 traceback.print_exc()
     
     def __execute_special(self, target, selector, arguments):
