@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QPushButton
 import sip
 
 from umlfri2.application import Application
-from umlfri2.application.drawingarea.actions import AddElementAction, AddConnectionAction
+from umlfri2.application.drawingarea.actions import AddElementAction, AddTypedConnectionAction
 from umlfri2.application.events.application import LanguageChangedEvent
 from umlfri2.constants.paths import GRAPHICS
 from umlfri2.qtgui.base import image_loader
@@ -14,7 +14,7 @@ from umlfri2.qtgui.base.hlinewidget import HLineWidget
 
 
 class ToolBox(QWidget):
-    def __init__(self, drawing_area, show_names): 
+    def __init__(self, drawing_area, show_names):
         super().__init__()
         self.__arrow = QIcon(os.path.join(GRAPHICS, 'arrow.png'))
         self.__vbox = QVBoxLayout()
@@ -56,7 +56,7 @@ class ToolBox(QWidget):
         current_element = None
         if isinstance(drawing_area.current_action, AddElementAction):
             current_element = drawing_area.current_action.element_type
-        elif isinstance(drawing_area.current_action, AddConnectionAction):
+        elif isinstance(drawing_area.current_action, AddTypedConnectionAction):
             current_connection = drawing_area.current_action.connection_type
         
         self.__add_button(
@@ -86,7 +86,7 @@ class ToolBox(QWidget):
         
         for connection_type in diagram_type.connection_types:
             self.__add_button(image_loader.load_icon(connection_type.icon), translation.translate(connection_type),
-                              (AddConnectionAction, connection_type.id),
+                              (AddTypedConnectionAction, connection_type.id),
                               drawing_area,
                               current_connection == connection_type.id)
     

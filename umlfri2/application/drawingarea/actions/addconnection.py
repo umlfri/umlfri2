@@ -1,13 +1,11 @@
-from umlfri2.application.commands.diagram.adddiagramconnection import AddDiagramConnectionCommand
 from umlfri2.model.element import ElementVisual
 from umlfri2.types.geometry import PathBuilder, Point
 from .action import Action
 
 
 class AddConnectionAction(Action):
-    def __init__(self, type):
+    def __init__(self):
         super().__init__()
-        self.__type = type
         self.__path = None
         self.__source_element = None
         self.__points = []
@@ -15,10 +13,6 @@ class AddConnectionAction(Action):
         self.__last_point = None
         self.__snapping = None
         self.__snapped = None
-    
-    @property
-    def connection_type(self):
-        return self.__type
     
     @property
     def path(self):
@@ -48,9 +42,9 @@ class AddConnectionAction(Action):
                 self._finish()
         else:
             element = self.drawing_area.diagram.get_visual_at(self.application.ruler, point)
-            if self.__source_element is not element or self.__points: 
+            if self.__source_element is not element or self.__points:
                 if isinstance(element, ElementVisual):
-                    self.__create_connection(element)
+                    self._create_connection(self.__source_element, element, self.__points)
                     self._finish()
                 else:
                     if self.__snapping is not None:
@@ -88,20 +82,11 @@ class AddConnectionAction(Action):
         if self.__last_point is not None:
             element = self.drawing_area.diagram.get_visual_at(self.application.ruler, self.__last_point)
             if self.__source_element is not element and not self.__points and isinstance(element, ElementVisual):
-                self.__create_connection(element)
+                self._create_connection(self.__source_element, element, self.__points)
                 self._finish()
     
-    def __create_connection(self, destination_element):
-        type = self.drawing_area.diagram.parent.project.metamodel.get_connection_type(self.__type)
-        command = AddDiagramConnectionCommand(
-            self.drawing_area.diagram,
-            type,
-            self.__source_element,
-            destination_element,
-            self.__points
-        )
-        self.application.commands.execute(command)
-        self.drawing_area.selection.select(command.connection_visual)
+    def _create_connection(self, source_element, destination_element, points):
+        raise NotImplementedError
     
     def __build_path(self):
         path = PathBuilder()
