@@ -22,3 +22,4 @@ class AddTypedConnectionAction(AddConnectionAction):
         )
         self.application.commands.execute(command)
         self.drawing_area.selection.select(command.connection_visual)
+        self._finish()

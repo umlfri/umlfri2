@@ -45,7 +45,6 @@ class AddConnectionAction(Action):
             if self.__source_element is not element or self.__points:
                 if isinstance(element, ElementVisual):
                     self._create_connection(self.__source_element, element, self.__points)
-                    self._finish()
                 else:
                     if self.__snapping is not None:
                         self.__snapped = self.__snapping.snap_point(point)
@@ -83,7 +82,6 @@ class AddConnectionAction(Action):
             element = self.drawing_area.diagram.get_visual_at(self.application.ruler, self.__last_point)
             if self.__source_element is not element and not self.__points and isinstance(element, ElementVisual):
                 self._create_connection(self.__source_element, element, self.__points)
-                self._finish()
     
     def _create_connection(self, source_element, destination_element, points):
         raise NotImplementedError
