@@ -6,7 +6,7 @@ from .selectionpointposition import SelectionPointPosition
 from umlfri2.model.connection import ConnectionVisual
 from umlfri2.model.element import ElementVisual
 from umlfri2.types.color import Colors
-from umlfri2.types.geometry import Rectangle, Vector, Size, Line
+from umlfri2.types.geometry import Rectangle, Vector, Size, Line, PathBuilder, Point, Transformation
 from .actions import MoveSelectionAction, ResizeElementAction, MoveConnectionPointAction, MoveConnectionLabelAction, \
     RemoveConnectionPointAction, AddConnectionPointAction
 
@@ -19,6 +19,30 @@ class Selection:
     SELECTION_POINT_SIZE = 8
     
     LABEL_LINE_MINIMAL_DISTANCE = 10
+    
+    ICON_COLOR = Colors.darkgray
+    ICON_COLOR_BACKGROUND = Colors.white.add_alpha(200)
+    
+    CONNECTION_ICON_SHIFT = Vector(8, 0)
+    CONNECTION_ICON = PathBuilder()\
+        .move_to(Point(0, 5))\
+        .line_to(Point(11, 5))\
+        .move_to(Point(6, 0))\
+        .line_to(Point(11, 5))\
+        .line_to((Point(6, 10)))\
+        .build()
+    CONNECTION_ICON_BOUNDS = Rectangle(0, 0, 11, 10) + CONNECTION_ICON_SHIFT
+    
+    CONNECTION_ELEMENT_ICON_SHIFT = Vector(8, 15)
+    CONNECTION_ELEMENT_ICON = PathBuilder()\
+        .from_path(CONNECTION_ICON)\
+        .move_to(Point(12, 0))\
+        .line_to(Point(22, 0))\
+        .line_to(Point(22, 10))\
+        .line_to(Point(12, 10))\
+        .close()\
+        .build()
+    CONNECTION_ELEMENT_ICON_BOUNDS = Rectangle(0, 0, 22, 10) + CONNECTION_ELEMENT_ICON_SHIFT
     
     def __init__(self, application, diagram):
         self.__selected = set()
@@ -122,6 +146,15 @@ class Selection:
             if len(self.__selected) == 1:
                 for pos_x, pos_y in self.__get_selection_points_positions(visual):
                     self.__draw_selection_point(canvas, bounds, pos_x, pos_y)
+                
+                connection_icon_position = bounds.top_right + self.CONNECTION_ICON_SHIFT
+                connection_icon = self.CONNECTION_ICON.transform(Transformation.make_translate(connection_icon_position))
+                canvas.draw_path(connection_icon, fg=self.ICON_COLOR, bg=self.ICON_COLOR_BACKGROUND, line_width=2)
+                
+                connection_element_icon_position = bounds.top_right + self.CONNECTION_ELEMENT_ICON_SHIFT
+                connection_element_icon = self.CONNECTION_ELEMENT_ICON.transform(Transformation.make_translate(
+                    connection_element_icon_position))
+                canvas.draw_path(connection_element_icon, fg=self.ICON_COLOR, bg=self.ICON_COLOR_BACKGROUND, line_width=2)
             
             canvas.draw_rectangle(bounds, fg=self.SELECTION_COLOR, line_width=self.SELECTION_SIZE)
         elif isinstance(visual, ConnectionVisual):
@@ -221,6 +254,13 @@ class Selection:
         
         visual = self.__diagram.get_visual_at(self.__application.ruler, position)
         
+        if len(self.__selected) == 1 and self.is_element_selected:
+            element, = self.__selected
+            if visual is None or self.__diagram.get_z_order(visual) < self.__diagram.get_z_order(element):
+                element_icon_action = self.__get_element_icon_action_at(element, position, shift_pressed)
+                if element_icon_action is not None:
+                    return element_icon_action
+        
         if visual not in self.__selected:
             return None
         
@@ -238,17 +278,30 @@ class Selection:
             return None
 
     def __get_element_action_at(self, element, position, shift_pressed):
+        if shift_pressed:
+            return None
+        
         bounds = element.get_bounds(self.__application.ruler)
         for pos_x, pos_y in self.__get_selection_points_positions(element):
             if self.__get_selection_point(bounds, pos_x, pos_y).contains(position):
-                if shift_pressed:
-                    return None
-                else:
-                    return ResizeElementAction(element, pos_x, pos_y)
+                return ResizeElementAction(element, pos_x, pos_y)
+                
+        return MoveSelectionAction()
+    
+    def __get_element_icon_action_at(self, element, position, shift_pressed):
         if shift_pressed:
             return None
-        else:
+        
+        bounds = element.get_bounds(self.__application.ruler)
+        connection_icon_bounds = self.CONNECTION_ICON_BOUNDS + bounds.top_right.as_vector()
+        if connection_icon_bounds.contains(position):
             return MoveSelectionAction()
+        
+        connection_element_icon_bounds = self.CONNECTION_ELEMENT_ICON_BOUNDS + bounds.top_right.as_vector()
+        if connection_element_icon_bounds.contains(position):
+            return MoveSelectionAction()
+        
+        return None
     
     def __get_connection_action_at(self, connection, position, shift_pressed):
         found = None
