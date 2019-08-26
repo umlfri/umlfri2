@@ -2,20 +2,17 @@ from umlfri2.application.commands.diagram.adddiagramconnection import AddDiagram
 from .addconnection import AddConnectionAction
 
 
-class AddTypedConnectionAction(AddConnectionAction):
-    def __init__(self, type):
+class AddUntypedConnectionAction(AddConnectionAction):
+    def __init__(self, source_element):
         super().__init__()
-        self.__type = type
-    
-    @property
-    def connection_type(self):
-        return self.__type
+        
+        self.__source_element = source_element
     
     def _get_source_element(self, point):
-        return self.drawing_area.diagram.get_visual_at(self.application.ruler, point)
+        return self.__source_element
     
     def _create_connection(self, source_element, destination_element, points):
-        type = self.drawing_area.diagram.parent.project.metamodel.get_connection_type(self.__type)
+        type = next(self.drawing_area.diagram.parent.project.metamodel.connection_types)
         command = AddDiagramConnectionCommand(
             self.drawing_area.diagram,
             type,

@@ -8,7 +8,7 @@ from umlfri2.model.element import ElementVisual
 from umlfri2.types.color import Colors
 from umlfri2.types.geometry import Rectangle, Vector, Size, Line, PathBuilder, Point, Transformation
 from .actions import MoveSelectionAction, ResizeElementAction, MoveConnectionPointAction, MoveConnectionLabelAction, \
-    RemoveConnectionPointAction, AddConnectionPointAction
+    RemoveConnectionPointAction, AddConnectionPointAction, AddUntypedConnectionAction
 
 
 class Selection:
@@ -295,7 +295,7 @@ class Selection:
         bounds = element.get_bounds(self.__application.ruler)
         connection_icon_bounds = self.CONNECTION_ICON_BOUNDS + bounds.top_right.as_vector()
         if connection_icon_bounds.contains(position):
-            return MoveSelectionAction()
+            return AddUntypedConnectionAction(element)
         
         connection_element_icon_bounds = self.CONNECTION_ELEMENT_ICON_BOUNDS + bounds.top_right.as_vector()
         if connection_element_icon_bounds.contains(position):

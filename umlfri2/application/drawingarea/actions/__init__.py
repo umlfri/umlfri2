@@ -1,4 +1,5 @@
 from .addtypedconnection import AddTypedConnectionAction
+from .adduntypedconnection import AddUntypedConnectionAction
 from .addconnectionpoint import AddConnectionPointAction
 from .addelement import AddElementAction
 from .moveconnectionlabel import MoveConnectionLabelAction

@@ -33,7 +33,7 @@ class AddConnectionAction(Action):
     
     def mouse_down(self, point):
         if self.__source_element is None:
-            element = self.drawing_area.diagram.get_visual_at(self.application.ruler, point)
+            element = self._get_source_element(point)
             if isinstance(element, ElementVisual):
                 self.__first_point = element.get_bounds(self.application.ruler).center
                 self.__build_path()
@@ -82,6 +82,9 @@ class AddConnectionAction(Action):
             element = self.drawing_area.diagram.get_visual_at(self.application.ruler, self.__last_point)
             if self.__source_element is not element and not self.__points and isinstance(element, ElementVisual):
                 self._create_connection(self.__source_element, element, self.__points)
+    
+    def _get_source_element(self, point):
+        raise NotImplementedError
     
     def _create_connection(self, source_element, destination_element, points):
         raise NotImplementedError
