@@ -39,7 +39,7 @@ class Color:
         return Color((self.__value & 0xff000000) + (0xffffff - self.__value & 0xffffff))
     
     def add_alpha(self, alpha):
-        return Color(self.__value & 0xffffff + alpha << 24)
+        return Color(self.__value & 0xffffff + (alpha << 24))
     
     def to_gray(self):
         return Color(self.__value & 0xff000000 + (self.r * 11 + self.g * 16 + self.b * 5) // 32)
