@@ -1,4 +1,9 @@
+from collections import namedtuple
+
 from ..drawingareacursor import DrawingAreaCursor
+
+
+ActionMenuItem = namedtuple('ActionMenuItem', ['icon', 'text', 'action'])
 
 
 class Action:
@@ -56,6 +61,10 @@ class Action:
     @property
     def cursor(self):
         return DrawingAreaCursor.arrow
+    
+    @property
+    def menu_to_show(self):
+        return None
     
     def mouse_down(self, point):
         pass

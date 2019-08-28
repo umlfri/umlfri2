@@ -144,6 +144,17 @@ class DrawingArea:
             self.__current_action.mouse_up()
             self.__postprocess_action(point, shift_pressed)
     
+    @property
+    def menu_to_show(self):
+        if self.__current_action is None:
+            return None
+        
+        return self.__current_action.menu_to_show
+    
+    def execute_menu_action(self, menu_item, point, control_pressed, shift_pressed):
+        menu_item.action()
+        self.__postprocess_action(point, shift_pressed)
+
     def get_object_at(self, point):
         point = self.__transform_position(point)
         

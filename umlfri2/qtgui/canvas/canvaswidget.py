@@ -1,6 +1,8 @@
+from functools import partial
+
 from PyQt5.QtCore import Qt, QSize
-from PyQt5.QtGui import QPainter, QContextMenuEvent, QKeySequence
-from PyQt5.QtWidgets import QWidget, QApplication, QShortcut
+from PyQt5.QtGui import QPainter, QContextMenuEvent, QKeySequence, QCursor
+from PyQt5.QtWidgets import QWidget, QApplication, QShortcut, QMenu, QAction
 
 from umlfri2.application import Application
 from umlfri2.application.commands.diagram import ShowElementCommand, ChangeZOrderCommand, ZOrderDirection, \
@@ -17,6 +19,7 @@ from umlfri2.metamodel import DefaultElementAction
 from umlfri2.model import ElementObject
 from umlfri2.model.element import ElementVisual
 from umlfri2.types.geometry import Point
+from ..base import image_loader
 from .connectionmenu import CanvasConnectionMenu
 from .diagrammenu import CanvasDiagramMenu
 from .elementmenu import CanvasElementMenu
@@ -245,6 +248,7 @@ class CanvasWidget(QWidget):
         self.update()
         self.__update_size()
         self.__update_cursor()
+        self.__show_menu_if_needed()
     
     def __update_size(self):
         size = self.__drawing_area.get_size(Application().ruler)
@@ -270,6 +274,34 @@ class CanvasWidget(QWidget):
             self.setCursor(Qt.CrossCursor)
         
         self.__old_cursor = self.__drawing_area.cursor
+    
+    def __show_menu_if_needed(self):
+        menu = self.__drawing_area.menu_to_show
+        if menu is None:
+            return
+        
+        qt_menu = QMenu(self)
+        for menu_item in menu:
+            qt_menu_item = QAction(menu_item.text, qt_menu)
+            if menu_item.icon is not None:
+                qt_menu_item.setIcon(image_loader.load_icon(menu_item.icon))
+            qt_menu_item.triggered.connect(partial(self.__execute_menu_action, menu_item))
+            qt_menu.addAction(qt_menu_item)
+        
+        qt_menu_pos = QCursor.pos()
+        qt_menu.exec_(qt_menu_pos)
+    
+    def __execute_menu_action(self, menu_item):
+        global_pos = QCursor.pos()
+        pos = self.mapFromGlobal(global_pos)
+        point = Point(pos.x(), pos.y())
+        
+        self.__drawing_area.execute_menu_action(
+            menu_item,
+            point,
+            QApplication.keyboardModifiers() == Qt.ControlModifier,
+            QApplication.keyboardModifiers() == Qt.ShiftModifier
+        )
     
     def __something_changed(self, event):
         self.__do_update()
