@@ -33,17 +33,6 @@ class Selection:
         .build()
     CONNECTION_ICON_BOUNDS = Rectangle(0, 0, 11, 10) + CONNECTION_ICON_SHIFT
     
-    CONNECTION_ELEMENT_ICON_SHIFT = Vector(8, 15)
-    CONNECTION_ELEMENT_ICON = PathBuilder()\
-        .from_path(CONNECTION_ICON)\
-        .move_to(Point(12, 0))\
-        .line_to(Point(22, 0))\
-        .line_to(Point(22, 10))\
-        .line_to(Point(12, 10))\
-        .close()\
-        .build()
-    CONNECTION_ELEMENT_ICON_BOUNDS = Rectangle(0, 0, 22, 10) + CONNECTION_ELEMENT_ICON_SHIFT
-    
     def __init__(self, application, diagram):
         self.__selected = set()
         self.__application = application
@@ -150,11 +139,6 @@ class Selection:
                 connection_icon_position = bounds.top_right + self.CONNECTION_ICON_SHIFT
                 connection_icon = self.CONNECTION_ICON.transform(Transformation.make_translate(connection_icon_position))
                 canvas.draw_path(connection_icon, fg=self.ICON_COLOR, bg=self.ICON_COLOR_BACKGROUND, line_width=2)
-                
-                connection_element_icon_position = bounds.top_right + self.CONNECTION_ELEMENT_ICON_SHIFT
-                connection_element_icon = self.CONNECTION_ELEMENT_ICON.transform(Transformation.make_translate(
-                    connection_element_icon_position))
-                canvas.draw_path(connection_element_icon, fg=self.ICON_COLOR, bg=self.ICON_COLOR_BACKGROUND, line_width=2)
             
             canvas.draw_rectangle(bounds, fg=self.SELECTION_COLOR, line_width=self.SELECTION_SIZE)
         elif isinstance(visual, ConnectionVisual):
@@ -296,10 +280,6 @@ class Selection:
         connection_icon_bounds = self.CONNECTION_ICON_BOUNDS + bounds.top_right.as_vector()
         if connection_icon_bounds.contains(position):
             return AddUntypedConnectionAction(element)
-        
-        connection_element_icon_bounds = self.CONNECTION_ELEMENT_ICON_BOUNDS + bounds.top_right.as_vector()
-        if connection_element_icon_bounds.contains(position):
-            return MoveSelectionAction()
         
         return None
     
