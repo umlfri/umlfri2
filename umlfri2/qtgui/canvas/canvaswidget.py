@@ -19,10 +19,10 @@ from umlfri2.metamodel import DefaultElementAction
 from umlfri2.model import ElementObject
 from umlfri2.model.element import ElementVisual
 from umlfri2.types.geometry import Point
-from ..base import image_loader
 from .connectionmenu import CanvasConnectionMenu
 from .diagrammenu import CanvasDiagramMenu
 from .elementmenu import CanvasElementMenu
+from .actionmenu import ActionMenu
 from ..projecttree import ProjectMimeData
 from ..properties import PropertiesDialog
 from ..rendering import QTPainterCanvas
@@ -280,29 +280,8 @@ class CanvasWidget(QWidget):
         if menu is None:
             return
         
-        qt_menu = QMenu(self)
-        for menu_item in menu:
-            qt_menu_item = QAction(menu_item.text, qt_menu)
-            if menu_item.icon is not None:
-                qt_menu_item.setIcon(image_loader.load_icon(menu_item.icon))
-            qt_menu_item.triggered.connect(partial(self.__execute_menu_action, menu_item))
-            qt_menu.addAction(qt_menu_item)
-        
-        qt_menu_pos = QCursor.pos()
-        qt_menu.exec_(qt_menu_pos)
-    
-    def __execute_menu_action(self, menu_item):
-        global_pos = QCursor.pos()
-        pos = self.mapFromGlobal(global_pos)
-        point = Point(pos.x(), pos.y())
-        
-        self.__drawing_area.execute_menu_action(
-            menu_item,
-            point,
-            QApplication.keyboardModifiers() == Qt.ControlModifier,
-            QApplication.keyboardModifiers() == Qt.ShiftModifier
-        )
+        action_menu = ActionMenu(self.__drawing_area, menu)
+        action_menu.do()
     
     def __something_changed(self, event):
         self.__do_update()
-
