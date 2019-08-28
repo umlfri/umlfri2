@@ -33,7 +33,7 @@ class DelegateReturn(Base):
         return self.__documentation
     
     def __repr__(self):
-        return "<ReturnType of Delegate %s>"%(self.parent.fqn)
+        return "<ReturnType of Delegate {0}>".format(self.parent.fqn)
     
     def _link(self, builder):
         Base._link(self, builder)

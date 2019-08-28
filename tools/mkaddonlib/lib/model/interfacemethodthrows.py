@@ -29,7 +29,7 @@ class InterfaceMethodThrows(Base):
         yield self.__exception
     
     def __repr__(self):
-        return "<Throws %s from InterfaceMethod %s>"%(self.exception.fqn, self.parent.fqn)
+        return "<Throws {0} from InterfaceMethod {1}>".format(self.exception.fqn, self.parent.fqn)
     
     def _link(self, builder):
         Base._link(self, builder)

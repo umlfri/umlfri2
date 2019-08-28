@@ -50,4 +50,4 @@ class InterfaceEventDeregistrar(Base):
         return meth
     
     def __repr__(self):
-        return "<Deregistrar of InterfaceEvent %s>"%(self.parent.fqn)
+        return "<Deregistrar of InterfaceEvent {0}>".format(self.parent.fqn)

@@ -54,7 +54,7 @@ class Base:
         return str(self.fqn)
     
     def __repr__(self):
-        return '<%s %s>'%(self.__class__.__name__, self.fqn)
+        return '<{0} {1}>'.format(self.__class__.__name__, self.fqn)
     
     def __lt__(self, other):
         return self.name < other.name

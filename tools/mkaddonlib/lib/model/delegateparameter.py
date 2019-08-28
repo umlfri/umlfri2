@@ -49,7 +49,7 @@ class DelegateParameter(Base):
         return self.__documentation
     
     def __repr__(self):
-        return "<Parameter %s of Delegate %s>"%(self.name, self.parent.fqn)
+        return "<Parameter {0} of Delegate {1}>".format(self.name, self.parent.fqn)
     
     def _link(self, builder):
         Base._link(self, builder)

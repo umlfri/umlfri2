@@ -72,7 +72,7 @@ class Interface(BaseContainer):
         BaseContainer.validate(self)
         
         if self.__base is not None and not self.__base.is_abstract:
-            raise Exception("Base interface of %s is not marked as abstract" % self.fqn)
+            raise Exception("Base interface of {0} is not marked as abstract".format(self.fqn))
     
     def _link(self, builder):
         BaseContainer._link(self, builder)

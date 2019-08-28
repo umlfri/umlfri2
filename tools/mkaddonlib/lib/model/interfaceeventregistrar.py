@@ -49,4 +49,4 @@ class InterfaceEventRegistrar(Base):
         return meth
     
     def __repr__(self):
-        return "<Registrar of InterfaceEvent %s>"%(self.parent.fqn)
+        return "<Registrar of InterfaceEvent {0}>".format(self.parent.fqn)

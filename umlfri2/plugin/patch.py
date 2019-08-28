@@ -24,8 +24,8 @@ class PatchPlugin:
             
             addon_module_name = self.__RE_MODULE_NAME_INVALID_CHAR.sub('_', self.__addon.identifier)
             
-            addon_fqn = 'plugins.%s'%addon_module_name
-            patch_fqn = 'plugins.%s.%s'%(addon_module_name, self.__module_name)
+            addon_fqn = 'plugins.{0}'.format(addon_module_name)
+            patch_fqn = 'plugins.{0}.{1}'.format(addon_module_name, self.__module_name)
             
             if addon_fqn not in sys.modules:
                 module = sys.modules[addon_fqn] = types.ModuleType(addon_module_name)
@@ -48,7 +48,7 @@ class PatchPlugin:
     
     @property
     def running(self):
-        return self.__obj is not None 
+        return self.__obj is not None
     
     def stop(self):
         if self.__obj is None:

@@ -43,7 +43,7 @@ class InterfaceMethodReturn(Base):
             yield self.__type
     
     def __repr__(self):
-        return "<ReturnType of InterfaceMethod %s>"%(self.parent.fqn)
+        return "<ReturnType of InterfaceMethod {0}>".format(self.parent.fqn)
     
     def _link(self, builder):
         Base._link(self, builder)

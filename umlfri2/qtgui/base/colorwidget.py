@@ -51,4 +51,4 @@ class ColorSelectionWidget(QWidget):
             self.color_changed.emit(self.__color)
     
     def __refresh_label(self):
-        self.__selected_color_label.setStyleSheet('QLabel { background-color: %s }' % self.__color.to_rgb_str())
+        self.__selected_color_label.setStyleSheet('QLabel {{ background-color: {0} }}'.format(self.__color.to_rgb_str()))

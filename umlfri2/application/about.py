@@ -37,7 +37,7 @@ class AboutUmlFri:
     
     @property
     def dependency_versions(self):
-        yield 'Python', "%s.%s.%s"%sys.version_info[:3]
+        yield 'Python', "{0}.{1}.{2}".format(*sys.version_info[:3])
         yield 'Qt', QtCore.qVersion()
         yield 'PyQt', Qt.PYQT_VERSION_STR
         yield 'AppDirs', appdirs.__version__

@@ -79,4 +79,4 @@ class InterfacePropertySetter(BaseContainer):
         return meth
     
     def __repr__(self):
-        return "<Setter of InterfaceProperty %s>"%(self.parent.fqn)
+        return "<Setter of InterfaceProperty {0}>".format(self.parent.fqn)

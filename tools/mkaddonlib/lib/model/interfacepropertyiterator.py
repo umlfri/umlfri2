@@ -78,4 +78,4 @@ class InterfacePropertyIterator(BaseContainer):
         return meth
     
     def __repr__(self):
-        return "<Iterator of InterfaceProperty %s>"%(self.parent.fqn)
+        return "<Iterator of InterfaceProperty {0}>".format(self.parent.fqn)

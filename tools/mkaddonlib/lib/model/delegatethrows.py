@@ -26,7 +26,7 @@ class DelegateThrows(Base):
         return self.__documentation
     
     def __repr__(self):
-        return "<Throws %s from Delegate %s>"%(self.exception.fqn, self.parent.fqn)
+        return "<Throws {0} from Delegate {1}>".format(self.exception.fqn, self.parent.fqn)
     
     def _link(self, builder):
         Base._link(self, builder)

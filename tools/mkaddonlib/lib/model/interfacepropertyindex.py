@@ -38,7 +38,7 @@ class InterfacePropertyIndex(Base):
         return self.__documentation
     
     def __repr__(self):
-        return "<Index %s of InterfaceProperty %s>"%(self.name, self.parent.fqn)
+        return "<Index {0} of InterfaceProperty {1}>".format(self.name, self.parent.fqn)
     
     def _link(self, builder):
         Base._link(self, builder)
