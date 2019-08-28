@@ -52,7 +52,7 @@
                 .object_parameter('{{ parameter.api_name }}', {{ parameter.identifier.lower_case }}, {{ parameter.type.is_abstract }})
 {% endif %}
 {% endfor %}
-{% if method.async %}
+{% if method.async_execution %}
                 .send_async(self.__server)
 {% else %}
                 .send(self.__server)

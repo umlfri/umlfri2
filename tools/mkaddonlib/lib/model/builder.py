@@ -150,7 +150,7 @@ class Builder:
             api_name=root.attrib.get('api_name'),
             mutator=root.attrib.get('mutator', "false").lower() in ("1", "true"),
             transactional=root.attrib.get('transactional', "true").lower() in ("1", "true"),
-            async=root.attrib.get('async', "false").lower() in ("1", "true"),
+            async_execution=root.attrib.get('async', "false").lower() in ("1", "true"),
             documentation=self.__parse_documentation(root.find(self.__xml_ns.format('Documentation')))
         )
         

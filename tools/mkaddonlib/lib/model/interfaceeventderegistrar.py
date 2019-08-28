@@ -45,7 +45,7 @@ class InterfaceEventDeregistrar(Base):
         if name is None:
             name = self.name
         meth = InterfaceMethod(name, self.interface_event.interface, api_name=self.api_name, mutator=True,
-                               transactional=False, async=True, documentation=self.interface_event.documentation)
+                               transactional=False, async_execution=True, documentation=self.interface_event.documentation)
         
         return meth
     

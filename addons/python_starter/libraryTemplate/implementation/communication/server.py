@@ -50,14 +50,14 @@ class Server:
             )
         self.__main_loop.wait()
     
-    def send_command(self, message, async=False):
+    def send_command(self, message, async_execution=False):
         if self.__stopped:
             raise ValueError('Communication with server was closed')
         
         with self.__message_lock:
             encoded = message.create_message()
             
-            if not async:
+            if not async_execution:
                 self.__session_id += 1
                 self.__messages[self.__session_id] = message
                 encoded['session'] = self.__session_id
