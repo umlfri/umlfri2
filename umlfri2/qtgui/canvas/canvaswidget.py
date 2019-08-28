@@ -1,8 +1,6 @@
-from functools import partial
-
 from PyQt5.QtCore import Qt, QSize
-from PyQt5.QtGui import QPainter, QContextMenuEvent, QKeySequence, QCursor
-from PyQt5.QtWidgets import QWidget, QApplication, QShortcut, QMenu, QAction
+from PyQt5.QtGui import QPainter, QContextMenuEvent, QKeySequence
+from PyQt5.QtWidgets import QWidget, QApplication, QShortcut
 
 from umlfri2.application import Application
 from umlfri2.application.commands.diagram import ShowElementCommand, ChangeZOrderCommand, ZOrderDirection, \
@@ -57,6 +55,8 @@ class CanvasWidget(QWidget):
         QShortcut(QKeySequence(Z_ORDER_RAISE), self).activated.connect(self.__z_order_forward)
         QShortcut(QKeySequence(Z_ORDER_TO_BOTTOM), self).activated.connect(self.__z_order_bottom)
         QShortcut(QKeySequence(Z_ORDER_TO_TOP), self).activated.connect(self.__z_order_top)
+        
+        QShortcut(QKeySequence(QKeySequence.Cancel), self).activated.connect(self.__cancel_action)
     
     @property
     def diagram(self):
@@ -243,6 +243,10 @@ class CanvasWidget(QWidget):
             command = ChangeZOrderCommand(self.__drawing_area.diagram, self.__drawing_area.selection.selected_elements,
                                           ZOrderDirection.top)
             Application().commands.execute(command)
+    
+    def __cancel_action(self):
+        self.__drawing_area.reset_action()
+        self.__do_update()
     
     def __do_update(self):
         self.update()

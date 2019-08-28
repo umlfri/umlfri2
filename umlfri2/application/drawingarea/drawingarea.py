@@ -174,6 +174,11 @@ class DrawingArea:
         if self.__current_action is not None and self.__current_action.finished:
             self.set_action(None)
             self.__change_cursor(point, shift_pressed)
+    
+    def reset_action(self):
+        if self.__current_action is not None:
+            self.__current_action._finish()
+            self.set_action(None)
 
     def __change_cursor(self, point, shift_pressed):
         action = self.__selection.get_action_at(point, shift_pressed)
