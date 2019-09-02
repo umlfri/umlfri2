@@ -47,7 +47,7 @@ class UmlFriUpdates:
         self.__check_error = None
         self.__checking_update = False
         
-        if application.config.auto_check_updates:
+        if not __debug__ and application.config.auto_check_updates:
             self.recheck_update()
     
     @property
