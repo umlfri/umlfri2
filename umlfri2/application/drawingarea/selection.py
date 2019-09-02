@@ -1,6 +1,6 @@
 from collections import Iterable
 
-from umlfri2.application.events.diagram import SelectionChangedEvent
+from umlfri2.application.events.diagram import SelectionChangedEvent, ConnectionHiddenEvent, ElementHiddenEvent
 from umlfri2.types.enums import LineStyle
 from .selectionpointposition import SelectionPointPosition
 from umlfri2.model.connection import ConnectionVisual
@@ -37,6 +37,18 @@ class Selection:
         self.__selected = set()
         self.__application = application
         self.__diagram = diagram
+        
+        application.event_dispatcher.subscribe(ElementHiddenEvent, self.__something_removed)
+        application.event_dispatcher.subscribe(ConnectionHiddenEvent, self.__something_removed)
+    
+    def __something_removed(self, event):
+        new_selection = set()
+        for selected_item in self.__selected:
+            if self.__diagram.contains(selected_item):
+                new_selection.add(selected_item)
+        
+        print(self.__selected, new_selection)
+        self.__selected = new_selection
     
     @property
     def selected_visuals(self):
