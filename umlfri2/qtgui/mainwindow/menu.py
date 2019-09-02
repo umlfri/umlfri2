@@ -168,6 +168,8 @@ class MainWindowMenu(QMenuBar):
         self.__edit_select_all.setEnabled(tab is not None)
         
         self.__diagram.setEnabled(tab is not None)
+        self.__diagram_export.setEnabled(tab is not None)
+        self.__diagram_full_screen.setEnabled(tab is not None)
         
         if tab is None:
             self.__edit_cut.setEnabled(False)
