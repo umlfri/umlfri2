@@ -15,6 +15,7 @@ class FullScreenDiagram(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(0)
         toolbox = FullScreenToolBox(drawing_area)
+        toolbox.close_clicked.connect(self.__esc)
         layout.addWidget(toolbox)
         canvas = ScrolledCanvasWidget(self, drawing_area)
         layout.addWidget(canvas)
