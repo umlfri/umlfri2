@@ -97,7 +97,6 @@
                                              font="#cfg.element.textfont.change(FontStyle::underline, attr.static)">
                                         <If condition="#attr.stereotype.has_text()">
                                             <Text text="&#171;"/>
-                                            <Text text="&#171;"/>
                                             <Text text="#attr.stereotype"/>
                                             <Text text="&#187;  "/>
                                         </If>
