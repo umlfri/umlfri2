@@ -18,7 +18,7 @@ from umlfri2.qtgui.appdialogs.addons import AddOnsDialog
 
 
 class MainWindowMenu(QMenuBar):
-    def __init__(self, main_window): 
+    def __init__(self, main_window):
         super().__init__()
         
         self.__main_window = main_window
@@ -97,7 +97,7 @@ class MainWindowMenu(QMenuBar):
             view_menu.addAction(action)
         
         view_menu.addSeparator()
-            
+        
         for action in main_window.get_toolbar_actions():
             view_menu.addAction(action)
         
@@ -312,8 +312,9 @@ class MainWindowMenu(QMenuBar):
             exp.export(file_name, formats)
     
     def __diagram_full_screen_action(self):
-        window = FullScreenDiagram(self.__main_window, Application().tabs.current_tab.drawing_area)
-        window.showFullScreen()
+        # needs to keep reference to a window to prevent it to be garbage collected
+        self.__window = FullScreenDiagram(self.__main_window, Application().tabs.current_tab.drawing_area)
+        self.__window.showFullScreen()
     
     def __view_zoom_in_action(self, checked=False):
         Application().tabs.current_tab.drawing_area.zoom_in()
