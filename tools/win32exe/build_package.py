@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 import re
 try:
-    from importlib._bootstrap_external import _code_to_bytecode
+    from importlib._bootstrap_external import _code_to_timestamp_pyc as _code_to_bytecode
 except ImportError:
-    from importlib._bootstrap import _code_to_bytecode
+    try:
+        from importlib._bootstrap_external import _code_to_bytecode
+    except ImportError:
+        from importlib._bootstrap import _code_to_bytecode
 
 import os
 import os.path
@@ -132,7 +135,7 @@ print("  - Using " + VERSION_TYPE)
 shutil.copy(os.path.join(DIR, 'stub', VERSION_TYPE, 'umlfri2.exe'), os.path.join(OUT_DIR, 'umlfri2.exe'))
 
 print("- Python dlls")
-shutil.copy(os.path.join(sys.base_prefix, 'python36.dll'), os.path.join(OUT_DIR, 'python36.dll'))
+shutil.copy(os.path.join(sys.base_prefix, 'python37.dll'), os.path.join(OUT_DIR, 'python37.dll'))
 shutil.copy(os.path.join(sys.base_prefix, 'python3.dll'), os.path.join(OUT_DIR, 'python3.dll'))
 
 if VERSION_TYPE == 'Debug':
