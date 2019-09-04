@@ -13,6 +13,9 @@ class ApplicationConfig:
         self.__ignored_versions = []
         self.__auto_check_updates = True
         
+        self.__export_zoom = 1
+        self.__export_padding = 5
+        
         if os.path.exists(self.CONFIG_FILE):
             self.__load()
     
@@ -63,6 +66,23 @@ class ApplicationConfig:
         
         self.__save()
     
+    @property
+    def export_zoom(self):
+        return self.__export_zoom
+    
+    @property
+    def export_padding(self):
+        return self.__export_padding
+    
+    def set_export_options(self, zoom, padding):
+        if self.__export_zoom == zoom and self.__export_padding == padding:
+            return
+        
+        self.__export_zoom = zoom
+        self.__export_padding = padding
+        
+        self.__save()
+    
     def __load(self):
         cp = ConfigParser()
 
@@ -74,6 +94,13 @@ class ApplicationConfig:
         self.__ignored_versions = [Version(ver) for ver in ignored_versions.split()]
         
         self.__auto_check_updates = cp.getboolean('Updates', 'check_on_startup', fallback=True)
+        
+        try:
+            self.__export_zoom = cp.getint('Export image', 'zoom', fallback=1)
+            self.__export_padding = cp.getint('Export image', 'padding', fallback=5)
+        except ValueError:
+            self.__export_zoom = 1
+            self.__export_padding = 5
     
     def __save(self):
         if not os.path.exists(CONFIG):
@@ -97,6 +124,10 @@ class ApplicationConfig:
             cp.set('Updates', 'check_on_startup', 'no')
         
         cp.set('Updates', 'ignored_versions', ' '.join(str(ver) for ver in self.__ignored_versions))
+        
+        cp.add_section('Export image')
+        cp.set('Export image', 'zoom', str(self.__export_zoom))
+        cp.set('Export image', 'padding', str(self.__export_padding))
         
         with open(self.CONFIG_FILE, 'w', encoding='utf8') as cf:
             cp.write(cf)
