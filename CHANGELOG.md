@@ -3,6 +3,65 @@ Changelog
 
 All notable changes to this project will be documented in this file.
 
+[2.2.0] 2019-09-05
+------------------
+
+### User changes
+- context help buttons removed from dialog windows, as it was not functional
+- toolbox size can be reduced by user
+- closing properties dialog when some data was modified causes showing the confirmation dialog
+- possibility to move items up/down in lists in properties dialog
+- errors in UML .FRI are reported to developers using sentry.io
+- top-right-side icon for selected element to simplify drawing connections
+- current diagram action can be canceled using esc key
+- full screen mode can be closed using gui button too
+- export/copy as image dialog options are saed to the application config file
+
+### UML changes
+- double french-quotes in attribute stereotype fixed
+
+### Power user changes
+- binary Windows version uses Python 3.7
+
+### Metamodel changes
+- support for ufl macros with lambda function argument
+- generic types support for ufl macros
+- new built-in macros for use in ufl expressions:
+    - `iter->all(...)`
+    - `iter->any(...)`
+    - `iter->order_by(...)`
+    - `iter->reduce(...)`
+    - `iter->select(...)`
+    - `iter->where()`
+    - `nullable->default(...)`
+    - `nullable->iterate()`
+    - `str->empty()`
+    - `str->has_text()`
+- automatic ufl expression casts to boolean are disabled as they no longer needed
+- dot (`.`) operator for nullables and iterables in ufl expressions
+- better support for nullables in metamodel
+
+### Plugin API changes
+
+- exceptions are supported in public api
+- PartNotFound exception is rised from public api metamodel part getters, when the part is not found
+
+### Fixes
+- new version notification is no longer showed twice
+- qt version for about dialog is detected at runtime
+- decimal literals are correctly handled in ufl expressions
+- python builtins disabled when compiling ufl expression
+- correct error report for errors in ufl expressions
+- logical operators can be written using textual representation (gt, lt, ge, le, eq, ne, and, or) to make it easier to be written in xml
+- copying transparent images to clipboard works in most applications on windows too
+- fixed problem with duplicating elements in the same diagram
+- correct behavior of element resizing when the mouse cursor is moved out of diagram
+- resize element action is no longer added to undo menu, when resize operation was started by a user but element was not really resized
+- fixed incompatibilities for python 3.7
+- element is correctly removed from selection, when it is removed from associated diagram
+- full screen window is no longer closed randomly
+- dont try to open full screen window when alt-enter is pressed on a start page
+
 [2.1.1] 2019-02-25
 ------------------
 
