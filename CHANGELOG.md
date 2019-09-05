@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file.
 ### User changes
 - context help buttons removed from dialog windows, as it was not functional
 - toolbox size can be reduced by user
-- closing properties dialog when some data was modified causes showing the confirmation dialog
+- closing properties dialog when some data was modified causes showing the confirmation dialog (issue #4)
 - possibility to move items up/down in lists in properties dialog
 - errors in UML .FRI are reported to developers using sentry.io
 - top-right-side icon for selected element to simplify drawing connections
@@ -54,7 +54,7 @@ All notable changes to this project will be documented in this file.
 - correct error report for errors in ufl expressions
 - logical operators can be written using textual representation (gt, lt, ge, le, eq, ne, and, or) to make it easier to be written in xml
 - copying transparent images to clipboard works in most applications on windows too
-- fixed problem with duplicating elements in the same diagram
+- fixed problem with duplicating elements in the same diagram (issue #3)
 - correct behavior of element resizing when the mouse cursor is moved out of diagram
 - resize element action is no longer added to undo menu, when resize operation was started by a user but element was not really resized
 - fixed incompatibilities for python 3.7
