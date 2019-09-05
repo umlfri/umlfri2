@@ -21,7 +21,6 @@ class FullScreenDiagram(QWidget):
         layout.addWidget(canvas)
         self.setLayout(layout)
         
-        QShortcut(QKeySequence("Esc"), self).activated.connect(self.__esc)
         QShortcut(FULL_SCREEN, self).activated.connect(self.__esc)
     
     def __esc(self):
