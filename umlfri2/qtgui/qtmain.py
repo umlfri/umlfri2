@@ -15,7 +15,8 @@ def qt_main(args):
     
     if hasattr(Qt, 'AA_DisableWindowContextHelpButton'):
         QApplication.setAttribute(Qt.AA_DisableWindowContextHelpButton)
-
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+    
     app = QApplication(args)
     
     Application().use_args(args[1:])
