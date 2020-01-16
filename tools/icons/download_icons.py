@@ -105,7 +105,7 @@ def extract_oxygen_theme():
 
 
 def extract_mac_mint():
-    extract_theme("macMint", "https://dl.opendesktop.org/api/files/download/id/1485256986/macMint.tar.gz", TarReader, 1)
+    extract_theme("macMint", "https://raw.githubusercontent.com/umlfri/resources/master/macMint.tar.gz", TarReader, 1)
 
 
 platform_name = [platform.system()]
