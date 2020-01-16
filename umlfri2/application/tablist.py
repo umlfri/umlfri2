@@ -60,6 +60,9 @@ class TabList:
             self.__application.event_dispatcher.dispatch(ChangedCurrentTabEvent(last_tab))
     
     def select_tab(self, diagram):
+        if self.__current_tab is not None:
+            self.__current_tab.drawing_area.reset_action()
+        
         if diagram is None:
             self.__current_tab = None
             self.__application.event_dispatcher.dispatch(ChangedCurrentTabEvent(None))
