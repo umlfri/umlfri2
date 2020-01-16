@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QTabWidget, 
 from umlfri2.application import Application
 from umlfri2.application.commands.model import ApplyPatchCommand
 from umlfri2.application.commands.solution import ApplyMetamodelConfigPatchCommand
-from umlfri2.qtgui.base.validatingtabbar import ValidatingTabBar
+from umlfri2.qtgui.base.validatingtabwidget import ValidatingTabWidget
 from .listtab import ListPropertyTab
 from .objecttab import ObjectPropertyTab
 from umlfri2.ufl.dialog import UflDialogListTab, UflDialogObjectTab, UflDialogValueTab, UflDialogNullableValueTab
@@ -44,13 +44,10 @@ class PropertiesDialog(QDialog):
             layout.addWidget(qt_tab)
             self.__tabs.append(qt_tab)
         else:
-            tab_bar = ValidatingTabBar()
-            
-            self.__tab_widget = QTabWidget()
-            self.__tab_widget.setTabBar(tab_bar)
+            self.__tab_widget = ValidatingTabWidget()
             self.__tab_widget.setFocusPolicy(Qt.NoFocus)
             self.__tab_widget.currentChanged.connect(self.__tab_changed)
-            tab_bar.validate_tab_change.connect(self.__validate_tab)
+            self.__tab_widget.tabBar().validate_tab_change.connect(self.__validate_tab)
             
             for tab in dialog.tabs:
                 if isinstance(tab, UflDialogListTab):

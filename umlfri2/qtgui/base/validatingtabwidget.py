@@ -1,5 +1,5 @@
 from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5.QtWidgets import QTabBar
+from PyQt5.QtWidgets import QTabBar, QTabWidget
 
 
 class ValidateTabChangeEvent:
@@ -61,3 +61,9 @@ class ValidatingTabBar(QTabBar):
         evt = ValidateTabChangeEvent(tab_index)
         self.validate_tab_change.emit(evt)
         return evt.is_valid
+
+
+class ValidatingTabWidget(QTabWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setTabBar(ValidatingTabBar())
