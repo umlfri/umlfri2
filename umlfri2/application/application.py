@@ -150,7 +150,7 @@ class Application(metaclass=MetaApplication):
     
     @property
     def should_save_as(self):
-        return self.__solution_storage_ref is None
+        return self.__solution_storage_ref is None or not self.__solution_storage_ref.still_valid
     
     @property
     def can_save_solution(self):

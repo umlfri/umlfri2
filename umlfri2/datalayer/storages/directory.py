@@ -15,6 +15,10 @@ class DirectoryStorageReference(StorageReference):
     def name(self):
         return self.__path
     
+    @property
+    def still_valid(self):
+        return os.path.exists(self.__path)
+    
     def open(self, mode=None):
         if mode is None:
             mode = self.__mode

@@ -16,6 +16,11 @@ class ZipStorageReference(StorageReference):
     def name(self):
         return self.__zip_path
     
+    @property
+    def still_valid(self):
+        print(f"{os.path.exists(os.path.dirname(self.__zip_path))}, {os.path.basename(self.__zip_path)}, {self.__zip_path}")
+        return os.path.exists(os.path.dirname(self.__zip_path))
+    
     def open(self, mode=None):
         if mode is None:
             mode = self.__mode
@@ -25,7 +30,7 @@ class ZipStorageReference(StorageReference):
 
 
 class ZipFileWriter(BytesIO):
-    def __init__(self, zip_file, file_path): 
+    def __init__(self, zip_file, file_path):
         super().__init__()
         self.__zip_file = zip_file
         self.__file_path = file_path

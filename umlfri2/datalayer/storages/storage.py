@@ -3,6 +3,10 @@ class StorageReference:
     def name(self):
         raise NotImplementedError
     
+    @property
+    def still_valid(self):
+        raise NotImplementedError
+    
     def open(self, mode=None):
         raise NotImplementedError
 
