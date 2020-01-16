@@ -44,7 +44,7 @@ class ValidatingTabBar(QTabBar):
             event.ignore()
             return
         
-        if delta < 0:
+        if delta > 0:
             tested_tabs = range(self.currentIndex() - 1, -1, -1)
         else:
             tested_tabs = range(self.currentIndex() + 1, self.count(), 1)
