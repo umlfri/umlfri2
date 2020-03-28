@@ -47,7 +47,6 @@ class Selection:
             if self.__diagram.contains(selected_item):
                 new_selection.add(selected_item)
         
-        print(self.__selected, new_selection)
         self.__selected = new_selection
     
     @property

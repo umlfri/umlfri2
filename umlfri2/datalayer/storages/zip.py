@@ -18,7 +18,6 @@ class ZipStorageReference(StorageReference):
     
     @property
     def still_valid(self):
-        print(f"{os.path.exists(os.path.dirname(self.__zip_path))}, {os.path.basename(self.__zip_path)}, {self.__zip_path}")
         return os.path.exists(os.path.dirname(self.__zip_path))
     
     def open(self, mode=None):
