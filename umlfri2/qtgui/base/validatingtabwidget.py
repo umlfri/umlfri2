@@ -47,9 +47,9 @@ class ValidatingTabBar(QTabBar):
             return
         
         if delta > 0:
-            self.tabBar().change_tab_in_direction(to_right=True)
+            self.change_tab_in_direction(to_right=True)
         else:
-            self.tabBar().change_tab_in_direction(to_right=False)
+            self.change_tab_in_direction(to_right=False)
         
         event.ignore()
     
