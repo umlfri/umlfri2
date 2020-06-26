@@ -35,6 +35,7 @@ class SplashScreen(QSplashScreen):
             main_window = UmlFriMainWindow()
             main_window.showMaximized()
             self.finish(main_window)
+            Application().init_after_main_window_shown()
         else:
             self.__starter.do()
     

@@ -60,7 +60,10 @@ class Application(metaclass=MetaApplication):
     
     def start(self):
         self.__addons.init()
-        self.__startup_options.apply()
+        self.__startup_options.apply_at_start()
+    
+    def init_after_main_window_shown(self):
+        self.__startup_options.apply_after_main_window()
     
     def stop(self):
         self.__event_dispatcher.clear()
@@ -191,8 +194,8 @@ class Application(metaclass=MetaApplication):
                 saver.add_locked_tab(tab)
         
         saver.save()
-    
-    def open_solution(self, filename):
+
+    def open_solution_in_steps(self, filename):
         self.close_solution()
         filename = os.path.normpath(os.path.abspath(filename))
         with Storage.read_storage(filename) as storage:
@@ -201,10 +204,16 @@ class Application(metaclass=MetaApplication):
             self.__solution = loader.solution
             self.__solution_storage_ref = storage.remember_reference()
         
+        yield "open"
+        
         self.__event_dispatcher.dispatch(OpenSolutionEvent(self.__solution))
         self.__tabs.open_new_project_tabs(loader.locked_tabs)
         self.__tabs.reset_lock_status()
         self.__recent_files.add_file(filename)
+
+    def open_solution(self, filename):
+        for _ in self.open_solution_in_steps(filename):
+            pass
     
     def close_solution(self):
         self.__commands.clear_buffers()
