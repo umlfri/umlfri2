@@ -1,4 +1,4 @@
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSignal, QTimer
 from PyQt5.QtWidgets import QTextEdit
 
 
@@ -8,9 +8,12 @@ class EditorWidget(QTextEdit):
     def __init__(self):
         super().__init__()
         
+        self.__timer = QTimer(self)
+        self.__timer.setSingleShot(True)
+        self.__timer.setInterval(1000)
+        self.__timer.timeout.connect(self.__time_out)
         self.__fire = True
         self.textChanged.connect(self.__text_changed)
-        self.__timer = None
     
     def setPlainText(self, text):
         self.__fire = False
@@ -20,17 +23,12 @@ class EditorWidget(QTextEdit):
     def __text_changed(self):
         if not self.__fire:
             return
-        if self.__timer is not None:
-            self.killTimer(self.__timer)
-        self.__timer = self.startTimer(1000)
+        self.__timer.stop()
+        self.__timer.start()
     
-    def timerEvent(self, event):
-        self.killTimer(self.__timer)
-        self.__timer = None
+    def __time_out(self):
         self.text_update.emit()
     
     def focusOutEvent(self, event):
-        if self.__timer is not None:
-            self.killTimer(self.__timer)
-        self.__timer = None
+        self.__timer.stop()
         self.text_update.emit()
