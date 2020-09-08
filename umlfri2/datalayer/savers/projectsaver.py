@@ -1,3 +1,5 @@
+import re
+
 import lxml.etree
 
 from umlfri2.ufl.types.structured import UflObjectType, UflListType
@@ -6,6 +8,8 @@ from ..constants import MODEL_NAMESPACE, MODEL_SCHEMA
 
 
 class ProjectSaver:
+    __RE_INVALID_XML_CHARACTER = re.compile('[^\u0020-\uD7FF\u0009\u000A\u000D\uE000-\uFFFD\U00010000-\U0010FFFF]+')
+    
     def __init__(self, storage, path, ruler):
         self.__storage = storage
         self.__path = path
@@ -120,7 +124,7 @@ class ProjectSaver:
         elif isinstance(type, UflFlagsType):
             self.__save_ufl_flags(xml, value, type)
         else:
-            xml.attrib['value'] = str(value)
+            xml.attrib['value'] = self.__RE_INVALID_XML_CHARACTER.sub('', str(value))
     
     def __save_ufl_object(self, xml, value, type):
         for attr in type.attributes:
