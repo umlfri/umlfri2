@@ -135,7 +135,7 @@ print("  - Using " + VERSION_TYPE)
 shutil.copy(os.path.join(DIR, 'stub', VERSION_TYPE, 'umlfri2.exe'), os.path.join(OUT_DIR, 'umlfri2.exe'))
 
 print("- Python dlls")
-shutil.copy(os.path.join(sys.base_prefix, 'python37.dll'), os.path.join(OUT_DIR, 'python37.dll'))
+shutil.copy(os.path.join(sys.base_prefix, 'python38.dll'), os.path.join(OUT_DIR, 'python38.dll'))
 shutil.copy(os.path.join(sys.base_prefix, 'python3.dll'), os.path.join(OUT_DIR, 'python3.dll'))
 
 if VERSION_TYPE == 'Debug':

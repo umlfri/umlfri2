@@ -9,6 +9,9 @@ All notable changes to this project will be documented in this file.
 ### User changes
 - support for HiDPI monitors
 
+### Power user changes
+- binary Windows version uses Python 3.8
+
 ### Fixes
 - property dialog validation when tabs are changed using a mouse wheel or ctrl+tab (issue #5)
 - show save dialog on save action, if parent directory of the project no longer exists (issue #6)
@@ -36,6 +39,7 @@ All notable changes to this project will be documented in this file.
 - double french-quotes in attribute stereotype fixed
 
 ### Power user changes
+- moved to VisualStudio 2017 on the Windows platform
 - binary Windows version uses Python 3.7
 
 ### Metamodel changes
