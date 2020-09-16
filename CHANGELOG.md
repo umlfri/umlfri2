@@ -3,6 +3,21 @@ Changelog
 
 All notable changes to this project will be documented in this file.
 
+[2.2.1] 2020-09-16
+------------------
+
+### User changes
+- support for HiDPI monitors
+
+### Fixes
+- property dialog validation when tabs are changed using a mouse wheel or ctrl+tab (issue #5)
+- show save dialog on save action, if parent directory of the project no longer exists (issue #6)
+- fixed exception on switching application tab while doing an action on a diagram (issue #7)
+- macMint icon theme available again (issue #9)
+- open project tabs when solution is opened by passing command line argument (issue #13)
+- EditorWidget's timerEvent replaced by QTimer to prevent unexpected timer firing (issue #14)
+- Control unicode characters removed from strings when saving project, (issue #8)
+
 [2.2.0] 2019-09-05
 ------------------
 
