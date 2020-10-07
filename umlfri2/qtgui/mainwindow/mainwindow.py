@@ -27,7 +27,7 @@ from .tabs import Tabs
 
 
 class UmlFriMainWindow(QMainWindow):
-    def __init__(self): 
+    def __init__(self):
         super().__init__()
         
         self.__update_dialog_shown_for_version = set()
@@ -296,7 +296,7 @@ class UmlFriMainWindow(QMainWindow):
         
         current_window = QApplication.instance().activeWindow()
         
-        if current_window.isModal():
+        if current_window is not None and current_window.isModal():
             msg_parent = current_window
         else:
             msg_parent = self
