@@ -168,7 +168,8 @@ class CanvasWidget(QWidget):
             
             self.__drawing_area.ensure_selection_at(point)
         
-        self.unsetCursor()
+        self.__drawing_area.reset_action()
+        self.__do_update()
         
         if self.__drawing_area.selection.is_element_selected:
             menu = CanvasElementMenu(self.__main_window, self.__drawing_area,
