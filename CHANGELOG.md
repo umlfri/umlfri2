@@ -3,6 +3,17 @@ Changelog
 
 All notable changes to this project will be documented in this file.
 
+[2.2.2] 2020-09-06
+------------------
+
+### Fixes
+- right click on diagram cancels current action
+- checking for project file validity (issue #20)
+- fixing error while pasting connections from clipboard snippet (issue #11)
+- fixed exception while checking for a new version at startup (issue #17)
+- Ok button in the new project dialog is disabled when no template is selected (issue #19)
+- properties widget cleared after deleting current selection from project (issue #20)
+
 [2.2.1] 2020-09-16
 ------------------
 

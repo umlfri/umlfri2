@@ -15,7 +15,7 @@ from umlfri2.types.version import Version
 
 class AboutUmlFri:
     name = "UML .FRI"
-    version = Version("2.2.1")
+    version = Version("2.2.2")
     
     is_debug_version = __debug__
     
@@ -29,7 +29,7 @@ class AboutUmlFri:
     
     @property
     def author(self):
-        yield "Ján Janech", (2015, 2019)
+        yield "Ján Janech", (2015, 2021)
     
     @property
     def description(self):
