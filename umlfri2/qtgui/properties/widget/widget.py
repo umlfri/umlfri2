@@ -4,7 +4,8 @@ from umlfri2.application import Application
 from umlfri2.application.commands.model import ApplyPatchCommand
 from umlfri2.application.events.application import LanguageChangedEvent, ItemSelectedEvent
 from umlfri2.application.events.diagram import SelectionChangedEvent
-from umlfri2.application.events.model import ObjectDataChangedEvent, ProjectChangedEvent
+from umlfri2.application.events.model import ObjectDataChangedEvent, ProjectChangedEvent, ElementDeletedEvent, \
+    ConnectionDeletedEvent, DiagramDeletedEvent
 from umlfri2.application.events.solution import CloseSolutionEvent
 from umlfri2.application.events.tabs import ChangedCurrentTabEvent
 from umlfri2.model import Project
@@ -28,6 +29,9 @@ class PropertiesWidget(QTabWidget):
         Application().event_dispatcher.subscribe(ItemSelectedEvent, self.__item_selected)
         Application().event_dispatcher.subscribe(ObjectDataChangedEvent, self.__object_changed)
         Application().event_dispatcher.subscribe(ProjectChangedEvent, self.__project_changed)
+        Application().event_dispatcher.subscribe(ElementDeletedEvent, self.__element_deleted)
+        Application().event_dispatcher.subscribe(ConnectionDeletedEvent, self.__connection_deleted)
+        Application().event_dispatcher.subscribe(DiagramDeletedEvent, self.__diagram_deleted)
         Application().event_dispatcher.subscribe(SelectionChangedEvent, self.__selection_changed)
         Application().event_dispatcher.subscribe(ChangedCurrentTabEvent, self.__tab_changed)
         Application().event_dispatcher.subscribe(CloseSolutionEvent, self.__solution_closed)
@@ -50,6 +54,19 @@ class PropertiesWidget(QTabWidget):
     
     def __project_changed(self, event):
         self.__item_changed(event.project)
+    
+    def __element_deleted(self, event):
+        self.__item_deleted(event.element)
+    
+    def __connection_deleted(self, event):
+        self.__item_deleted(event.connection)
+    
+    def __diagram_deleted(self, event):
+        self.__item_deleted(event.diagram)
+    
+    def __item_deleted(self, item):
+        if item is self.__item:
+            self.__select_item(None)
     
     def __item_changed(self, item):
         if item is self.__item:

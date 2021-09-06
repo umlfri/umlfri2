@@ -218,6 +218,9 @@ class UmlFriMainWindow(QMainWindow):
 
     def open_solution_from_file(self, file_name):
         if self.__check_save(_("Open Project")):
+            if not Application().is_valid_save_file(file_name):
+                QMessageBox.critical(self, _("Invalid project file"), _("File '%s' is not valid UML .FRI 2 project") % file_name)
+                return
             Application().open_solution(file_name)
 
     def save_solution(self):

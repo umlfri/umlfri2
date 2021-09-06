@@ -40,7 +40,7 @@ class NewProjectDialog(QDialog):
         self.__templates = QListWidget()
         self.__templates.setViewMode(QListWidget.IconMode)
         self.__templates.setMovement(QListWidget.Static)
-        self.__templates.currentItemChanged.connect(self.__selection_changed)
+        self.__templates.itemSelectionChanged.connect(self.__selection_changed)
         self.__templates.itemDoubleClicked.connect(self.__selection_double_clicked)
         
         self.__description = QLabel()
@@ -78,14 +78,27 @@ class NewProjectDialog(QDialog):
     def sizeHint(self):
         return QSize(600, 400)
     
-    def __selection_changed(self, current, previous):
-        text = "<font size=+2><b>{0}</b></font><br>".format(current.template.addon.name)
-        text += "<i>{0}: {1}</i><br>".format(_("Metamodel version"), current.template.addon.version)
-        text += "<p>" + html.escape(current.template.addon.description).replace('\n', '</p><p>') + "</p>"
+    def __selection_changed(self):
+        items = self.__templates.selectedItems()
+        if len(items) == 0:
+            item = None
+        elif len(items) == 1:
+            item, = items
+        else:
+            item = None
+
+        if item is None:
+            text = ""
+        else:
+            text = "<font size=+2><b>{0}</b></font><br>".format(item.template.addon.name)
+            text += "<i>{0}: {1}</i><br>".format(_("Metamodel version"), item.template.addon.version)
+            text += "<p>" + html.escape(item.template.addon.description).replace('\n', '</p><p>') + "</p>"
         self.__description.setText(text)
+
+        self.__ok_button.setEnabled(self.__project_name.text() != "" and item is not None)
     
     def __name_changed(self, text):
-        self.__ok_button.setEnabled(text != "")
+        self.__ok_button.setEnabled(text != "" and len(self.__templates.selectedItems()) == 1)
     
     def __selection_double_clicked(self, item):
         self.accept()

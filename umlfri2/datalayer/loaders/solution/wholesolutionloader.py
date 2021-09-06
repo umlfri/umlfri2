@@ -5,7 +5,8 @@ import lxml.etree
 from .lockedtabsloader import LockedTabsLoader
 from umlfri2.types.version import Version
 from .projectloader import ProjectLoader
-from ...constants import FRIP2_SOLUTION_FILE, FRIP2_PROJECT_FILE, FRIP2_VERSION_FILE, FRIP2_LOCKED_TABS_FILE, MODEL_SAVE_VERSION
+from ...constants import FRIP2_SOLUTION_FILE, FRIP2_PROJECT_FILE, FRIP2_VERSION_FILE, FRIP2_LOCKED_TABS_FILE, \
+    MODEL_SAVE_VERSION, FRIP2_MIMETYPE_FILE, SOLUTION_MIME_TYPE
 from .solutioninfoloader import SolutionInfoLoader
 from umlfri2.model import Solution
 
@@ -47,3 +48,9 @@ class WholeSolutionLoader:
             all_diagrams = {i.save_id: i for i in self.__solution.get_all_diagrams()}
             tabs_xml = lxml.etree.parse(self.__storage.open(FRIP2_LOCKED_TABS_FILE)).getroot()
             self.__locked_tabs = LockedTabsLoader(tabs_xml, all_diagrams).load()
+
+    @staticmethod
+    def is_valid_save(storage):
+        if not storage.exists(FRIP2_MIMETYPE_FILE):
+            return False
+        return storage.read_string(FRIP2_MIMETYPE_FILE) == SOLUTION_MIME_TYPE
