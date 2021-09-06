@@ -22,7 +22,7 @@ class PasteSnippetCommand(Command):
             self.__diagram.add(visual)
     
     def _undo(self, ruler):
-        for visual in self.__pasted_visuals:
+        for visual in reversed(self.__pasted_visuals):
             self.__diagram.remove(visual)
     
     @property
