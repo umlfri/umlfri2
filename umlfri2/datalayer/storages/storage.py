@@ -10,6 +10,11 @@ class StorageReference:
     def open(self, mode=None):
         raise NotImplementedError
 
+
+class UnknownStorageException(Exception):
+    pass
+
+
 class Storage:
     @staticmethod
     def read_storage(path):
@@ -17,7 +22,7 @@ class Storage:
             ret = subclass.read_storage(path)
             if ret is not None:
                 return ret
-        raise Exception("Storage {0} not found".format(path))
+        raise UnknownStorageException("Storage {0} not found".format(path))
     
     def list(self, path=None):
         raise NotImplementedError

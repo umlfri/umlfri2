@@ -14,7 +14,7 @@ from .commandprocessor import CommandProcessor
 from .dispatcher import EventDispatcher
 from .recentfiles import RecentFiles
 
-from umlfri2.datalayer.storages import Storage
+from umlfri2.datalayer.storages import Storage, UnknownStorageException
 from umlfri2.datalayer.loaders import WholeSolutionLoader
 from umlfri2.datalayer.savers import WholeSolutionSaver
 from umlfri2.datalayer.storages import ZipStorage
@@ -150,6 +150,14 @@ class Application(metaclass=MetaApplication):
             command = NewProjectCommand(self.__solution, template, project_name)
             self.__commands.execute(command)
             self.__tabs.open_new_project_tabs(command.opened_tabs)
+    
+    def is_valid_save_file(self, filename):
+        filename = os.path.normpath(os.path.abspath(filename))
+        try:
+            with Storage.read_storage(filename) as storage:
+                return WholeSolutionLoader.is_valid_save(storage)
+        except UnknownStorageException:
+            return False
     
     @property
     def should_save_as(self):
