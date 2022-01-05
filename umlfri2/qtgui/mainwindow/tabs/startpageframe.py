@@ -4,7 +4,6 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout
 
 from .startpageframeaction import StartPageFrameAction
 
-
 class StartPageFrame(QWidget):
     WIDTH = 330
     HEIGHT = 150
@@ -29,8 +28,7 @@ class StartPageFrame(QWidget):
         
         viewport = painter.viewport()
         
-        rect = QRect(self.THICKNESS/2, self.THICKNESS/2, viewport.width() - self.THICKNESS,
-                     viewport.height() - self.THICKNESS)
+        rect = QRect(int(self.THICKNESS/2), int(self.THICKNESS/2), int(viewport.width() - self.THICKNESS), int(viewport.height() - self.THICKNESS))
         
         painter.drawRoundedRect(rect, 15, 15)
         

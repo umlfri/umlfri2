@@ -41,7 +41,7 @@ class SplashScreen(QSplashScreen):
     
     def drawContents(self, painter):
         qfont = QFont("Arial")
-        qfont.setPixelSize(12.5)
+        qfont.setPixelSize(12)
         painter.setPen(QPen(QColor(255, 255, 255)))
         painter.setFont(qfont)
         painter.drawText(300, 150, "Version: {0}".format(Application().about.version))

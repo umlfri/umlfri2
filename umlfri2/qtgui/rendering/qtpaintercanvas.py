@@ -78,7 +78,7 @@ class QTPainterCanvas(Canvas):
     
     def draw_line(self, start, end, fg, line_width=None, line_style=None):
         self.__set_pen(fg, line_width, line_style)
-        self.__painter.drawLine(start.x, start.y, end.x, end.y)
+        self.__painter.drawLine(int(start.x), int(start.y), int(end.x), int(end.y))
     
     def draw_path(self, path, fg=None, bg=None, line_width=None, line_style=None):
         qpath = QPainterPath()
