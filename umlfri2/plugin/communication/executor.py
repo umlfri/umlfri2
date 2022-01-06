@@ -2,11 +2,7 @@ import inspect
 import traceback
 import sys
 from base64 import b64encode
-
-try:
-    from collections.abc import Iterable
-except ImportError:
-    from collections import Iterable
+from collections.abc import Iterable
 
 from ..interfaces import IApplication, Interface, InterfaceException
 

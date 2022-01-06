@@ -1,5 +1,0 @@
-pyqt5
-sentry-sdk
-appdirs
-lxml
-pyparsing

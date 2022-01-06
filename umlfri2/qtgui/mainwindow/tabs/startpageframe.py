@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout
 
 from .startpageframeaction import StartPageFrameAction
 
+
 class StartPageFrame(QWidget):
     WIDTH = 330
     HEIGHT = 150

@@ -1,7 +1,4 @@
-try:
-    from collections.abc import Iterable
-except ImportError:
-    from collections import Iterable
+from collections.abc import Iterable
 from umlfri2.application.events.diagram import SelectionChangedEvent, ConnectionHiddenEvent, ElementHiddenEvent
 from umlfri2.types.enums import LineStyle
 from .selectionpointposition import SelectionPointPosition
