@@ -78,7 +78,7 @@ class QTPainterCanvas(Canvas):
     
     def draw_line(self, start, end, fg, line_width=None, line_style=None):
         self.__set_pen(fg, line_width, line_style)
-        self.__painter.drawLine(start.x, start.y, end.x, end.y)
+        self.__painter.drawLine(int(start.x), int(start.y), int(end.x), int(end.y))
     
     def draw_path(self, path, fg=None, bg=None, line_width=None, line_style=None):
         qpath = QPainterPath()
@@ -102,7 +102,7 @@ class QTPainterCanvas(Canvas):
     def draw_rectangle(self, rectangle, fg=None, bg=None, line_width=None, line_style=None):
         self.__set_brush(bg)
         self.__set_pen(fg, line_width, line_style)
-        self.__painter.drawRect(rectangle.x1, rectangle.y1, rectangle.width, rectangle.height)
+        self.__painter.drawRect(int(rectangle.x1), int(rectangle.y1), int(rectangle.width), int(rectangle.height))
     
     def draw_text(self, pos, text, font, fg):
         if not text:

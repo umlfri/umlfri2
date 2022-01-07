@@ -2,7 +2,7 @@ import inspect
 import traceback
 import sys
 from base64 import b64encode
-from collections import Iterable
+from collections.abc import Iterable
 
 from ..interfaces import IApplication, Interface, InterfaceException
 

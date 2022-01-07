@@ -257,7 +257,7 @@ class CanvasWidget(QWidget):
     
     def __update_size(self):
         size = self.__drawing_area.get_size(Application().ruler)
-        self.setMinimumSize(QSize(size.width, size.height))
+        self.setMinimumSize(QSize(int(size.width), int(size.height)))
     
     def __update_cursor(self):
         if self.__old_cursor == self.__drawing_area.cursor:
