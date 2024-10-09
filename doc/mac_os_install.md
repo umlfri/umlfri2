@@ -15,7 +15,7 @@ Install packaging system brew
 
 Homebrew is required for installing binary dependencies onto Mac machine.
 
-    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 Install prerequisites - Qt and Python3
 --------------------------------------
