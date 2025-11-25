@@ -1,29 +1,36 @@
+from __future__ import annotations
+
+from typing import List, Optional, TYPE_CHECKING
+
 from .commandnotdone import CommandNotDone
+
+if TYPE_CHECKING:
+    from umlfri2.application.events.base import Event
 
 
 class Command:
-    __executed = False
-    __undone = False
-    __error = None
+    __executed: bool = False
+    __undone: bool = False
+    __error: Optional[bool] = None
     
     @property
-    def has_error(self):
+    def has_error(self) -> Optional[bool]:
         return self.__error
     
     @property
-    def description(self):
+    def description(self) -> str:
         raise NotImplementedError
     
-    def _do(self, ruler):
+    def _do(self, ruler: object) -> None:
         raise NotImplementedError
     
-    def _undo(self, ruler):
+    def _undo(self, ruler: object) -> None:
         raise NotImplementedError
     
-    def _redo(self, ruler):
+    def _redo(self, ruler: object) -> None:
         raise NotImplementedError
     
-    def do(self, ruler):
+    def do(self, ruler: object) -> None:
         if self.__executed:
             raise Exception("Cannot execute already executed operation")
         
@@ -37,7 +44,7 @@ class Command:
         
         self.__executed = True
     
-    def undo(self, ruler):
+    def undo(self, ruler: object) -> None:
         if self.__error:
             raise Exception("There was an error executing command")
         if not self.__executed:
@@ -48,7 +55,7 @@ class Command:
         self._undo(ruler)
         self.__undone = True
     
-    def redo(self, ruler):
+    def redo(self, ruler: object) -> None:
         if self.__error:
             raise Exception("There was an error executing command")
         if not self.__executed:
@@ -59,5 +66,5 @@ class Command:
         self._redo(ruler)
         self.__undone = False
     
-    def get_updates(self):
+    def get_updates(self) -> List[Event]:
         return []
