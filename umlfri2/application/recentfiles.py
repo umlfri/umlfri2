@@ -1,24 +1,30 @@
+from __future__ import annotations
+
 import os.path
 from configparser import ConfigParser
 from itertools import chain
+from typing import Iterator, List, TYPE_CHECKING
 
 from .events.application import RecentFilesChangedEvent
 from .recentfile import RecentFile
 
 from umlfri2.constants.paths import CONFIG
 
+if TYPE_CHECKING:
+    from umlfri2.application import Application
+
 
 class RecentFiles:
     CONFIG_FILE = os.path.join(CONFIG, 'recent.ini')
     
-    def __init__(self, application):
-        self.__files = []
+    def __init__(self, application: Application) -> None:
+        self.__files: List[RecentFile] = []
         self.__application = application
         
         if os.path.exists(self.CONFIG_FILE):
             self.__load()
     
-    def __load(self):
+    def __load(self) -> None:
         cp = ConfigParser()
         
         cp.read(self.CONFIG_FILE, encoding='utf8')
@@ -34,7 +40,7 @@ class RecentFiles:
                 
                 self.__files.append(RecentFile(self.__application, self, path, pinned=pinned))
     
-    def __save(self):
+    def __save(self) -> None:
         if not os.path.exists(CONFIG):
             os.makedirs(CONFIG)
         
@@ -53,27 +59,27 @@ class RecentFiles:
         with open(self.CONFIG_FILE, 'w', encoding='utf8') as cf:
             cp.write(cf)
     
-    def __iter__(self):
+    def __iter__(self) -> Iterator[RecentFile]:
         yield from self.__files
 
-    def _remove(self, file):
+    def _remove(self, file: RecentFile) -> None:
         self.__files.remove(file)
         
         self.__save()
 
         self.__application.event_dispatcher.dispatch(RecentFilesChangedEvent(file))
     
-    def _pin_changed(self, file):
+    def _pin_changed(self, file: RecentFile) -> None:
         self.__reorder()
         self.__save()
     
-    def __reorder(self):
+    def __reorder(self) -> None:
         self.__files = list(chain(
             (file for file in self.__files if file.pinned),
             (file for file in self.__files if not file.pinned),
         ))
     
-    def add_file(self, file_path):
+    def add_file(self, file_path: str) -> None:
         old_files = [file for file in self.__files if file.path == file_path]
         
         pinned = False

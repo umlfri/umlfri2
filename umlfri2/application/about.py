@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 import sys
+from typing import Iterator, Tuple, TYPE_CHECKING
 
 import appdirs
 import lxml.etree
@@ -12,6 +15,9 @@ except ImportError:
 from .updates import UmlFriUpdates
 from umlfri2.types.version import Version
 
+if TYPE_CHECKING:
+    from umlfri2.application import Application
+
 
 class AboutUmlFri:
     name = "UML .FRI"
@@ -19,24 +25,24 @@ class AboutUmlFri:
     
     is_debug_version = __debug__
     
-    def __init__(self, application):
+    def __init__(self, application: Application) -> None:
         self.__updates = UmlFriUpdates(self, application)
 
     @property
-    def urls(self):
+    def urls(self) -> Iterator[str]:
         yield 'http://www.umlfri.org/'
         yield 'https://github.com/umlfri/'
     
     @property
-    def author(self):
+    def author(self) -> Iterator[Tuple[str, Tuple[int, int]]]:
         yield "Ján Janech", (2015, 2021)
     
     @property
-    def description(self):
+    def description(self) -> str:
         return _("Free Python-based DSM CASE tool targeted on computer sciences education")
     
     @property
-    def dependency_versions(self):
+    def dependency_versions(self) -> Iterator[Tuple[str, str]]:
         yield 'Python', "{0}.{1}.{2}".format(*sys.version_info[:3])
         yield 'Qt', QtCore.qVersion()
         yield 'PyQt', Qt.PYQT_VERSION_STR
@@ -47,7 +53,7 @@ class AboutUmlFri:
             yield 'Sentry-SDK', sentry_sdk.VERSION
     
     @property
-    def version_1_contributions(self):
+    def version_1_contributions(self) -> Iterator[Tuple[str, Tuple[int, int]]]:
         yield 'Ľubomír Sadloň', (2005, 2008)
         yield 'Ján Janech', (2005, 2015)
         yield 'Pavol Kovalík', (2005, 2007)
@@ -78,5 +84,5 @@ class AboutUmlFri:
         yield 'Vincent Jurčišin-Kukľa', (2014, 2016)
     
     @property
-    def updates(self):
+    def updates(self) -> UmlFriUpdates:
         return self.__updates

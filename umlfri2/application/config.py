@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 import os.path
 from configparser import ConfigParser
+from typing import Iterator, List, Optional
 
 from umlfri2.constants.paths import CONFIG
 from umlfri2.types.version import Version
@@ -8,23 +11,23 @@ from umlfri2.types.version import Version
 class ApplicationConfig:
     CONFIG_FILE = os.path.join(CONFIG, 'umlfri2.ini')
     
-    def __init__(self):
-        self.__language = None
-        self.__ignored_versions = []
-        self.__auto_check_updates = True
+    def __init__(self) -> None:
+        self.__language: Optional[str] = None
+        self.__ignored_versions: List[Version] = []
+        self.__auto_check_updates: bool = True
         
-        self.__export_zoom = 1
-        self.__export_padding = 5
+        self.__export_zoom: int = 1
+        self.__export_padding: int = 5
         
         if os.path.exists(self.CONFIG_FILE):
             self.__load()
     
     @property
-    def language(self):
+    def language(self) -> Optional[str]:
         return self.__language
     
     @language.setter
-    def language(self, value):
+    def language(self, value: Optional[str]) -> None:
         if self.__language == value:
             return
         
@@ -33,10 +36,10 @@ class ApplicationConfig:
         self.__save()
     
     @property
-    def ignored_versions(self):
+    def ignored_versions(self) -> Iterator[Version]:
         yield from self.__ignored_versions
     
-    def ignore_version(self, version):
+    def ignore_version(self, version: Version) -> None:
         if version in self.__ignored_versions:
             return
         
@@ -44,7 +47,7 @@ class ApplicationConfig:
         
         self.__save()
     
-    def unignore_versions(self, *versions):
+    def unignore_versions(self, *versions: Version) -> None:
         if versions and not all(ver in self.__ignored_versions for ver in versions):
             return
         
@@ -54,11 +57,11 @@ class ApplicationConfig:
         self.__save()
     
     @property
-    def auto_check_updates(self):
+    def auto_check_updates(self) -> bool:
         return self.__auto_check_updates
     
     @auto_check_updates.setter
-    def auto_check_updates(self, value):
+    def auto_check_updates(self, value: bool) -> None:
         if self.__auto_check_updates == value:
             return
         
@@ -67,14 +70,14 @@ class ApplicationConfig:
         self.__save()
     
     @property
-    def export_zoom(self):
+    def export_zoom(self) -> int:
         return self.__export_zoom
     
     @property
-    def export_padding(self):
+    def export_padding(self) -> int:
         return self.__export_padding
     
-    def set_export_options(self, zoom, padding):
+    def set_export_options(self, zoom: int, padding: int) -> None:
         if self.__export_zoom == zoom and self.__export_padding == padding:
             return
         
@@ -83,7 +86,7 @@ class ApplicationConfig:
         
         self.__save()
     
-    def __load(self):
+    def __load(self) -> None:
         cp = ConfigParser()
 
         cp.read(self.CONFIG_FILE, encoding='utf8')
@@ -102,7 +105,7 @@ class ApplicationConfig:
             self.__export_zoom = 1
             self.__export_padding = 5
     
-    def __save(self):
+    def __save(self) -> None:
         if not os.path.exists(CONFIG):
             os.makedirs(CONFIG)
         

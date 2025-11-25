@@ -1,20 +1,26 @@
+from __future__ import annotations
+
 import ctypes
 import gettext
 import locale
 import os
+from typing import Optional, TYPE_CHECKING
 
 from .events.application import LanguageChangedEvent
 
 from umlfri2.constants.paths import LOCALE_DIR
 
+if TYPE_CHECKING:
+    from umlfri2.application import Application
+
 
 class LanguageManager:
-    def __init__(self, application):
+    def __init__(self, application: Application) -> None:
         self.__application = application
         self.__default_language = self.__find_out_system_language().split('.', 1)[0]
         self.change_language(application.config.language)
 
-    def __find_out_system_language(self):
+    def __find_out_system_language(self) -> str:
         for e in 'LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG':
             if e in os.environ:
                 return os.environ[e]
@@ -44,7 +50,7 @@ class LanguageManager:
 
         return 'POSIX'
 
-    def change_language(self, language):
+    def change_language(self, language: Optional[str]) -> None:
         self.__application.config.language = language
         
         # install new language handler from gettext
@@ -52,7 +58,7 @@ class LanguageManager:
         self.__application.event_dispatcher.dispatch(LanguageChangedEvent(language))
 
     @property
-    def current_language(self):
+    def current_language(self) -> str:
         if self.__application.config.language is None:
             return self.__default_language
         return self.__application.config.language
