@@ -1,20 +1,29 @@
+from __future__ import annotations
+
+from typing import Any, Dict, List, TYPE_CHECKING
+
 from .snippet import Snippet
 from umlfri2.ufl.types.structured import UflObjectType, UflListType, UflNullableType
 from umlfri2.ufl.types.complex import UflFontType, UflColorType, UflImageType, UflProportionType
 from umlfri2.ufl.types.enum import UflFlagsType
 
+if TYPE_CHECKING:
+    from umlfri2.model import Project
+    from umlfri2.model.element import ElementVisual
+    from umlfri2.model.connection import ConnectionVisual
+
 
 class SnippetBuilder:
-    def __init__(self, project):
-        self.__visuals = []
+    def __init__(self, project: Project) -> None:
+        self.__visuals: List[Dict[str, Any]] = []
         self.__project = project
-        self.__finished = False
+        self.__finished: bool = False
     
-    def add_element(self, ruler, visual):
+    def add_element(self, ruler: object, visual: ElementVisual) -> SnippetBuilder:
         if self.__finished:
             raise Exception
         
-        data = {}
+        data: Dict[str, Any] = {}
         
         data['kind'] = 'element'
         
@@ -34,11 +43,11 @@ class SnippetBuilder:
         
         return self
     
-    def add_connection(self, ruler, visual):
+    def add_connection(self, ruler: object, visual: ConnectionVisual) -> SnippetBuilder:
         if self.__finished:
             raise Exception
         
-        data = {}
+        data: Dict[str, Any] = {}
         
         data['kind'] = 'connection'
         
@@ -55,7 +64,7 @@ class SnippetBuilder:
         
         data['points'] = points
         
-        labels = {}
+        labels: Dict[str, Dict[str, float]] = {}
         
         for label in visual.get_labels():
             point = label.get_position(ruler)
@@ -101,8 +110,8 @@ class SnippetBuilder:
         else:
             return ufl_value
     
-    def build(self):
-        ret = {}
+    def build(self) -> Snippet:
+        ret: Dict[str, Any] = {}
         
         ret['project'] = str(self.__project.save_id)
         ret['metamodel'] = self.__project.metamodel.addon.identifier

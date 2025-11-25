@@ -1,32 +1,40 @@
+from __future__ import annotations
+
 import json
+from typing import Any, Dict, Iterator, TYPE_CHECKING
 from uuid import UUID
 
 from umlfri2.types.geometry import Point, Size
 from umlfri2.ufl.types.structured import UflObjectType, UflListType
 from umlfri2.ufl.types.complex import UflFontType, UflColorType, UflImageType, UflProportionType
 
+if TYPE_CHECKING:
+    from umlfri2.model import Diagram
+    from umlfri2.model.element import ElementVisual
+    from umlfri2.model.connection import ConnectionVisual
+
 
 class Snippet:
     __encoder = json.JSONEncoder(ensure_ascii=False, check_circular=False, allow_nan=False)
     __decoder = json.JSONDecoder()
     
-    def __init__(self, data):
+    def __init__(self, data: Dict[str, Any]) -> None:
         self.__data = data
         self.__project_id = UUID(data['project'])
         self.__metamodel_id = data['metamodel']
     
-    def serialize(self):
+    def serialize(self) -> str:
         return self.__encoder.encode(self.__data)
     
     @staticmethod
-    def deserialize(data):
+    def deserialize(data: str) -> Snippet:
         return Snippet(Snippet.__decoder.decode(data))
     
     @property
-    def empty(self):
+    def empty(self) -> bool:
         return len(self.__data['objects']) == 0
     
-    def can_be_pasted_to(self, diagram):
+    def can_be_pasted_to(self, diagram: Diagram) -> bool:
         if diagram.project.save_id != self.__project_id:
             return False
         
@@ -52,7 +60,7 @@ class Snippet:
         
         return False
     
-    def paste_to(self, ruler, diagram):
+    def paste_to(self, ruler: object, diagram: Diagram) -> Iterator[Any]:
         all_elements = {str(element.save_id): element for element in diagram.project.get_all_elements()}
         all_connections = {str(connection.save_id): connection
                                 for element in all_elements.values()
@@ -71,13 +79,13 @@ class Snippet:
                     if diagram.contains(o.source) and diagram.contains(o.destination):
                         yield self.__show_connection(ruler, diagram, o, obj)
     
-    def can_be_duplicated_to(self, diagram):
+    def can_be_duplicated_to(self, diagram: Diagram) -> bool:
         if diagram.project.metamodel.addon.identifier != self.__metamodel_id:
             return False
         
         return True
     
-    def duplicate_to(self, ruler, diagram):
+    def duplicate_to(self, ruler: object, diagram: Diagram) -> Iterator[Any]:
         all_elements = {str(element.save_id): element for element in diagram.project.get_all_elements()}
         parent = diagram.parent
         metamodel = diagram.project.metamodel
@@ -108,14 +116,14 @@ class Snippet:
                     
                     yield self.__show_connection(ruler, diagram, o, obj)
     
-    def __show_element(self, ruler, diagram, element, data):
+    def __show_element(self, ruler, diagram, element, data) -> ElementVisual:
         visual = diagram.show(element)
         visual.move(ruler, Point(data['x'], data['y']))
         visual.resize(ruler, Size(data['width'], data['height']))
         
         return visual
     
-    def __show_connection(self, ruler, diagram, connection, data):
+    def __show_connection(self, ruler, diagram, connection, data) -> ConnectionVisual:
         visual = diagram.show(connection)
         for point in data['points']:
             visual.add_point(ruler, None, Point(point['x'], point['y']))
