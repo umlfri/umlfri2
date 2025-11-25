@@ -1,26 +1,30 @@
+from __future__ import annotations
+
+from typing import Iterator, Tuple, Union
+
 from .point import Point
 
 
 class Line:
-    def __init__(self, x1, y1, x2, y2):
+    def __init__(self, x1: float, y1: float, x2: float, y2: float) -> None:
         self.__x1 = x1
         self.__y1 = y1
         self.__x2 = x2
         self.__y2 = y2
     
     @staticmethod
-    def from_point_point(p1, p2):
+    def from_point_point(p1: Point, p2: Point) -> Line:
         return Line(p1.x, p1.y, p2.x, p2.y)
     
     @property
-    def first(self):
+    def first(self) -> Point:
         return Point(self.__x1, self.__y1)
     
     @property
-    def second(self):
+    def second(self) -> Point:
         return Point(self.__x2, self.__y2)
     
-    def get_abc(self):
+    def get_abc(self) -> Tuple[float, float, float]:
         # computed by wolframalpha
         # http://www.wolframalpha.com/input/?i=solve+x1%2Bb*y1%2Bc%3D0%2Cx2%2Bb*y2%2Bc%3D0+for+a%2Cb%2Cc
         if self.__y1 == self.__y2:
@@ -30,7 +34,7 @@ class Line:
                    (self.__x2 - self.__x1) / (self.__y1 - self.__y2), \
                    (self.__x1*self.__y2 - self.__x2*self.__y1) / (self.__y1 - self.__y2)
     
-    def intersect(self, other):
+    def intersect(self, other: object) -> Iterator[Point]:
         if isinstance(other, Line):
             a1, b1, c1 = self.get_abc()
             a2, b2, c2 = other.get_abc()
@@ -51,7 +55,7 @@ class Line:
         else:
             yield from other.intersect(self)
     
-    def get_nearest_point_to(self, other):
+    def get_nearest_point_to(self, other: Union[Point, Line]) -> Point:
         if isinstance(other, Point):
             a, b, c = self.get_abc()
             x = other.x
@@ -84,14 +88,14 @@ class Line:
         else:
             return other.get_distance_to(self)
     
-    def get_distance_to(self, other):
+    def get_distance_to(self, other: Union[Point, Line]) -> float:
         if isinstance(other, Point):
             return (other - self.get_nearest_point_to(other)).length
         else:
             return other.get_distance_to(self)
     
-    def __str__(self):
+    def __str__(self) -> str:
         return "[{0}, {1}], [{2}, {3}]".format(self.__x1, self.__y1, self.__x2, self.__y2)
     
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "<Line {0}>".format(self)

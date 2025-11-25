@@ -1,65 +1,71 @@
+from __future__ import annotations
+
 import re
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from typing import Pattern
 
 
 class Color:
-    __RE_HTML_COLOR = re.compile('^#([0-9a-fA-F]{2})?[0-9a-fA-F]{6}')
+    __RE_HTML_COLOR: Pattern[str] = re.compile('^#([0-9a-fA-F]{2})?[0-9a-fA-F]{6}')
     
-    def __init__(self, argb):
+    def __init__(self, argb: int) -> None:
         self.__value = argb
     
     @property
-    def alpha(self):
+    def alpha(self) -> int:
         return self.__value >> 24
     
     @property
-    def r(self):
+    def r(self) -> int:
         return (self.__value >> 16) & 0xff
     
     @property
-    def g(self):
+    def g(self) -> int:
         return (self.__value >> 8) & 0xff
     
     @property
-    def b(self):
+    def b(self) -> int:
         return self.__value & 0xff
     
     @property
-    def rgb(self):
+    def rgb(self) -> int:
         return self.__value & 0xffffff
     
     @property
-    def argb(self):
+    def argb(self) -> int:
         return self.__value
     
     @property
-    def rgba(self):
+    def rgba(self) -> int:
         return ((self.__value & 0xff000000) >> 24) + (self.__value & 0xffffff) << 8
     
-    def invert(self):
+    def invert(self) -> Color:
         return Color((self.__value & 0xff000000) + (0xffffff - self.__value & 0xffffff))
     
-    def add_alpha(self, alpha):
+    def add_alpha(self, alpha: int) -> Color:
         return Color(self.__value & 0xffffff + (alpha << 24))
     
-    def to_gray(self):
+    def to_gray(self) -> Color:
         return Color(self.__value & 0xff000000 + (self.r * 11 + self.g * 16 + self.b * 5) // 32)
     
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
         if isinstance(other, Color):
             return self.__value == other.__value
         return NotImplemented
     
-    def to_rgb_str(self):
+    def to_rgb_str(self) -> str:
         return "#{0:06x}".format(self.__value & 0xffffff)
     
-    def __str__(self):
+    def __str__(self) -> str:
         return "#{0:08x}".format(self.__value)
     
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "<Color {0}>".format(self)
     
     @staticmethod
-    def from_string(color):
+    def from_string(color: str) -> Color:
         if Colors.exists(color):
             return Colors.get(color)
         if Color.__RE_HTML_COLOR.match(color): # html rgb/argb
@@ -70,15 +76,15 @@ class Color:
         raise ValueError("color")
     
     @staticmethod
-    def from_rgb_values(r, g, b, a=255):
+    def from_rgb_values(r: int, g: int, b: int, a: int = 255) -> Color:
         return Color((a << 24) & (r << 16) & (g << 8) & b)
     
     @staticmethod
-    def from_argb(argb):
+    def from_argb(argb: int) -> Color:
         return Color(argb)
     
     @staticmethod
-    def from_rgba(rgba):
+    def from_rgba(rgba: int) -> Color:
         return Color(((rgba & 0xff) << 24) + rgba >> 8)
 
 
@@ -639,9 +645,9 @@ class Colors:
     yellowgreen = Color(0xff9acd32)
     
     @staticmethod
-    def exists(name):
+    def exists(name: str) -> bool:
         return isinstance(getattr(Colors, name, None), Color)
     
     @staticmethod
-    def get(name):
+    def get(name: str) -> Color:
         return getattr(Colors, name)
