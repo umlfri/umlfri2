@@ -1,20 +1,21 @@
 from __future__ import annotations
 
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Union
 
 from ..base import Event
 
 if TYPE_CHECKING:
     from umlfri2.ufl.objects import UflObjectPatch
+    from umlfri2.model import ElementObject, ConnectionObject, Diagram
 
 
 class ObjectDataChangedEvent(Event):
-    def __init__(self, object: Any, patch: UflObjectPatch) -> None:
+    def __init__(self, object: Union[ElementObject, ConnectionObject, Diagram], patch: UflObjectPatch) -> None:
         self.__object = object
         self.__patch = patch
     
     @property
-    def object(self) -> Any:
+    def object(self) -> Union[ElementObject, ConnectionObject, Diagram]:
         return self.__object
     
     @property
