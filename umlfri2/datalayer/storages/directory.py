@@ -1,5 +1,6 @@
 import os
 import os.path
+from typing import Optional
 
 import shutil
 
@@ -7,19 +8,19 @@ from .storage import Storage, StorageReference
 
 
 class DirectoryStorageReference(StorageReference):
-    def __init__(self, path, mode):
+    def __init__(self, path: str, mode: str) -> None:
         self.__path = path
         self.__mode = mode
     
     @property
-    def name(self):
+    def name(self) -> str:
         return self.__path
     
     @property
-    def still_valid(self):
+    def still_valid(self) -> bool:
         return os.path.exists(self.__path)
     
-    def open(self, mode=None):
+    def open(self, mode: Optional[str] = None) -> 'DirectoryStorage':
         if mode is None:
             mode = self.__mode
         return DirectoryStorage(self.__path, mode)
@@ -27,21 +28,21 @@ class DirectoryStorageReference(StorageReference):
 
 class DirectoryStorage(Storage):
     @staticmethod
-    def read_storage(path):
+    def read_storage(path: str) -> Optional['DirectoryStorage']:
         if os.path.isdir(path):
             return DirectoryStorage(os.path.abspath(path), 'r')
 
     @staticmethod
-    def new_storage(path):
+    def new_storage(path: str) -> Optional['DirectoryStorage']:
         if os.path.isdir(path):
             return DirectoryStorage(os.path.abspath(path), 'w')
     
-    def __init__(self, path, mode):
+    def __init__(self, path: str, mode: str) -> None:
         self.__path = path
         self.__mode = mode
     
     @property
-    def path(self):
+    def path(self) -> str:
         return self.__path
     
     def list(self, path=None):
