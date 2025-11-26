@@ -1,4 +1,5 @@
 import re
+from typing import TYPE_CHECKING
 
 import lxml.etree
 
@@ -6,16 +7,21 @@ from umlfri2.ufl.types.structured import UflObjectType, UflListType
 from umlfri2.ufl.types.enum import UflFlagsType
 from ..constants import MODEL_NAMESPACE, MODEL_SCHEMA
 
+if TYPE_CHECKING:
+    from umlfri2.datalayer.storages import Storage
+    from umlfri2.model import Project
+    from umlfri2.metamodel import Ruler
+
 
 class ProjectSaver:
     __RE_INVALID_XML_CHARACTER = re.compile('[^\u0020-\uD7FF\u0009\u000A\u000D\uE000-\uFFFD\U00010000-\U0010FFFF]+')
     
-    def __init__(self, storage, path, ruler):
+    def __init__(self, storage: 'Storage', path: str, ruler: 'Ruler') -> None:
         self.__storage = storage
         self.__path = path
         self.__ruler = ruler
     
-    def save(self, project):
+    def save(self, project: 'Project') -> None:
         root = lxml.etree.Element('{{{0}}}Project'.format(MODEL_NAMESPACE), nsmap={None: MODEL_NAMESPACE})
         root.attrib['id'] = str(project.save_id)
         

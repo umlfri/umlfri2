@@ -1,19 +1,25 @@
-from collections import namedtuple
+from typing import NamedTuple, List
 
 from ...constants import MODEL_SCHEMA, MODEL_NAMESPACE
 
-ProjectInfo = namedtuple("ProjectInfo", ["id"])
-SolutionInfo = namedtuple("SolutionInfo", ["id", "projects"])
+
+class ProjectInfo(NamedTuple):
+    id: str
+
+
+class SolutionInfo(NamedTuple):
+    id: str
+    projects: List[ProjectInfo]
 
 
 class SolutionInfoLoader:
-    def __init__(self, xmlroot):
+    def __init__(self, xmlroot) -> None:
         self.__xmlroot = xmlroot
         
         if not MODEL_SCHEMA.validate(self.__xmlroot):
             raise Exception("Cannot load project: {0}".format(MODEL_SCHEMA.error_log.last_error))
     
-    def load(self):
+    def load(self) -> SolutionInfo:
         ret = []
         for node in self.__xmlroot:
             if node.tag == "{{{0}}}Project".format(MODEL_NAMESPACE):
