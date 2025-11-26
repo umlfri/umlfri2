@@ -12,6 +12,7 @@ if TYPE_CHECKING:
     from umlfri2.model import ElementObject, Project
     from umlfri2.model.connection import ConnectionVisual
     from umlfri2.ufl.objects import UflObject, UflObjectPatch
+    from umlfri2.ufl.components.visual.canvas import Ruler
 
 
 class ConnectionObject:
@@ -21,7 +22,7 @@ class ConnectionObject:
         self.__data = type.ufl_type.build_default(None)
         self.__source = ref(source)
         self.__destination = ref(destination)
-        self.__visuals: WeakSet[ConnectionVisual] = WeakSet()
+        self.__visuals = WeakSet()
         self.__cache = ModelTemporaryDataCache(None)
         if save_id is None:
             self.__save_id = uuid4()
@@ -85,10 +86,10 @@ class ConnectionObject:
     def save_id(self) -> UUID:
         return self.__save_id
     
-    def create_appearance_object(self, ruler: object) -> object:
+    def create_appearance_object(self, ruler: Ruler) -> object:
         return self.__type.create_appearance_object(self, ruler)
     
-    def create_label_object(self, id: str, ruler: object) -> object:
+    def create_label_object(self, id: str, ruler: Ruler) -> object:
         return self.__type.get_label(id).create_appearance_object(self, ruler)
     
     def apply_ufl_patch(self, patch: UflObjectPatch) -> None:

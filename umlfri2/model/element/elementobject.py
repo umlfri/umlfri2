@@ -21,7 +21,7 @@ class ElementValueGenerator(UniqueValueGenerator):
     def __init__(self, parent: Union[ElementObject, Project], type: ElementType) -> None:
         self.__parent = parent
         self.__type = type
-        self.__name: Optional[str] = None
+        self.__name = None
     
     def get_parent_name(self) -> str:
         return self.__parent.get_display_name()
@@ -48,10 +48,10 @@ class ElementObject:
         self.__parent = ref(parent)
         self.__type = type
         self.__data = type.ufl_type.build_default(ElementValueGenerator(parent, type))
-        self.__connections: List[ConnectionObject] = []
-        self.__children: List[ElementObject] = []
-        self.__diagrams: List[Diagram] = []
-        self.__visuals: WeakSet[ElementVisual] = WeakSet()
+        self.__connections = []
+        self.__children = []
+        self.__diagrams = []
+        self.__visuals = WeakSet()
         self.__cache = ModelTemporaryDataCache(None)
         if save_id is None:
             self.__save_id = uuid4()

@@ -19,7 +19,7 @@ class Project:
         else:
             self.__name = name
         self.__metamodel = metamodel
-        self.__children: list = []
+        self.__children = []
         if save_id is None:
             self.__save_id = uuid4()
         else:

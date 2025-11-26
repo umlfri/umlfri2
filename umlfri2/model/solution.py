@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 class Solution:
     def __init__(self, project: Optional[Project] = None, save_id: Optional[UUID] = None) -> None:
         if project is None:
-            self.__projects: list = []
+            self.__projects = []
         else:
             self.__projects = [project]
         if save_id is None:

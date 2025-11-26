@@ -10,6 +10,7 @@ from .project import Project
 if TYPE_CHECKING:
     from umlfri2.model import Diagram
     from umlfri2.metamodel.projecttemplate import ProjectTemplate
+    from umlfri2.ufl.components.visual.canvas import Ruler
 
 
 class StartupTab(NamedTuple):
@@ -18,13 +19,13 @@ class StartupTab(NamedTuple):
 
 
 class ProjectBuilder:
-    def __init__(self, ruler: object, template: ProjectTemplate, name: str = "Project") -> None:
+    def __init__(self, ruler: Ruler, template: ProjectTemplate, name: str = "Project") -> None:
         self.__ruler = ruler
         self.__template = template
         self.__name = name
-        self.__project: Optional[Project] = None
-        self.__all_objects: dict = {}
-        self.__tabs: list = []
+        self.__project = None
+        self.__all_objects = {}
+        self.__tabs = []
     
     @property
     def project(self) -> Project:

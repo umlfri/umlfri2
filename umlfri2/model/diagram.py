@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from itertools import chain
-from typing import Any, Iterable, Iterator, List, Optional, Set, Tuple, TYPE_CHECKING, Union
+from typing import Any, Iterable, Iterator, List, Optional, Set, Tuple, TYPE_CHECKING, Union, overload
 from uuid import UUID, uuid4
 from weakref import ref
 
@@ -22,7 +22,7 @@ class DiagramValueGenerator(UniqueValueGenerator):
     def __init__(self, parent: ElementObject, type: DiagramType) -> None:
         self.__parent = parent
         self.__type = type
-        self.__name: Optional[str] = None
+        self.__name = None
     
     def get_parent_name(self) -> str:
         return self.__parent.get_display_name()
@@ -48,8 +48,8 @@ class Diagram:
         self.__parent = ref(parent)
         self.__type = type
         self.__data = type.ufl_type.build_default(DiagramValueGenerator(parent, type))
-        self.__elements: List[ElementVisual] = []
-        self.__connections: List[ConnectionVisual] = []
+        self.__elements = []
+        self.__connections = []
         if save_id is None:
             self.__save_id = uuid4()
         else:
@@ -98,6 +98,12 @@ class Diagram:
     def get_display_name(self) -> str:
         return self.__type.get_display_name(self)
     
+    @overload
+    def show(self, object: ElementObject) -> ElementVisual: ...
+    
+    @overload
+    def show(self, object: ConnectionObject) -> ConnectionVisual: ...
+    
     def show(self, object: Union[ElementObject, ConnectionObject]) -> Union[ElementVisual, ConnectionVisual]:
         if isinstance(object, ElementObject):
             visual = ElementVisual(self, object)
@@ -105,8 +111,8 @@ class Diagram:
             object.add_visual(visual)
             return visual
         elif isinstance(object, ConnectionObject):
-            element1: Optional[ElementVisual] = None
-            element2: Optional[ElementVisual] = None
+            element1 = None
+            element2 = None
             for element in self.__elements:
                 if element.object is object.source:
                     element1 = element
