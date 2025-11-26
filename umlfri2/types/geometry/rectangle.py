@@ -96,7 +96,7 @@ class Rectangle:
         
         return True
     
-    def intersect(self, other: object) -> Iterator[Point]:
+    def intersect(self, other: Union[Line, Rectangle]) -> Iterator[Point]:
         intersections = set()
         for line in self.all_lines:
             intersections.update(line.intersect(other))
@@ -168,12 +168,12 @@ class Rectangle:
         else:
             return Rectangle(0, 0, 0, 0)
     
-    def __add__(self, other: object) -> Union[Rectangle, type(NotImplemented)]:
+    def __add__(self, other: object) -> Rectangle:
         if isinstance(other, Vector):
             return Rectangle.from_point_size(self.top_left + other, self.size)
         return NotImplemented
     
-    def __sub__(self, other: object) -> Union[Rectangle, type(NotImplemented)]:
+    def __sub__(self, other: object) -> Rectangle:
         if isinstance(other, Vector):
             return Rectangle.from_point_size(self.top_left - other, self.size)
         return NotImplemented

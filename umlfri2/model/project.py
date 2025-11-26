@@ -85,7 +85,7 @@ class Project:
         self.__children.remove(obj)
     
     def get_all_elements(self) -> Iterator[ElementObject]:
-        def recursion(obj: Union[Project, ElementObject]) -> Iterator[ElementObject]:
+        def recursion(obj):
             for child in obj.children:
                 yield child
                 yield from recursion(child)

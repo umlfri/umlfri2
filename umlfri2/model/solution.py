@@ -37,7 +37,7 @@ class Solution:
             yield from element.diagrams
     
     def get_all_elements(self) -> Iterator[ElementObject]:
-        def recursion(obj: object) -> Iterator[ElementObject]:
+        def recursion(obj):
             for child in obj.children:
                 yield child
                 yield from recursion(child)

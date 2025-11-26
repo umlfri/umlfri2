@@ -55,7 +55,7 @@ class DeleteElementsCommand(Command):
         for command in self.__hide_commands:
             command.do(ruler)
 
-    def __is_chain_in_elements(self, element) -> bool:
+    def __is_chain_in_elements(self, element):
         if element in self.__all_elements:
             return True
         
@@ -64,7 +64,7 @@ class DeleteElementsCommand(Command):
         
         return False
 
-    def __add_hide_recursion(self, element: ElementObject) -> None:
+    def __add_hide_recursion(self, element):
         for visual in element.visuals:
             self.__hide_commands.append(HideElementsCommand(visual.diagram, [visual]))
         

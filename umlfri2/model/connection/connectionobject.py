@@ -13,6 +13,8 @@ if TYPE_CHECKING:
     from umlfri2.model.connection import ConnectionVisual
     from umlfri2.ufl.objects import UflObject, UflObjectPatch
     from umlfri2.ufl.components.visual.canvas import Ruler
+    from umlfri2.ufl.components.connectionvisual.connectionvisualcomponent import ConnectionVisualObject
+    from umlfri2.ufl.components.visual.visualcontainer import VisualObjectContainer
 
 
 class ConnectionObject:
@@ -86,10 +88,10 @@ class ConnectionObject:
     def save_id(self) -> UUID:
         return self.__save_id
     
-    def create_appearance_object(self, ruler: Ruler) -> object:
+    def create_appearance_object(self, ruler: Ruler) -> ConnectionVisualObject:
         return self.__type.create_appearance_object(self, ruler)
     
-    def create_label_object(self, id: str, ruler: Ruler) -> object:
+    def create_label_object(self, id: str, ruler: Ruler) -> VisualObjectContainer:
         return self.__type.get_label(id).create_appearance_object(self, ruler)
     
     def apply_ufl_patch(self, patch: UflObjectPatch) -> None:

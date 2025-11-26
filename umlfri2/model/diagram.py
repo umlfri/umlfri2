@@ -16,6 +16,7 @@ if TYPE_CHECKING:
     from umlfri2.model import Project
     from umlfri2.types.color import Color
     from umlfri2.ufl.objects import UflObject, UflObjectPatch
+    from umlfri2.ufl.components.visual.canvas import Ruler
 
 
 class DiagramValueGenerator(UniqueValueGenerator):
@@ -254,7 +255,7 @@ class Diagram:
                 return visual
         return None
     
-    def get_visual_at(self, ruler: object, position: Point) -> Optional[Union[ElementVisual, ConnectionVisual]]:
+    def get_visual_at(self, ruler: Ruler, position: Point) -> Optional[Union[ElementVisual, ConnectionVisual]]:
         for connection in reversed(self.__connections):
             if connection.is_at_position(ruler, position):
                 return connection
@@ -265,7 +266,7 @@ class Diagram:
         
         return None
     
-    def get_visual_above(self, ruler: object, visual: ElementVisual,
+    def get_visual_above(self, ruler: Ruler, visual: ElementVisual,
                          skip: Set[ElementVisual] = set()) -> Optional[ElementVisual]:
         element_bounds = visual.get_bounds(ruler)
         
@@ -279,7 +280,7 @@ class Diagram:
         
         raise Exception
     
-    def get_visual_below(self, ruler: object, visual: ElementVisual,
+    def get_visual_below(self, ruler: Ruler, visual: ElementVisual,
                          skip: Set[ElementVisual] = set()) -> Optional[ElementVisual]:
         element_bounds = visual.get_bounds(ruler)
         
@@ -293,10 +294,10 @@ class Diagram:
         
         raise Exception
     
-    def get_size(self, ruler: object) -> Size:
+    def get_size(self, ruler: Ruler) -> Size:
         return self.get_bounds(ruler).bottom_right.as_size()
     
-    def get_bounds(self, ruler: object) -> Rectangle:
+    def get_bounds(self, ruler: Ruler) -> Rectangle:
         return Rectangle.combine_bounds(visual.get_bounds(ruler)
                                         for visual in chain(self.__elements, self.__connections))
     

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections import OrderedDict
 from weakref import ref
 from typing import Dict, Iterable, Optional, TYPE_CHECKING
