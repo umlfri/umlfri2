@@ -1,4 +1,5 @@
 from typing import NamedTuple, List
+import lxml.etree
 
 from ...constants import MODEL_SCHEMA, MODEL_NAMESPACE
 
@@ -13,7 +14,7 @@ class SolutionInfo(NamedTuple):
 
 
 class SolutionInfoLoader:
-    def __init__(self, xmlroot) -> None:
+    def __init__(self, xmlroot: lxml.etree._Element) -> None:
         self.__xmlroot = xmlroot
         
         if not MODEL_SCHEMA.validate(self.__xmlroot):

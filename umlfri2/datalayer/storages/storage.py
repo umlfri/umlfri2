@@ -1,4 +1,4 @@
-from typing import Optional, IO
+from typing import Optional, IO, Iterable, Any
 
 
 class StorageReference:
@@ -16,9 +16,6 @@ class StorageReference:
 
 class UnknownStorageException(Exception):
     pass
-
-
-from typing import Iterable, Any
 
 
 class Storage:
