@@ -12,12 +12,12 @@ class ApplicationConfig:
     CONFIG_FILE = os.path.join(CONFIG, 'umlfri2.ini')
     
     def __init__(self) -> None:
-        self.__language: Optional[str] = None
-        self.__ignored_versions: List[Version] = []
-        self.__auto_check_updates: bool = True
+        self.__language = None
+        self.__ignored_versions = []
+        self.__auto_check_updates = True
         
-        self.__export_zoom: int = 1
-        self.__export_padding: int = 5
+        self.__export_zoom = 1
+        self.__export_padding = 5
         
         if os.path.exists(self.CONFIG_FILE):
             self.__load()

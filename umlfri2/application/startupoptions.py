@@ -11,7 +11,7 @@ class StartupOptions:
     def __init__(self, application: Application, args: List[str]) -> None:
         self.__application = application
         self.__options = self.__build_argparse(application).parse_args(args)
-        self.__open_solution_process: Optional[Iterator[str]] = None
+        self.__open_solution_process = None
     
     def __build_argparse(self, application: Application) -> argparse.ArgumentParser:
         arguments = argparse.ArgumentParser(description=application.about.description)

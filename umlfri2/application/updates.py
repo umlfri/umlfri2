@@ -49,10 +49,10 @@ class UmlFriUpdates:
     def __init__(self, about: AboutUmlFri, application: Application) -> None:
         self.__about = about
         self.__application = application
-        self.__latest_version: Optional[UmlFriUpdate] = None
-        self.__latest_prerelease: Optional[UmlFriUpdate] = None
-        self.__check_error: Union[None, bool, ExceptionInfo] = None
-        self.__checking_update: bool = False
+        self.__latest_version = None
+        self.__latest_prerelease = None
+        self.__check_error = None
+        self.__checking_update = False
         
         if not __debug__ and application.config.auto_check_updates:
             self.recheck_update()

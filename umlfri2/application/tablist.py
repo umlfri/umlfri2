@@ -16,10 +16,10 @@ if TYPE_CHECKING:
 
 class TabList:
     def __init__(self, application: Application) -> None:
-        self.__tabs: List[Tab] = []
+        self.__tabs = []
         self.__application = application
-        self.__current_tab: Optional[Tab] = None
-        self.__locked_tabs: Set[UUID] = set()
+        self.__current_tab = None
+        self.__locked_tabs = set()
         
         application.event_dispatcher.subscribe(DiagramDeletedEvent, self.__diagram_deleted)
         application.event_dispatcher.subscribe(CloseSolutionEvent, self.__solution_closed)

@@ -10,12 +10,12 @@ if TYPE_CHECKING:
 
 
 class methodref(ref):
-    def __new__(cls, method: MethodType, callback: Optional[Callable[[ref], Any]] = None) -> methodref:
+    def __new__(cls, method, callback = None):
         self = ref.__new__(cls, method.__self__, callback)
         self.__fnc = method.__func__
         return self
     
-    def __call__(self) -> Optional[MethodType]:
+    def __call__(self):
         obj = super().__call__()
         if obj is None:
             return None
@@ -25,7 +25,7 @@ class methodref(ref):
 class EventDispatcher:
     def __init__(self, application: Application) -> None:
         self.__application = application
-        self.__events: Dict[Optional[Type[Event]], List[Union[ref, Callable[[Event], None]]]] = {}
+        self.__events = {}
     
     def subscribe(self, event_type: Optional[Type[Event]], function: Callable[[Event], None],
                   auto_unsubscribe: bool = True) -> None:
@@ -72,7 +72,7 @@ class EventDispatcher:
         for other_event in event.get_chained():
             self.__dispatch_recursive(other_event)
     
-    def __call_event_function(self, function: Union[ref, Callable[[Event], None]], event: Event) -> None:
+    def __call_event_function(self, function, event: Event) -> None:
         if isinstance(function, ref):
             reference = function()
             if reference is not None:

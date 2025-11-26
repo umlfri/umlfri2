@@ -18,7 +18,7 @@ class RecentFiles:
     CONFIG_FILE = os.path.join(CONFIG, 'recent.ini')
     
     def __init__(self, application: Application) -> None:
-        self.__files: List[RecentFile] = []
+        self.__files = []
         self.__application = application
         
         if os.path.exists(self.CONFIG_FILE):

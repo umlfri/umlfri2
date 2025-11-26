@@ -11,19 +11,20 @@ if TYPE_CHECKING:
     from umlfri2.model import Project
     from umlfri2.model.element import ElementVisual
     from umlfri2.model.connection import ConnectionVisual
+    from umlfri2.ufl.components.visual.canvas import Ruler
 
 
 class SnippetBuilder:
     def __init__(self, project: Project) -> None:
-        self.__visuals: List[Dict[str, Any]] = []
+        self.__visuals = []
         self.__project = project
-        self.__finished: bool = False
+        self.__finished = False
     
-    def add_element(self, ruler: object, visual: ElementVisual) -> SnippetBuilder:
+    def add_element(self, ruler: Ruler, visual: ElementVisual) -> SnippetBuilder:
         if self.__finished:
             raise Exception
         
-        data: Dict[str, Any] = {}
+        data = {}
         
         data['kind'] = 'element'
         
@@ -43,11 +44,11 @@ class SnippetBuilder:
         
         return self
     
-    def add_connection(self, ruler: object, visual: ConnectionVisual) -> SnippetBuilder:
+    def add_connection(self, ruler: Ruler, visual: ConnectionVisual) -> SnippetBuilder:
         if self.__finished:
             raise Exception
         
-        data: Dict[str, Any] = {}
+        data = {}
         
         data['kind'] = 'connection'
         
@@ -64,7 +65,7 @@ class SnippetBuilder:
         
         data['points'] = points
         
-        labels: Dict[str, Dict[str, float]] = {}
+        labels = {}
         
         for label in visual.get_labels():
             point = label.get_position(ruler)
@@ -111,7 +112,7 @@ class SnippetBuilder:
             return ufl_value
     
     def build(self) -> Snippet:
-        ret: Dict[str, Any] = {}
+        ret = {}
         
         ret['project'] = str(self.__project.save_id)
         ret['metamodel'] = self.__project.metamodel.addon.identifier
