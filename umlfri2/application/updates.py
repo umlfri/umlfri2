@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 import json
 from threading import Thread
+from typing import Optional, TYPE_CHECKING, Union
 from urllib.request import urlopen
 
 from umlfri2.types.exceptioninfo import ExceptionInfo
@@ -7,31 +10,35 @@ from umlfri2.types.version import Version
 
 from .events.application import UpdateCheckStartedEvent, UpdateCheckFinishedEvent
 
+if TYPE_CHECKING:
+    from umlfri2.application import Application
+    from umlfri2.application.about import AboutUmlFri
+
 
 class UmlFriUpdate:
-    def __init__(self, application, version, url):
+    def __init__(self, application: Application, version: Version, url: str) -> None:
         self.__application = application
         
         self.__url = url
         self.__version = version
     
     @property
-    def url(self):
+    def url(self) -> str:
         return self.__url
     
     @property
-    def version(self):
+    def version(self) -> Version:
         return self.__version
 
     @property
-    def is_newer(self):
+    def is_newer(self) -> bool:
         return self.__version > self.__application.about.version
     
     @property
-    def is_ignored(self):
+    def is_ignored(self) -> bool:
         return self.__version in self.__application.config.ignored_versions
     
-    def ignore_update(self):
+    def ignore_update(self) -> None:
         if not self.is_ignored:
             self.__application.config.ignore_version(self.__version)
 
@@ -39,7 +46,7 @@ class UmlFriUpdate:
 class UmlFriUpdates:
     __GITHUB_RELEASES = "https://api.github.com/repos/umlfri/umlfri2/releases"
     
-    def __init__(self, about, application):
+    def __init__(self, about: AboutUmlFri, application: Application) -> None:
         self.__about = about
         self.__application = application
         self.__latest_version = None
@@ -51,26 +58,26 @@ class UmlFriUpdates:
             self.recheck_update()
     
     @property
-    def checking_update(self):
+    def checking_update(self) -> bool:
         return self.__checking_update
     
     @property
-    def latest_version(self):
+    def latest_version(self) -> Optional[UmlFriUpdate]:
         return self.__latest_version
     
     @property
-    def latest_prerelease(self):
+    def latest_prerelease(self) -> Optional[UmlFriUpdate]:
         return self.__latest_prerelease
     
     @property
-    def has_error(self):
+    def has_error(self) -> bool:
         return self.__check_error is not None
 
     @property
-    def error(self):
+    def error(self) -> Union[None, bool, ExceptionInfo]:
         return self.__check_error
     
-    def recheck_update(self):
+    def recheck_update(self) -> None:
         if self.__checking_update:
             raise Exception("Cannot check for updates while checking")
         
@@ -86,7 +93,7 @@ class UmlFriUpdates:
             self.__checking_update = False
             raise
     
-    def __update_check_thread(self):
+    def __update_check_thread(self) -> None:
         try:
             response = urlopen(self.__GITHUB_RELEASES)
             data = json.loads(response.read().decode(response.info().get_param('charset') or 'utf-8'))

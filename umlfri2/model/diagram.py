@@ -1,29 +1,39 @@
+from __future__ import annotations
+
 from itertools import chain
-from uuid import uuid4
+from typing import Any, Iterable, Iterator, List, Optional, Set, Tuple, TYPE_CHECKING, Union, overload
+from uuid import UUID, uuid4
 from weakref import ref
 
-from umlfri2.types.geometry import Rectangle
+from umlfri2.types.geometry import Rectangle, Size, Point
 from umlfri2.ufl.dialog import UflDialog, UflDialogOptions
 from umlfri2.ufl.uniquevaluegenerator import UniqueValueGenerator
 from .connection import ConnectionObject, ConnectionVisual
 from .element import ElementObject, ElementVisual
 
+if TYPE_CHECKING:
+    from umlfri2.metamodel.diagramtype import DiagramType
+    from umlfri2.model import Project
+    from umlfri2.types.color import Color
+    from umlfri2.ufl.objects import UflObject, UflObjectPatch
+    from umlfri2.ufl.components.visual.canvas import Ruler
+
 
 class DiagramValueGenerator(UniqueValueGenerator):
-    def __init__(self, parent, type):
+    def __init__(self, parent: ElementObject, type: DiagramType) -> None:
         self.__parent = parent
         self.__type = type
         self.__name = None
     
-    def get_parent_name(self):
+    def get_parent_name(self) -> str:
         return self.__parent.get_display_name()
     
-    def for_name(self, name):
+    def for_name(self, name: str) -> DiagramValueGenerator:
         ret = DiagramValueGenerator(self.__parent, self.__type)
         ret.__name = name
         return ret
     
-    def has_value(self, value):
+    def has_value(self, value: Any) -> Optional[bool]:
         if self.__name is None:
             return None
         
@@ -35,7 +45,7 @@ class DiagramValueGenerator(UniqueValueGenerator):
 
 
 class Diagram:
-    def __init__(self, parent, type, save_id=None):
+    def __init__(self, parent: ElementObject, type: DiagramType, save_id: Optional[UUID] = None) -> None:
         self.__parent = ref(parent)
         self.__type = type
         self.__data = type.ufl_type.build_default(DiagramValueGenerator(parent, type))
@@ -47,10 +57,10 @@ class Diagram:
             self.__save_id = save_id
     
     @property
-    def parent(self):
+    def parent(self) -> ElementObject:
         return self.__parent()
     
-    def change_parent(self, new_parent, new_index):
+    def change_parent(self, new_parent: ElementObject, new_index: int) -> None:
         if self.project is not new_parent.project:
             raise Exception
         
@@ -59,37 +69,43 @@ class Diagram:
         self.__parent().add_child(self, new_index)
     
     @property
-    def project(self):
+    def project(self) -> Project:
         return self.__parent().project
     
     @property
-    def type(self):
+    def type(self) -> DiagramType:
         return self.__type
     
     @property
-    def data(self):
+    def data(self) -> UflObject:
         return self.__data
     
     @property
-    def elements(self):
+    def elements(self) -> Iterator[ElementVisual]:
         yield from self.__elements
     
     @property
-    def element_count(self):
+    def element_count(self) -> int:
         return len(self.__elements)
     
     @property
-    def connections(self):
+    def connections(self) -> Iterator[ConnectionVisual]:
         yield from self.__connections
     
     @property
-    def save_id(self):
+    def save_id(self) -> UUID:
         return self.__save_id
     
-    def get_display_name(self):
+    def get_display_name(self) -> str:
         return self.__type.get_display_name(self)
     
-    def show(self, object):
+    @overload
+    def show(self, object: ElementObject) -> ElementVisual: ...
+    
+    @overload
+    def show(self, object: ConnectionObject) -> ConnectionVisual: ...
+    
+    def show(self, object: Union[ElementObject, ConnectionObject]) -> Union[ElementVisual, ConnectionVisual]:
         if isinstance(object, ElementObject):
             visual = ElementVisual(self, object)
             self.__elements.append(visual)
@@ -117,7 +133,7 @@ class Diagram:
         else:
             raise Exception
     
-    def add(self, visual, z_order=None):
+    def add(self, visual: Union[ElementVisual, ConnectionVisual], z_order: Optional[int] = None) -> None:
         if visual.diagram is not self:
             raise Exception
         
@@ -148,7 +164,7 @@ class Diagram:
         else:
             raise Exception
     
-    def remove(self, visual):
+    def remove(self, visual: Union[ElementVisual, ConnectionVisual]) -> None:
         if visual.diagram is not self:
             raise Exception
         
@@ -173,7 +189,7 @@ class Diagram:
         else:
             raise Exception
     
-    def get_z_order(self, visual):
+    def get_z_order(self, visual: Union[ElementVisual, ConnectionVisual]) -> int:
         if visual.diagram is not self:
             raise Exception
         
@@ -184,7 +200,7 @@ class Diagram:
         else:
             raise Exception
     
-    def change_z_order(self, visual, z_order):
+    def change_z_order(self, visual: Union[ElementVisual, ConnectionVisual], z_order: int) -> None:
         if visual.diagram is not self:
             raise Exception
         
@@ -197,7 +213,7 @@ class Diagram:
         else:
             raise Exception
     
-    def change_z_order_many(self, z_order_visuals):
+    def change_z_order_many(self, z_order_visuals: Iterable[Tuple[int, Union[ElementVisual, ConnectionVisual]]]) -> None:
         for z_order, visual in z_order_visuals:
             if not isinstance(visual, (ElementVisual, ConnectionVisual)):
                 raise Exception
@@ -216,10 +232,10 @@ class Diagram:
             else:
                 self.__connections.insert(z_order, visual)
     
-    def draw_background(self, canvas):
+    def draw_background(self, canvas: object) -> None:
         canvas.clear(self.__type.get_background_color(self))
     
-    def draw(self, canvas, selection=None, transparent=False):
+    def draw(self, canvas: object, selection: object = None, transparent: bool = False) -> None:
         if not transparent:
             self.draw_background(canvas)
         
@@ -233,13 +249,13 @@ class Diagram:
             if selection is not None:
                 selection.draw_for(canvas, connection)
     
-    def get_visual_for(self, object):
+    def get_visual_for(self, object: Union[ElementObject, ConnectionObject]) -> Optional[Union[ElementVisual, ConnectionVisual]]:
         for visual in chain(self.__elements, self.__connections):
             if visual.object is object:
                 return visual
         return None
     
-    def get_visual_at(self, ruler, position):
+    def get_visual_at(self, ruler: Ruler, position: Point) -> Optional[Union[ElementVisual, ConnectionVisual]]:
         for connection in reversed(self.__connections):
             if connection.is_at_position(ruler, position):
                 return connection
@@ -250,10 +266,11 @@ class Diagram:
         
         return None
     
-    def get_visual_above(self, ruler, visual, skip=set()):
+    def get_visual_above(self, ruler: Ruler, visual: ElementVisual,
+                         skip: Set[ElementVisual] = set()) -> Optional[ElementVisual]:
         element_bounds = visual.get_bounds(ruler)
         
-        above_visual = None
+        above_visual: Optional[ElementVisual] = None
         for current_element in reversed(self.__elements):
             if current_element is visual:
                 return above_visual
@@ -263,10 +280,11 @@ class Diagram:
         
         raise Exception
     
-    def get_visual_below(self, ruler, visual, skip=set()):
+    def get_visual_below(self, ruler: Ruler, visual: ElementVisual,
+                         skip: Set[ElementVisual] = set()) -> Optional[ElementVisual]:
         element_bounds = visual.get_bounds(ruler)
         
-        above_visual = None
+        above_visual: Optional[ElementVisual] = None
         for current_element in self.__elements:
             if current_element is visual:
                 return above_visual
@@ -276,14 +294,14 @@ class Diagram:
         
         raise Exception
     
-    def get_size(self, ruler):
+    def get_size(self, ruler: Ruler) -> Size:
         return self.get_bounds(ruler).bottom_right.as_size()
     
-    def get_bounds(self, ruler):
+    def get_bounds(self, ruler: Ruler) -> Rectangle:
         return Rectangle.combine_bounds(visual.get_bounds(ruler)
                                         for visual in chain(self.__elements, self.__connections))
     
-    def contains(self, object):
+    def contains(self, object: Union[ElementObject, ElementVisual, ConnectionObject, ConnectionVisual]) -> bool:
         if isinstance(object, ElementObject):
             for visual in self.__elements:
                 if visual.object is object:
@@ -303,14 +321,14 @@ class Diagram:
         
         return False
     
-    def apply_ufl_patch(self, patch):
+    def apply_ufl_patch(self, patch: UflObjectPatch) -> None:
         self.__data.apply_patch(patch)
     
     @property
-    def has_ufl_dialog(self):
+    def has_ufl_dialog(self) -> bool:
         return self.__type.ufl_type.has_attributes
     
-    def create_ufl_dialog(self, options=UflDialogOptions.standard):
+    def create_ufl_dialog(self, options: UflDialogOptions = UflDialogOptions.standard) -> UflDialog:
         if not self.__type.ufl_type.has_attributes:
             raise Exception
         dialog = UflDialog(self.__type.ufl_type, options)

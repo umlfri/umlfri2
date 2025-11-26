@@ -1,11 +1,21 @@
+from __future__ import annotations
+
+from typing import Iterable, Iterator, List, Optional, Set, TYPE_CHECKING
+from uuid import UUID
+
 from umlfri2.application.events.solution import CloseSolutionEvent
 from .events.model import DiagramDeletedEvent
 from .events.tabs import OpenTabEvent, ChangedCurrentTabEvent, ClosedTabEvent
 from .tab import Tab
 
+if TYPE_CHECKING:
+    from umlfri2.application import Application
+    from umlfri2.model import Diagram
+    from umlfri2.model.builder import StartupTab
+
 
 class TabList:
-    def __init__(self, application):
+    def __init__(self, application: Application) -> None:
         self.__tabs = []
         self.__application = application
         self.__current_tab = None
@@ -14,12 +24,12 @@ class TabList:
         application.event_dispatcher.subscribe(DiagramDeletedEvent, self.__diagram_deleted)
         application.event_dispatcher.subscribe(CloseSolutionEvent, self.__solution_closed)
     
-    def __diagram_deleted(self, event):
+    def __diagram_deleted(self, event: DiagramDeletedEvent) -> None:
         tab = self.get_tab_for(event.diagram)
         if tab is not None:
             tab.close()
     
-    def __solution_closed(self, event):
+    def __solution_closed(self, event: CloseSolutionEvent) -> None:
         events = []
         
         for tab in self.__tabs:
@@ -30,24 +40,24 @@ class TabList:
         self.__current_tab = None
         self.__application.event_dispatcher.dispatch(ChangedCurrentTabEvent(None))
     
-    def reset_lock_status(self):
+    def reset_lock_status(self) -> None:
         self.__locked_tabs = {tab.drawing_area.diagram.save_id for tab in self.__tabs if tab.locked}
     
     @property
-    def lock_status_changed(self):
+    def lock_status_changed(self) -> bool:
         new_locked_tabs = {tab.drawing_area.diagram.save_id for tab in self.__tabs if tab.locked}
         
         return self.__locked_tabs != new_locked_tabs
     
-    def get_tab_for(self, diagram):
+    def get_tab_for(self, diagram: Diagram) -> Optional[Tab]:
         for tab in self.__tabs:
             if tab.drawing_area.diagram is diagram:
                 return tab
         
         return None
     
-    def open_new_project_tabs(self, tabs):
-        last_tab = None
+    def open_new_project_tabs(self, tabs: Iterable[StartupTab]) -> None:
+        last_tab: Optional[Tab] = None
         
         for tab_info in tabs:
             tab = Tab(self.__application, self, tab_info.diagram, locked=tab_info.locked)
@@ -59,7 +69,7 @@ class TabList:
             self.__current_tab = last_tab
             self.__application.event_dispatcher.dispatch(ChangedCurrentTabEvent(last_tab))
     
-    def select_tab(self, diagram):
+    def select_tab(self, diagram: Optional[Diagram]) -> Optional[Tab]:
         if self.__current_tab is not None:
             self.__current_tab.drawing_area.reset_action()
         
@@ -82,7 +92,7 @@ class TabList:
             self.__application.event_dispatcher.dispatch(ChangedCurrentTabEvent(tab))
             return tab
     
-    def _close_tab(self, tab):
+    def _close_tab(self, tab: Tab) -> None:
         if tab.locked:
             tab.unlock()
         tab_id = self.__tabs.index(tab)
@@ -98,7 +108,7 @@ class TabList:
         self.__application.event_dispatcher.dispatch(ClosedTabEvent(tab))
         self.__application.event_dispatcher.dispatch(ChangedCurrentTabEvent(self.__current_tab))
     
-    def close_all(self):
+    def close_all(self) -> None:
         events = []
         new_tabs = []
         
@@ -118,8 +128,8 @@ class TabList:
             self.__application.event_dispatcher.dispatch(ChangedCurrentTabEvent(None))
     
     @property
-    def current_tab(self):
+    def current_tab(self) -> Optional[Tab]:
         return self.__current_tab
     
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Tab]:
         yield from self.__tabs

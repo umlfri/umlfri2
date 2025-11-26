@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from typing import List
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication
 
@@ -10,7 +14,7 @@ from .rendering import QTRuler
 from .osspecials import SPECIALS
 
 
-def qt_main(args):
+def qt_main(args: List[str]) -> int:
     SPECIALS.init()
     
     if hasattr(Qt, 'AA_DisableWindowContextHelpButton'):

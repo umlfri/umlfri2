@@ -1,9 +1,11 @@
+from __future__ import annotations
+
 import math
 from .point import Point
 
 
 class Transformation:
-    def __init__(self, m11, m12, m21, m22, offset_x, offset_y):
+    def __init__(self, m11: float, m12: float, m21: float, m22: float, offset_x: float, offset_y: float) -> None:
         self.__m11 = m11
         self.__m12 = m12
         self.__m21 = m21
@@ -12,30 +14,30 @@ class Transformation:
         self.__offset_y = offset_y
     
     @property
-    def m11(self):
+    def m11(self) -> float:
         return self.__m11
     
     @property
-    def m12(self):
+    def m12(self) -> float:
         return self.__m12
     
     @property
-    def m21(self):
+    def m21(self) -> float:
         return self.__m21
     
     @property
-    def m22(self):
+    def m22(self) -> float:
         return self.__m22
     
     @property
-    def offset_x(self):
+    def offset_x(self) -> float:
         return self.__offset_x
     
     @property
-    def offset_y(self):
+    def offset_y(self) -> float:
         return self.__offset_y
     
-    def __mul__(self, other):
+    def __mul__(self, other: object) -> Transformation:
         if isinstance(other, Transformation):
             return Transformation(
                 self.__m11*other.__m11 + self.__m21*other.__m12,
@@ -49,7 +51,7 @@ class Transformation:
             return NotImplemented
     
     @staticmethod
-    def make_rotation(alpha, center=Point(0, 0)):
+    def make_rotation(alpha: float, center: Point = Point(0, 0)) -> Transformation:
         sin = math.sin(alpha)
         cos = math.cos(alpha)
         
@@ -61,7 +63,7 @@ class Transformation:
         )
     
     @staticmethod
-    def make_scale(scale, center=Point(0, 0)):
+    def make_scale(scale: float, center: Point = Point(0, 0)) -> Transformation:
         return Transformation(
             scale, 0,
             0, scale,
@@ -70,7 +72,7 @@ class Transformation:
         )
     
     @staticmethod
-    def make_scale2(scale, center=Point(0, 0)):
+    def make_scale2(scale: Size, center: Point = Point(0, 0)) -> Transformation:
         return Transformation(
             scale.width, 0,
             0, scale.height,
@@ -79,7 +81,7 @@ class Transformation:
         )
     
     @staticmethod
-    def make_translate(delta):
+    def make_translate(delta: Vector) -> Transformation:
         return Transformation(
             1, 0,
             0, 1,
@@ -87,7 +89,7 @@ class Transformation:
         )
     
     @staticmethod
-    def make_skew_x(alpha):
+    def make_skew_x(alpha: float) -> Transformation:
         return Transformation(
             1, 0,
             math.tan(alpha), 1,
@@ -95,7 +97,7 @@ class Transformation:
         )
     
     @staticmethod
-    def make_skew_y(alpha):
+    def make_skew_y(alpha: float) -> Transformation:
         return Transformation(
             1, math.tan(alpha),
             0, 1,
@@ -103,7 +105,7 @@ class Transformation:
         )
     
     @staticmethod
-    def make_identity():
+    def make_identity() -> Transformation:
         return Transformation(
             1, 0,
             0, 1,

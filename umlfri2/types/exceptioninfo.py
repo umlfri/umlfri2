@@ -1,16 +1,24 @@
+from __future__ import annotations
+
 import os.path
 import sys
 import traceback
-from collections import namedtuple
+from typing import Iterator, List, NamedTuple, Optional
 
 from umlfri2.constants.paths import ROOT_DIR
 
 
-ExceptionInfoLine = namedtuple('ExceptionInfoLine', ['filename', 'module', 'lineno', 'function', 'text'])
+class ExceptionInfoLine(NamedTuple):
+    filename: Optional[str]
+    module: Optional[str]
+    lineno: int
+    function: str
+    text: Optional[str]
 
 
 class ExceptionInfo:
-    def __init__(self, type_name, description, traceback, cause=None, context=None):
+    def __init__(self, type_name: str, description: str, traceback: List[ExceptionInfoLine],
+                 cause: Optional[ExceptionInfo] = None, context: Optional[ExceptionInfo] = None) -> None:
         self.__type_name = type_name
         self.__description = description
         self.__traceback = traceback
@@ -18,7 +26,7 @@ class ExceptionInfo:
         self.__context = context
 
     @staticmethod
-    def from_exception(exception):
+    def from_exception(exception: BaseException) -> ExceptionInfo:
         if exception.__cause__ is not None:
             cause = ExceptionInfo.from_exception(exception.__cause__)
             context = None
@@ -46,7 +54,7 @@ class ExceptionInfo:
         return ExceptionInfo(type_name, desc, tb, cause, context)
     
     @staticmethod
-    def __path_to_module(path):
+    def __path_to_module(path: str) -> Optional[str]:
         try:
             npath = os.path.normpath(path)
         except:
@@ -65,21 +73,21 @@ class ExceptionInfo:
         return None
     
     @property
-    def type_name(self):
+    def type_name(self) -> str:
         return self.__type_name
     
     @property
-    def description(self):
+    def description(self) -> str:
         return self.__description
     
     @property
-    def traceback(self):
+    def traceback(self) -> Iterator[ExceptionInfoLine]:
         yield from self.__traceback
     
     @property
-    def cause(self):
+    def cause(self) -> Optional[ExceptionInfo]:
         return self.__cause
     
     @property
-    def context(self):
+    def context(self) -> Optional[ExceptionInfo]:
         return self.__context

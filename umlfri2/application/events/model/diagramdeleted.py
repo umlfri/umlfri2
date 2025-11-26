@@ -1,25 +1,32 @@
+from __future__ import annotations
+
+from typing import Optional, TYPE_CHECKING
+
 from ..base import Event
+
+if TYPE_CHECKING:
+    from umlfri2.model import Diagram
 
 
 class DiagramDeletedEvent(Event):
-    def __init__(self, diagram, index=None, indirect=False):
+    def __init__(self, diagram: Diagram, index: Optional[int] = None, indirect: bool = False) -> None:
         self.__diagram = diagram
         self.__index = index
         self.__indirect = indirect
     
     @property
-    def diagram(self):
+    def diagram(self) -> Diagram:
         return self.__diagram
     
     @property
-    def index(self):
+    def index(self) -> Optional[int]:
         return self.__index
     
     @property
-    def indirect(self):
+    def indirect(self) -> bool:
         return self.__indirect
     
-    def get_opposite(self):
+    def get_opposite(self) -> DiagramCreatedEvent:
         from .diagramcreated import DiagramCreatedEvent
         
         return DiagramCreatedEvent(self.__diagram, self.__index, self.__indirect)

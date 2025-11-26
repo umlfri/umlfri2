@@ -1,16 +1,26 @@
+from __future__ import annotations
+
+from typing import Any, Dict, List, TYPE_CHECKING
+
 from .snippet import Snippet
 from umlfri2.ufl.types.structured import UflObjectType, UflListType, UflNullableType
 from umlfri2.ufl.types.complex import UflFontType, UflColorType, UflImageType, UflProportionType
 from umlfri2.ufl.types.enum import UflFlagsType
 
+if TYPE_CHECKING:
+    from umlfri2.model import Project
+    from umlfri2.model.element import ElementVisual
+    from umlfri2.model.connection import ConnectionVisual
+    from umlfri2.ufl.components.visual.canvas import Ruler
+
 
 class SnippetBuilder:
-    def __init__(self, project):
+    def __init__(self, project: Project) -> None:
         self.__visuals = []
         self.__project = project
         self.__finished = False
     
-    def add_element(self, ruler, visual):
+    def add_element(self, ruler: Ruler, visual: ElementVisual) -> SnippetBuilder:
         if self.__finished:
             raise Exception
         
@@ -34,7 +44,7 @@ class SnippetBuilder:
         
         return self
     
-    def add_connection(self, ruler, visual):
+    def add_connection(self, ruler: Ruler, visual: ConnectionVisual) -> SnippetBuilder:
         if self.__finished:
             raise Exception
         
@@ -101,7 +111,7 @@ class SnippetBuilder:
         else:
             return ufl_value
     
-    def build(self):
+    def build(self) -> Snippet:
         ret = {}
         
         ret['project'] = str(self.__project.save_id)

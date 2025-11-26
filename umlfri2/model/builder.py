@@ -1,16 +1,25 @@
-from collections import namedtuple
+from __future__ import annotations
+
+from typing import Iterator, NamedTuple, Optional, TYPE_CHECKING
 
 from umlfri2.metamodel.projecttemplate import DiagramTemplateState
 from umlfri2.ufl.types.structured import UflObjectType, UflListType
 from umlfri2.ufl.types.enum import UflFlagsType
 from .project import Project
 
+if TYPE_CHECKING:
+    from umlfri2.model import Diagram
+    from umlfri2.metamodel.projecttemplate import ProjectTemplate
+    from umlfri2.ufl.components.visual.canvas import Ruler
 
-StartupTab = namedtuple('StartupTab', ['diagram', 'locked'])
+
+class StartupTab(NamedTuple):
+    diagram: Diagram
+    locked: bool
 
 
 class ProjectBuilder:
-    def __init__(self, ruler, template, name="Project"):
+    def __init__(self, ruler: Ruler, template: ProjectTemplate, name: str = "Project") -> None:
         self.__ruler = ruler
         self.__template = template
         self.__name = name
@@ -19,13 +28,13 @@ class ProjectBuilder:
         self.__tabs = []
     
     @property
-    def project(self):
+    def project(self) -> Project:
         if self.__project is None:
             self.__build_project()
         return self.__project
     
     @property
-    def tabs(self):
+    def tabs(self) -> Iterator[StartupTab]:
         yield from self.__tabs
     
     def __build_project(self):

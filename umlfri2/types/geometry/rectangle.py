@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from typing import Iterator, Iterable, Optional, Union
+
 from .vector import Vector
 from .point import Point
 from .size import Size
@@ -5,85 +9,85 @@ from .line import Line
 
 
 class Rectangle:
-    def __init__(self, x, y, width, height):
+    def __init__(self, x: float, y: float, width: float, height: float) -> None:
         self.__x = x
         self.__y = y
         self.__width = width
         self.__height = height
     
     @staticmethod
-    def from_point_size(point, size):
+    def from_point_size(point: Point, size: Size) -> Rectangle:
         return Rectangle(point.x, point.y, size.width, size.height)
     
     @staticmethod
-    def from_point_point(p1, p2):
+    def from_point_point(p1: Point, p2: Point) -> Rectangle:
         return Rectangle(p1.x, p1.y, p2.x - p1.x, p2.y - p1.y)
     
     @property
-    def top_left(self):
+    def top_left(self) -> Point:
         return Point(self.__x, self.__y)
     
     @property
-    def top_center(self):
+    def top_center(self) -> Point:
         return Point(self.__x + self.__width // 2, self.__y)
     
     @property
-    def top_right(self):
+    def top_right(self) -> Point:
         return Point(self.__x + self.__width, self.__y)
     
     @property
-    def right_center(self):
+    def right_center(self) -> Point:
         return Point(self.__x + self.__width, self.__y + self.__height // 2)
     
     @property
-    def bottom_left(self):
+    def bottom_left(self) -> Point:
         return Point(self.__x, self.__y + self.__height)
     
     @property
-    def bottom_center(self):
+    def bottom_center(self) -> Point:
         return Point(self.__x + self.__width // 2, self.__y + self.__height)
     
     @property
-    def bottom_right(self):
+    def bottom_right(self) -> Point:
         return Point(self.__x + self.__width, self.__y + self.__height)
     
     @property
-    def left_center(self):
+    def left_center(self) -> Point:
         return Point(self.__x, self.__y + self.__height // 2)
     
     @property
-    def center(self):
+    def center(self) -> Point:
         return Point(self.__x + self.__width // 2, self.__y + self.__height // 2)
     
     @property
-    def size(self):
+    def size(self) -> Size:
         return Size(self.__width, self.__height)
     
     @property
-    def x1(self):
+    def x1(self) -> float:
         return self.__x
     
     @property
-    def y1(self):
+    def y1(self) -> float:
         return self.__y
     
     @property
-    def width(self):
+    def width(self) -> float:
         return self.__width
     
     @property
-    def height(self):
+    def height(self) -> float:
         return self.__height
     
     @property
-    def x2(self):
+    def x2(self) -> float:
         return self.__x + self.__width
     
     @property
-    def y2(self):
+    def y2(self) -> float:
         return self.__y + self.__height
     
-    def contains(self, point):
+    def contains(self, point: Point) -> bool:
         if point.x < self.__x or point.y < self.__y:
             return False
         
@@ -92,14 +96,14 @@ class Rectangle:
         
         return True
     
-    def intersect(self, other):
+    def intersect(self, other: Union[Line, Rectangle]) -> Iterator[Point]:
         intersections = set()
         for line in self.all_lines:
             intersections.update(line.intersect(other))
         
         yield from intersections
     
-    def get_nearest_point_to(self, other):
+    def get_nearest_point_to(self, other: Point) -> Optional[Point]:
         distance = float('inf')
         point = None
         
@@ -112,20 +116,20 @@ class Rectangle:
         
         return point
     
-    def is_overlapping(self, other):
+    def is_overlapping(self, other: Rectangle) -> bool:
         if self.x1 <= other.x1 <= self.x2 or other.x1 <= self.x1 <= other.x2:
             if self.y1 <= other.y1 <= self.y2 or other.y1 <= self.y1 <= other.y2:
                 return True
         return False
 
     @property
-    def all_lines(self):
+    def all_lines(self) -> Iterator[Line]:
         yield Line.from_point_point(self.top_left, self.top_right)
         yield Line.from_point_point(self.top_right, self.bottom_right)
         yield Line.from_point_point(self.bottom_right, self.bottom_left)
         yield Line.from_point_point(self.bottom_left, self.top_left)
     
-    def normalize(self):
+    def normalize(self) -> Rectangle:
         x1 = self.x1
         x2 = self.x2
         y1 = self.y1
@@ -140,7 +144,7 @@ class Rectangle:
         return Rectangle(x1, y1, x2 - x1, y2 - y1)
     
     @staticmethod
-    def combine_bounds(rectangles):
+    def combine_bounds(rectangles: Iterable[Rectangle]) -> Rectangle:
         x1 = float('inf')
         x2 = -float('inf')
         y1 = float('inf')
@@ -164,24 +168,24 @@ class Rectangle:
         else:
             return Rectangle(0, 0, 0, 0)
     
-    def __add__(self, other):
+    def __add__(self, other: object) -> Rectangle:
         if isinstance(other, Vector):
             return Rectangle.from_point_size(self.top_left + other, self.size)
         return NotImplemented
     
-    def __sub__(self, other):
+    def __sub__(self, other: object) -> Rectangle:
         if isinstance(other, Vector):
             return Rectangle.from_point_size(self.top_left - other, self.size)
         return NotImplemented
     
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, Rectangle):
             return False
         
         return self.__x == other.__x and self.__y == other.__y and self.__width == other.__width and self.__height == other.__height
     
-    def __str__(self):
+    def __str__(self) -> str:
         return "[{0}, {1}], [{2}, {3}]".format(self.__x, self.__y, self.__x + self.__width, self.__y + self.__height)
     
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "<Rectangle {0}>".format(self)
