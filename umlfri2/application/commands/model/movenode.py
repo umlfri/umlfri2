@@ -8,6 +8,7 @@ from ..base import Command, CommandNotDone
 if TYPE_CHECKING:
     from umlfri2.application.events.base import Event
     from umlfri2.model import Diagram, ElementObject, Project
+    from umlfri2.ufl.components.visual.canvas import Ruler
 
 
 class MoveNodeCommand(Command):
@@ -17,14 +18,14 @@ class MoveNodeCommand(Command):
         self.__node = node
         self.__new_parent = new_parent
         self.__new_index = new_index
-        self.__old_parent: Optional[Union[ElementObject, Project]] = None
-        self.__old_index: Optional[int] = None
+        self.__old_parent = None
+        self.__old_index = None
     
     @property
     def description(self) -> str:
         return "Node {0} moved in the project".format(self.__node_name)
 
-    def _do(self, ruler: object) -> None:
+    def _do(self, ruler: Ruler) -> None:
         self.__old_parent = self.__node.parent
         self.__old_index = self.__old_parent.get_child_index(self.__node)
         
@@ -33,10 +34,10 @@ class MoveNodeCommand(Command):
         
         self.__node.change_parent(self.__new_parent, self.__new_index)
 
-    def _redo(self, ruler: object) -> None:
+    def _redo(self, ruler: Ruler) -> None:
         self.__node.change_parent(self.__new_parent, self.__new_index)
     
-    def _undo(self, ruler: object) -> None:
+    def _undo(self, ruler: Ruler) -> None:
         self.__node.change_parent(self.__old_parent, self.__old_index)
         
     

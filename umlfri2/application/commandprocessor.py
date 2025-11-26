@@ -14,10 +14,10 @@ MAX_STACK_SIZE = 100
 
 class CommandProcessor:
     def __init__(self, application: Application) -> None:
-        self.__undo_stack: List[Command] = []
-        self.__redo_stack: List[Command] = []
+        self.__undo_stack = []
+        self.__redo_stack = []
         self.__application = application
-        self.__unchanged_command: Optional[Command] = None
+        self.__unchanged_command = None
     
     def execute(self, command: Command) -> None:
         changed = self.changed

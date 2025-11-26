@@ -11,6 +11,7 @@ if TYPE_CHECKING:
     from umlfri2.model import Solution, Project
     from umlfri2.model.builder import StartupTab
     from umlfri2.metamodel.projecttemplate import ProjectTemplate
+    from umlfri2.ufl.components.visual.canvas import Ruler
 
 
 class NewProjectCommand(Command):
@@ -19,24 +20,24 @@ class NewProjectCommand(Command):
         self.__project_name = project_name
         self.__solution = solution
         self.__template = template
-        self.__project: Project = None
-        self.__tabs: List[StartupTab] = []
+        self.__project = None
+        self.__tabs = []
     
     @property
     def description(self) -> str:
         return "Creating a new project from template '{0}'".format(self.__template_id)
     
-    def _do(self, ruler: object) -> None:
+    def _do(self, ruler: Ruler) -> None:
         builder = ProjectBuilder(ruler, self.__template, self.__project_name)
         self.__project = builder.project
         self.__tabs = list(builder.tabs)
         
         self._redo(ruler)
     
-    def _redo(self, ruler: object) -> None:
+    def _redo(self, ruler: Ruler) -> None:
         self.__solution.add_project(self.__project)
     
-    def _undo(self, ruler: object) -> None:
+    def _undo(self, ruler: Ruler) -> None:
         self.__solution.remove_project(self.__project)
     
     @property

@@ -12,13 +12,14 @@ if TYPE_CHECKING:
     from umlfri2.model import ConnectionObject
     from umlfri2.model.element import ElementVisual
     from umlfri2.types.geometry import Size
+    from umlfri2.ufl.components.visual.canvas import Ruler
 
 
 class ApplyPatchCommand(Command):
     def __init__(self, object: Union[ElementObject, ConnectionObject], patch: UflObjectPatch) -> None:
         self.__object = object
         self.__patch = patch
-        self.__visual_sizes: List[Tuple[ElementVisual, Size]] = []
+        self.__visual_sizes = []
     
     @property
     def description(self) -> str:
@@ -36,7 +37,7 @@ class ApplyPatchCommand(Command):
         
         return "Changed {0} of {1}".format(change_desc, name)
 
-    def _do(self, ruler: object) -> None:
+    def _do(self, ruler: Ruler) -> None:
         if not self.__patch.has_changes:
             raise CommandNotDone
         
@@ -46,10 +47,10 @@ class ApplyPatchCommand(Command):
         
         self.__object.apply_ufl_patch(self.__patch)
 
-    def _redo(self, ruler: object) -> None:
+    def _redo(self, ruler: Ruler) -> None:
         self.__object.apply_ufl_patch(self.__patch)
     
-    def _undo(self, ruler: object) -> None:
+    def _undo(self, ruler: Ruler) -> None:
         self.__object.apply_ufl_patch(self.__patch.make_reverse())
         
         for visual, size in self.__visual_sizes:

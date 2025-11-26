@@ -9,6 +9,7 @@ from ..base import Command
 if TYPE_CHECKING:
     from umlfri2.application.events.base import Event
     from umlfri2.model import Diagram, ElementObject, ConnectionObject
+    from umlfri2.ufl.components.visual.canvas import Ruler
 
 
 class DeletedElementDescription(NamedTuple):
@@ -24,16 +25,16 @@ class DeletedDiagramDescription(NamedTuple):
 class DeleteElementsCommand(Command):
     def __init__(self, elements: List[ElementObject]) -> None:
         self.__all_elements = elements
-        self.__elements: List[DeletedElementDescription] = []
-        self.__connections: Set[ConnectionObject] = set()
-        self.__diagrams: List[DeletedDiagramDescription] = []
-        self.__hide_commands: List[HideElementsCommand] = []
+        self.__elements = []
+        self.__connections = set()
+        self.__diagrams = []
+        self.__hide_commands = []
     
     @property
     def description(self) -> str:
         return "Deleting elements from the project"
     
-    def _do(self, ruler: object) -> None:
+    def _do(self, ruler: Ruler) -> None:
         for element in self.__all_elements:
             if not self.__is_chain_in_elements(element.parent):
                 index = element.parent.get_child_index(element)
@@ -70,7 +71,7 @@ class DeleteElementsCommand(Command):
         for child in element.children:
             self.__add_hide_recursion(child)
     
-    def _undo(self, ruler: object) -> None:
+    def _undo(self, ruler: Ruler) -> None:
         for index, element in self.__elements:
             element.parent.add_child(element, index=index)
         
@@ -82,7 +83,7 @@ class DeleteElementsCommand(Command):
         for command in self.__hide_commands:
             command.undo(ruler)
     
-    def _redo(self, ruler: object) -> None:
+    def _redo(self, ruler: Ruler) -> None:
         for index, element in self.__elements:
             element.parent.remove_child(element)
         

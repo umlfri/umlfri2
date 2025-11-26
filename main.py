@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import sys
-from typing import List
 
 from umlfri2.qtgui import qt_main
 
