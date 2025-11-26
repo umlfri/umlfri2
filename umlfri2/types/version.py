@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 
 class Version:
-    __RE_VERSION: Pattern[str] = re.compile(r'^(?P<version>[0-9]+(\.[0-9]+)*)(-(?P<suffix>(alpha|beta|pre|rc|p))(?P<sufnum>[0-9]+))?$')
+    __RE_VERSION = re.compile(r'^(?P<version>[0-9]+(\.[0-9]+)*)(-(?P<suffix>(alpha|beta|pre|rc|p))(?P<sufnum>[0-9]+))?$')
     
     def __init__(self, value: str) -> None:
         parsed = self.__RE_VERSION.search(value)
@@ -19,10 +19,10 @@ class Version:
             ver = tuple(int(i) for i in parsed.group('version').split('.'))
             ver = (ver + (0, 0, 0))[:3]
             
-            self.__version: Tuple[int, int, int] = ver  # type: ignore[assignment]
+            self.__version = ver  # type: ignore[assignment]
             
             if parsed.group('suffix') is None:
-                self.__suffix: Optional[Tuple[str, int]] = None
+                self.__suffix = None
             else:
                 self.__suffix = (parsed.group('suffix'), int(parsed.group('sufnum')))
     

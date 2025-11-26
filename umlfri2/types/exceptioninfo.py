@@ -28,8 +28,8 @@ class ExceptionInfo:
     @staticmethod
     def from_exception(exception: BaseException) -> ExceptionInfo:
         if exception.__cause__ is not None:
-            cause: Optional[ExceptionInfo] = ExceptionInfo.from_exception(exception.__cause__)
-            context: Optional[ExceptionInfo] = None
+            cause = ExceptionInfo.from_exception(exception.__cause__)
+            context = None
         elif exception.__context__ is not None:
             cause = None
             context = ExceptionInfo.from_exception(exception.__context__)
@@ -37,7 +37,7 @@ class ExceptionInfo:
             cause = None
             context = None
         
-        tb: List[ExceptionInfoLine] = []
+        tb = []
         for filename, lineno, function, text in traceback.extract_tb(exception.__traceback__):
             module = ExceptionInfo.__path_to_module(filename)
             

@@ -105,7 +105,7 @@ class Rectangle:
     
     def get_nearest_point_to(self, other: Point) -> Optional[Point]:
         distance = float('inf')
-        point: Optional[Point] = None
+        point = None
         
         for line in self.all_lines:
             new_point = line.get_nearest_point_to(other)

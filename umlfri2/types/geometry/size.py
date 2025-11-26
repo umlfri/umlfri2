@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Union
+from numbers import Number
 
 from .vector import Vector
 
@@ -24,7 +24,7 @@ class Size:
     def rotate(self) -> Vector:
         return Vector(self.__height, self.__width)
     
-    def __mul__(self, other: Union[int, float]) -> Size:
+    def __mul__(self, other: Number) -> Size:
         return Size(self.__width * other, self.__height * other)
     
     def __str__(self) -> str:

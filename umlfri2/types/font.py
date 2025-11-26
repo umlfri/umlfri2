@@ -30,7 +30,7 @@ class Font:
         return Font(self.__family, new_size, self.__style)
     
     def change(self, style: FontStyle, value: bool) -> Font:
-        new_style: Set[FontStyle] = set(self.__style)
+        new_style = set(self.__style)
         
         if value:
             new_style.add(style)

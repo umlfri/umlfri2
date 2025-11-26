@@ -1,8 +1,11 @@
 from __future__ import annotations
 
-from typing import Iterator, Tuple, Union
+from typing import Iterator, Tuple, TYPE_CHECKING, Union
 
 from .point import Point
+
+if TYPE_CHECKING:
+    from .rectangle import Rectangle
 
 
 class Line:
@@ -34,7 +37,7 @@ class Line:
                    (self.__x2 - self.__x1) / (self.__y1 - self.__y2), \
                    (self.__x1*self.__y2 - self.__x2*self.__y1) / (self.__y1 - self.__y2)
     
-    def intersect(self, other: object) -> Iterator[Point]:
+    def intersect(self, other: Union[Line, Rectangle]) -> Iterator[Point]:
         if isinstance(other, Line):
             a1, b1, c1 = self.get_abc()
             a2, b2, c2 = other.get_abc()

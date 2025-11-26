@@ -72,7 +72,7 @@ class Transformation:
         )
     
     @staticmethod
-    def make_scale2(scale: object, center: Point = Point(0, 0)) -> Transformation:
+    def make_scale2(scale: Size, center: Point = Point(0, 0)) -> Transformation:
         return Transformation(
             scale.width, 0,
             0, scale.height,
@@ -81,7 +81,7 @@ class Transformation:
         )
     
     @staticmethod
-    def make_translate(delta: object) -> Transformation:
+    def make_translate(delta: Vector) -> Transformation:
         return Transformation(
             1, 0,
             0, 1,

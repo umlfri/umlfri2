@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import math
-from typing import Union
+from numbers import Number
 
 
 class Vector:
@@ -35,12 +35,12 @@ class Vector:
     def __neg__(self) -> Vector:
         return Vector(-self.__x, -self.__y)
     
-    def __mul__(self, other: Union[int, float]) -> Vector:
-        if isinstance(other, (int, float)):
+    def __mul__(self, other: Number) -> Vector:
+        if isinstance(other, Number):
             return Vector(self.__x * other, self.__y * other)
     
-    def __truediv__(self, other: Union[int, float]) -> Vector:
-        if isinstance(other, (int, float)):
+    def __truediv__(self, other: Number) -> Vector:
+        if isinstance(other, Number):
             return Vector(self.__x / other, self.__y / other)
     
     def __str__(self) -> str:

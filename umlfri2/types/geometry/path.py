@@ -1,9 +1,12 @@
 from __future__ import annotations
 
-from typing import Iterable, Iterator, List, Optional, Tuple, Union
+from typing import Iterable, Iterator, List, Optional, Tuple, TYPE_CHECKING, Union
 
 from .vector import Vector
 from .point import Point
+
+if TYPE_CHECKING:
+    from .transformation import Transformation
 
 
 class PathCommand:
@@ -20,7 +23,7 @@ class PathCommand:
     def __repr__(self) -> str:
         raise NotImplementedError
     
-    def transform(self, matrix: object) -> PathCommand:
+    def transform(self, matrix: Transformation) -> PathCommand:
         raise NotImplementedError
 
 
@@ -31,7 +34,7 @@ class PathLineTo(PathCommand):
     def __repr__(self) -> str:
         return "<PathLineTo {0}>".format(self.final_point)
     
-    def transform(self, matrix: object) -> PathLineTo:
+    def transform(self, matrix: Transformation) -> PathLineTo:
         return PathLineTo(self.final_point.transform(matrix))
 
 
@@ -57,7 +60,7 @@ class PathCubicTo(PathCommand):
         return "<PathCubicTo {0} {1} {2}>".format(self.__control_point1,
                                                   self.__control_point2, self.final_point)
     
-    def transform(self, matrix: object) -> PathCubicTo:
+    def transform(self, matrix: Transformation) -> PathCubicTo:
         return PathCubicTo(self.__control_point1.transform(matrix),
                            self.__control_point2.transform(matrix),
                            self.final_point.transform(matrix))
@@ -66,7 +69,7 @@ class PathCubicTo(PathCommand):
 class PathSegment:
     def __init__(self, starting_point: Point, commands: Iterable[PathCommand], closed: bool = False) -> None:
         self.__starting_point = starting_point
-        self.__commands: Tuple[PathCommand, ...] = tuple(commands)
+        self.__commands = tuple(commands)
         self.__closed = closed
     
     @property
@@ -101,14 +104,14 @@ class PathSegment:
                                                     " ".join(str(i) for i in self.__commands),
                                                     self.__closed)
     
-    def transform(self, matrix: object) -> PathSegment:
+    def transform(self, matrix: Transformation) -> PathSegment:
         new_commands = [command.transform(matrix) for command in self.__commands]
         return PathSegment(self.__starting_point.transform(matrix), new_commands, self.__closed)
 
 
 class Path:
     def __init__(self, segments: Iterable[PathSegment]) -> None:
-        self.__segments: Tuple[PathSegment, ...] = tuple(segments)
+        self.__segments = tuple(segments)
     
     @property
     def segments(self) -> Tuple[PathSegment, ...]:
@@ -120,7 +123,7 @@ class Path:
     def __repr__(self) -> str:
         return "<Path [{0}]>".format(" ".join(str(i) for i in self.__segments))
     
-    def transform(self, matrix: object) -> Path:
+    def transform(self, matrix: Transformation) -> Path:
         new_segments = [segment.transform(matrix) for segment in self.__segments]
         return Path(new_segments)
 
