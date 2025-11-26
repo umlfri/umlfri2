@@ -1,6 +1,7 @@
 import os
 import os.path
-from typing import Optional
+from typing import Optional, Iterable, IO, List
+
 
 import shutil
 
@@ -45,10 +46,10 @@ class DirectoryStorage(Storage):
     def path(self) -> str:
         return self.__path
     
-    def list(self, path=None):
+    def list(self, path: Optional[str] = None) -> List[str]:
         return os.listdir(self.__fix_path(path))
 
-    def open(self, path, mode='r'):
+    def open(self, path: str, mode: str = 'r') -> Optional[IO[bytes]]:
         if mode != 'r' and self.__mode == 'r':
             raise ValueError("Storage is opened for read only")
         path = self.__fix_path(path)
@@ -59,7 +60,7 @@ class DirectoryStorage(Storage):
             if os.path.exists(path):
                 return open(path, 'rb')
     
-    def store_string(self, path, data):
+    def store_string(self, path: str, data: str) -> None:
         if self.__mode == 'r':
             raise ValueError("Storage is opened for read only")
         path = self.__fix_path(path)
@@ -67,34 +68,34 @@ class DirectoryStorage(Storage):
         with open(path, 'w', encoding="ascii") as f:
             f.write(data)
     
-    def read_string(self, path):
+    def read_string(self, path: str) -> str:
         path = self.__fix_path(path)
         with open(path, 'r', encoding="ascii") as f:
             return f.read()
     
-    def exists(self, path):
+    def exists(self, path: str) -> bool:
         path = self.__fix_path(path)
         return os.path.exists(path)
     
-    def create_substorage(self, path):
+    def create_substorage(self, path: str) -> Optional[Storage]:
         path = self.__fix_path(path)
         if os.path.exists(path):
             return Storage.read_storage(path)
     
-    def make_dir(self, path):
+    def make_dir(self, path: str) -> 'DirectoryStorage':
         if self.__mode == 'r':
             raise ValueError("Storage is opened for read only")
         path = self.__fix_path(path)
         os.makedirs(path)
         return DirectoryStorage.new_storage(path)
     
-    def get_all_files(self):
+    def get_all_files(self) -> Iterable[str]:
         for dirpath, dirs, files in os.walk(self.__path):
             for file in files:
                 path = os.path.relpath(os.path.join(dirpath, file), self.__path)
                 yield path
     
-    def copy_from(self, storage):
+    def copy_from(self, storage: Storage) -> None:
         if self.__mode == 'r':
             raise ValueError("Storage is opened for read only")
         for path in storage.get_all_files():
@@ -115,13 +116,13 @@ class DirectoryStorage(Storage):
         if not os.path.exists(dir):
             os.makedirs(dir, exist_ok=True)
     
-    def remember_reference(self):
+    def remember_reference(self) -> DirectoryStorageReference:
         return DirectoryStorageReference(self.__path, self.__mode)
     
-    def remove_storage(self):
+    def remove_storage(self) -> None:
         if self.__mode == 'r':
             raise ValueError("Storage is opened for read only")
         shutil.rmtree(self.__path)
     
-    def close(self):
+    def close(self) -> None:
         pass
