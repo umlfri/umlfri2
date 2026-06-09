@@ -1,0 +1,17 @@
+[project]
+name = "master"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "appdirs>=1.4.4",
+    "ipython>=8.39.0",
+    "jinja2>=3.1.6",
+    "lxml>=6.1.1",
+    "pyparsing>=3.3.2",
+    "pyqt5==5.15.11",
+    "pyqt5-qt5==5.15.2",
+    "qtconsole>=5.7.2",
+    "sentry-sdk>=2.62.0",
+]

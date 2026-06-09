@@ -1,8 +1,0 @@
-PyQt5
-appdirs
-ipython
-qtconsole
-jinja2
-lxml
-pyparsing
-sentry-sdk
