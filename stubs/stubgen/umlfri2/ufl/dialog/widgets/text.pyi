@@ -1,0 +1,3 @@
+from .valued import UflDialogValuedWidget as UflDialogValuedWidget
+
+class UflDialogTextWidget(UflDialogValuedWidget): ...

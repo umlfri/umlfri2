@@ -1,0 +1,13 @@
+from umlfri2.qtgui.properties.dialog.dialog import PropertiesDialog
+from umlfri2.ufl.dialog.tabs.listtab import UflDialogListTab
+
+
+class ListPropertyTab:
+    def __init__(
+        self,
+        window: PropertiesDialog,
+        tab: UflDialogListTab,
+        lonely: bool = ...
+    ) -> None: ...
+    def handle_needed_save(self) -> bool: ...
+    def refresh(self) -> None: ...

@@ -1,0 +1,3 @@
+class IDiagram:
+    @property
+    def id(self): ...

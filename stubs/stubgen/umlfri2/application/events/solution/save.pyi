@@ -1,0 +1,6 @@
+from ..base import Event as Event
+
+class SaveSolutionEvent(Event):
+    def __init__(self, solution) -> None: ...
+    @property
+    def solution(self): ...

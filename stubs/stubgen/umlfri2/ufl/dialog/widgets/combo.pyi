@@ -1,0 +1,8 @@
+from .valued import UflDialogValuedWidget as UflDialogValuedWidget
+from _typeshed import Incomplete
+from collections.abc import Generator
+
+class UflDialogComboWidget(UflDialogValuedWidget):
+    def __init__(self, tab, attr, type) -> None: ...
+    @property
+    def possibilities(self) -> Generator[Incomplete, Incomplete]: ...

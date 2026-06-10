@@ -1,0 +1,9 @@
+from umlfri2.qtgui.rendering.qtpaintercanvas import QTPainterCanvas
+from umlfri2.types.geometry.rectangle import Rectangle
+from umlfri2.types.geometry.size import Size
+
+
+class EmptyObject:
+    def assign_bounds(self, bounds: Rectangle) -> None: ...
+    def draw(self, canvas: QTPainterCanvas, shadow: None) -> None: ...
+    def get_minimal_size(self) -> Size: ...

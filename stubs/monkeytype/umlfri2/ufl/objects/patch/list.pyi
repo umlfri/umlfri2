@@ -1,0 +1,9 @@
+from umlfri2.ufl.objects.immutable.object import UflObject
+
+
+class UflListPatch.ItemAdded:
+    def __init__(self, index: int, new_value: UflObject) -> None: ...
+    @property
+    def index(self) -> int: ...
+    @property
+    def new_value(self) -> UflObject: ...

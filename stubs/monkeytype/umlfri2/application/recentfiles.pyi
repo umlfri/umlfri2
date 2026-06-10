@@ -1,0 +1,9 @@
+from typing import Iterator
+from umlfri2.application.application import Application
+from umlfri2.application.recentfile import RecentFile
+
+
+class RecentFiles:
+    def __init__(self, application: Application) -> None: ...
+    def __iter__(self) -> Iterator[RecentFile]: ...
+    def add_file(self, file_path: str) -> None: ...

@@ -1,0 +1,6 @@
+from .iterator import STANDARD_ITERATOR_MACROS as STANDARD_ITERATOR_MACROS
+from .nullable import STANDARD_NULLABLE_MACROS as STANDARD_NULLABLE_MACROS
+from .other import STANDARD_OTHER_MACROS as STANDARD_OTHER_MACROS
+from _typeshed import Incomplete
+
+STANDARD_MACROS: Incomplete

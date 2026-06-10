@@ -1,0 +1,3 @@
+from .number import UflNumberType as UflNumberType
+
+class UflIntegerType(UflNumberType): ...

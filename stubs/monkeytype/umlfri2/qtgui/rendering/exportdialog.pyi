@@ -1,0 +1,6 @@
+from umlfri2.qtgui.mainwindow.mainwindow import UmlFriMainWindow
+
+
+class ExportDialog:
+    def __init__(self, main_window: UmlFriMainWindow) -> None: ...
+    def done(self, dialog_code: int) -> None: ...

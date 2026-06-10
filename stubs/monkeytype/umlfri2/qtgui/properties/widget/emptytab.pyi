@@ -1,0 +1,3 @@
+class EmptyTab:
+    @property
+    def label(self) -> str: ...

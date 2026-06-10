@@ -1,0 +1,14 @@
+from ..base import Command as Command
+from _typeshed import Incomplete
+from collections.abc import Generator
+from umlfri2.application.events.diagram import ConnectionShownEvent as ConnectionShownEvent, ElementShownEvent as ElementShownEvent
+from umlfri2.application.events.model import ConnectionCreatedEvent as ConnectionCreatedEvent, ElementCreatedEvent as ElementCreatedEvent
+from umlfri2.model.element import ElementVisual as ElementVisual
+
+class DuplicateSnippetCommand(Command):
+    def __init__(self, diagram, snippet) -> None: ...
+    @property
+    def description(self): ...
+    @property
+    def element_visuals(self) -> Generator[Incomplete]: ...
+    def get_updates(self) -> Generator[Incomplete]: ...

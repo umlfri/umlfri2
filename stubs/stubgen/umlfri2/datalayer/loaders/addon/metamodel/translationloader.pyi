@@ -1,0 +1,6 @@
+from ....constants import ADDON_NAMESPACE as ADDON_NAMESPACE, ADDON_SCHEMA as ADDON_SCHEMA
+from umlfri2.metamodel import Translation as Translation
+
+class TranslationLoader:
+    def __init__(self, xmlroot) -> None: ...
+    def load(self): ...

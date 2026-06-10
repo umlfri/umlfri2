@@ -1,0 +1,9 @@
+from umlfri2.metamodel.translation.translation import Translation
+from umlfri2.ufl.objects.mutable.object import UflMutableObject
+from umlfri2.ufl.types.structured.object import UflObjectAttribute
+
+
+class UflDialogEnumColumn:
+    def __init__(self, attr: UflObjectAttribute) -> None: ...
+    def get_value(self, object: UflMutableObject) -> str: ...
+    def translate(self, translation: Translation) -> None: ...

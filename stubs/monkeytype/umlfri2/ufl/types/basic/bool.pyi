@@ -1,0 +1,19 @@
+from typing import (
+    Optional,
+    Union,
+)
+from umlfri2.model.element.elementobject import ElementValueGenerator
+from umlfri2.ufl.objects.mutable.list import ListItemValueGenerator
+
+
+class UflBoolType:
+    def __init__(self, default: None = ...) -> None: ...
+    def build_default(
+        self,
+        generator: Optional[Union[ElementValueGenerator, ListItemValueGenerator]]
+    ) -> bool: ...
+    def is_default_value(self, value: bool) -> bool: ...
+    @property
+    def is_immutable(self) -> bool: ...
+    def is_valid_value(self, value: bool) -> bool: ...
+    def parse(self, value: str) -> bool: ...

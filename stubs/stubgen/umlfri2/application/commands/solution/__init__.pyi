@@ -1,0 +1,2 @@
+from .applymetamodelconfigpatch import ApplyMetamodelConfigPatchCommand as ApplyMetamodelConfigPatchCommand
+from .newproject import NewProjectCommand as NewProjectCommand

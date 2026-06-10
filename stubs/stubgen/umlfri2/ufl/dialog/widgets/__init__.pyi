@@ -1,0 +1,13 @@
+from .check import UflDialogCheckWidget as UflDialogCheckWidget
+from .child import UflDialogChildWidget as UflDialogChildWidget
+from .color import UflDialogColorWidget as UflDialogColorWidget
+from .combo import UflDialogComboWidget as UflDialogComboWidget
+from .decimal import UflDialogDecimalWidget as UflDialogDecimalWidget
+from .font import UflDialogFontWidget as UflDialogFontWidget
+from .integer import UflDialogIntegerWidget as UflDialogIntegerWidget
+from .multiselect import UflDialogMultiSelectWidget as UflDialogMultiSelectWidget
+from .nullable import UflDialogNullableWidget as UflDialogNullableWidget
+from .select import UflDialogSelectWidget as UflDialogSelectWidget
+from .text import UflDialogTextWidget as UflDialogTextWidget
+from .textarea import UflDialogTextAreaWidget as UflDialogTextAreaWidget
+from .valued import UflDialogValuedWidget as UflDialogValuedWidget

@@ -1,0 +1,6 @@
+from typing import Callable
+
+
+class QTThreadManager:
+    def __init__(self) -> None: ...
+    def execute_in_main_thread(self, function: Callable, *args) -> None: ...

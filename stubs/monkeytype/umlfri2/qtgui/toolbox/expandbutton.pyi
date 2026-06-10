@@ -1,0 +1,6 @@
+from PyQt5.QtCore import QEvent
+
+
+class ExpandButton:
+    def __init__(self) -> None: ...
+    def event(self, e: QEvent) -> bool: ...

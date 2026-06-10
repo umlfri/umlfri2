@@ -1,0 +1,3 @@
+class IAction:
+    @property
+    def id(self) -> str: ...

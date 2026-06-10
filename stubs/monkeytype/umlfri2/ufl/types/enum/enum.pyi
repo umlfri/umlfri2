@@ -1,0 +1,29 @@
+from typing import (
+    Any,
+    Optional,
+    Tuple,
+    Union,
+)
+from umlfri2.model.element.elementobject import ElementValueGenerator
+from umlfri2.ufl.objects.mutable.list import ListItemValueGenerator
+from umlfri2.ufl.types.enum.enumpossibility import UflEnumPossibility
+
+
+class UflEnumType:
+    def __init__(
+        self,
+        possibilities: Union[Tuple[UflEnumPossibility], Tuple[UflEnumPossibility, UflEnumPossibility], Tuple[()], Tuple[UflEnumPossibility, UflEnumPossibility, UflEnumPossibility]],
+        default: Optional[str] = ...
+    ) -> None: ...
+    def build_default(
+        self,
+        generator: Optional[Union[ListItemValueGenerator, ElementValueGenerator]]
+    ) -> str: ...
+    @property
+    def default(self) -> str: ...
+    def is_default_value(self, value: str) -> bool: ...
+    @property
+    def is_immutable(self) -> bool: ...
+    def is_valid_item(self, item: str) -> bool: ...
+    def is_valid_value(self, value: str) -> bool: ...
+    def parse(self, value: str) -> Any: ...

@@ -1,0 +1,22 @@
+from typing import (
+    Any,
+    Optional,
+)
+from umlfri2.ufl.components.valueproviders.valuesourceposition import ValueSourcePosition
+from umlfri2.ufl.context.context import Context
+from umlfri2.ufl.context.typecontext import TypeContext
+from umlfri2.ufl.types.base.type import UflType
+
+
+class ConstantValueProvider:
+    def __call__(self, context: Context) -> Any: ...
+    def __init__(
+        self,
+        value: str,
+        source: Optional[ValueSourcePosition] = ...
+    ) -> None: ...
+    def compile(
+        self,
+        type_context: TypeContext,
+        expected_type: UflType
+    ) -> None: ...

@@ -1,0 +1,6 @@
+from ..base import Event as Event
+
+class ChangeStatusChangedEvent(Event):
+    def __init__(self, change_status) -> None: ...
+    @property
+    def change_status(self): ...

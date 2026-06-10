@@ -1,0 +1,20 @@
+from _typeshed import Incomplete
+from umlfri2.constants.paths import XML_SCHEMAS as XML_SCHEMAS
+from umlfri2.types.version import Version as Version
+
+ADDON_NAMESPACE: str
+ADDON_SCHEMA: Incomplete
+ADDON_ADDON_FILE: str
+ADDON_DISABLE_FILE: str
+MODEL_NAMESPACE: str
+MODEL_SCHEMA: Incomplete
+MODEL_SAVE_VERSION: Incomplete
+FRIP2_SOLUTION_FILE: str
+FRIP2_PROJECT_FILE: str
+FRIP2_MIMETYPE_FILE: str
+FRIP2_VERSION_FILE: str
+FRIP2_LOCKED_TABS_FILE: str
+SOLUTION_MIME_TYPE: str
+ONLINE_ADDON_NAMESPACE: str
+ONLINE_ADDON_SCHEMA: Incomplete
+ONLINE_ADDON_LAST_VERSION_FILE: str

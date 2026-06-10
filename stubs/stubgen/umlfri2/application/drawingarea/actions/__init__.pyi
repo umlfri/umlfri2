@@ -1,0 +1,10 @@
+from .addconnectionpoint import AddConnectionPointAction as AddConnectionPointAction
+from .addelement import AddElementAction as AddElementAction
+from .addtypedconnection import AddTypedConnectionAction as AddTypedConnectionAction
+from .adduntypedconnection import AddUntypedConnectionAction as AddUntypedConnectionAction
+from .moveconnectionlabel import MoveConnectionLabelAction as MoveConnectionLabelAction
+from .moveconnectionpoint import MoveConnectionPointAction as MoveConnectionPointAction
+from .moveselection import MoveSelectionAction as MoveSelectionAction
+from .removeconnectionpoint import RemoveConnectionPointAction as RemoveConnectionPointAction
+from .resizeelement import ResizeElementAction as ResizeElementAction
+from .selectmany import SelectManyAction as SelectManyAction

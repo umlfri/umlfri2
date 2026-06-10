@@ -1,0 +1,6 @@
+from ..base import Event as Event
+
+class ClipboardSnippetChangedEvent(Event):
+    def __init__(self, new_snippet) -> None: ...
+    @property
+    def new_snippet(self): ...

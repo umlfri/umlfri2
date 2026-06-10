@@ -1,0 +1,9 @@
+from typing import Optional
+from umlfri2.application.application import Application
+
+
+class LanguageManager:
+    def __init__(self, application: Application) -> None: ...
+    def change_language(self, language: Optional[str]) -> None: ...
+    @property
+    def current_language(self) -> str: ...

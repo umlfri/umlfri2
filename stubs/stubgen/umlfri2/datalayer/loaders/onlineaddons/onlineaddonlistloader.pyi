@@ -1,0 +1,9 @@
+from .onlineaddonloader import OnlineAddOnLoader as OnlineAddOnLoader
+from _typeshed import Incomplete
+from collections.abc import Generator
+from umlfri2.datalayer.constants import ONLINE_ADDON_LAST_VERSION_FILE as ONLINE_ADDON_LAST_VERSION_FILE
+
+class OnlineAddOnListLoader:
+    def __init__(self, application, storage) -> None: ...
+    def load_all(self) -> Generator[Incomplete]: ...
+    def get_last_update(self): ...
