@@ -2,9 +2,20 @@ from ..base import Command as Command
 from _typeshed import Incomplete
 from collections.abc import Generator
 from umlfri2.application.events.diagram import ConnectionMovedEvent as ConnectionMovedEvent
+from typing import Iterator
+from umlfri2.application.events.diagram.connectionmoved import ConnectionMovedEvent
+from umlfri2.model.connection.connectionvisual import ConnectionVisual
+from umlfri2.qtgui.rendering.qtruler import QTRuler
+from umlfri2.types.geometry.vector import Vector
+
 
 class MoveConnectionPointCommand(Command):
-    def __init__(self, connection, index, delta) -> None: ...
+    def __init__(
+        self,
+        connection: ConnectionVisual,
+        index: int,
+        delta: Vector
+    ) -> None: ...
     @property
     def description(self): ...
-    def get_updates(self) -> Generator[Incomplete]: ...
+    def get_updates(self) -> Iterator[ConnectionMovedEvent]: ...

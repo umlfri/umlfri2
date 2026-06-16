@@ -3,9 +3,20 @@ from ..diagram import HideConnectionCommand as HideConnectionCommand
 from _typeshed import Incomplete
 from collections.abc import Generator
 from umlfri2.application.events.model import ConnectionDeletedEvent as ConnectionDeletedEvent
+from typing import (
+    Iterator,
+    Union,
+)
+from umlfri2.application.events.diagram.connectionhidden import ConnectionHiddenEvent
+from umlfri2.application.events.model.connectiondeleted import ConnectionDeletedEvent
+from umlfri2.model.connection.connectionobject import ConnectionObject
+from umlfri2.qtgui.rendering.qtruler import QTRuler
+
 
 class DeleteConnectionCommand(Command):
-    def __init__(self, connection) -> None: ...
+    def __init__(self, connection: ConnectionObject) -> None: ...
     @property
     def description(self): ...
-    def get_updates(self) -> Generator[Incomplete, Incomplete]: ...
+    def get_updates(
+        self
+    ) -> Iterator[Union[ConnectionDeletedEvent, ConnectionHiddenEvent]]: ...

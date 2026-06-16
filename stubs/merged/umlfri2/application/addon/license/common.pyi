@@ -1,7 +1,7 @@
 from _typeshed import Incomplete
 from typing import NamedTuple
 
-def osi_license_url(abbreviation): ...
+def osi_license_url(abbreviation: str) -> str: ...
 
 class CommonLicense:
 
