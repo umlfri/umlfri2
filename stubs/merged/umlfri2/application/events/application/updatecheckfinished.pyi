@@ -1,0 +1,6 @@
+from ..base import Event as Event
+
+class UpdateCheckFinishedEvent(Event):
+    def __init__(self, updates) -> None: ...
+    @property
+    def updates(self): ...

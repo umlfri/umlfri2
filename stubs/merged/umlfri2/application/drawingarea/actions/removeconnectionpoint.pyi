@@ -1,0 +1,9 @@
+from ..drawingareacursor import DrawingAreaCursor as DrawingAreaCursor
+from .action import Action as Action
+from umlfri2.application.commands.diagram import RemoveConnectionPointCommand as RemoveConnectionPointCommand
+
+class RemoveConnectionPointAction(Action):
+    def __init__(self, connection, index) -> None: ...
+    @property
+    def cursor(self): ...
+    def mouse_down(self, point) -> None: ...

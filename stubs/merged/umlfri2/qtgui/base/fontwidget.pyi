@@ -1,0 +1,13 @@
+from PyQt5.QtWidgets import QWidget
+from _typeshed import Incomplete
+from umlfri2.qtgui.appdialogs.fontdialog import FontDialog as FontDialog
+from umlfri2.types.font import Font as Font, Fonts as Fonts
+
+class FontSelectionWidget(QWidget):
+    font_changed: Incomplete
+    def __init__(self, btn_class=...) -> None: ...
+    @property
+    def selected_font(self): ...
+    @selected_font.setter
+    def selected_font(self, value) -> None: ...
+    def resizeEvent(self, event) -> None: ...

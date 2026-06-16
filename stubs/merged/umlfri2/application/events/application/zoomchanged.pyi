@@ -1,0 +1,6 @@
+from ..base import Event as Event
+
+class ZoomChangedEvent(Event):
+    def __init__(self, drawing_area) -> None: ...
+    @property
+    def drawing_area(self): ...

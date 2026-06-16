@@ -1,0 +1,18 @@
+from .operators import BINARY_OPERATORS as BINARY_OPERATORS, UNARY_OPERATORS as UNARY_OPERATORS
+from _typeshed import Incomplete
+
+EXPRESSION: Incomplete
+VARIABLE_METADATA_NAME: Incomplete
+VARIABLE_METADATA_ACCESS: Incomplete
+VARIABLE: Incomplete
+TARGET: Incomplete
+MEMBER_NAME: Incomplete
+ARGUMENTS: Incomplete
+METHOD_ATTRIBUTE_OR_ENUM: Incomplete
+STRING: Incomplete
+NUMBER: Incomplete
+VALUE = METHOD_ATTRIBUTE_OR_ENUM | STRING | NUMBER
+UNARY: Incomplete
+BINARY: Incomplete
+LAMBDA_EXPRESSION: Incomplete
+WHOLE_EXPRESSION: Incomplete

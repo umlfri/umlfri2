@@ -1,0 +1,8 @@
+from .applypatch import ApplyPatchCommand as ApplyPatchCommand
+from .changename import ChangeProjectNameCommand as ChangeProjectNameCommand
+from .creatediagram import CreateDiagramCommand as CreateDiagramCommand
+from .createelement import CreateElementCommand as CreateElementCommand
+from .deleteconnection import DeleteConnectionCommand as DeleteConnectionCommand
+from .deletediagram import DeleteDiagramCommand as DeleteDiagramCommand
+from .deleteelements import DeleteElementsCommand as DeleteElementsCommand
+from .reverseconnection import ReverseConnectionCommand as ReverseConnectionCommand

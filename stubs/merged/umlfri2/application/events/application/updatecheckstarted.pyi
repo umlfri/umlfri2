@@ -1,0 +1,3 @@
+from ..base import Event as Event
+
+class UpdateCheckStartedEvent(Event): ...

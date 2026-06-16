@@ -1,0 +1,6 @@
+from ..base.component import Component as Component
+
+class PathPartComponent(Component):
+    HAS_CHILDREN: bool
+    def __init__(self) -> None: ...
+    def add_to_path(self, context, builder) -> None: ...

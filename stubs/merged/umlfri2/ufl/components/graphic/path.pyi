@@ -1,0 +1,19 @@
+from ..base.componenttype import ComponentType as ComponentType
+from ..valueproviders import DefaultValueProvider as DefaultValueProvider
+from .graphicalcomponent import GraphicalComponent as GraphicalComponent, GraphicalObject as GraphicalObject
+from _typeshed import Incomplete
+from umlfri2.types.geometry import PathBuilder as PathBuilder, Size as Size, Transformation as Transformation
+from umlfri2.ufl.types.complex import UflColorType as UflColorType
+from umlfri2.ufl.types.structured import UflNullableType as UflNullableType
+
+class PathObject(GraphicalObject):
+    def __init__(self, path, fill, border) -> None: ...
+    def assign_bounds(self, bounds) -> None: ...
+    def draw(self, canvas, shadow) -> None: ...
+
+class PathComponent(GraphicalComponent):
+    ATTRIBUTES: Incomplete
+    CHILDREN_TYPE: Incomplete
+    def __init__(self, children, fill=None, border=None) -> None: ...
+    def compile(self, type_context) -> None: ...
+    def create_graphical_object(self, context, ruler, size): ...

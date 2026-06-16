@@ -1,0 +1,6 @@
+from ..base import Event as Event
+
+class ItemSelectedEvent(Event):
+    def __init__(self, item) -> None: ...
+    @property
+    def item(self): ...

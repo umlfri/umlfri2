@@ -1,0 +1,13 @@
+from ..base import Command as Command
+from _typeshed import Incomplete
+from collections.abc import Generator
+from umlfri2.application.events.solution import OpenProjectEvent as OpenProjectEvent
+from umlfri2.model import ProjectBuilder as ProjectBuilder
+
+class NewProjectCommand(Command):
+    def __init__(self, solution, template, project_name) -> None: ...
+    @property
+    def description(self): ...
+    @property
+    def opened_tabs(self) -> Generator[Incomplete, Incomplete]: ...
+    def get_updates(self) -> Generator[Incomplete]: ...

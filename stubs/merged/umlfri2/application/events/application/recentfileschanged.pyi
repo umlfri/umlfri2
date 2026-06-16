@@ -1,0 +1,6 @@
+from ..base import Event as Event
+
+class RecentFilesChangedEvent(Event):
+    def __init__(self, new_file) -> None: ...
+    @property
+    def new_file(self): ...

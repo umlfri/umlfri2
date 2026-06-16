@@ -1,0 +1,6 @@
+from PyQt5.QtCore import QMimeData
+
+class ProjectMimeData(QMimeData):
+    def __init__(self, model_object) -> None: ...
+    @property
+    def model_object(self): ...

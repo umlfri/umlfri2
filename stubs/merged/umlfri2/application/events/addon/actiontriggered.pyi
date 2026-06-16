@@ -1,0 +1,6 @@
+from ..base import Event as Event
+
+class ActionTriggeredEvent(Event):
+    def __init__(self, action) -> None: ...
+    @property
+    def action(self): ...

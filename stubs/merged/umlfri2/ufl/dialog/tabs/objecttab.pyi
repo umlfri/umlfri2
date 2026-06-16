@@ -1,0 +1,6 @@
+from ..widgets import UflDialogChildWidget as UflDialogChildWidget, UflDialogNullableWidget as UflDialogNullableWidget, UflDialogValuedWidget as UflDialogValuedWidget
+from .tab import UflDialogTab as UflDialogTab
+
+class UflDialogObjectTab(UflDialogTab):
+    def associate(self, ufl_object) -> None: ...
+    def finish(self) -> None: ...

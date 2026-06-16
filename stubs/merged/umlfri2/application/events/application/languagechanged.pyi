@@ -1,0 +1,6 @@
+from ..base import Event as Event
+
+class LanguageChangedEvent(Event):
+    def __init__(self, language) -> None: ...
+    @property
+    def language(self): ...

@@ -1,0 +1,23 @@
+from .empty import EmptyObject as EmptyObject
+from .visualcomponent import VisualComponent as VisualComponent, VisualObject as VisualObject
+from _typeshed import Incomplete
+from typing import NamedTuple
+from umlfri2.types.geometry import Rectangle as Rectangle, Size as Size
+from umlfri2.types.threestate import Maybe as Maybe
+from umlfri2.ufl.types.basic import UflBoolType as UflBoolType
+
+class BoxChild(NamedTuple):
+    child: Incomplete
+    expand: Incomplete
+
+class BoxObject(VisualObject):
+    def __init__(self, children) -> None: ...
+    def assign_bounds(self, bounds) -> None: ...
+    def get_minimal_size(self): ...
+    def draw(self, canvas, shadow) -> None: ...
+    def is_resizable(self): ...
+
+class BoxComponent(VisualComponent):
+    CHILDREN_ATTRIBUTES: Incomplete
+    def __init__(self, object_type, children, expand) -> None: ...
+    def compile(self, type_context) -> None: ...

@@ -1,0 +1,6 @@
+from ..base import Event as Event
+
+class ClosedTabEvent(Event):
+    def __init__(self, tab) -> None: ...
+    @property
+    def tab(self): ...

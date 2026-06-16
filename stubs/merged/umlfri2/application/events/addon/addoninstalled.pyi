@@ -1,0 +1,6 @@
+from ..base import Event as Event
+
+class AddOnInstalledEvent(Event):
+    def __init__(self, addon) -> None: ...
+    @property
+    def addon(self): ...
