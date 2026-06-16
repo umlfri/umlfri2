@@ -1,8 +1,10 @@
 from umlfri2.types.image import Image as Image
 from umlfri2.ufl.types.base.type import UflType as UflType
 
+from typing import Optional
+
 class UflImageType(UflType):
-    def __init__(self, default=None) -> None: ...
+    def __init__(self, default: None = ...) -> None: ...
     @property
     def default(self): ...
     @property

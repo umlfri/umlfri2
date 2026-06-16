@@ -8,10 +8,34 @@ from umlfri2.ufl.types.basic import UflIntegerType as UflIntegerType, UflStringT
 from umlfri2.ufl.types.complex import UflColorType as UflColorType, UflFontType as UflFontType, UflProportionType as UflProportionType
 from umlfri2.ufl.types.enum import UflTypedEnumType as UflTypedEnumType
 from umlfri2.ufl.types.structured import UflNullableType as UflNullableType
+from typing import (
+    Any,
+    Optional,
+    Union,
+)
+from umlfri2.types.enums.arroworientation import ArrowOrientation
+from umlfri2.types.enums.lineorientation import LineOrientation
+from umlfri2.types.proportion import Proportion
+from umlfri2.ufl.context.context import Context
+from umlfri2.ufl.context.typecontext import TypeContext
+from umlfri2.ufl.types.basic.integer import UflIntegerType
+from umlfri2.ufl.types.complex.proportion import UflProportionType
+from umlfri2.ufl.types.enum.typedenum import UflTypedEnumType
+from umlfri2.ufl.types.structured.nullable import UflNullableType
 
 class DefaultValueProvider(ValueProvider):
-    def __init__(self, value) -> None: ...
-    def compile(self, type_context, expected_type) -> None: ...
+    def __init__(
+        self,
+        value: Any
+    ) -> None: ...
+    def compile(
+        self,
+        type_context: TypeContext,
+        expected_type: Union[UflNullableType, UflProportionType, UflIntegerType, UflTypedEnumType]
+    ) -> None: ...
     def get_source(self) -> None: ...
     def get_type(self): ...
-    def __call__(self, context): ...
+    def __call__(
+        self,
+        context: Context
+    ) -> Any: ...

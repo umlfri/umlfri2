@@ -2,6 +2,8 @@ from .visualcomponent import VisualComponent as VisualComponent, VisualObject as
 from _typeshed import Incomplete
 from umlfri2.types.geometry import Rectangle as Rectangle
 from umlfri2.ufl.types.complex import UflImageType as UflImageType
+from umlfri2.ufl.components.valueproviders.dynamic import DynamicValueProvider
+from umlfri2.ufl.context.typecontext import TypeContext
 
 class ImageObject(VisualObject):
     def __init__(self, size, image) -> None: ...
@@ -13,5 +15,5 @@ class ImageObject(VisualObject):
 class ImageComponent(VisualComponent):
     ATTRIBUTES: Incomplete
     HAS_CHILDREN: bool
-    def __init__(self, image) -> None: ...
-    def compile(self, type_context) -> None: ...
+    def __init__(self, image: DynamicValueProvider) -> None: ...
+    def compile(self, type_context: TypeContext) -> None: ...
